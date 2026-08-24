@@ -1,0 +1,1094 @@
+{
+  "@@locale": "en",
+  "onboarding_title_1": "Everything about your phone in one place",
+  "@onboarding_title_1": {
+    "description": "Title for the first onboarding screen"
+  },
+  "onboarding_desc_1": "From phones to accessories, all the products you need are available easily and with the best quality.",
+  "@onboarding_desc_1": {
+    "description": "Description for the first onboarding screen"
+  },
+  "onboarding_title_2": "Lots of choices from all your favorite brands",
+  "@onboarding_title_2": {
+    "description": "Title for the second onboarding screen"
+  },
+  "onboarding_desc_2": "Discover the latest models and offers from the most famous global and local brands.",
+  "@onboarding_desc_2": {
+    "description": "Description for the second onboarding screen"
+  },
+  "onboarding_title_3": "Welcome",
+  "@onboarding_title_3": {
+    "description": "Title for the third onboarding screen"
+  },
+  "onboarding_desc_3": "Log in or create a new account to start shopping easily.",
+  "@onboarding_desc_3": {
+    "description": "Description for the third onboarding screen"
+  },
+  "next_button": "Next",
+  "@next_button": {
+    "description": "Text for the 'Next' button"
+  },
+  "send_button": "Send",
+  "@send_button": {
+    "description": "Text for the 'Send' button"
+  },
+  "get_started_button": "Get Started",
+  "@get_started_button": {
+    "description": "Text for the 'Get Started' button"
+  },
+  "login_button": "Log In",
+  "@login_button": {
+    "description": "Text for the 'Login' button"
+  },
+  "sign_up_button": "Sign Up",
+  "@sign_up_button": {
+    "description": "Text for the 'Sign Up' button"
+  },
+  "auth_register": "Register",
+  "@auth_register": {
+    "description": "Text for registration option"
+  },
+  "auth_login": "Log In",
+  "@auth_login": {
+    "description": "Text for login option"
+  },
+  "welcome_back_text": "Welcome back!",
+  "@welcome_back_text": {
+    "description": "Welcome back message"
+  },
+  "welcome_text": "Welcome",
+  "@welcome_text": {
+    "description": "Simple welcome greeting"
+  },
+  "welcome_start_text": "Start shopping now",
+  "@welcome_start_text": {
+    "description": "Start shopping welcome text"
+  },
+  "email_text": "Email",
+  "@email_text": {
+    "description": "Label for email field"
+  },
+  "password_text": "Password",
+  "@password_text": {
+    "description": "Label for password field"
+  },
+  "confirm_password_text": "Confirm Password",
+  "@confirm_password_text": {
+    "description": "Label for confirm password field"
+  },
+  "forgot_password_text": "Forgot your password?",
+  "@forgot_password_text": {
+    "description": "Text for forgot password link"
+  },
+  "skip_text": "Skip",
+  "@skip_text": {
+    "description": "Text for skip button"
+  },
+  "or_sign_in_with_text": "Or sign in with",
+  "@or_sign_in_with_text": {
+    "description": "Text for alternative login options"
+  },
+  "first_name_text": "First Name",
+  "@first_name_text": {
+    "description": "Label for first name field"
+  },
+  "last_name_text": "Last Name",
+  "@last_name_text": {
+    "description": "Label for last name field"
+  },
+  "phone_number_text": "Phone Number",
+  "@phone_number_text": {
+    "description": "Label for phone number field"
+  },
+  "email_validation_error": "Please enter a valid email.",
+  "@email_validation_error": {
+    "description": "Error message for invalid email"
+  },
+  "password_validation_error": "Password must be at least 8 characters.",
+  "@password_validation_error": {
+    "description": "Error message for short password"
+  },
+  "confirm_password_validation_error": "Passwords do not match.",
+  "@confirm_password_validation_error": {
+    "description": "Error message for password mismatch"
+  },
+  "first_name_validation_error": "Please enter your first name.",
+  "@first_name_validation_error": {
+    "description": "Error message for empty first name"
+  },
+  "last_name_validation_error": "Please enter your last name.",
+  "@last_name_validation_error": {
+    "description": "Error message for empty last name"
+  },
+  "phone_number_validation_error": "Please enter a valid phone number.",
+  "@phone_number_validation_error": {
+    "description": "Error message for invalid phone number"
+  },
+  "select_country_text": "Select Country",
+  "@select_country_text": {
+    "description": "Text for country selection"
+  },
+  "search_country_text": "Search for a country",
+  "@search_country_text": {
+    "description": "Search hint for country"
+  },
+  "reset_password_text": "Reset Password",
+  "@reset_password_text": {
+    "description": "Text for reset password"
+  },
+  "login_your_account": "Log In to your account",
+  "@login_your_account": {
+    "description": "Login to account title"
+  },
+  "account_text": "Account",
+  "@account_text": {
+    "description": "Account menu text"
+  },
+  "personal_information_text": "Personal information",
+  "@personal_information_text": {
+    "description": "Personal info text"
+  },
+  "change_personal_information_text": "Edit personal information",
+  "@change_personal_information_text": {
+    "description": "Edit personal info text"
+  },
+  "favorite_text": "Favorites",
+  "@favorite_text": {
+    "description": "Favorites menu text"
+  },
+  "favorite_products_text": "Your Favorite Products",
+  "@favorite_products_text": {
+    "description": "Favorite products list title"
+  },
+  "orders_text": "Orders",
+  "@orders_text": {
+    "description": "Orders menu text"
+  },
+  "order_history_text": "Order History",
+  "@order_history_text": {
+    "description": "Order history title"
+  },
+  "settings_text": "Settings",
+  "@settings_text": {
+    "description": "Settings menu text"
+  },
+  "notifications_text": "Notifications",
+  "@notifications_text": {
+    "description": "Notifications menu text"
+  },
+  "notification_settings_text": "Notification Settings",
+  "@notification_settings_text": {
+    "description": "Notification settings title"
+  },
+  "language_text": "Language",
+  "@language_text": {
+    "description": "Language menu text"
+  },
+  "change_language_text": "Change Language",
+  "@change_language_text": {
+    "description": "Change language title"
+  },
+  "mode_text": "Dark Mode",
+  "@mode_text": {
+    "description": "Dark mode toggle text"
+  },
+  "enable_dark_mode_text": "Enable Dark Mode",
+  "@enable_dark_mode_text": {
+    "description": "Appearance settings text"
+  },
+  "call_us_text": "Call Us",
+  "@call_us_text": {
+    "description": "Call us text"
+  },
+  "contact_us_text": "Contact Us",
+  "@contact_us_text": {
+    "description": "Contact us text"
+  },
+  "arabic_text": "Arabic",
+  "@arabic_text": {
+    "description": "Arabic language name"
+  },
+  "english_text": "English",
+  "@english_text": {
+    "description": "English language name"
+  },
+  "light_mode_text": "Light",
+  "@light_mode_text": {
+    "description": "Light theme name"
+  },
+  "dark_mode_text": "Dark",
+  "@dark_mode_text": {
+    "description": "Dark theme name"
+  },
+  "system_mode_text": "System Mode",
+  "@system_mode_text": {
+    "description": "System theme name"
+  },
+  "edit_profile_text": "Edit Profile",
+  "@edit_profile_text": {
+    "description": "Edit profile title"
+  },
+  "change_account_mill_text": "Change Email",
+  "@change_account_mill_text": {
+    "description": "Change email text"
+  },
+  "mail_account_text": "Email",
+  "@mail_account_text": {
+    "description": "Email account label"
+  },
+  "chang_mail_account_one_text": "Change the email",
+  "@chang_mail_account_one_text": {
+    "description": "Change email process text"
+  },
+  "change_phone_number_text": "Change Phone",
+  "@change_phone_number_text": {
+    "description": "Change phone text"
+  },
+  "edit_phone_text": "Edit Phone",
+  "@edit_phone_text": {
+    "description": "Edit phone title"
+  },
+  "change_phone_persnol_text": "Change your personal phone",
+  "@change_phone_persnol_text": {
+    "description": "Detailed change phone text"
+  },
+  "change_password_text": "Change Password",
+  "@change_password_text": {
+    "description": "Change password text"
+  },
+  "edit_password_text": "Edit Password",
+  "@edit_password_text": {
+    "description": "Edit password title"
+  },
+  "change_your_password_text": "Change your password",
+  "@change_your_password_text": {
+    "description": "Change password instruction"
+  },
+  "password_old_text": "Current Password",
+  "@password_old_text": {
+    "description": "Label for current password"
+  },
+  "password_new_text": "New Password",
+  "@password_new_text": {
+    "description": "Label for new password"
+  },
+  "password_confirm_text": "Confirm New Password",
+  "@password_confirm_text": {
+    "description": "Label for confirm new password"
+  },
+  "save_text": "Save",
+  "@save_text": {
+    "description": "Save button text"
+  },
+  "otp_verification": "OTP Verification",
+  "@otp_verification": {
+    "description": "OTP verification title"
+  },
+  "enter_otp": "Enter the code sent to your phone",
+  "@enter_otp": {
+    "description": "OTP entry instruction"
+  },
+  "verify": "Verify",
+  "@verify": {
+    "description": "Verify button text"
+  },
+  "resend_code": "Resend Code",
+  "@resend_code": {
+    "description": "Resend code button text"
+  },
+  "otp_sent_to": "Code sent to",
+  "@otp_sent_to": {
+    "description": "Info text for where OTP was sent"
+  },
+  "code_sent_successfully": "Code sent successfully",
+  "@code_sent_successfully": {
+    "description": "Success message for OTP sent"
+  },
+  "resend_after": "Resend after",
+  "@resend_after": {
+    "description": "Text for resend timer"
+  },
+  "choose_your_type_of_shopping": "Choose your type of shopping",
+  "@choose_your_type_of_shopping": {
+    "description": "Shopping type choice title"
+  },
+  "do_you_want_to_buy_wholesale_or_retail": "Do you want to buy wholesale or retail?",
+  "@do_you_want_to_buy_wholesale_or_retail": {
+    "description": "Shopping type choice question"
+  },
+  "change_purchase_type_confirmation_title": "Change Purchase Type",
+  "@change_purchase_type_confirmation_title": {
+    "description": "Confirmation dialog title for changing purchase type"
+  },
+  "change_purchase_type_confirmation_message": "Are you sure you want to change the shopping type? This will refresh all data.",
+  "@change_purchase_type_confirmation_message": {
+    "description": "Confirmation dialog message for changing purchase type"
+  },
+  "wholesale_text": "Wholesale",
+  "@wholesale_text": {
+    "description": "Wholesale option text"
+  },
+  "retail_text": "Retail",
+  "@retail_text": {
+    "description": "Retail option text"
+  },
+  "continue_text": "Continue",
+  "@continue_text": {
+    "description": "Continue button text"
+  },
+  "choose_user": "Choose the user",
+  "@choose_user": {
+    "description": "Title for user selection"
+  },
+  "recently_arrived_text": "Recently Arrived",
+  "@recently_arrived_text": {
+    "description": "Recently arrived products header"
+  },
+  "browse_categories_text": "Browse Categories",
+  "@browse_categories_text": {
+    "description": "Browse categories header"
+  },
+  "search_text": "Search in {value}",
+  "@search_text": {
+    "description": "Search field hint with context",
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "discount_text": "Discount",
+  "@discount_text": {
+    "description": "Discount label"
+  },
+  "pound_text": "Pound",
+  "@pound_text": {
+    "description": "Currency name (English variant may use EGP)"
+  },
+  "sections_text": "Sections",
+  "@sections_text": {
+    "description": "Sections title"
+  },
+  "most_popular_text": "Most popular",
+  "@most_popular_text": {
+    "description": "Most popular sorting/header"
+  },
+  "a_to_z_text": "A - Z",
+  "@a_to_z_text": {
+    "description": "Sort alphabetically ascending"
+  },
+  "z_to_a_text": "Z - A",
+  "@z_to_a_text": {
+    "description": "Sort alphabetically descending"
+  },
+  "low_to_high_text": "Low to High",
+  "@low_to_high_text": {
+    "description": "Sort price low to high"
+  },
+  "high_to_low_text": "High to Low",
+  "@high_to_low_text": {
+    "description": "Sort price high to low"
+  },
+  "latest_text": "Latest",
+  "@latest_text": {
+    "description": "Sort by newest"
+  },
+  "featured_discounts_text": "Featured discounts",
+  "@featured_discounts_text": {
+    "description": "Featured discounts section title"
+  },
+  "filter_text": "Filter",
+  "@filter_text": {
+    "description": "Filter button/action"
+  },
+  "sort_by_text": "Sort By",
+  "@sort_by_text": {
+    "description": "Sort by label"
+  },
+  "apply_text": "Apply",
+  "@apply_text": {
+    "description": "Apply button text"
+  },
+  "privacy_text": "Privacy",
+  "@privacy_text": {
+    "description": "Privacy policy menu text"
+  },
+  "privacy_policy_text": "Privacy Policy",
+  "@privacy_policy_text": {
+    "description": "Full Privacy Policy text"
+  },
+  "logout_text": "Logout",
+  "@logout_text": {
+    "description": "Logout button text"
+  },
+  "shopping_cart_text": "Shopping cart",
+  "@shopping_cart_text": {
+    "description": "Shopping cart title"
+  },
+  "order_value_text": "Order Value",
+  "@order_value_text": {
+    "description": "Order value summary label"
+  },
+  "products_plural_text": "Products",
+  "@products_plural_text": {
+    "description": "Plural form of products"
+  },
+  "egp_text": "EGP",
+  "@egp_text": {
+    "description": "Egyptian Pound abbreviation"
+  },
+  "currency_text": "EGP",
+  "@currency_text": {
+    "description": "Currency abbreviation"
+  },
+  "delivery_charges_notice_text": "Delivery charges will be calculated at checkout",
+  "@delivery_charges_notice_text": {
+    "description": "Notice about delivery charges"
+  },
+  "continue_shopping_text": "Continue Shopping",
+  "@continue_shopping_text": {
+    "description": "Continue shopping button text"
+  },
+  "checkout_text": "Checkout",
+  "@checkout_text": {
+    "description": "Checkout button/title"
+  },
+  "pay_with_text": "Pay with",
+  "@pay_with_text": {
+    "description": "Payment method selection title"
+  },
+  "cash_on_delivery_text": "Cash on delivery",
+  "@cash_on_delivery_text": {
+    "description": "Cash on delivery option"
+  },
+  "pay_text": "Pay",
+  "@pay_text": {
+    "description": "Pay button text"
+  },
+  "choose_payment_method_first_text": "Choose a payment method first",
+  "@choose_payment_method_first_text": {
+    "description": "Error message when payment method is not chosen"
+  },
+  "delivery_information_text": "Delivery information",
+  "@delivery_information_text": {
+    "description": "Delivery info section title"
+  },
+  "full_name_text": "Full name",
+  "@full_name_text": {
+    "description": "Label for full name field"
+  },
+  "enter_full_name_text": "Enter full name",
+  "@enter_full_name_text": {
+    "description": "Hint for full name field"
+  },
+  "address_text": "Address",
+  "@address_text": {
+    "description": "Label for address field"
+  },
+  "enter_address_text": "Enter address",
+  "@enter_address_text": {
+    "description": "Hint for address field"
+  },
+  "phone_text": "Phone",
+  "@phone_text": {
+    "description": "Label for simple phone field"
+  },
+  "prices_text": "Prices",
+  "@prices_text": {
+    "description": "Prices summary header"
+  },
+  "price_before_shipping_text": "Price before shipping",
+  "@price_before_shipping_text": {
+    "description": "Subtotal before shipping"
+  },
+  "shipping_fee_text": "Shipping fee",
+  "@shipping_fee_text": {
+    "description": "Label for shipping fee"
+  },
+  "total_price_text": "Total price",
+  "@total_price_text": {
+    "description": "Label for total price"
+  },
+  "confirm_order_button_text": "Confirm order",
+  "@confirm_order_button_text": {
+    "description": "Confirm order button text"
+  },
+  "confirm_order_title_text": "Confirm order",
+  "@confirm_order_title_text": {
+    "description": "Confirm order dialog title"
+  },
+  "confirm_order_message_text": "Are you sure you want to confirm the order?",
+  "@confirm_order_message_text": {
+    "description": "Confirm order dialog message"
+  },
+  "cancel_text": "Cancel",
+  "@cancel_text": {
+    "description": "Cancel button text"
+  },
+  "confirm_text": "Confirm",
+  "@confirm_text": {
+    "description": "Confirm button text"
+  },
+  "card_holder_name_text": "Card holder name",
+  "@card_holder_name_text": {
+    "description": "Label for card holder name field"
+  },
+  "card_number_text": "Card number",
+  "@card_number_text": {
+    "description": "Label for card number field"
+  },
+  "expiry_date_text": "Expiry date",
+  "@expiry_date_text": {
+    "description": "Label for card expiry date field"
+  },
+  "payment_success_message_text": "Payment successful",
+  "@payment_success_message_text": {
+    "description": "Success message after payment"
+  },
+  "pay_now_button_text": "Pay now",
+  "@pay_now_button_text": {
+    "description": "Pay now button text"
+  },
+  "logout_confirmation_text": "Logout confirmation",
+  "@logout_confirmation_text": {
+    "description": "Logout confirmation dialog title"
+  },
+  "logout_confirmation_message_shure_text": "Are you sure you want to logout?",
+  "@logout_confirmation_message_shure_text": {
+    "description": "Logout confirmation dialog message"
+  },
+  "offers_discount_text": "Discounts & Offers",
+  "@offers_discount_text": {
+    "description": "Offers and discounts title"
+  },
+  "all_products_text": "All Products",
+  "@all_products_text": {
+    "description": "All products header"
+  },
+  "chang_text": "Change",
+  "@chang_text": {
+    "description": "Change button text"
+  },
+  "change_name_text": "Change Name",
+  "@change_name_text": {
+    "description": "Change name dialog title"
+  },
+  "name_updated_successfully_text": "Name updated successfully",
+  "@name_updated_successfully_text": {
+    "description": "Success message for name change"
+  },
+  "required_text": " required",
+  "@required_text": {
+    "description": "Required field suffix/text"
+  },
+  "data_not_updated_text": "Data was not updated",
+  "@data_not_updated_text": {
+    "description": "Info message if data was not updated"
+  },
+  "required_field_text": "This field is required",
+  "@required_field_text": {
+    "description": "Standard error for required field"
+  },
+  "no_products_in_section_text": "There are no products in this section at the moment",
+  "@no_products_in_section_text": {
+    "description": "Empty state message for section"
+  },
+  "browse_other_sections_text": "Browse other sections to find what you need",
+  "@browse_other_sections_text": {
+    "description": "Suggestion for empty state"
+  },
+  "empty_cart_text": "Your shopping cart is empty",
+  "@empty_cart_text": {
+    "description": "Empty cart title"
+  },
+  "start_adding_products_text": "Start adding products to your cart",
+  "@start_adding_products_text": {
+    "description": "Start shopping CTA"
+  },
+  "no_products_text": "No products available",
+  "@no_products_text": {
+    "description": "General 'no products' message"
+  },
+  "no_favorite_products_text": "No products in favorites",
+  "@no_favorite_products_text": {
+    "description": "Empty favorites title"
+  },
+  "products_favorites_empty_text": "The products you add to your favorites will appear here",
+  "@products_favorites_empty_text": {
+    "description": "Empty favorites description"
+  },
+  "error_occurred_text": "An error occurred",
+  "@error_occurred_text": {
+    "description": "General error message"
+  },
+  "product_load_failed_text": "Failed to load product",
+  "@product_load_failed_text": {
+    "description": "Error message for failed product load"
+  },
+  "back_text": "Back",
+  "@back_text": {
+    "description": "Back button text"
+  },
+  "brand_text": "Brand",
+  "@brand_text": {
+    "description": "Label for product brand"
+  },
+  "product_description_text": "Product Description",
+  "@product_description_text": {
+    "description": "Label for product description section"
+  },
+  "product_properties_text": "Product Properties",
+  "@product_properties_text": {
+    "description": "Label for product properties section"
+  },
+  "no_data_text": "No data available",
+  "@no_data_text": {
+    "description": "Generic 'no data' message"
+  },
+  "quantity_text": "Quantity",
+  "@quantity_text": {
+    "description": "Label for quantity"
+  },
+  "product_added_text": "Product added",
+  "@product_added_text": {
+    "description": "Confirmation that product is in cart"
+  },
+  "add_to_cart_text": "Add to cart",
+  "@add_to_cart_text": {
+    "description": "Add to cart button text"
+  },
+  "login_alert_title": "Alert",
+  "@login_alert_title": {
+    "description": "Login alert dialog title"
+  },
+  "login_alert_message": "Please log in first to continue",
+  "@login_alert_message": {
+    "description": "Login alert dialog message"
+  },
+  "product_removed_from_favorites_text": "Product removed from favorites",
+  "@product_removed_from_favorites_text": {
+    "description": "Success message for favorite removal"
+  },
+  "product_added_to_favorites_text": "Product added to favorites",
+  "@product_added_to_favorites_text": {
+    "description": "Success message for favorite addition"
+  },
+  "product_added_to_cart_text": "Product added to cart",
+  "@product_added_to_cart_text": {
+    "description": "Success message for cart addition"
+  },
+  "product_removed_from_cart_text": "Product removed from cart",
+  "@product_removed_from_cart_text": {
+    "description": "Success message for cart removal"
+  },
+  "delete_confirmation_title": "Delete Confirmation",
+  "@delete_confirmation_title": {
+    "description": "Delete confirmation dialog title"
+  },
+  "delete_text": "Delete",
+  "@delete_text": {
+    "description": "Delete button text"
+  },
+  "from_cart_text": "from cart",
+  "@from_cart_text": {
+    "description": "From cart label"
+  },
+  "delete_confirmation_message_text": "Are you sure you want to delete?",
+  "@delete_confirmation_message_text": {
+    "description": "Delete confirmation message"
+  },
+  "removed_text": "Removed",
+  "@removed_text": {
+    "description": "Generic 'removed' message"
+  },
+  "enter_text_prompt": "Please enter",
+  "@enter_text_prompt": {
+    "description": "Generic mandatory entry prompt"
+  },
+  "three_digits_only_text": "Must be 3 digits only",
+  "@three_digits_only_text": {
+    "description": "Error message for CVV field"
+  },
+  "selected_text": "Selected:",
+  "@selected_text": {
+    "description": "Confirmed selection text"
+  },
+  "phone_number_changed_success_text": "Phone number changed successfully",
+  "@phone_number_changed_success_text": {
+    "description": "Success message for phone change"
+  },
+  "password_changed_success_text": "Password changed successfully",
+  "@password_changed_success_text": {
+    "description": "Success message for password change"
+  },
+  "current_password_incorrect_text": "Current password is incorrect",
+  "@current_password_incorrect_text": {
+    "description": "Error for incorrect current password"
+  },
+  "password_min_8_chars_text": "Password must be at least 8 characters",
+  "@password_min_8_chars_text": {
+    "description": "Validation error for password length"
+  },
+  "passwords_do_not_match_text": "Passwords do not match",
+  "@passwords_do_not_match_text": {
+    "description": "Validation error for password mismatch"
+  },
+  "product_colors_text": "Colors",
+  "@product_colors_text": {
+    "description": "Label for product colors"
+  },
+  "order_number_text": "Order Number",
+  "@order_number_text": {
+    "description": "Label for order number"
+  },
+  "order_date_text": "Order Date",
+  "@order_date_text": {
+    "description": "Label for order date"
+  },
+  "delivered_text": "Delivered",
+  "@delivered_text": {
+    "description": "Status: Delivered"
+  },
+  "pending_text": "Pending",
+  "@pending_text": {
+    "description": "Status: Pending"
+  },
+  "shipped_text": "Shipped",
+  "@shipped_text": {
+    "description": "Status: Shipped"
+  },
+  "canceled_text": "Canceled",
+  "@canceled_text": {
+    "description": "Status: Canceled"
+  },
+  "order_details_text": "Order Details",
+  "@order_details_text": {
+    "description": "Order details page title"
+  },
+  "order_info_text": "Order Info",
+  "@order_info_text": {
+    "description": "Order info section header"
+  },
+  "unit_price_text": "Unit Price",
+  "@unit_price_text": {
+    "description": "Label for unit price"
+  },
+  "shipping_address_text": "Shipping Address",
+  "@shipping_address_text": {
+    "description": "Label for shipping address"
+  },
+  "recipient_name_text": "Recipient Name",
+  "@recipient_name_text": {
+    "description": "Label for recipient name"
+  },
+  "price_summary_text": "Price Summary",
+  "@price_summary_text": {
+    "description": "Label for price summary"
+  },
+  "subtotal_text": "Subtotal",
+  "@subtotal_text": {
+    "description": "Label for subtotal"
+  },
+  "shipping_text": "Shipping",
+  "@shipping_text": {
+    "description": "Label for shipping"
+  },
+  "total_text": "Total",
+  "@total_text": {
+    "description": "Label for total"
+  },
+  "close_text": "Close",
+  "@close_text": {
+    "description": "Close button text"
+  },
+  "product_reviews_text": "Reviews",
+  "@product_reviews_text": {
+    "description": "Product reviews section title"
+  },
+  "all_tab_text": "All",
+  "@all_tab_text": {
+    "description": "Tab label for 'All'"
+  },
+  "offers_tab_text": "Offers",
+  "@offers_tab_text": {
+    "description": "Tab label for 'Offers'"
+  },
+  "alerts_tab_text": "Alerts",
+  "@alerts_tab_text": {
+    "description": "Tab label for 'Alerts'"
+  },
+  "today_section_text": "Today",
+  "@today_section_text": {
+    "description": "Today section header"
+  },
+  "earlier_section_text": "Earlier",
+  "@earlier_section_text": {
+    "description": "Earlier section header"
+  },
+  "no_notifications_message_text": "No notifications right now",
+  "@no_notifications_message_text": {
+    "description": "Message for no notifications"
+  },
+  "all_caught_up_message_text": "You're all caught up",
+  "@all_caught_up_message_text": {
+    "description": "Message when all notifications are seen"
+  },
+  "press_again_to_exit_text": "Press again to exit the application",
+  "@press_again_to_exit_text": {
+    "description": "Double back to exit message"
+  },
+  "enter_cvv_text": "Please enter CVV",
+  "@enter_cvv_text": {
+    "description": "Hint/Prompt for entering CVV"
+  },
+  "user_reviews_text": "User Reviews",
+  "@user_reviews_text": {
+    "description": "User reviews header"
+  },
+  "view_all_text": "View All",
+  "@view_all_text": {
+    "description": "View all reviews button"
+  },
+  "reviews_title_text": "Reviews",
+  "@reviews_title_text": {
+    "description": "Reviews section title"
+  },
+  "review_added_text": "Review added successfully",
+  "@review_added_text": {
+    "description": "Success message for submitting review"
+  },
+  "no_reviews_yet_text": "No reviews yet",
+  "@no_reviews_yet_text": {
+    "description": "Empty state for product reviews"
+  },
+  "add_your_review_text": "Add your review",
+  "@add_your_review_text": {
+    "description": "CTA for adding a review"
+  },
+  "write_comment_hint_text": "Write your comment here...",
+  "@write_comment_hint_text": {
+    "description": "Hint for review comment field"
+  },
+  "please_select_rating_text": "Please select a rating",
+  "@please_select_rating_text": {
+    "description": "Error message when rating is not selected"
+  },
+  "sending_text": "Sending...",
+  "@sending_text": {
+    "description": "Generic 'sending' indicator"
+  },
+  "submit_review_text": "Submit Review",
+  "@submit_review_text": {
+    "description": "Submit review button text"
+  },
+  "addresses_text": "Addresses",
+  "@addresses_text": {
+    "description": "Addresses section/title"
+  },
+  "edit_address_text": "Edit Address",
+  "@edit_address_text": {
+    "description": "Edit address button/title"
+  },
+  "your_addresses_text": "Your Addresses",
+  "@your_addresses_text": {
+    "description": "User addresses list header"
+  },
+  "no_addresses_yet_text": "No addresses yet",
+  "@no_addresses_yet_text": {
+    "description": "Empty state for addresses list"
+  },
+  "login_failed_text": "Login Failed",
+  "@login_failed_text": {
+    "description": "General login failure message"
+  },
+  "success_text": "Success",
+  "@success_text": {
+    "description": "General success indicator"
+  },
+  "error_text": "Error",
+  "@error_text": {
+    "description": "General error indicator"
+  },
+  "error_while_loading_text": "An error occurred while loading data",
+  "@error_while_loading_text": {
+    "description": "Error message during data loading"
+  },
+  "temporary_address_text": "Temporary address for this order only",
+  "@temporary_address_text": {
+    "description": "Warning/Info text for temporary address choice"
+  },
+  "no_internet_title": "No Internet Connection",
+  "@no_internet_title": {
+    "description": "Title for no internet screen"
+  },
+  "no_internet_description": "Please check your internet connection and try again.",
+  "@no_internet_description": {
+    "description": "Description for no internet screen"
+  },
+  "try_again_text": "Try Again",
+  "@try_again_text": {
+    "description": "Text for try again button"
+  },
+  "language_restart_title": "Restart Required",
+  "@language_restart_title": {
+    "description": "Title for language restart confirmation dialog"
+  },
+  "language_restart_message": "The app will restart to apply the language change.",
+  "@language_restart_message": {
+    "description": "Message for language restart confirmation dialog"
+  },
+  "add_new_address_text": "Add New Address",
+  "@add_new_address_text": {
+    "description": "Title for adding new address"
+  },
+  "edit_address_title_text": "Edit Address",
+  "@edit_address_title_text": {
+    "description": "Title for editing address"
+  },
+  "address_name_text": "Address Name",
+  "@address_name_text": {
+    "description": "Label for address name field"
+  },
+  "add_text": "Add",
+  "@add_text": {
+    "description": "Add button text"
+  },
+  "edit_text": "Edit",
+  "@edit_text": {
+    "description": "Edit button text"
+  },
+  "delete_address_title_text": "Delete Address",
+  "@delete_address_title_text": {
+    "description": "Title for delete address dialog"
+  },
+  "delete_address_confirmation_text": "Are you sure you want to delete \"{name}\"?",
+  "@delete_address_confirmation_text": {
+    "description": "Confirmation message for deleting address",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "no_orders_found_text": "No orders found",
+  "@no_orders_found_text": {
+    "description": "Message when no orders are available"
+  },
+  "order_type_label_text": "Order Type",
+  "@order_type_label_text": {
+    "description": "Label for order type"
+  },
+  "enter_full_name_validation_text": "Please enter full name",
+  "@enter_full_name_validation_text": {
+    "description": "Validation error for empty full name"
+  },
+  "name_too_short_text": "Name is too short",
+  "@name_too_short_text": {
+    "description": "Validation error for short name"
+  },
+  "enter_phone_validation_text": "Please enter phone number",
+  "@enter_phone_validation_text": {
+    "description": "Validation error for empty phone"
+  },
+  "invalid_phone_text": "Invalid phone number",
+  "@invalid_phone_text": {
+    "description": "Validation error for invalid phone format"
+  },
+  "select_or_enter_address_text": "Please select or enter address",
+  "@select_or_enter_address_text": {
+    "description": "Validation error for address selection"
+  },
+  "order_confirmed_successfully_text": "Order confirmed successfully",
+  "@order_confirmed_successfully_text": {
+    "description": "Success message after order confirmation"
+  },
+  "piece_price_text": "Piece Price",
+  "@piece_price_text": {
+    "description": "Label for price per piece in cart"
+  },
+  "no_orders_text": "No orders yet",
+  "@no_orders_text": {
+    "description": "Empty orders title"
+  },
+  "orders_empty_desc_text": "Your order history will appear here once you make a purchase",
+  "@orders_empty_desc_text": {
+    "description": "Empty orders description"
+  },
+  "empty_category_items_title": "No Items Found",
+  "@empty_category_items_title": {
+    "description": "Title for empty category items state"
+  },
+  "empty_category_items_message": "We couldn't find any items in this category.",
+  "@empty_category_items_message": {
+    "description": "Message for empty category items state"
+  },
+  "loading_text": "Loading...",
+  "no_products_found_text": "No products found",
+  "select_governorate_text": "Select Governorate",
+  "governorate_text": "Governorate",
+  "city_text": "City",
+  "street_text": "Street",
+  "all_brands_text": "All Brands",
+  "no_results_found_text": "No results found",
+  "try_searching_different_keywords_text": "Try searching with different keywords.",
+  "search_failed_text": "Search failed",
+  "search_products_title_text": "Search Products",
+  "search_products_desc_text": "Search by product name, category or brand.",
+  "item_not_in_cart": "This product is not currently in cart",
+  "item_not_in_favorites": "This product is not currently in favorites",
+  "item_not_in_cart_or_favorites": "This product is not currently in cart or favorites",
+  "offer_no_longer_available": "Sorry, this offer is no longer available",
+  "cannot_display_order_details": "Sorry, order details cannot be displayed",
+  "content_not_available": "Sorry, this content is currently unavailable",
+  "check_it_out_on_mousa_store": "👇 Check it out on Mousa Store:",
+  "check_out_product_on_mousa_store": "Check out {productName} on Mousa Store!",
+  "@check_out_product_on_mousa_store": {
+    "placeholders": {
+      "productName": {
+        "type": "String"
+      }
+    }
+  },
+  "privacy_policy_intro": "Your privacy is paramount to us at Mousa Store. This Privacy Policy outlines the types of personal information we collect and how we use and protect it.",
+  "privacy_policy_sec1_title": "1. Information We Collect",
+  "privacy_policy_sec1_desc": "When using our app, we may collect the following information:\n• Personal info: Name, email address, phone number, and shipping address.\n• Order info: Details of products purchased and transaction history.\n• Device info: Device type, OS, and unique device identifiers.",
+  "privacy_policy_sec2_title": "2. How We Use Your Information",
+  "privacy_policy_sec2_desc": "We use collected information for the following purposes:\n• Processing and delivering your orders.\n• Improving our services and user experience.\n• Communicating regarding orders, offers, and updates.\n• Security and fraud prevention.",
+  "privacy_policy_sec3_title": "3. Sharing Information",
+  "privacy_policy_sec3_desc": "We do not sell your personal information to third parties. We only share it with delivery services to fulfill orders, payment providers, or when required by law.",
+  "privacy_policy_sec4_title": "4. Data Protection",
+  "privacy_policy_sec4_desc": "We take appropriate technical and administrative security measures to protect your information from unauthorized access, alteration, disclosure, or destruction.",
+  "privacy_policy_sec5_title": "5. Your Rights",
+  "privacy_policy_sec5_desc": "You have the right to access, update, or request deletion of your personal data through account settings or by contacting us.",
+  "privacy_policy_copyright": "© 2026 Mousa Store",
+  "app_name": "Mousa Store",
+  "home_tab": "Home",
+  "categories_tab": "Categories",
+  "cart_tab": "Cart",
+  "favorites_tab": "Saved",
+  "profile_tab": "Profile",
+  "explore_text": "Explore",
+  "explore_products_text": "Explore Products",
+  "something_went_wrong_text": "Something went wrong",
+  "could_not_load_content_text": "We couldn't load this content. Please try again.",
+  "shop_by_category_text": "Shop By Category",
+  "@shop_by_category_text": {
+    "description": "Title for shop by category section"
+  },
+  "services_banner_image": "assets/images/services_banner_en.jpg",
+  "@services_banner_image": {
+    "description": "Image asset path for services banner"
+  },
+  "services_banner_image_dark": "assets/images/services_banner_en.jpg",
+  "@services_banner_image_dark": {
+    "description": "Image asset path for services banner in dark mode"
+  },
+  "services_banner_image_light": "assets/images/services_banner_light_en.jpg",
+  "@services_banner_image_light": {
+    "description": "Image asset path for services banner in light mode"
+  },
+  "favorites_login_prompt_text": "Favorites list is only available after log in. Please log in to save and access your favorite products.",
+  "@favorites_login_prompt_text": {
+    "description": "Description prompt asking user to log in to view favorites"
+  },
+  "cart_login_prompt_text": "Shopping cart is only available after log in. Please log in to add products and complete your purchase.",
+  "@cart_login_prompt_text": {
+    "description": "Description prompt asking user to log in to view cart"
+  }
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="design_default_color_primary">#FAD52E</color>
+    <color name="notification_color">#E10600</color>
+    <color name="splash_background">#0B0B0B</color>
+</resources>

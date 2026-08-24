@@ -1,0 +1,1094 @@
+{
+  "@@locale": "ar",
+  "onboarding_title_1": "كل اللي يخص موبايلك في مكان واحد",
+  "@onboarding_title_1": {
+    "description": "Title for the first onboarding screen"
+  },
+  "onboarding_desc_1": "من الموبايلات للإكسسوارات، كل المنتجات اللي محتاجاها متوفرة بسهولة وبأفضل جودة.",
+  "@onboarding_desc_1": {
+    "description": "Description for the first onboarding screen"
+  },
+  "onboarding_title_2": "اختيارات كتير من كل الماركات المفضّلة ليك",
+  "@onboarding_title_2": {
+    "description": "Title for the second onboarding screen"
+  },
+  "onboarding_desc_2": "اكتشف أحدث الموديلات والعروض من أشهر الماركات العالمية والمحلية",
+  "@onboarding_desc_2": {
+    "description": "Description for the second onboarding screen"
+  },
+  "onboarding_title_3": "مرحبًا بك",
+  "@onboarding_title_3": {
+    "description": "Title for the third onboarding screen"
+  },
+  "onboarding_desc_3": "سجّل دخولك أو أنشئ حسابًا جديدًا لتبدأ التسوّق بسهولة.",
+  "@onboarding_desc_3": {
+    "description": "Description for the third onboarding screen"
+  },
+  "next_button": "التالي",
+  "@next_button": {
+    "description": "Text for the 'Next' button"
+  },
+  "send_button": "إرسال",
+  "@send_button": {
+    "description": "Text for the 'Send' button"
+  },
+  "get_started_button": "ابدأ الآن",
+  "@get_started_button": {
+    "description": "Text for the 'Get Started' button"
+  },
+  "login_button": "تسجيل الدخول",
+  "@login_button": {
+    "description": "Text for the 'Login' button"
+  },
+  "sign_up_button": "إنشاء حساب",
+  "@sign_up_button": {
+    "description": "Text for the 'Sign Up' button"
+  },
+  "auth_register": "قم بالتسجيل",
+  "@auth_register": {
+    "description": "Text for registration option"
+  },
+  "auth_login": "تسجيل الدخول",
+  "@auth_login": {
+    "description": "Text for login option"
+  },
+  "welcome_back_text": "مرحبا بك مرة أخرى!",
+  "@welcome_back_text": {
+    "description": "Welcome back message"
+  },
+  "welcome_text": "مرحبًا",
+  "@welcome_text": {
+    "description": "Simple welcome greeting"
+  },
+  "welcome_start_text": "ابدأ التسوق الآن",
+  "@welcome_start_text": {
+    "description": "Start shopping welcome text"
+  },
+  "email_text": "البريد الإلكتروني",
+  "@email_text": {
+    "description": "Label for email field"
+  },
+  "password_text": "كلمة المرور",
+  "@password_text": {
+    "description": "Label for password field"
+  },
+  "confirm_password_text": "تأكيد كلمة المرور",
+  "@confirm_password_text": {
+    "description": "Label for confirm password field"
+  },
+  "forgot_password_text": "هل نسيت كلمة المرور؟",
+  "@forgot_password_text": {
+    "description": "Text for forgot password link"
+  },
+  "skip_text": "تخطى",
+  "@skip_text": {
+    "description": "Text for skip button"
+  },
+  "or_sign_in_with_text": "أو سجّل الدخول باستخدام",
+  "@or_sign_in_with_text": {
+    "description": "Text for alternative login options"
+  },
+  "first_name_text": "الاسم الأول",
+  "@first_name_text": {
+    "description": "Label for first name field"
+  },
+  "last_name_text": "الاسم الأخير",
+  "@last_name_text": {
+    "description": "Label for last name field"
+  },
+  "phone_number_text": "رقم الهاتف",
+  "@phone_number_text": {
+    "description": "Label for phone number field"
+  },
+  "email_validation_error": "يرجى إدخال بريد إلكتروني صالح.",
+  "@email_validation_error": {
+    "description": "Error message for invalid email"
+  },
+  "password_validation_error": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+  "@password_validation_error": {
+    "description": "Error message for short password"
+  },
+  "confirm_password_validation_error": "كلمتا المرور غير متطابقتين",
+  "@confirm_password_validation_error": {
+    "description": "Error message for password mismatch"
+  },
+  "first_name_validation_error": "يرجى إدخال الاسم الأول",
+  "@first_name_validation_error": {
+    "description": "Error message for empty first name"
+  },
+  "last_name_validation_error": "يرجى إدخال الاسم الأخير",
+  "@last_name_validation_error": {
+    "description": "Error message for empty last name"
+  },
+  "phone_number_validation_error": "يرجى إدخال رقم هاتف صالح",
+  "@phone_number_validation_error": {
+    "description": "Error message for invalid phone number"
+  },
+  "select_country_text": "اختر الدولة",
+  "@select_country_text": {
+    "description": "Text for country selection"
+  },
+  "search_country_text": "بحث عن دولة",
+  "@search_country_text": {
+    "description": "Search hint for country"
+  },
+  "reset_password_text": "تغيير كلمة المرور",
+  "@reset_password_text": {
+    "description": "Text for reset password"
+  },
+  "login_your_account": "سجل دخولك إلى حسابك",
+  "@login_your_account": {
+    "description": "Login to account title"
+  },
+  "account_text": "الحساب",
+  "@account_text": {
+    "description": "Account menu text"
+  },
+  "personal_information_text": "معلومات الشخصية",
+  "@personal_information_text": {
+    "description": "Personal info text"
+  },
+  "change_personal_information_text": "تغيير المعلومات الشخصية",
+  "@change_personal_information_text": {
+    "description": "Edit personal info text"
+  },
+  "favorite_text": "المفضله",
+  "@favorite_text": {
+    "description": "Favorites menu text"
+  },
+  "favorite_products_text": "المنتجات المفضلة",
+  "@favorite_products_text": {
+    "description": "Favorite products list title"
+  },
+  "orders_text": "الطلبات",
+  "@orders_text": {
+    "description": "Orders menu text"
+  },
+  "order_history_text": "سجل الطلبات",
+  "@order_history_text": {
+    "description": "Order history title"
+  },
+  "settings_text": "الإعدادات",
+  "@settings_text": {
+    "description": "Settings menu text"
+  },
+  "notifications_text": "الإشعارات",
+  "@notifications_text": {
+    "description": "Notifications menu text"
+  },
+  "notification_settings_text": "إعدادات الإشعارات",
+  "@notification_settings_text": {
+    "description": "Notification settings title"
+  },
+  "language_text": "اللغة",
+  "@language_text": {
+    "description": "Language menu text"
+  },
+  "change_language_text": "تغيير اللغة",
+  "@change_language_text": {
+    "description": "Change language title"
+  },
+  "mode_text": "الوضع الليلي",
+  "@mode_text": {
+    "description": "Dark mode toggle text"
+  },
+  "enable_dark_mode_text": "تغيير المظهر",
+  "@enable_dark_mode_text": {
+    "description": "Appearance settings text"
+  },
+  "call_us_text": "اتصل بنا",
+  "@call_us_text": {
+    "description": "Call us text"
+  },
+  "contact_us_text": "تواصل معنا",
+  "@contact_us_text": {
+    "description": "Contact us text"
+  },
+  "arabic_text": "العربية",
+  "@arabic_text": {
+    "description": "Arabic language name"
+  },
+  "english_text": "الانجليزية",
+  "@english_text": {
+    "description": "English language name"
+  },
+  "light_mode_text": "الفاتح",
+  "@light_mode_text": {
+    "description": "Light theme name"
+  },
+  "dark_mode_text": "الداكن",
+  "@dark_mode_text": {
+    "description": "Dark theme name"
+  },
+  "system_mode_text": "وضع النظام",
+  "@system_mode_text": {
+    "description": "System theme name"
+  },
+  "edit_profile_text": "تعديل الملف الشخصي",
+  "@edit_profile_text": {
+    "description": "Edit profile title"
+  },
+  "change_account_mill_text": "تغيير البريد الإلكتروني",
+  "@change_account_mill_text": {
+    "description": "Change email text"
+  },
+  "mail_account_text": "البريد الإلكتروني",
+  "@mail_account_text": {
+    "description": "Email account label"
+  },
+  "chang_mail_account_one_text": "تغيير البريد الإلكتروني",
+  "@chang_mail_account_one_text": {
+    "description": "Change email process text"
+  },
+  "change_phone_number_text": "تغيير الهاتف",
+  "@change_phone_number_text": {
+    "description": "Change phone text"
+  },
+  "edit_phone_text": "تعديل الهاتف",
+  "@edit_phone_text": {
+    "description": "Edit phone title"
+  },
+  "change_phone_persnol_text": "تغيير الهاتف الشخصي الخاص بك",
+  "@change_phone_persnol_text": {
+    "description": "Detailed change phone text"
+  },
+  "change_password_text": "تغيير كلمة المرور",
+  "@change_password_text": {
+    "description": "Change password text"
+  },
+  "edit_password_text": "تعديل كلمة المرور",
+  "@edit_password_text": {
+    "description": "Edit password title"
+  },
+  "change_your_password_text": "تغيير كلمة السر",
+  "@change_your_password_text": {
+    "description": "Change password instruction"
+  },
+  "password_old_text": "كلمة المرور الحالية",
+  "@password_old_text": {
+    "description": "Label for current password"
+  },
+  "password_new_text": "كلمة المرور الجديدة",
+  "@password_new_text": {
+    "description": "Label for new password"
+  },
+  "password_confirm_text": "تأكيد كلمة المرور الجديدة",
+  "@password_confirm_text": {
+    "description": "Label for confirm new password"
+  },
+  "save_text": "حفظ",
+  "@save_text": {
+    "description": "Save button text"
+  },
+  "otp_verification": "تحقق من الرمز",
+  "@otp_verification": {
+    "description": "OTP verification title"
+  },
+  "enter_otp": "أدخل الرمز المرسل إلى هاتفك",
+  "@enter_otp": {
+    "description": "OTP entry instruction"
+  },
+  "verify": "تحقق",
+  "@verify": {
+    "description": "Verify button text"
+  },
+  "resend_code": "إعادة إرسال الرمز",
+  "@resend_code": {
+    "description": "Resend code button text"
+  },
+  "otp_sent_to": "تم إرسال الرمز إلى",
+  "@otp_sent_to": {
+    "description": "Info text for where OTP was sent"
+  },
+  "code_sent_successfully": "تم إرسال الكود بنجاح",
+  "@code_sent_successfully": {
+    "description": "Success message for OTP sent"
+  },
+  "resend_after": "إعادة الإرسال بعد",
+  "@resend_after": {
+    "description": "Text for resend timer"
+  },
+  "choose_your_type_of_shopping": "اختار نوع التسوق الخاص بك",
+  "@choose_your_type_of_shopping": {
+    "description": "Shopping type choice title"
+  },
+  "do_you_want_to_buy_wholesale_or_retail": "هل ترغب بالشراء بالجملة أم بالتجزئة؟  ",
+  "@do_you_want_to_buy_wholesale_or_retail": {
+    "description": "Shopping type choice question"
+  },
+  "change_purchase_type_confirmation_title": "تغيير نوع التسوق",
+  "@change_purchase_type_confirmation_title": {
+    "description": "Confirmation dialog title for changing purchase type"
+  },
+  "change_purchase_type_confirmation_message": "هل أنت متأكد من تغيير نوع التسوق؟ سيؤدي ذلك إلى تحديث جميع البيانات.",
+  "@change_purchase_type_confirmation_message": {
+    "description": "Confirmation dialog message for changing purchase type"
+  },
+  "wholesale_text": "جملة",
+  "@wholesale_text": {
+    "description": "Wholesale option text"
+  },
+  "retail_text": "قطاعي",
+  "@retail_text": {
+    "description": "Retail option text"
+  },
+  "continue_text": "متابعة",
+  "@continue_text": {
+    "description": "Continue button text"
+  },
+  "choose_user": "اختار المستخدم",
+  "@choose_user": {
+    "description": "Title for user selection"
+  },
+  "recently_arrived_text": "وصل حديثا",
+  "@recently_arrived_text": {
+    "description": "Recently arrived products header"
+  },
+  "browse_categories_text": "تصفح الفئات",
+  "@browse_categories_text": {
+    "description": "Browse categories header"
+  },
+  "search_text": "بحث في {value}",
+  "@search_text": {
+    "description": "Search field hint with context",
+    "placeholders": {
+      "value": {}
+    }
+  },
+  "discount_text": "خصم",
+  "@discount_text": {
+    "description": "Discount label"
+  },
+  "pound_text": "جنيه",
+  "@pound_text": {
+    "description": "Currency name (English variant may use EGP)"
+  },
+  "sections_text": "الاقسام",
+  "@sections_text": {
+    "description": "Sections title"
+  },
+  "most_popular_text": "الأكثر شيوعاً",
+  "@most_popular_text": {
+    "description": "Most popular sorting/header"
+  },
+  "a_to_z_text": "أ - ي",
+  "@a_to_z_text": {
+    "description": "Sort alphabetically ascending"
+  },
+  "z_to_a_text": "ي - أ",
+  "@z_to_a_text": {
+    "description": "Sort alphabetically descending"
+  },
+  "low_to_high_text": "منخفض إلى مرتفع",
+  "@low_to_high_text": {
+    "description": "Sort price low to high"
+  },
+  "high_to_low_text": "مرتفع إلى منخفض",
+  "@high_to_low_text": {
+    "description": "Sort price high to low"
+  },
+  "latest_text": "الأحدث",
+  "@latest_text": {
+    "description": "Sort by newest"
+  },
+  "featured_discounts_text": "تخفيضات مميزة",
+  "@featured_discounts_text": {
+    "description": "Featured discounts section title"
+  },
+  "filter_text": "تصفية",
+  "@filter_text": {
+    "description": "Filter button/action"
+  },
+  "sort_by_text": "ترتيب ب",
+  "@sort_by_text": {
+    "description": "Sort by label"
+  },
+  "apply_text": "تطبيق",
+  "@apply_text": {
+    "description": "Apply button text"
+  },
+  "privacy_text": "الخصوصية",
+  "@privacy_text": {
+    "description": "Privacy policy menu text"
+  },
+  "privacy_policy_text": "سياسة الخصوصية",
+  "@privacy_policy_text": {
+    "description": "Full Privacy Policy text"
+  },
+  "logout_text": "تسجيل الخروج",
+  "@logout_text": {
+    "description": "Logout button text"
+  },
+  "shopping_cart_text": "سلة التسوق",
+  "@shopping_cart_text": {
+    "description": "Shopping cart title"
+  },
+  "order_value_text": "قيمة الطلب",
+  "@order_value_text": {
+    "description": "Order value summary label"
+  },
+  "products_plural_text": "منتجات",
+  "@products_plural_text": {
+    "description": "Plural form of products"
+  },
+  "egp_text": "ج.م",
+  "@egp_text": {
+    "description": "Egyptian Pound abbreviation"
+  },
+  "currency_text": "ج.م",
+  "@currency_text": {
+    "description": "Currency abbreviation"
+  },
+  "delivery_charges_notice_text": "مصاريف التوصيل سيتم حسابها عند صفحة الدفع",
+  "@delivery_charges_notice_text": {
+    "description": "Notice about delivery charges"
+  },
+  "continue_shopping_text": "متابعة التسوق",
+  "@continue_shopping_text": {
+    "description": "Continue shopping button text"
+  },
+  "checkout_text": "الدفع",
+  "@checkout_text": {
+    "description": "Checkout button/title"
+  },
+  "pay_with_text": "الدفع ب",
+  "@pay_with_text": {
+    "description": "Payment method selection title"
+  },
+  "cash_on_delivery_text": "الدفع عند الوصول",
+  "@cash_on_delivery_text": {
+    "description": "Cash on delivery option"
+  },
+  "pay_text": "إدفع",
+  "@pay_text": {
+    "description": "Pay button text"
+  },
+  "choose_payment_method_first_text": "اختر طريقة الدفع اولا",
+  "@choose_payment_method_first_text": {
+    "description": "Error message when payment method is not chosen"
+  },
+  "delivery_information_text": "معلومات التوصيل",
+  "@delivery_information_text": {
+    "description": "Delivery info section title"
+  },
+  "full_name_text": "الاسم بالكامل",
+  "@full_name_text": {
+    "description": "Label for full name field"
+  },
+  "enter_full_name_text": "ادخل الاسم بالكامل",
+  "@enter_full_name_text": {
+    "description": "Hint for full name field"
+  },
+  "address_text": "العنوان",
+  "@address_text": {
+    "description": "Label for address field"
+  },
+  "enter_address_text": "ادخل العنوان",
+  "@enter_address_text": {
+    "description": "Hint for address field"
+  },
+  "phone_text": "الهاتف",
+  "@phone_text": {
+    "description": "Label for simple phone field"
+  },
+  "prices_text": "الأسعار",
+  "@prices_text": {
+    "description": "Prices summary header"
+  },
+  "price_before_shipping_text": "السعر قبل الشحن",
+  "@price_before_shipping_text": {
+    "description": "Subtotal before shipping"
+  },
+  "shipping_fee_text": "رسوم الشحن",
+  "@shipping_fee_text": {
+    "description": "Label for shipping fee"
+  },
+  "total_price_text": "السعر الكلي",
+  "@total_price_text": {
+    "description": "Label for total price"
+  },
+  "confirm_order_button_text": "تاكيد الطلب",
+  "@confirm_order_button_text": {
+    "description": "Confirm order button text"
+  },
+  "confirm_order_title_text": "تأكيد الطلب",
+  "@confirm_order_title_text": {
+    "description": "Confirm order dialog title"
+  },
+  "confirm_order_message_text": "هل أنت متأكد من تأكيد الطلب؟",
+  "@confirm_order_message_text": {
+    "description": "Confirm order dialog message"
+  },
+  "cancel_text": "إلغاء",
+  "@cancel_text": {
+    "description": "Cancel button text"
+  },
+  "confirm_text": "تأكيد",
+  "@confirm_text": {
+    "description": "Confirm button text"
+  },
+  "card_holder_name_text": "اسم صاحب البطاقة",
+  "@card_holder_name_text": {
+    "description": "Label for card holder name field"
+  },
+  "card_number_text": "رقم البطاقة",
+  "@card_number_text": {
+    "description": "Label for card number field"
+  },
+  "expiry_date_text": "تاريخ الانتهاء",
+  "@expiry_date_text": {
+    "description": "Label for card expiry date field"
+  },
+  "payment_success_message_text": "تم الدفع بنجاح",
+  "@payment_success_message_text": {
+    "description": "Success message after payment"
+  },
+  "pay_now_button_text": "ادفع الآن",
+  "@pay_now_button_text": {
+    "description": "Pay now button text"
+  },
+  "logout_confirmation_text": "تأكيد تسجيل الخروج",
+  "@logout_confirmation_text": {
+    "description": "Logout confirmation dialog title"
+  },
+  "logout_confirmation_message_shure_text": "هل أنت متأكد من تسجيل الخروج؟",
+  "@logout_confirmation_message_shure_text": {
+    "description": "Logout confirmation dialog message"
+  },
+  "offers_discount_text": "الخصومات و العروض",
+  "@offers_discount_text": {
+    "description": "Offers and discounts title"
+  },
+  "all_products_text": "كل المنتجات",
+  "@all_products_text": {
+    "description": "All products header"
+  },
+  "chang_text": "تغيير",
+  "@chang_text": {
+    "description": "Change button text"
+  },
+  "change_name_text": "تغيير الاسم",
+  "@change_name_text": {
+    "description": "Change name dialog title"
+  },
+  "name_updated_successfully_text": "تم تغيير الاسم بنجاح",
+  "@name_updated_successfully_text": {
+    "description": "Success message for name change"
+  },
+  "required_text": "مطلوب",
+  "@required_text": {
+    "description": "Required field suffix/text"
+  },
+  "data_not_updated_text": "لم يتم تعديل البيانات",
+  "@data_not_updated_text": {
+    "description": "Info message if data was not updated"
+  },
+  "required_field_text": "هذا الحقل مطلوب",
+  "@required_field_text": {
+    "description": "Standard error for required field"
+  },
+  "no_products_in_section_text": "لا يوجد منتجات في هذا القسم حالياً",
+  "@no_products_in_section_text": {
+    "description": "Empty state message for section"
+  },
+  "browse_other_sections_text": "تصفّح الأقسام الأخرى للعثور على ما تحتاجه",
+  "@browse_other_sections_text": {
+    "description": "Suggestion for empty state"
+  },
+  "empty_cart_text": "سلة التسوق فارغة",
+  "@empty_cart_text": {
+    "description": "Empty cart title"
+  },
+  "start_adding_products_text": "ابدأ بإضافة منتجات إلى سلة التسوق",
+  "@start_adding_products_text": {
+    "description": "Start shopping CTA"
+  },
+  "no_products_text": "لا توجد منتجات",
+  "@no_products_text": {
+    "description": "General 'no products' message"
+  },
+  "no_favorite_products_text": "لا يوجد منتجات في المفضلة",
+  "@no_favorite_products_text": {
+    "description": "Empty favorites title"
+  },
+  "products_favorites_empty_text": "المنتجات التي تضيفها إلى مفضلتك ستظهر هنا",
+  "@products_favorites_empty_text": {
+    "description": "Empty favorites description"
+  },
+  "error_occurred_text": "حدث خطأ",
+  "@error_occurred_text": {
+    "description": "General error message"
+  },
+  "product_load_failed_text": "فشل تحميل المنتج",
+  "@product_load_failed_text": {
+    "description": "Error message for failed product load"
+  },
+  "back_text": "العودة",
+  "@back_text": {
+    "description": "Back button text"
+  },
+  "brand_text": "العلامة التجارية",
+  "@brand_text": {
+    "description": "Label for product brand"
+  },
+  "product_description_text": "وصف المنتج",
+  "@product_description_text": {
+    "description": "Label for product description section"
+  },
+  "product_properties_text": "خصائص المنتج",
+  "@product_properties_text": {
+    "description": "Label for product properties section"
+  },
+  "no_data_text": "لا توجد بيانات",
+  "@no_data_text": {
+    "description": "Generic 'no data' message"
+  },
+  "quantity_text": "كمية",
+  "@quantity_text": {
+    "description": "Label for quantity"
+  },
+  "product_added_text": "المنتج مضاف",
+  "@product_added_text": {
+    "description": "Confirmation that product is in cart"
+  },
+  "add_to_cart_text": "إضافة إلى السلة",
+  "@add_to_cart_text": {
+    "description": "Add to cart button text"
+  },
+  "login_alert_title": "تنبيه",
+  "@login_alert_title": {
+    "description": "Login alert dialog title"
+  },
+  "login_alert_message": "يرجى تسجيل الدخول اولاً للمتابعة",
+  "@login_alert_message": {
+    "description": "Login alert dialog message"
+  },
+  "product_removed_from_favorites_text": "تم إزالة المنتج من المفضلة",
+  "@product_removed_from_favorites_text": {
+    "description": "Success message for favorite removal"
+  },
+  "product_added_to_favorites_text": "تم إضافة المنتج إلى المفضلة",
+  "@product_added_to_favorites_text": {
+    "description": "Success message for favorite addition"
+  },
+  "product_added_to_cart_text": "تم إضافة المنتج إلى السلة",
+  "@product_added_to_cart_text": {
+    "description": "Success message for cart addition"
+  },
+  "product_removed_from_cart_text": "تم إزالة المنتج من السلة",
+  "@product_removed_from_cart_text": {
+    "description": "Success message for cart removal"
+  },
+  "delete_confirmation_title": "تأكيد الحذف",
+  "@delete_confirmation_title": {
+    "description": "Delete confirmation dialog title"
+  },
+  "delete_text": "حذف",
+  "@delete_text": {
+    "description": "Delete button text"
+  },
+  "from_cart_text": "من السلة",
+  "@from_cart_text": {
+    "description": "From cart label"
+  },
+  "delete_confirmation_message_text": "هل أنت متأكد من الحذف؟",
+  "@delete_confirmation_message_text": {
+    "description": "Delete confirmation message"
+  },
+  "removed_text": "تم إزالة",
+  "@removed_text": {
+    "description": "Generic 'removed' message"
+  },
+  "enter_text_prompt": "برجاء إدخال",
+  "@enter_text_prompt": {
+    "description": "Generic mandatory entry prompt"
+  },
+  "three_digits_only_text": "يجب أن يكون 3 أرقام فقط",
+  "@three_digits_only_text": {
+    "description": "Error message for CVV field"
+  },
+  "selected_text": "تم اختيار:",
+  "@selected_text": {
+    "description": "Confirmed selection text"
+  },
+  "phone_number_changed_success_text": "تم تغيير رقم الهاتف بنجاح",
+  "@phone_number_changed_success_text": {
+    "description": "Success message for phone change"
+  },
+  "password_changed_success_text": "تم تغيير كلمة المرور بنجاح",
+  "@password_changed_success_text": {
+    "description": "Success message for password change"
+  },
+  "current_password_incorrect_text": "كلمة المرور الحالية غير صحيحة",
+  "@current_password_incorrect_text": {
+    "description": "Error for incorrect current password"
+  },
+  "password_min_8_chars_text": "كلمة المرور يجب أن تكون على الأقل 8 حروف",
+  "@password_min_8_chars_text": {
+    "description": "Validation error for password length"
+  },
+  "passwords_do_not_match_text": "كلمتا المرور غير متطابقتين",
+  "@passwords_do_not_match_text": {
+    "description": "Validation error for password mismatch"
+  },
+  "product_colors_text": "الألوان",
+  "@product_colors_text": {
+    "description": "Label for product colors"
+  },
+  "order_number_text": "رقم الطلب",
+  "@order_number_text": {
+    "description": "Label for order number"
+  },
+  "order_date_text": "تاريخ الطلب",
+  "@order_date_text": {
+    "description": "Label for order date"
+  },
+  "delivered_text": "تم التوصيل",
+  "@delivered_text": {
+    "description": "Status: Delivered"
+  },
+  "pending_text": "قيد المعالجة",
+  "@pending_text": {
+    "description": "Status: Pending"
+  },
+  "shipped_text": "تم الشحن",
+  "@shipped_text": {
+    "description": "Status: Shipped"
+  },
+  "canceled_text": "ملغي",
+  "@canceled_text": {
+    "description": "Status: Canceled"
+  },
+  "order_details_text": "تفاصيل الطلب",
+  "@order_details_text": {
+    "description": "Order details page title"
+  },
+  "order_info_text": "معلومات الطلب",
+  "@order_info_text": {
+    "description": "Order info section header"
+  },
+  "unit_price_text": "سعر الوحدة",
+  "@unit_price_text": {
+    "description": "Label for unit price"
+  },
+  "shipping_address_text": "عنوان الشحن",
+  "@shipping_address_text": {
+    "description": "Label for shipping address"
+  },
+  "recipient_name_text": "اسم المستلم",
+  "@recipient_name_text": {
+    "description": "Label for recipient name"
+  },
+  "price_summary_text": "ملخص السعر",
+  "@price_summary_text": {
+    "description": "Label for price summary"
+  },
+  "subtotal_text": "المجموع الفرعي",
+  "@subtotal_text": {
+    "description": "Label for subtotal"
+  },
+  "shipping_text": "الشحن",
+  "@shipping_text": {
+    "description": "Label for shipping"
+  },
+  "total_text": "الإجمالي",
+  "@total_text": {
+    "description": "Label for total"
+  },
+  "close_text": "إغلاق",
+  "product_reviews_text": "المراجعات",
+  "@product_reviews_text": {
+    "description": "Product reviews header"
+  },
+  "@close_text": {
+    "description": "Close button text"
+  },
+  "all_tab_text": "الكل",
+  "@all_tab_text": {
+    "description": "Tab label for 'All'"
+  },
+  "offers_tab_text": "العروض",
+  "@offers_tab_text": {
+    "description": "Tab label for 'Offers'"
+  },
+  "alerts_tab_text": "التنبيهات",
+  "@alerts_tab_text": {
+    "description": "Tab label for 'Alerts'"
+  },
+  "today_section_text": "اليوم",
+  "@today_section_text": {
+    "description": "Today section header"
+  },
+  "earlier_section_text": "سابقاً",
+  "@earlier_section_text": {
+    "description": "Earlier section header"
+  },
+  "no_notifications_message_text": "لا توجد إشعارات حالياً",
+  "@no_notifications_message_text": {
+    "description": "Message for no notifications"
+  },
+  "all_caught_up_message_text": "هذه جميع الإشعارات",
+  "@all_caught_up_message_text": {
+    "description": "Message when all notifications are seen"
+  },
+  "press_again_to_exit_text": "اضغط مرة أخرى للخروج من التطبيق",
+  "@press_again_to_exit_text": {
+    "description": "Double back to exit message"
+  },
+  "enter_cvv_text": "برجاء إدخال CVV",
+  "@enter_cvv_text": {
+    "description": "Hint/Prompt for entering CVV"
+  },
+  "user_reviews_text": "تقييمات المستخدمين",
+  "@user_reviews_text": {
+    "description": "User reviews header"
+  },
+  "view_all_text": "عرض الكل",
+  "@view_all_text": {
+    "description": "View all reviews button"
+  },
+  "reviews_title_text": "المراجعات",
+  "@reviews_title_text": {
+    "description": "Reviews section title"
+  },
+  "review_added_text": "تم إضافة التقييم",
+  "@review_added_text": {
+    "description": "Success message for submitting review"
+  },
+  "no_reviews_yet_text": "لا توجد تقييمات بعد",
+  "@no_reviews_yet_text": {
+    "description": "Empty state for product reviews"
+  },
+  "add_your_review_text": "أضف تقييمك",
+  "@add_your_review_text": {
+    "description": "CTA for adding a review"
+  },
+  "write_comment_hint_text": "اكتب تعليقك هنا...",
+  "@write_comment_hint_text": {
+    "description": "Hint for review comment field"
+  },
+  "please_select_rating_text": "من فضلك اختر التقييم",
+  "@please_select_rating_text": {
+    "description": "Error message when rating is not selected"
+  },
+  "sending_text": "جاري الإرسال...",
+  "@sending_text": {
+    "description": "Generic 'sending' indicator"
+  },
+  "submit_review_text": "إرسال التقييم",
+  "@submit_review_text": {
+    "description": "Submit review button text"
+  },
+  "addresses_text": "العناوين",
+  "@addresses_text": {
+    "description": "Addresses section/title"
+  },
+  "edit_address_text": "تعديل العنوان",
+  "@edit_address_text": {
+    "description": "Edit address button/title"
+  },
+  "your_addresses_text": "عناوينك",
+  "@your_addresses_text": {
+    "description": "User addresses list header"
+  },
+  "no_addresses_yet_text": "لا يوجد عناوين حتى الآن",
+  "@no_addresses_yet_text": {
+    "description": "Empty state for addresses list"
+  },
+  "login_failed_text": "فشل تسجيل الدخول",
+  "@login_failed_text": {
+    "description": "General login failure message"
+  },
+  "success_text": "تم بنجاح",
+  "@success_text": {
+    "description": "General success indicator"
+  },
+  "error_text": "حدث خطأ",
+  "@error_text": {
+    "description": "General error indicator"
+  },
+  "error_while_loading_text": "حدث خطأ أثناء تحميل البيانات",
+  "@error_while_loading_text": {
+    "description": "Error message during data loading"
+  },
+  "temporary_address_text": "عنوان مؤقت لهذا الطلب فقط",
+  "@temporary_address_text": {
+    "description": "Warning/Info text for temporary address choice"
+  },
+  "no_internet_title": "لا يوجد اتصال بالإنترنت",
+  "@no_internet_title": {
+    "description": "Title for no internet screen"
+  },
+  "no_internet_description": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.",
+  "@no_internet_description": {
+    "description": "Description for no internet screen"
+  },
+  "try_again_text": "إعادة المحاولة",
+  "@try_again_text": {
+    "description": "Text for try again button"
+  },
+  "language_restart_title": "إعادة تشغيل ضرورية",
+  "@language_restart_title": {
+    "description": "Title for language restart confirmation dialog"
+  },
+  "language_restart_message": "سيتم إعادة تشغيل التطبيق لتطبيق تغيير اللغة.",
+  "@language_restart_message": {
+    "description": "Message for language restart confirmation dialog"
+  },
+  "add_new_address_text": "إضافة عنوان جديد",
+  "@add_new_address_text": {
+    "description": "Title for adding new address"
+  },
+  "edit_address_title_text": "تعديل العنوان",
+  "@edit_address_title_text": {
+    "description": "Title for editing address"
+  },
+  "address_name_text": "اسم العنوان",
+  "@address_name_text": {
+    "description": "Label for address name field"
+  },
+  "add_text": "إضافة",
+  "@add_text": {
+    "description": "Add button text"
+  },
+  "edit_text": "تعديل",
+  "@edit_text": {
+    "description": "Edit button text"
+  },
+  "delete_address_title_text": "حذف العنوان",
+  "@delete_address_title_text": {
+    "description": "Title for delete address dialog"
+  },
+  "delete_address_confirmation_text": "هل أنت متأكد أنك تريد حذف \"{name}\"؟",
+  "@delete_address_confirmation_text": {
+    "description": "Confirmation message for deleting address",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "no_orders_found_text": "لا توجد طلبات",
+  "@no_orders_found_text": {
+    "description": "Message when no orders are available"
+  },
+  "order_type_label_text": "نوع الطلب",
+  "@order_type_label_text": {
+    "description": "Label for order type"
+  },
+  "enter_full_name_validation_text": "برجاء ادخال الاسم بالكامل",
+  "@enter_full_name_validation_text": {
+    "description": "Validation error for empty full name"
+  },
+  "name_too_short_text": "الاسم قصير جدًا",
+  "@name_too_short_text": {
+    "description": "Validation error for short name"
+  },
+  "enter_phone_validation_text": "برجاء ادخال رقم الهاتف",
+  "@enter_phone_validation_text": {
+    "description": "Validation error for empty phone"
+  },
+  "invalid_phone_text": "رقم الهاتف غير صالح",
+  "@invalid_phone_text": {
+    "description": "Validation error for invalid phone format"
+  },
+  "select_or_enter_address_text": "برجاء اختيار او ادخال العنوان",
+  "@select_or_enter_address_text": {
+    "description": "Validation error for address selection"
+  },
+  "order_confirmed_successfully_text": "تم تأكيد الطلب بنجاح",
+  "@order_confirmed_successfully_text": {
+    "description": "Success message after order confirmation"
+  },
+  "piece_price_text": "سعر القطعة",
+  "@piece_price_text": {
+    "description": "Label for price per piece in cart"
+  },
+  "no_orders_text": "لا توجد طلبات بعد",
+  "@no_orders_text": {
+    "description": "Empty orders title"
+  },
+  "orders_empty_desc_text": "سجل طلباتك سيظهر هنا بمجرد قيامك بعملية شراء",
+  "@orders_empty_desc_text": {
+    "description": "Empty orders description"
+  },
+  "empty_category_items_title": "لا يوجد عناصر",
+  "@empty_category_items_title": {
+    "description": "Title for empty category items state"
+  },
+  "empty_category_items_message": "لا يوجد عناصر في هذا القسم حاليا",
+  "@empty_category_items_message": {
+    "description": "Message for empty category items state"
+  },
+  "loading_text": "جاري التحميل...",
+  "no_products_found_text": "لا توجد منتجات",
+  "select_governorate_text": "اختر المحافظة",
+  "governorate_text": "المحافظة",
+  "city_text": "المدينة",
+  "street_text": "الشارع",
+  "all_brands_text": "جميع العلامات التجارية",
+  "no_results_found_text": "لم يتم العثور على نتائج",
+  "try_searching_different_keywords_text": "جرب البحث باستخدام كلمات رئيسية مختلفة.",
+  "search_failed_text": "فشل البحث",
+  "search_products_title_text": "البحث عن المنتجات",
+  "search_products_desc_text": "ابحث باسم المنتج أو القسم أو العلامة التجارية.",
+  "item_not_in_cart": "هذا المنتج غير موجود في السلة حالياً",
+  "item_not_in_favorites": "هذا المنتج غير موجود في المفضلة حالياً",
+  "item_not_in_cart_or_favorites": "هذا المنتج غير موجود في السلة أو المفضلة حالياً",
+  "offer_no_longer_available": "عذراً، هذا العرض لم يعد متاحاً",
+  "cannot_display_order_details": "عذراً، لا يمكن عرض تفاصيل هذا الطلب",
+  "content_not_available": "عذراً، هذا المحتوى غير متاح حالياً",
+  "check_it_out_on_mousa_store": "👇 تفقده على mousa store:",
+  "check_out_product_on_mousa_store": "تفقد {productName} على mousa store!",
+  "@check_out_product_on_mousa_store": {
+    "placeholders": {
+      "productName": {
+        "type": "String"
+      }
+    }
+  },
+  "privacy_policy_intro": "تعتبر خصوصيتك أمراً بالغ الأهمية بالنسبة لنا في \"mousa store\". توضح سياسة الخصوصية هذه أنواع المعلومات الشخصية التي نجمعها وكيفية استخدامنا لها وحمايتها.",
+  "privacy_policy_sec1_title": "1. المعلومات التي نجمعها",
+  "privacy_policy_sec1_desc": "عند استخدامك لتطبيقنا، قد نقوم بجمع المعلومات التالية:\n• المعلومات الشخصية: الاسم، عنوان البريد الإلكتروني، رقم الهاتف، وعنوان الشحن.\n• معلومات الطلبات: تفاصيل المنتجات التي تشتريها وتاريخ معاملاتك.\n• معلومات الجهاز: نوع الجهاز، نظام التشغيل، ومعرفات الجهاز الفريدة.",
+  "privacy_policy_sec2_title": "2. كيف نستخدم معلوماتك",
+  "privacy_policy_sec2_desc": "نستخدم المعلومات التي نجمعها للأغراض التالية:\n• معالجة وتسليم طلباتك.\n• تحسين خدماتنا وتجربة المستخدم في التطبيق.\n• التواصل معك بخصوص طلباتك أو تزويدك بالعروض والتحديثات.\n• أغراض الأمان ومنع الاحتيال.",
+  "privacy_policy_sec3_title": "3. مشاركة المعلومات",
+  "privacy_policy_sec3_desc": "نحن لا نبيع معلوماتك الشخصية لأطراف ثالثة. قد نشارك معلوماتك فقط مع شركات الشحن والتوصيل لضمان وصول طلباتك، ومزودي خدمات الدفع، أو إذا كان ذلك مطلوباً بموجب القانون.",
+  "privacy_policy_sec4_title": "4. حماية البيانات",
+  "privacy_policy_sec4_desc": "نحن نتخذ إجراءات أمنية تقنية وإدارية مناسبة لحماية معلوماتك من الوصول غير المصرح به أو التغيير أو الإفصاح أو الإتلاف.",
+  "privacy_policy_sec5_title": "5. حقوقك",
+  "privacy_policy_sec5_desc": "لديك الحق في الوصول إلى معلوماتك الشخصية، وتصحيحها، أو طلب حذفها من خلال إعدادات الحساب أو التواصل معنا.",
+  "privacy_policy_copyright": "© 2026 mousa store",
+  "app_name": "mousa store",
+  "home_tab": "الرئيسية",
+  "categories_tab": "الأقسام",
+  "cart_tab": "السلة",
+  "favorites_tab": "المفضلة",
+  "profile_tab": "حسابي",
+  "explore_text": "استكشف",
+  "explore_products_text": "استكشف المنتجات",
+  "something_went_wrong_text": "حدث خطأ ما",
+  "could_not_load_content_text": "لم نتمكن من تحميل هذا المحتوى. يرجى المحاولة مرة أخرى.",
+  "shop_by_category_text": "تسوق حسب الفئات",
+  "@shop_by_category_text": {
+    "description": "Title for shop by category section"
+  },
+  "services_banner_image": "assets/images/services_banner_ar.jpg",
+  "@services_banner_image": {
+    "description": "Image asset path for services banner"
+  },
+  "services_banner_image_dark": "assets/images/services_banner_ar.jpg",
+  "@services_banner_image_dark": {
+    "description": "Image asset path for services banner in dark mode"
+  },
+  "services_banner_image_light": "assets/images/services_banner_light_ar.jpg",
+  "@services_banner_image_light": {
+    "description": "Image asset path for services banner in light mode"
+  },
+  "favorites_login_prompt_text": "قائمة المفضلة متاحة فقط بعد تسجيل الدخول. يرجى تسجيل الدخول لحفظ والوصول لمنتجاتك المفضلة.",
+  "@favorites_login_prompt_text": {
+    "description": "Description prompt asking user to log in to view favorites"
+  },
+  "cart_login_prompt_text": "سلة التسوق متاحة فقط بعد تسجيل الدخول. يرجى تسجيل الدخول لإضافة المنتجات وإكمال الشراء.",
+  "@cart_login_prompt_text": {
+    "description": "Description prompt asking user to log in to view cart"
+  }
+}
