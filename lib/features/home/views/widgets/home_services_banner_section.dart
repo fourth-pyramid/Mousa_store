@@ -17,7 +17,9 @@ class HomeServicesBannerSection extends StatelessWidget {
       padding: EdgeInsets.only(top: 20.h),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          border: Border.all(color: context.colors.border.withValues(alpha: 0.6)),
+          border: Border.all(
+            color: context.colors.border.withValues(alpha: 0.6),
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.12),
@@ -28,9 +30,7 @@ class HomeServicesBannerSection extends StatelessWidget {
         ),
         child: AspectRatio(
           aspectRatio: 16 / 9,
-          child: AppImage(
-            image: bannerImage,
-          ),
+          child: AppImage(image: bannerImage),
         ),
       ),
     );

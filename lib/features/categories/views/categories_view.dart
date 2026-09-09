@@ -30,54 +30,55 @@ class _CategoriesViewState extends State<CategoriesView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.sections_text.toUpperCase()),
-        backgroundColor: context.colors.background,
-      ),
-      body: SafeArea(
-        child: InternetStateManager(
-          onRestoreInternetConnection: () {
-            unawaited(context.read<CategoryCubit>().getCategories());
-          },
-          child: BlocBuilder<CategoryCubit, CategoryState>(
-            builder: (context, state) {
-              if (state.status == RequestStatus.loading) {
-                return const Center(child: CustomLoadingIndicator());
-              }
+    appBar: AppBar(
+      title: Text(context.l10n.sections_text.toUpperCase()),
+      backgroundColor: context.colors.background,
+    ),
+    body: SafeArea(
+      child: InternetStateManager(
+        onRestoreInternetConnection: () {
+          unawaited(context.read<CategoryCubit>().getCategories());
+        },
+        child: BlocBuilder<CategoryCubit, CategoryState>(
+          builder: (context, state) {
+            if (state.status == RequestStatus.loading) {
+              return const Center(child: CustomLoadingIndicator());
+            }
 
-              if (state.status == RequestStatus.failure) {
-                return AppErrorState(
-                  message: state.errorMessage ?? context.l10n.error_while_loading_text,
-                  onRetry: () => context.read<CategoryCubit>().getCategories(),
-                );
-              }
-
-              return ListView.builder(
-                padding: EdgeInsets.only(top: 12.h, bottom: 24.h),
-                itemCount: state.categories.length,
-                itemBuilder: (context, index) {
-                  final category = state.categories[index];
-                  return CategoryListItem(
-                    image: category.imagePath ?? '',
-                    title: category.name,
-                    onTap: () {
-                      unawaited(
-                        navigateWithTransition<void>(
-                          context,
-                          CategoryItemsView(
-                            fetchType: ItemFetchType.category,
-                            categoryName: category.name,
-                            categoryId: category.id,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
+            if (state.status == RequestStatus.failure) {
+              return AppErrorState(
+                message:
+                    state.errorMessage ?? context.l10n.error_while_loading_text,
+                onRetry: () => context.read<CategoryCubit>().getCategories(),
               );
-            },
-          ),
+            }
+
+            return ListView.builder(
+              padding: EdgeInsets.only(top: 12.h, bottom: 24.h),
+              itemCount: state.categories.length,
+              itemBuilder: (context, index) {
+                final category = state.categories[index];
+                return CategoryListItem(
+                  image: category.imagePath ?? '',
+                  title: category.name,
+                  onTap: () {
+                    unawaited(
+                      navigateWithTransition<void>(
+                        context,
+                        CategoryItemsView(
+                          fetchType: ItemFetchType.category,
+                          categoryName: category.name,
+                          categoryId: category.id,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          },
         ),
       ),
-    );
+    ),
+  );
 }

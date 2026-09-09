@@ -23,10 +23,13 @@ class NotificationView extends StatelessWidget {
     },
     child: Builder(
       builder: (context) => Scaffold(
-        appBar: AppBar(title: Text(context.l10n.notifications_text.toUpperCase())),
+        appBar: AppBar(
+          title: Text(context.l10n.notifications_text.toUpperCase()),
+        ),
         body: InternetStateManager(
           noInternetScreen: const NoInternetScreen(),
-          onRestoreInternetConnection: () => unawaited(context.read<NotificationCubit>().getNotifications()),
+          onRestoreInternetConnection: () =>
+              unawaited(context.read<NotificationCubit>().getNotifications()),
           child: BlocBuilder<NotificationCubit, NotificationState>(
             buildWhen: (previous, current) => previous.status != current.status,
             builder: (context, state) {
@@ -36,7 +39,9 @@ class NotificationView extends StatelessWidget {
                 return Center(
                   child: Text(
                     state.errorMessage ?? '',
-                    style: context.typography.bodySmall.copyWith(color: context.colors.error),
+                    style: context.typography.bodySmall.copyWith(
+                      color: context.colors.error,
+                    ),
                   ),
                 );
               } else if (state.status == NotificationStatus.success) {
@@ -57,7 +62,13 @@ class NotificationView extends StatelessWidget {
                             alerts: state.alertsCount,
                           );
                         }
-                        return (index: 0, all: 0, orders: 0, offers: 0, alerts: 0);
+                        return (
+                          index: 0,
+                          all: 0,
+                          orders: 0,
+                          offers: 0,
+                          alerts: 0,
+                        );
                       },
                       builder: (context, data) => NotificationTabs(
                         selectedIndex: data.index,
@@ -66,7 +77,9 @@ class NotificationView extends StatelessWidget {
                         offersCount: data.offers,
                         alertsCount: data.alerts,
                         onChanged: (index) {
-                          context.read<NotificationCubit>().setSelectedIndex(index);
+                          context.read<NotificationCubit>().setSelectedIndex(
+                            index,
+                          );
                         },
                       ),
                     ),

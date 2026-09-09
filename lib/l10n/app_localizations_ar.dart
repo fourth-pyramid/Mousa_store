@@ -12,19 +12,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboarding_title_1 => 'كل اللي يخص موبايلك في مكان واحد';
 
   @override
-  String get onboarding_desc_1 => 'من الموبايلات للإكسسوارات، كل المنتجات اللي محتاجاها متوفرة بسهولة وبأفضل جودة.';
+  String get onboarding_desc_1 =>
+      'من الموبايلات للإكسسوارات، كل المنتجات اللي محتاجاها متوفرة بسهولة وبأفضل جودة.';
 
   @override
   String get onboarding_title_2 => 'اختيارات كتير من كل الماركات المفضّلة ليك';
 
   @override
-  String get onboarding_desc_2 => 'اكتشف أحدث الموديلات والعروض من أشهر الماركات العالمية والمحلية';
+  String get onboarding_desc_2 =>
+      'اكتشف أحدث الموديلات والعروض من أشهر الماركات العالمية والمحلية';
 
   @override
   String get onboarding_title_3 => 'مرحبًا بك';
 
   @override
-  String get onboarding_desc_3 => 'سجّل دخولك أو أنشئ حسابًا جديدًا لتبدأ التسوّق بسهولة.';
+  String get onboarding_desc_3 =>
+      'سجّل دخولك أو أنشئ حسابًا جديدًا لتبدأ التسوّق بسهولة.';
 
   @override
   String get next_button => 'التالي';
@@ -87,7 +90,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get email_validation_error => 'يرجى إدخال بريد إلكتروني صالح.';
 
   @override
-  String get password_validation_error => 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
+  String get password_validation_error =>
+      'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
 
   @override
   String get confirm_password_validation_error => 'كلمتا المرور غير متطابقتين';
@@ -243,13 +247,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get choose_your_type_of_shopping => 'اختار نوع التسوق الخاص بك';
 
   @override
-  String get do_you_want_to_buy_wholesale_or_retail => 'هل ترغب بالشراء بالجملة أم بالتجزئة؟  ';
+  String get do_you_want_to_buy_wholesale_or_retail =>
+      'هل ترغب بالشراء بالجملة أم بالتجزئة؟  ';
 
   @override
   String get change_purchase_type_confirmation_title => 'تغيير نوع التسوق';
 
   @override
-  String get change_purchase_type_confirmation_message => 'هل أنت متأكد من تغيير نوع التسوق؟ سيؤدي ذلك إلى تحديث جميع البيانات.';
+  String get change_purchase_type_confirmation_message =>
+      'هل أنت متأكد من تغيير نوع التسوق؟ سيؤدي ذلك إلى تحديث جميع البيانات.';
 
   @override
   String get wholesale_text => 'جملة';
@@ -338,7 +344,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get currency_text => 'ج.م';
 
   @override
-  String get delivery_charges_notice_text => 'مصاريف التوصيل سيتم حسابها عند صفحة الدفع';
+  String get delivery_charges_notice_text =>
+      'مصاريف التوصيل سيتم حسابها عند صفحة الدفع';
 
   @override
   String get continue_shopping_text => 'متابعة التسوق';
@@ -422,7 +429,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logout_confirmation_text => 'تأكيد تسجيل الخروج';
 
   @override
-  String get logout_confirmation_message_shure_text => 'هل أنت متأكد من تسجيل الخروج؟';
+  String get logout_confirmation_message_shure_text =>
+      'هل أنت متأكد من تسجيل الخروج؟';
 
   @override
   String get offers_discount_text => 'الخصومات و العروض';
@@ -449,10 +457,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get required_field_text => 'هذا الحقل مطلوب';
 
   @override
-  String get no_products_in_section_text => 'لا يوجد منتجات في هذا القسم حالياً';
+  String get no_products_in_section_text =>
+      'لا يوجد منتجات في هذا القسم حالياً';
 
   @override
-  String get browse_other_sections_text => 'تصفّح الأقسام الأخرى للعثور على ما تحتاجه';
+  String get browse_other_sections_text =>
+      'تصفّح الأقسام الأخرى للعثور على ما تحتاجه';
 
   @override
   String get empty_cart_text => 'سلة التسوق فارغة';
@@ -467,7 +477,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_favorite_products_text => 'لا يوجد منتجات في المفضلة';
 
   @override
-  String get products_favorites_empty_text => 'المنتجات التي تضيفها إلى مفضلتك ستظهر هنا';
+  String get products_favorites_empty_text =>
+      'المنتجات التي تضيفها إلى مفضلتك ستظهر هنا';
 
   @override
   String get error_occurred_text => 'حدث خطأ';
@@ -506,7 +517,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get login_alert_message => 'يرجى تسجيل الدخول اولاً للمتابعة';
 
   @override
-  String get product_removed_from_favorites_text => 'تم إزالة المنتج من المفضلة';
+  String get product_removed_from_favorites_text =>
+      'تم إزالة المنتج من المفضلة';
 
   @override
   String get product_added_to_favorites_text => 'تم إضافة المنتج إلى المفضلة';
@@ -551,7 +563,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get current_password_incorrect_text => 'كلمة المرور الحالية غير صحيحة';
 
   @override
-  String get password_min_8_chars_text => 'كلمة المرور يجب أن تكون على الأقل 8 حروف';
+  String get password_min_8_chars_text =>
+      'كلمة المرور يجب أن تكون على الأقل 8 حروف';
 
   @override
   String get passwords_do_not_match_text => 'كلمتا المرور غير متطابقتين';
@@ -698,7 +711,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_internet_title => 'لا يوجد اتصال بالإنترنت';
 
   @override
-  String get no_internet_description => 'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.';
+  String get no_internet_description =>
+      'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.';
 
   @override
   String get try_again_text => 'إعادة المحاولة';
@@ -707,7 +721,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get language_restart_title => 'إعادة تشغيل ضرورية';
 
   @override
-  String get language_restart_message => 'سيتم إعادة تشغيل التطبيق لتطبيق تغيير اللغة.';
+  String get language_restart_message =>
+      'سيتم إعادة تشغيل التطبيق لتطبيق تغيير اللغة.';
 
   @override
   String get add_new_address_text => 'إضافة عنوان جديد';
@@ -763,7 +778,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_orders_text => 'لا توجد طلبات بعد';
 
   @override
-  String get orders_empty_desc_text => 'سجل طلباتك سيظهر هنا بمجرد قيامك بعملية شراء';
+  String get orders_empty_desc_text =>
+      'سجل طلباتك سيظهر هنا بمجرد قيامك بعملية شراء';
 
   @override
   String get empty_category_items_title => 'لا يوجد عناصر';
@@ -796,7 +812,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_results_found_text => 'لم يتم العثور على نتائج';
 
   @override
-  String get try_searching_different_keywords_text => 'جرب البحث باستخدام كلمات رئيسية مختلفة.';
+  String get try_searching_different_keywords_text =>
+      'جرب البحث باستخدام كلمات رئيسية مختلفة.';
 
   @override
   String get search_failed_text => 'فشل البحث';
@@ -805,7 +822,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get search_products_title_text => 'البحث عن المنتجات';
 
   @override
-  String get search_products_desc_text => 'ابحث باسم المنتج أو القسم أو العلامة التجارية.';
+  String get search_products_desc_text =>
+      'ابحث باسم المنتج أو القسم أو العلامة التجارية.';
 
   @override
   String get item_not_in_cart => 'هذا المنتج غير موجود في السلة حالياً';
@@ -814,13 +832,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get item_not_in_favorites => 'هذا المنتج غير موجود في المفضلة حالياً';
 
   @override
-  String get item_not_in_cart_or_favorites => 'هذا المنتج غير موجود في السلة أو المفضلة حالياً';
+  String get item_not_in_cart_or_favorites =>
+      'هذا المنتج غير موجود في السلة أو المفضلة حالياً';
 
   @override
   String get offer_no_longer_available => 'عذراً، هذا العرض لم يعد متاحاً';
 
   @override
-  String get cannot_display_order_details => 'عذراً، لا يمكن عرض تفاصيل هذا الطلب';
+  String get cannot_display_order_details =>
+      'عذراً، لا يمكن عرض تفاصيل هذا الطلب';
 
   @override
   String get content_not_available => 'عذراً، هذا المحتوى غير متاح حالياً';
@@ -834,37 +854,43 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get privacy_policy_intro => 'تعتبر خصوصيتك أمراً بالغ الأهمية بالنسبة لنا في \"mousa store\". توضح سياسة الخصوصية هذه أنواع المعلومات الشخصية التي نجمعها وكيفية استخدامنا لها وحمايتها.';
+  String get privacy_policy_intro =>
+      'تعتبر خصوصيتك أمراً بالغ الأهمية بالنسبة لنا في \"mousa store\". توضح سياسة الخصوصية هذه أنواع المعلومات الشخصية التي نجمعها وكيفية استخدامنا لها وحمايتها.';
 
   @override
   String get privacy_policy_sec1_title => '1. المعلومات التي نجمعها';
 
   @override
-  String get privacy_policy_sec1_desc => 'عند استخدامك لتطبيقنا، قد نقوم بجمع المعلومات التالية:\n• المعلومات الشخصية: الاسم، عنوان البريد الإلكتروني، رقم الهاتف، وعنوان الشحن.\n• معلومات الطلبات: تفاصيل المنتجات التي تشتريها وتاريخ معاملاتك.\n• معلومات الجهاز: نوع الجهاز، نظام التشغيل، ومعرفات الجهاز الفريدة.';
+  String get privacy_policy_sec1_desc =>
+      'عند استخدامك لتطبيقنا، قد نقوم بجمع المعلومات التالية:\n• المعلومات الشخصية: الاسم، عنوان البريد الإلكتروني، رقم الهاتف، وعنوان الشحن.\n• معلومات الطلبات: تفاصيل المنتجات التي تشتريها وتاريخ معاملاتك.\n• معلومات الجهاز: نوع الجهاز، نظام التشغيل، ومعرفات الجهاز الفريدة.';
 
   @override
   String get privacy_policy_sec2_title => '2. كيف نستخدم معلوماتك';
 
   @override
-  String get privacy_policy_sec2_desc => 'نستخدم المعلومات التي نجمعها للأغراض التالية:\n• معالجة وتسليم طلباتك.\n• تحسين خدماتنا وتجربة المستخدم في التطبيق.\n• التواصل معك بخصوص طلباتك أو تزويدك بالعروض والتحديثات.\n• أغراض الأمان ومنع الاحتيال.';
+  String get privacy_policy_sec2_desc =>
+      'نستخدم المعلومات التي نجمعها للأغراض التالية:\n• معالجة وتسليم طلباتك.\n• تحسين خدماتنا وتجربة المستخدم في التطبيق.\n• التواصل معك بخصوص طلباتك أو تزويدك بالعروض والتحديثات.\n• أغراض الأمان ومنع الاحتيال.';
 
   @override
   String get privacy_policy_sec3_title => '3. مشاركة المعلومات';
 
   @override
-  String get privacy_policy_sec3_desc => 'نحن لا نبيع معلوماتك الشخصية لأطراف ثالثة. قد نشارك معلوماتك فقط مع شركات الشحن والتوصيل لضمان وصول طلباتك، ومزودي خدمات الدفع، أو إذا كان ذلك مطلوباً بموجب القانون.';
+  String get privacy_policy_sec3_desc =>
+      'نحن لا نبيع معلوماتك الشخصية لأطراف ثالثة. قد نشارك معلوماتك فقط مع شركات الشحن والتوصيل لضمان وصول طلباتك، ومزودي خدمات الدفع، أو إذا كان ذلك مطلوباً بموجب القانون.';
 
   @override
   String get privacy_policy_sec4_title => '4. حماية البيانات';
 
   @override
-  String get privacy_policy_sec4_desc => 'نحن نتخذ إجراءات أمنية تقنية وإدارية مناسبة لحماية معلوماتك من الوصول غير المصرح به أو التغيير أو الإفصاح أو الإتلاف.';
+  String get privacy_policy_sec4_desc =>
+      'نحن نتخذ إجراءات أمنية تقنية وإدارية مناسبة لحماية معلوماتك من الوصول غير المصرح به أو التغيير أو الإفصاح أو الإتلاف.';
 
   @override
   String get privacy_policy_sec5_title => '5. حقوقك';
 
   @override
-  String get privacy_policy_sec5_desc => 'لديك الحق في الوصول إلى معلوماتك الشخصية، وتصحيحها، أو طلب حذفها من خلال إعدادات الحساب أو التواصل معنا.';
+  String get privacy_policy_sec5_desc =>
+      'لديك الحق في الوصول إلى معلوماتك الشخصية، وتصحيحها، أو طلب حذفها من خلال إعدادات الحساب أو التواصل معنا.';
 
   @override
   String get privacy_policy_copyright => '© 2026 mousa store';
@@ -897,7 +923,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get something_went_wrong_text => 'حدث خطأ ما';
 
   @override
-  String get could_not_load_content_text => 'لم نتمكن من تحميل هذا المحتوى. يرجى المحاولة مرة أخرى.';
+  String get could_not_load_content_text =>
+      'لم نتمكن من تحميل هذا المحتوى. يرجى المحاولة مرة أخرى.';
 
   @override
   String get shop_by_category_text => 'تسوق حسب الفئات';
@@ -906,14 +933,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get services_banner_image => 'assets/images/services_banner_ar.jpg';
 
   @override
-  String get services_banner_image_dark => 'assets/images/services_banner_ar.jpg';
+  String get services_banner_image_dark =>
+      'assets/images/services_banner_ar.jpg';
 
   @override
-  String get services_banner_image_light => 'assets/images/services_banner_light_ar.jpg';
+  String get services_banner_image_light =>
+      'assets/images/services_banner_light_ar.jpg';
 
   @override
-  String get favorites_login_prompt_text => 'قائمة المفضلة متاحة فقط بعد تسجيل الدخول. يرجى تسجيل الدخول لحفظ والوصول لمنتجاتك المفضلة.';
+  String get favorites_login_prompt_text =>
+      'قائمة المفضلة متاحة فقط بعد تسجيل الدخول. يرجى تسجيل الدخول لحفظ والوصول لمنتجاتك المفضلة.';
 
   @override
-  String get cart_login_prompt_text => 'سلة التسوق متاحة فقط بعد تسجيل الدخول. يرجى تسجيل الدخول لإضافة المنتجات وإكمال الشراء.';
+  String get cart_login_prompt_text =>
+      'سلة التسوق متاحة فقط بعد تسجيل الدخول. يرجى تسجيل الدخول لإضافة المنتجات وإكمال الشراء.';
 }

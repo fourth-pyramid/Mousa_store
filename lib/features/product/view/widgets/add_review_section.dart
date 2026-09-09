@@ -43,7 +43,9 @@ class _AddReviewSectionState extends State<AddReviewSection> {
       children: [
         Text(
           context.l10n.add_your_review_text,
-          style: context.typography.titleMedium.copyWith(fontWeight: FontWeight.bold),
+          style: context.typography.titleMedium.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         SizedBox(height: 8.h),
 
@@ -82,7 +84,10 @@ class _AddReviewSectionState extends State<AddReviewSection> {
                       : () {
                           if (getIt<AuthService>().isLoggedIn) {
                             if (_rateNotifier.value == 0) {
-                              CustomSnackBar.show(context, context.l10n.please_select_rating_text);
+                              CustomSnackBar.show(
+                                context,
+                                context.l10n.please_select_rating_text,
+                              );
                               return;
                             }
                             unawaited(

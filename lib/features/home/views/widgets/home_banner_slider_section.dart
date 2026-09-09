@@ -13,14 +13,18 @@ class HomeBannerSliderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
     buildWhen: (previous, current) =>
-        previous.bannerStatus != current.bannerStatus || previous.banners != current.banners,
+        previous.bannerStatus != current.bannerStatus ||
+        previous.banners != current.banners,
     builder: (context, state) {
       if (state.bannerStatus == RequestStatus.loading) {
         return Padding(
           padding: EdgeInsets.only(top: 8.h, left: 16.w, right: 16.w),
           child: Container(
             height: 165.h,
-            decoration: BoxDecoration(color: context.colors.surface, borderRadius: context.radius.lgBorder),
+            decoration: BoxDecoration(
+              color: context.colors.surface,
+              borderRadius: context.radius.lgBorder,
+            ),
           ),
         );
       }
@@ -29,7 +33,8 @@ class HomeBannerSliderSection extends StatelessWidget {
         return const SizedBox.shrink();
       }
 
-      if (state.bannerStatus == RequestStatus.success && state.banners.isNotEmpty) {
+      if (state.bannerStatus == RequestStatus.success &&
+          state.banners.isNotEmpty) {
         return Padding(
           padding: EdgeInsets.only(top: 8.h),
           child: CarouselSlider(
@@ -51,10 +56,15 @@ class HomeBannerSliderSection extends StatelessWidget {
                         children: [
                           AppImage(
                             image: banner.imagePath,
-                            placeholder: (_, _) => ColoredBox(color: context.colors.surface),
+                            placeholder: (_, _) =>
+                                ColoredBox(color: context.colors.surface),
                             errorWidget: (_, _, _) => ColoredBox(
                               color: context.colors.surface,
-                              child: Icon(Icons.sports_soccer, size: 48.w, color: context.colors.textSecondary),
+                              child: Icon(
+                                Icons.sports_soccer,
+                                size: 48.w,
+                                color: context.colors.textSecondary,
+                              ),
                             ),
                           ),
                           Container(
@@ -62,7 +72,12 @@ class HomeBannerSliderSection extends StatelessWidget {
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
-                                colors: [context.colors.transparent, context.colors.primary.withValues(alpha: 0.75)],
+                                colors: [
+                                  context.colors.transparent,
+                                  context.colors.primary.withValues(
+                                    alpha: 0.75,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -86,9 +101,12 @@ class HomeBannerSliderSection extends StatelessWidget {
                                   SizedBox(height: 4.h),
                                   Text(
                                     banner.desc,
-                                    style: context.typography.bodySmall.copyWith(
-                                      color: Colors.white.withValues(alpha: 0.85),
-                                    ),
+                                    style: context.typography.bodySmall
+                                        .copyWith(
+                                          color: Colors.white.withValues(
+                                            alpha: 0.85,
+                                          ),
+                                        ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),

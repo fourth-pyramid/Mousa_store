@@ -53,7 +53,8 @@ class _ProductDetailsContent extends StatefulWidget {
 }
 
 class _ProductDetailsContentState extends State<_ProductDetailsContent> {
-  final ValueNotifier<ProductDetailsController?> _controllerNotifier = ValueNotifier<ProductDetailsController?>(null);
+  final ValueNotifier<ProductDetailsController?> _controllerNotifier =
+      ValueNotifier<ProductDetailsController?>(null);
 
   @override
   void dispose() {
@@ -63,14 +64,17 @@ class _ProductDetailsContentState extends State<_ProductDetailsContent> {
   }
 
   void _initController(ProductDetail product) {
-    if (_controllerNotifier.value == null || _controllerNotifier.value!.product.id != product.id) {
+    if (_controllerNotifier.value == null ||
+        _controllerNotifier.value!.product.id != product.id) {
       _controllerNotifier.value?.dispose();
       _controllerNotifier.value = ProductDetailsController(product);
     }
   }
 
   @override
-  Widget build(BuildContext context) => ValueListenableBuilder<ProductDetailsController?>(
+  Widget build(
+    BuildContext context,
+  ) => ValueListenableBuilder<ProductDetailsController?>(
     valueListenable: _controllerNotifier,
     builder: (context, controller, _) => Scaffold(
       appBar: AppBar(title: const SearchTextField()),
@@ -88,7 +92,8 @@ class _ProductDetailsContentState extends State<_ProductDetailsContent> {
             return false;
           },
           listener: (context, state) {
-            if (state.status == ProductStatus.success && state.product != null) {
+            if (state.status == ProductStatus.success &&
+                state.product != null) {
               if (controller == null) {
                 _initController(state.product!.data);
               } else {
@@ -98,7 +103,9 @@ class _ProductDetailsContentState extends State<_ProductDetailsContent> {
           },
           builder: (context, state) {
             if (state.status == ProductStatus.loading) {
-              return Center(child: CustomLoadingIndicator(color: context.colors.primary));
+              return Center(
+                child: CustomLoadingIndicator(color: context.colors.primary),
+              );
             }
 
             if (state.status == ProductStatus.failure) {
@@ -112,7 +119,10 @@ class _ProductDetailsContentState extends State<_ProductDetailsContent> {
               return _ProductDetailsScrollBody(controller: controller);
             }
 
-            return _ErrorPlaceholder(errorMessage: state.errorMessage ?? context.l10n.product_load_failed_text);
+            return _ErrorPlaceholder(
+              errorMessage:
+                  state.errorMessage ?? context.l10n.product_load_failed_text,
+            );
           },
         ),
       ),
@@ -135,8 +145,10 @@ class _ProductDetailsScrollBody extends StatelessWidget {
           children: [
             ListenableBuilder(
               listenable: controller,
-              builder: (context, _) =>
-                  ProductInfoSection(product: controller.product, selectedVariant: controller.selectedVariant),
+              builder: (context, _) => ProductInfoSection(
+                product: controller.product,
+                selectedVariant: controller.selectedVariant,
+              ),
             ),
             _ProductDescriptionSection(product: controller.product),
             _ProductAttributesSection(controller: controller),
@@ -209,22 +221,20 @@ class _ProductBottomActionWrapper extends StatelessWidget {
 
   void _handleCartState(BuildContext context, CartState cartState) {
     if (cartState.actionStatus == RequestStatus.success) {
-      var message = '';
-      switch (cartState.successType) {
-        case CartSuccessType.added:
-          message = context.l10n.product_added_to_cart_text;
-        case CartSuccessType.removed:
-          message = context.l10n.product_removed_from_cart_text;
-        case CartSuccessType.updated:
-          message = context.l10n.product_added_to_cart_text;
-        case null:
-          message = '';
-      }
+      final message = switch (cartState.successType) {
+        CartSuccessType.added ||
+        CartSuccessType.updated => context.l10n.product_added_to_cart_text,
+        CartSuccessType.removed => context.l10n.product_removed_from_cart_text,
+        null => '',
+      };
       if (message.isNotEmpty) {
         CustomSnackBar.show(context, message);
       }
     } else if (cartState.actionStatus == RequestStatus.failure) {
-      CustomSnackBar.show(context, cartState.errorMessage ?? context.l10n.error_occurred_text);
+      CustomSnackBar.show(
+        context,
+        cartState.errorMessage ?? context.l10n.error_occurred_text,
+      );
     }
   }
 }
@@ -295,14 +305,19 @@ class _ProductAttributesSection extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: 6.h),
                     child: Text(
                       _getAttributeTitle(attributeKey),
-                      style: context.typography.body.copyWith(fontWeight: FontWeight.bold),
+                      style: context.typography.body.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   ProductAttributeSection(
                     values: values,
-                    availableValues: controller.getAvailableValues(attributeKey),
+                    availableValues: controller.getAvailableValues(
+                      attributeKey,
+                    ),
                     selectedValue: controller.selectedAttributes[attributeKey],
-                    onValueSelected: (value) => controller.updateAttribute(attributeKey, value),
+                    onValueSelected: (value) =>
+                        controller.updateAttribute(attributeKey, value),
                   ),
                   SizedBox(height: 8.h),
                 ],
@@ -370,7 +385,12 @@ class _ProductReviewsHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(reviewsTitle, style: context.typography.titleMedium.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            reviewsTitle,
+            style: context.typography.titleMedium.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           InkWell(
             onTap: () {
               unawaited(
@@ -378,7 +398,11 @@ class _ProductReviewsHeader extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   backgroundColor: context.colors.background,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20.r),
+                    ),
+                  ),
                   builder: (context) => AllReviewsSheet(product: product),
                 ),
               );

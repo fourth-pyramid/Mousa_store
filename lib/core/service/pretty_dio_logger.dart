@@ -47,9 +47,7 @@ class PrettyDioLogger extends Interceptor {
 
     _print('┌── $icon RESPONSE #$id [$code] +${elapsed}ms [${_timestamp()}]');
     _print('│ ${response.requestOptions.uri}');
-    _print(
-      '│ Size: ${_bodySize(response.data)}',
-    );
+    _print('│ Size: ${_bodySize(response.data)}');
     _print('└────────────────────────────────────────');
     super.onResponse(response, handler);
   }
@@ -90,9 +88,7 @@ class PrettyDioLogger extends Interceptor {
     try {
       final bytes = utf8.encode(data is String ? data : jsonEncode(data));
       final kb = bytes.length / 1024;
-      return kb < 1
-          ? '${bytes.length} B'
-          : '${kb.toStringAsFixed(1)} KB';
+      return kb < 1 ? '${bytes.length} B' : '${kb.toStringAsFixed(1)} KB';
     } on Object catch (_) {
       return '? B';
     }

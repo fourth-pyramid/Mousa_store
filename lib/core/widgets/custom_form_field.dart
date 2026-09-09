@@ -39,72 +39,70 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (label != null) ...[
-          Text(
-            label!.toUpperCase(),
-            style: context.typography.labelMedium.copyWith(
-              color: context.colors.textSecondary,
-            ),
-          ),
-          SizedBox(height: 6.h),
-        ],
-        TextFormField(
-          focusNode: focusNode,
-          onTapOutside: (_) => FocusScope.of(context).unfocus(),
-          controller: controller,
-          keyboardType: keyboardType,
-          obscureText: obscureText,
-          readOnly: readOnly,
-          maxLines: maxLines,
-          onTap: onTap,
-          onChanged: onChanged,
-          inputFormatters: inputFormatters,
-          validator: validator,
-          style: context.typography.body.copyWith(
-            color: context.colors.textPrimary,
-          ),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: context.typography.body.copyWith(
-              color: context.colors.textSecondary,
-            ),
-            filled: true,
-            fillColor: context.colors.surface,
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
-            contentPadding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
-            border: OutlineInputBorder(
-              borderRadius: context.radius.mdBorder,
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: context.radius.mdBorder,
-              borderSide: BorderSide(
-                color: context.colors.border,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: context.radius.mdBorder,
-              borderSide: BorderSide(
-                color: context.colors.primary,
-                width: 1.5,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: context.radius.mdBorder,
-              borderSide: BorderSide(color: context.colors.error),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: context.radius.mdBorder,
-              borderSide: BorderSide(color: context.colors.error, width: 1.5),
-            ),
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      if (label != null) ...[
+        Text(
+          label!.toUpperCase(),
+          style: context.typography.labelMedium.copyWith(
+            color: context.colors.textSecondary,
           ),
         ),
+        SizedBox(height: 6.h),
       ],
-    );
+      TextFormField(
+        focusNode: focusNode,
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
+        controller: controller,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        readOnly: readOnly,
+        maxLines: maxLines,
+        onTap: onTap,
+        onChanged: onChanged,
+        inputFormatters: inputFormatters,
+        validator: validator,
+        style: context.typography.body.copyWith(
+          color: context.colors.textPrimary,
+        ),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: context.typography.body.copyWith(
+            color: context.colors.textSecondary,
+          ),
+          filled: true,
+          fillColor: context.colors.surface,
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 18.w,
+            vertical: 16.h,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: context.radius.mdBorder,
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: context.radius.mdBorder,
+            borderSide: BorderSide(color: context.colors.border),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: context.radius.mdBorder,
+            borderSide: BorderSide(color: context.colors.primary, width: 1.5),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: context.radius.mdBorder,
+            borderSide: BorderSide(color: context.colors.error),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: context.radius.mdBorder,
+            borderSide: BorderSide(color: context.colors.error, width: 1.5),
+          ),
+        ),
+      ),
+    ],
+  );
 }
 
 /// Helper wrapper for CustomFormField
@@ -142,24 +140,25 @@ class CustomFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AppTextField(
-      controller: controller,
-      focusNode: focusNode,
-      label: label,
-      hint: hint ?? label,
-      prefixIcon: prefixIcon,
-      suffixIcon: suffixIcon,
-      validator: validator ??
-          ((value) {
-            if (value == null || value.trim().isEmpty) {
-              return context.l10n.required_field_text;
-            }
-            return null;
-          }),
-      onChanged: onChanged,
-      onTap: onTap,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      readOnly: readOnly,
-      inputFormatters: inputFormatters,
-    );
+    controller: controller,
+    focusNode: focusNode,
+    label: label,
+    hint: hint ?? label,
+    prefixIcon: prefixIcon,
+    suffixIcon: suffixIcon,
+    validator:
+        validator ??
+        ((value) {
+          if (value == null || value.trim().isEmpty) {
+            return context.l10n.required_field_text;
+          }
+          return null;
+        }),
+    onChanged: onChanged,
+    onTap: onTap,
+    keyboardType: keyboardType,
+    obscureText: obscureText,
+    readOnly: readOnly,
+    inputFormatters: inputFormatters,
+  );
 }

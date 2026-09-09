@@ -29,11 +29,7 @@ void main() {
 
   final sampleResponse = ProductListResponse(
     success: true,
-    data: Data(
-      currentPage: 1,
-      lastPage: 1,
-      data: [sampleProduct],
-    ),
+    data: Data(currentPage: 1, lastPage: 1, data: [sampleProduct]),
   );
 
   group('SearchCubit Tests', () {

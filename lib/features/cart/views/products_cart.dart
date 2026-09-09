@@ -48,7 +48,9 @@ class _ProductsCartState extends State<ProductsCart> {
             icon: Icons.shopping_bag_outlined,
             actionLabel: context.l10n.login_button,
             onActionTap: () {
-              unawaited(navigateWithTransition<void>(context, const AuthView()));
+              unawaited(
+                navigateWithTransition<void>(context, const AuthView()),
+              );
             },
           ),
         ),
@@ -92,17 +94,25 @@ class _ProductsCartState extends State<ProductsCart> {
                       final prevCart = previous.cart;
                       final currCart = current.cart;
                       if (prevCart == null || currCart == null) return true;
-                      if (prevCart.items.length != currCart.items.length) return true;
+                      if (prevCart.items.length != currCart.items.length) {
+                        return true;
+                      }
                       for (var i = 0; i < prevCart.items.length; i++) {
-                        if (prevCart.items[i].id != currCart.items[i].id) return true;
+                        if (prevCart.items[i].id != currCart.items[i].id) {
+                          return true;
+                        }
                       }
                       return false;
                     },
-                    builder: (context, state) => CartItemsList(items: state.cart!.items),
+                    builder: (context, state) =>
+                        CartItemsList(items: state.cart!.items),
                   ),
                 ),
                 BlocBuilder<CartCubit, CartState>(
-                  builder: (context, state) => CartInformation(cart: state.cart!, gnToHome: widget.gnToHome),
+                  builder: (context, state) => CartInformation(
+                    cart: state.cart!,
+                    gnToHome: widget.gnToHome,
+                  ),
                 ),
               ],
             );

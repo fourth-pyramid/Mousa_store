@@ -50,11 +50,21 @@ class AppSliverList<T> extends StatelessWidget {
       }
 
       if (isError) {
-        return Center(child: Text(errorMessage ?? context.l10n.error_text, style: context.typography.body));
+        return Center(
+          child: Text(
+            errorMessage ?? context.l10n.error_text,
+            style: context.typography.body,
+          ),
+        );
       }
 
       if (products.isEmpty) {
-        return Center(child: Text(context.l10n.no_products_found_text, style: context.typography.body));
+        return Center(
+          child: Text(
+            context.l10n.no_products_found_text,
+            style: context.typography.body,
+          ),
+        );
       }
 
       return SingleChildScrollView(
@@ -63,24 +73,35 @@ class AppSliverList<T> extends StatelessWidget {
         padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
         child: IntrinsicHeight(
           child: Row(
-            children: List.generate(products.length > maxItems ? maxItems : products.length, (index) {
-              final product = extractProductSummary(products[index]);
+            children: List.generate(
+              products.length > maxItems ? maxItems : products.length,
+              (index) {
+                final product = extractProductSummary(products[index]);
 
-              return Padding(
-                padding: const EdgeInsetsDirectional.only(end: 12),
-                child: SizedBox(
-                  width: cardWidth,
-                  child: _buildProductCard(context, product, originalItem: products[index]),
-                ),
-              );
-            }),
+                return Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 12),
+                  child: SizedBox(
+                    width: cardWidth,
+                    child: _buildProductCard(
+                      context,
+                      product,
+                      originalItem: products[index],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       );
     },
   );
 
-  Widget _buildProductCard(BuildContext context, ProductSummary product, {required T originalItem}) {
+  Widget _buildProductCard(
+    BuildContext context,
+    ProductSummary product, {
+    required T originalItem,
+  }) {
     final price = double.tryParse(product.price) ?? 0;
     var finalPrice = price;
     var oldPrice = '';
@@ -104,7 +125,12 @@ class AppSliverList<T> extends StatelessWidget {
       priceLabel: AppLocalizations.of(context)!.egp_text,
       discountLabel: AppLocalizations.of(context)!.discount_text,
       onTap: () {
-        unawaited(navigateWithTransition<void>(context, ProductDetailsView(productId: product.id)));
+        unawaited(
+          navigateWithTransition<void>(
+            context,
+            ProductDetailsView(productId: product.id),
+          ),
+        );
       },
     );
   }

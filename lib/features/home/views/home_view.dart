@@ -22,21 +22,26 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
   bool _showBackToTopButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _initData();
+      }
+    });
+  }
 
   @override
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initData();
-    _scrollController.addListener(_onScroll);
   }
 
   void _initData() {
@@ -96,9 +101,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               HomeAllProductsSection(),
-              SliverToBoxAdapter(
-                child: SizedBox(height: 20),
-              ),
+              SliverToBoxAdapter(child: SizedBox(height: 20)),
             ],
           ),
         ),
@@ -116,10 +119,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               );
             },
-            child: const Icon(
-              Icons.arrow_upward,
-              size: 18,
-            ),
+            child: const Icon(Icons.arrow_upward, size: 18),
           )
         : null,
     floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,

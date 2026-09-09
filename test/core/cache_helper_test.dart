@@ -22,61 +22,70 @@ void main() {
       expect(CacheHelper.isFirstOpen(), isFalse);
     });
 
-    test('savePriceMode and getPriceMode stores and retrieves properly', () async {
-      expect(CacheHelper.getPriceMode(), isNull);
+    test(
+      'savePriceMode and getPriceMode stores and retrieves properly',
+      () async {
+        expect(CacheHelper.getPriceMode(), isNull);
 
-      final result = await CacheHelper.savePriceMode('wholesale');
-      expect(result, isTrue);
-      expect(CacheHelper.getPriceMode(), equals('wholesale'));
-    });
+        final result = await CacheHelper.savePriceMode('wholesale');
+        expect(result, isTrue);
+        expect(CacheHelper.getPriceMode(), equals('wholesale'));
+      },
+    );
 
-    test('saveUser and getUser stores in memory and returns cached user', () async {
-      final user = User(
-        id: 42,
-        firstName: 'Ahmed',
-        lastName: 'Ali',
-        email: 'ahmed@example.com',
-        phone: '01234567890',
-        userType: 'customer',
-        isVerified: true,
-      );
+    test(
+      'saveUser and getUser stores in memory and returns cached user',
+      () async {
+        final user = User(
+          id: 42,
+          firstName: 'Ahmed',
+          lastName: 'Ali',
+          email: 'ahmed@example.com',
+          phone: '01234567890',
+          userType: 'customer',
+          isVerified: true,
+        );
 
-      final saved = await CacheHelper.saveUser(user);
-      expect(saved, isTrue);
+        final saved = await CacheHelper.saveUser(user);
+        expect(saved, isTrue);
 
-      final cachedUser = CacheHelper.getUser();
-      expect(cachedUser, isNotNull);
-      expect(cachedUser?.id, equals(42));
-      expect(cachedUser?.firstName, equals('Ahmed'));
-      expect(cachedUser?.email, equals('ahmed@example.com'));
+        final cachedUser = CacheHelper.getUser();
+        expect(cachedUser, isNotNull);
+        expect(cachedUser?.id, equals(42));
+        expect(cachedUser?.firstName, equals('Ahmed'));
+        expect(cachedUser?.email, equals('ahmed@example.com'));
 
-      await CacheHelper.clearUser();
-      expect(CacheHelper.getUser(), isNull);
-    });
+        await CacheHelper.clearUser();
+        expect(CacheHelper.getUser(), isNull);
+      },
+    );
 
-    test('clearAll clears user and tokens while preserving preferences', () async {
-      await CacheHelper.setFirstOpenDone();
-      await CacheHelper.savePriceMode('retail');
+    test(
+      'clearAll clears user and tokens while preserving preferences',
+      () async {
+        await CacheHelper.setFirstOpenDone();
+        await CacheHelper.savePriceMode('retail');
 
-      final user = User(
-        id: 1,
-        firstName: 'Test',
-        lastName: 'User',
-        email: 'test@example.com',
-        phone: '01000000000',
-        userType: 'customer',
-        isVerified: true,
-      );
-      await CacheHelper.saveUser(user);
-      expect(CacheHelper.getUser(), isNotNull);
+        final user = User(
+          id: 1,
+          firstName: 'Test',
+          lastName: 'User',
+          email: 'test@example.com',
+          phone: '01000000000',
+          userType: 'customer',
+          isVerified: true,
+        );
+        await CacheHelper.saveUser(user);
+        expect(CacheHelper.getUser(), isNotNull);
 
-      await CacheHelper.clearAll();
+        await CacheHelper.clearAll();
 
-      expect(CacheHelper.getUser(), isNull);
-      expect(CacheHelper.getToken(), isNull);
-      // preserved across logouts
-      expect(CacheHelper.isFirstOpen(), isFalse);
-      expect(CacheHelper.getPriceMode(), equals('retail'));
-    });
+        expect(CacheHelper.getUser(), isNull);
+        expect(CacheHelper.getToken(), isNull);
+        // preserved across logouts
+        expect(CacheHelper.isFirstOpen(), isFalse);
+        expect(CacheHelper.getPriceMode(), equals('retail'));
+      },
+    );
   });
 }

@@ -4,11 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 
 Widget _buildTestWidget(Widget child) => ScreenUtilInit(
-      designSize: const Size(375, 812),
-      builder: (_, _) => MaterialApp(
-        home: Scaffold(body: Center(child: child)),
-      ),
-    );
+  designSize: const Size(375, 812),
+  builder: (_, _) => MaterialApp(
+    home: Scaffold(body: Center(child: child)),
+  ),
+);
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -16,12 +16,7 @@ void main() {
   group('AppButton Widget Tests', () {
     testWidgets('renders button text correctly in uppercase', (tester) async {
       await tester.pumpWidget(
-        _buildTestWidget(
-          AppButton(
-            text: 'Submit',
-            onPressed: () {},
-          ),
-        ),
+        _buildTestWidget(AppButton(text: 'Submit', onPressed: () {})),
       );
       await tester.pumpAndSettle();
 
@@ -49,39 +44,38 @@ void main() {
       expect(tapped, isTrue);
     });
 
-    testWidgets('shows loading indicator and disables tap when isLoading is true', (tester) async {
-      var tapped = false;
+    testWidgets(
+      'shows loading indicator and disables tap when isLoading is true',
+      (tester) async {
+        var tapped = false;
 
-      await tester.pumpWidget(
-        _buildTestWidget(
-          AppButton(
-            text: 'Loading',
-            isLoading: true,
-            onPressed: () {
-              tapped = true;
-            },
+        await tester.pumpWidget(
+          _buildTestWidget(
+            AppButton(
+              text: 'Loading',
+              isLoading: true,
+              onPressed: () {
+                tapped = true;
+              },
+            ),
           ),
-        ),
-      );
-      await tester.pump();
+        );
+        await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      expect(find.text('LOADING'), findsNothing);
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        expect(find.text('LOADING'), findsNothing);
 
-      await tester.tap(find.byType(AppButton));
-      await tester.pump();
+        await tester.tap(find.byType(AppButton));
+        await tester.pump();
 
-      expect(tapped, isFalse);
-    });
+        expect(tapped, isFalse);
+      },
+    );
 
     testWidgets('renders icon when provided', (tester) async {
       await tester.pumpWidget(
         _buildTestWidget(
-          AppButton(
-            text: 'Add',
-            icon: const Icon(Icons.add),
-            onPressed: () {},
-          ),
+          AppButton(text: 'Add', icon: const Icon(Icons.add), onPressed: () {}),
         ),
       );
       await tester.pumpAndSettle();

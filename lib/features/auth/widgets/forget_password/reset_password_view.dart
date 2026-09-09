@@ -11,7 +11,6 @@ import 'package:mousa_store/core/widgets/custom_form_field.dart';
 import 'package:mousa_store/features/auth/view_model/reset_password_cubit/reset_password_cubit.dart';
 import 'package:mousa_store/features/auth/view_model/reset_password_cubit/reset_password_state.dart';
 
-
 class ResetPasswordView extends StatefulWidget {
   const ResetPasswordView({
     required this.resetToken,

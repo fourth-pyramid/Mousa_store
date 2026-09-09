@@ -87,20 +87,31 @@ class OrderDetailsView extends StatelessWidget {
                                       children: [
                                         Text(
                                           product.productName,
-                                          style: context.typography.titleMedium.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          style: context.typography.titleMedium
+                                              .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         SizedBox(height: 4.h),
                                         Text(
                                           '${context.l10n.order_number_text}: ${order.orderNumber}',
-                                          style: context.typography.bodySmall.copyWith(color: context.colors.textSecondary),
+                                          style: context.typography.bodySmall
+                                              .copyWith(
+                                                color: context
+                                                    .colors
+                                                    .textSecondary,
+                                              ),
                                         ),
                                         Text(
                                           '${context.l10n.order_date_text}: ${DateFormat('yyyy-MM-dd').format(order.createdAt)}',
-                                          style: context.typography.bodySmall.copyWith(color: context.colors.textSecondary),
+                                          style: context.typography.bodySmall
+                                              .copyWith(
+                                                color: context
+                                                    .colors
+                                                    .textSecondary,
+                                              ),
                                         ),
                                         SizedBox(height: 8.h),
                                         if (product.attributes != null &&
@@ -119,15 +130,28 @@ class OrderDetailsView extends StatelessWidget {
                                                           vertical: 2.h,
                                                         ),
                                                     decoration: BoxDecoration(
-                                                      color: context.colors.primary.withAlpha((0.1 * 255).toInt()),
-                                                      borderRadius: context.radius.xsBorder,
+                                                      color: context
+                                                          .colors
+                                                          .primary
+                                                          .withAlpha(
+                                                            (0.1 * 255).toInt(),
+                                                          ),
+                                                      borderRadius: context
+                                                          .radius
+                                                          .xsBorder,
                                                     ),
                                                     child: Text(
                                                       '${entry.key}: ${entry.value ?? ""}',
-                                                      style: context.typography.bodySmall.copyWith(
-                                                        color: context.colors.primary,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
+                                                      style: context
+                                                          .typography
+                                                          .bodySmall
+                                                          .copyWith(
+                                                            color: context
+                                                                .colors
+                                                                .primary,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
                                                     ),
                                                   ),
                                                 )
@@ -163,23 +187,22 @@ class OrderDetailsView extends StatelessWidget {
                           children: [
                             Text(
                               context.l10n.shipping_address_text,
-                              style: context.typography.titleMedium.copyWith(fontWeight: FontWeight.bold),
+                              style: context.typography.titleMedium.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             SizedBox(height: 8.h),
-                            _buildInfoRow(
-                              context,
-                              context.l10n.recipient_name_text,
-                              order.userName,
+                            _OrderInfoRow(
+                              label: context.l10n.recipient_name_text,
+                              value: order.userName,
                             ),
-                            _buildInfoRow(
-                              context,
-                              context.l10n.address_text,
-                              order.userAddress,
+                            _OrderInfoRow(
+                              label: context.l10n.address_text,
+                              value: order.userAddress,
                             ),
-                            _buildInfoRow(
-                              context,
-                              context.l10n.phone_text,
-                              order.userPhone.startsWith('+20')
+                            _OrderInfoRow(
+                              label: context.l10n.phone_text,
+                              value: order.userPhone.startsWith('+20')
                                   ? order.userPhone.replaceFirst('+2', '')
                                   : order.userPhone,
                             ),
@@ -194,11 +217,12 @@ class OrderDetailsView extends StatelessWidget {
                           children: [
                             Text(
                               context.l10n.price_summary_text,
-                              style: context.typography.titleMedium.copyWith(fontWeight: FontWeight.bold),
+                              style: context.typography.titleMedium.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             SizedBox(height: 12.h),
-                            _buildPriceRow(
-                              context: context,
+                            _OrderPriceSection(
                               subtotal: computedSubtotal,
                               shipping: double.parse(order.shipping),
                               localizations: context.l10n,
@@ -219,35 +243,51 @@ class OrderDetailsView extends StatelessWidget {
       ),
     ),
   );
+}
 
-  Widget _buildInfoRow(BuildContext context, String label, String value) => Padding(
+class _OrderInfoRow extends StatelessWidget {
+  const _OrderInfoRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) => Padding(
     padding: EdgeInsets.only(bottom: 8.h),
     child: Row(
       children: [
         Text(
           '$label: ',
-          style: context.typography.body.copyWith(color: context.colors.textSecondary),
+          style: context.typography.body.copyWith(
+            color: context.colors.textSecondary,
+          ),
         ),
         Expanded(child: Text(value, style: context.typography.body)),
       ],
     ),
   );
+}
 
-  Widget _buildPriceRow({
-    required BuildContext context,
-    required double subtotal,
-    required double shipping,
-    required AppLocalizations localizations,
-  }) => Column(
+class _OrderPriceSection extends StatelessWidget {
+  const _OrderPriceSection({
+    required this.subtotal,
+    required this.shipping,
+    required this.localizations,
+  });
+
+  final double subtotal;
+  final double shipping;
+  final AppLocalizations localizations;
+
+  @override
+  Widget build(BuildContext context) => Column(
     children: [
-      _buildPriceItem(
-        context: context,
+      _OrderPriceItem(
         label: localizations.subtotal_text,
         value: subtotal,
         localizations: localizations,
       ),
-      _buildPriceItem(
-        context: context,
+      _OrderPriceItem(
         label: localizations.shipping_text,
         value: shipping,
         localizations: localizations,
@@ -276,26 +316,34 @@ class OrderDetailsView extends StatelessWidget {
       ),
     ],
   );
+}
 
-  Widget _buildPriceItem({
-    required BuildContext context,
-    required String label,
-    required double value,
-    required AppLocalizations localizations,
-  }) => Padding(
+class _OrderPriceItem extends StatelessWidget {
+  const _OrderPriceItem({
+    required this.label,
+    required this.value,
+    required this.localizations,
+  });
+
+  final String label;
+  final double value;
+  final AppLocalizations localizations;
+
+  @override
+  Widget build(BuildContext context) => Padding(
     padding: EdgeInsets.only(bottom: 8.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: context.typography.body.copyWith(color: context.colors.textSecondary),
+          style: context.typography.body.copyWith(
+            color: context.colors.textSecondary,
+          ),
         ),
         Text(
           '$value ${localizations.currency_text}',
-          style: context.typography.body.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
+          style: context.typography.body.copyWith(fontWeight: FontWeight.w500),
         ),
       ],
     ),

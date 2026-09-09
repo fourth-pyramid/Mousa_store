@@ -36,10 +36,7 @@ void main() {
         data: {'item_id': 1},
       );
 
-      interceptor.onRequest(
-        options,
-        RequestInterceptorHandler(),
-      );
+      interceptor.onRequest(options, RequestInterceptorHandler());
 
       // Verify no exceptions were thrown
       expect(options.method, equals('POST'));

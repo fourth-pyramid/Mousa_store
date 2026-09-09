@@ -22,14 +22,17 @@ class _AddNewAddressState extends State<AddNewAddress> {
   late TextEditingController _cityController;
   late TextEditingController _streetController;
 
-  final ValueNotifier<String?> _selectedGovernorateNotifier = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _selectedGovernorateNotifier =
+      ValueNotifier<String?>(null);
   final ValueNotifier<bool> _isLoadingNotifier = ValueNotifier<bool>(false);
 
   final FocusNode _nameFocus = FocusNode();
   final FocusNode _cityFocus = FocusNode();
   final FocusNode _streetFocus = FocusNode();
 
-  final List<String> governorates = egyptGovernoratesList.map((e) => e.name).toList();
+  final List<String> governorates = egyptGovernoratesList
+      .map((e) => e.name)
+      .toList();
 
   @override
   void initState() {
@@ -80,7 +83,8 @@ class _AddNewAddressState extends State<AddNewAddress> {
     if (!_formKey.currentState!.validate()) return false;
     if (_selectedGovernorateNotifier.value == null) return false;
 
-    final fullAddress = '${_selectedGovernorateNotifier.value} - ${_cityController.text} - ${_streetController.text}';
+    final fullAddress =
+        '${_selectedGovernorateNotifier.value} - ${_cityController.text} - ${_streetController.text}';
 
     try {
       if (widget.address == null) {
@@ -112,7 +116,11 @@ class _AddNewAddressState extends State<AddNewAddress> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text(widget.address == null ? context.l10n.add_new_address_text : context.l10n.edit_address_title_text),
+      title: Text(
+        widget.address == null
+            ? context.l10n.add_new_address_text
+            : context.l10n.edit_address_title_text,
+      ),
     ),
     body: SingleChildScrollView(
       padding: EdgeInsets.all(16.w),
@@ -127,28 +135,43 @@ class _AddNewAddressState extends State<AddNewAddress> {
                     controller: _nameController,
                     focusNode: _nameFocus,
                     hint: context.l10n.address_name_text,
-                    validator: (value) => value == null || value.isEmpty ? context.l10n.required_text : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? context.l10n.required_text
+                        : null,
                   ),
                 ),
                 SizedBox(width: 8.w),
                 Expanded(
                   child: ValueListenableBuilder<String?>(
                     valueListenable: _selectedGovernorateNotifier,
-                    builder: (context, selectedGovernorate, _) => DropdownButtonFormField<String>(
-                      initialValue: selectedGovernorate,
-                      decoration: InputDecoration(
-                        labelText: context.l10n.governorate_text,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                        border: OutlineInputBorder(borderRadius: context.radius.smBorder),
-                      ),
-                      items: governorates
-                          .map((value) => DropdownMenuItem<String>(value: value, child: Text(value)))
-                          .toList(),
-                      onChanged: (val) {
-                        _selectedGovernorateNotifier.value = val;
-                      },
-                      validator: (value) => value == null || value.isEmpty ? context.l10n.required_text : null,
-                    ),
+                    builder: (context, selectedGovernorate, _) =>
+                        DropdownButtonFormField<String>(
+                          initialValue: selectedGovernorate,
+                          decoration: InputDecoration(
+                            labelText: context.l10n.governorate_text,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 12.h,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: context.radius.smBorder,
+                            ),
+                          ),
+                          items: governorates
+                              .map(
+                                (value) => DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (val) {
+                            _selectedGovernorateNotifier.value = val;
+                          },
+                          validator: (value) => value == null || value.isEmpty
+                              ? context.l10n.required_text
+                              : null,
+                        ),
                   ),
                 ),
               ],
@@ -160,7 +183,9 @@ class _AddNewAddressState extends State<AddNewAddress> {
               focusNode: _cityFocus,
               hint: context.l10n.city_text,
               inputFormatters: [AddressFormatter()],
-              validator: (value) => value == null || value.isEmpty ? context.l10n.required_text : null,
+              validator: (value) => value == null || value.isEmpty
+                  ? context.l10n.required_text
+                  : null,
             ),
             SizedBox(height: 12.h),
             CustomFormField(
@@ -168,7 +193,9 @@ class _AddNewAddressState extends State<AddNewAddress> {
               focusNode: _streetFocus,
               hint: context.l10n.street_text,
               inputFormatters: [AddressFormatter()],
-              validator: (value) => value == null || value.isEmpty ? context.l10n.required_text : null,
+              validator: (value) => value == null || value.isEmpty
+                  ? context.l10n.required_text
+                  : null,
             ),
             SizedBox(height: 24.h),
           ],
@@ -177,7 +204,11 @@ class _AddNewAddressState extends State<AddNewAddress> {
     ),
     bottomNavigationBar: SafeArea(
       child: Padding(
-        padding: EdgeInsetsDirectional.only(start: 16.w, end: 16.w, bottom: 16.h),
+        padding: EdgeInsetsDirectional.only(
+          start: 16.w,
+          end: 16.w,
+          bottom: 16.h,
+        ),
         child: ValueListenableBuilder<bool>(
           valueListenable: _isLoadingNotifier,
           builder: (context, isLoading, _) => CustomButton(
@@ -194,7 +225,11 @@ class _AddNewAddressState extends State<AddNewAddress> {
                 _isLoadingNotifier.value = false;
               }
             },
-            text: Text(widget.address == null ? context.l10n.add_text : context.l10n.edit_text),
+            text: Text(
+              widget.address == null
+                  ? context.l10n.add_text
+                  : context.l10n.edit_text,
+            ),
           ),
         ),
       ),

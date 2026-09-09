@@ -1,4 +1,4 @@
-﻿import 'package:mousa_store/features/auth/model/user.dart';
+import 'package:mousa_store/features/auth/model/user.dart';
 
 class LoginResponse {
   LoginResponse({
@@ -12,7 +12,9 @@ class LoginResponse {
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
     status: json['status']?.toString() ?? '',
     message: json['message']?.toString() ?? '',
-    user: json['user'] != null ? User.fromJson(json['user'] as Map<String, dynamic>) : null,
+    user: json['user'] != null
+        ? User.fromJson(json['user'] as Map<String, dynamic>)
+        : null,
     token: json['token']?.toString(),
     refreshToken: json['refresh_token']?.toString(),
   );

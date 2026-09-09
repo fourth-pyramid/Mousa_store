@@ -46,50 +46,52 @@ class _NotificationListState extends State<NotificationList> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<NotificationCubit, NotificationState>(
-    buildWhen: (previous, current) =>
-        previous.filteredNotifications != current.filteredNotifications ||
-        previous.status != current.status ||
-        previous.isFetchingMore != current.isFetchingMore,
-    builder: (context, state) {
-      final filtered = state.filteredNotifications;
-      if (filtered.isEmpty && state.status == NotificationStatus.success) {
-        return AppEmptyState(
-          title: context.l10n.notifications_text,
-          description: context.l10n.no_notifications_message_text,
-          icon: Icons.notifications_none_rounded,
-        );
-      }
-
-      return ListView.builder(
-        controller: _scrollController,
-        padding: EdgeInsets.zero,
-        itemCount: filtered.length + 1,
-        itemBuilder: (context, index) {
-          if (index == filtered.length) {
-            if (state.isFetchingMore) {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                child: const Center(child: CircularProgressIndicator()),
-              );
-            }
-            if (state.currentPage >= state.lastPage && filtered.isNotEmpty) {
-              return Column(
-                children: [
-                  SizedBox(height: 16.h),
-                  _buildMarkAllReadButton(context),
-                  SizedBox(height: 24.h),
-                ],
-              );
-            }
-            return const SizedBox.shrink();
+  Widget build(BuildContext context) =>
+      BlocBuilder<NotificationCubit, NotificationState>(
+        buildWhen: (previous, current) =>
+            previous.filteredNotifications != current.filteredNotifications ||
+            previous.status != current.status ||
+            previous.isFetchingMore != current.isFetchingMore,
+        builder: (context, state) {
+          final filtered = state.filteredNotifications;
+          if (filtered.isEmpty && state.status == NotificationStatus.success) {
+            return AppEmptyState(
+              title: context.l10n.notifications_text,
+              description: context.l10n.no_notifications_message_text,
+              icon: Icons.notifications_none_rounded,
+            );
           }
-          final n = filtered[index];
-          return NotificationItem(key: ValueKey(n.id), notification: n);
+
+          return ListView.builder(
+            controller: _scrollController,
+            padding: EdgeInsets.zero,
+            itemCount: filtered.length + 1,
+            itemBuilder: (context, index) {
+              if (index == filtered.length) {
+                if (state.isFetchingMore) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state.currentPage >= state.lastPage &&
+                    filtered.isNotEmpty) {
+                  return Column(
+                    children: [
+                      SizedBox(height: 16.h),
+                      _buildMarkAllReadButton(context),
+                      SizedBox(height: 24.h),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink();
+              }
+              final n = filtered[index];
+              return NotificationItem(key: ValueKey(n.id), notification: n);
+            },
+          );
         },
       );
-    },
-  );
 
   Widget _buildMarkAllReadButton(BuildContext context) => Center(
     child: Column(
@@ -100,9 +102,18 @@ class _NotificationListState extends State<NotificationList> {
           decoration: BoxDecoration(
             color: context.colors.surface,
             shape: BoxShape.circle,
-            boxShadow: [BoxShadow(color: context.colors.primary.withValues(alpha: 0.3), blurRadius: 15)],
+            boxShadow: [
+              BoxShadow(
+                color: context.colors.primary.withValues(alpha: 0.3),
+                blurRadius: 15,
+              ),
+            ],
           ),
-          child: Icon(Icons.check, color: context.colors.textPrimary, size: 28.w),
+          child: Icon(
+            Icons.check,
+            color: context.colors.textPrimary,
+            size: 28.w,
+          ),
         ),
 
         SizedBox(height: 12.h),

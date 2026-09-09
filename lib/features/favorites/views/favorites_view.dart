@@ -37,7 +37,9 @@ class FavoritesView extends StatelessWidget {
             icon: Icons.favorite_border_rounded,
             actionLabel: localization.login_button,
             onActionTap: () {
-              unawaited(navigateWithTransition<void>(context, const AuthView()));
+              unawaited(
+                navigateWithTransition<void>(context, const AuthView()),
+              );
             },
           ),
         ),
@@ -60,14 +62,18 @@ class FavoritesView extends StatelessWidget {
             value: getIt<FavoriteCubit>(),
             child: BlocBuilder<FavoriteCubit, FavoriteState>(
               builder: (context, state) {
-                final products = state is FavoriteLoaded
-                    ? state.favoriteProducts
-                    : state is FavoriteSuccess
-                    ? state.favoriteProducts
-                    : <Product>[];
+                final products = switch (state) {
+                  FavoriteLoaded(:final favoriteProducts) ||
+                  FavoriteSuccess(:final favoriteProducts) => favoriteProducts,
+                  _ => const <Product>[],
+                };
 
                 final isLoading = state is FavoriteLoading;
                 final isError = state is FavoriteError;
+                final errorMessage = switch (state) {
+                  FavoriteError(:final message) => message,
+                  _ => null,
+                };
 
                 if (products.isEmpty && !isLoading) {
                   return AppEmptyState(
@@ -80,13 +86,17 @@ class FavoritesView extends StatelessWidget {
                 return CustomScrollView(
                   slivers: [
                     SliverPadding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 12.h,
+                      ),
                       sliver: AppSliverGrid<Product>(
                         items: products,
                         isLoading: isLoading,
                         isError: isError,
-                        errorMessage: state is FavoriteError ? state.message : null,
-                        itemBuilder: (context, product, index) => ProductGridCard(product: product),
+                        errorMessage: errorMessage,
+                        itemBuilder: (context, product, index) =>
+                            ProductGridCard(product: product),
                       ),
                     ),
                   ],

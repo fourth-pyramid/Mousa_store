@@ -16,9 +16,11 @@ class HomeRecentlyAddedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
     buildWhen: (previous, current) =>
-        previous.recentlyStatus != current.recentlyStatus || previous.recentlyProducts != current.recentlyProducts,
+        previous.recentlyStatus != current.recentlyStatus ||
+        previous.recentlyProducts != current.recentlyProducts,
     builder: (context, state) {
-      if (state.recentlyProducts.isEmpty && state.recentlyStatus != RequestStatus.loading) {
+      if (state.recentlyProducts.isEmpty &&
+          state.recentlyStatus != RequestStatus.loading) {
         return const SizedBox.shrink();
       }
 
@@ -34,7 +36,8 @@ class HomeRecentlyAddedSection extends StatelessWidget {
             isError: state.recentlyStatus == RequestStatus.failure,
             errorMessage: state.errorMessage,
             extractProductSummary: _extractProductSummary,
-            favoriteButtonBuilder: (product) => FavoriteButton(productId: product.id, product: product),
+            favoriteButtonBuilder: (product) =>
+                FavoriteButton(productId: product.id, product: product),
           ),
         ],
       );
@@ -47,6 +50,8 @@ class HomeRecentlyAddedSection extends StatelessWidget {
     price: product.displayPrice,
     description: product.desc,
     imagePath: product.displayImage,
-    offers: (product.offers ?? []).map((offer) => BaseOffer(discountPrice: offer.discountPrice.toInt())).toList(),
+    offers: (product.offers ?? [])
+        .map((offer) => BaseOffer(discountPrice: offer.discountPrice.toInt()))
+        .toList(),
   );
 }

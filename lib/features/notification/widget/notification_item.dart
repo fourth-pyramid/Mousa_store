@@ -72,7 +72,9 @@ class NotificationItem extends StatelessWidget {
               final item = e as Map<String, dynamic>;
               final id = item['id'] is int
                   ? item['id']
-                  : (item['id'] is String ? int.tryParse(item['id'] as String) : null);
+                  : (item['id'] is String
+                        ? int.tryParse(item['id'] as String)
+                        : null);
               if (id == productId) {
                 isInFavorites = true;
                 break;
@@ -124,23 +126,25 @@ class NotificationItem extends StatelessWidget {
       if (!context.mounted) return;
 
       if (productId != null && _shouldNavigateToProduct(notification.type)) {
-        unawaited(Navigator.push<void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (context) => ProductDetailsView(productId: productId),
+        unawaited(
+          Navigator.push<void>(
+            context,
+            MaterialPageRoute<void>(
+              builder: (context) => ProductDetailsView(productId: productId),
+            ),
           ),
-        ));
-      }
-      else if (orderId != null &&
+        );
+      } else if (orderId != null &&
           notification.type == NotificationType.orderStatus) {
-        unawaited(Navigator.push<void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (context) => OrderDetailsView(orderId: orderId),
+        unawaited(
+          Navigator.push<void>(
+            context,
+            MaterialPageRoute<void>(
+              builder: (context) => OrderDetailsView(orderId: orderId),
+            ),
           ),
-        ));
-      }
-      else {
+        );
+      } else {
         _showErrorMessage(context);
       }
     } else {

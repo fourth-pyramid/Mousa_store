@@ -6,13 +6,18 @@ import 'package:mousa_store/core/models/offer.dart' as core_offer;
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_badge.dart';
 import 'package:mousa_store/core/widgets/favorite_button.dart';
-import 'package:mousa_store/features/product/model/product.dart' as core_product;
+import 'package:mousa_store/features/product/model/product.dart'
+    as core_product;
 import 'package:mousa_store/features/product/model/product_details_response.dart';
 import 'package:mousa_store/features/product/view/widgets/product_image_carousel.dart';
 import 'package:mousa_store/features/product/view/widgets/product_share_helper.dart';
 
 class ProductInfoSection extends StatelessWidget {
-  const ProductInfoSection({required this.product, this.selectedVariant, super.key});
+  const ProductInfoSection({
+    required this.product,
+    this.selectedVariant,
+    super.key,
+  });
 
   final ProductDetail product;
   final ProductVariant? selectedVariant;
@@ -46,7 +51,11 @@ class ProductInfoSection extends StatelessWidget {
 
         _BrandAndRatingRow(product: product),
 
-        _NameAndPriceRow(product: product, price: price, discountedPrice: discountedPrice),
+        _NameAndPriceRow(
+          product: product,
+          price: price,
+          discountedPrice: discountedPrice,
+        ),
       ],
     );
   }
@@ -115,7 +124,10 @@ class _ActionsRow extends StatelessWidget {
     child: Row(
       children: [
         if (discountedPrice != null)
-          AppBadge(label: '-${activeOffer!.disscountPrice.toInt()}%', variant: AppBadgeVariant.accent),
+          AppBadge(
+            label: '-${activeOffer!.disscountPrice.toInt()}%',
+            variant: AppBadgeVariant.accent,
+          ),
         const Spacer(),
         CircleAvatar(
           backgroundColor: context.colors.surface,
@@ -167,7 +179,11 @@ class _ActionsRow extends StatelessWidget {
 }
 
 class _NameAndPriceRow extends StatelessWidget {
-  const _NameAndPriceRow({required this.product, required this.price, required this.discountedPrice});
+  const _NameAndPriceRow({
+    required this.product,
+    required this.price,
+    required this.discountedPrice,
+  });
 
   final ProductDetail product;
   final double price;
@@ -180,7 +196,12 @@ class _NameAndPriceRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: Text(product.name, style: context.typography.titleMedium.copyWith(fontWeight: FontWeight.bold)),
+          child: Text(
+            product.name,
+            style: context.typography.titleMedium.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         SizedBox(width: 16.w),
         Column(

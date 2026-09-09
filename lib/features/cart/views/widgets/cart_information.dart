@@ -23,10 +23,7 @@ class CartInformation extends StatelessWidget {
 
     final totalPrice = cart.total;
     return Container(
-      padding: EdgeInsetsDirectional.symmetric(
-        horizontal: 16.w,
-        vertical: 8.h,
-      ),
+      padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w, vertical: 8.h),
       height: 145.h,
       width: double.infinity,
       child: Column(

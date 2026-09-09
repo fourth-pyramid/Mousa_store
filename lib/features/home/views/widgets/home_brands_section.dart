@@ -26,8 +26,7 @@ class HomeBrandsSection extends StatelessWidget {
         previous.brandsStatus != current.brandsStatus ||
         previous.brands != current.brands,
     builder: (context, state) {
-      if (state.brands.isEmpty &&
-          state.brandsStatus != RequestStatus.loading) {
+      if (state.brands.isEmpty && state.brandsStatus != RequestStatus.loading) {
         return const SizedBox.shrink();
       }
 
@@ -54,7 +53,7 @@ class HomeBrandsSection extends StatelessWidget {
           SizedBox(
             height: 88.h,
             child: state.brandsStatus == RequestStatus.loading
-                ? _buildLoadingSkeleton(context)
+                ? const _BrandsLoadingSkeleton()
                 : ListView.separated(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     scrollDirection: Axis.horizontal,
@@ -70,8 +69,13 @@ class HomeBrandsSection extends StatelessWidget {
       );
     },
   );
+}
 
-  Widget _buildLoadingSkeleton(BuildContext context) => Skeletonizer(
+class _BrandsLoadingSkeleton extends StatelessWidget {
+  const _BrandsLoadingSkeleton();
+
+  @override
+  Widget build(BuildContext context) => Skeletonizer(
     child: ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       scrollDirection: Axis.horizontal,
@@ -82,22 +86,20 @@ class HomeBrandsSection extends StatelessWidget {
         width: 72.w,
         child: Column(
           children: [
-            Container(
-              width: 64.w,
-              height: 64.w,
+            DecoratedBox(
               decoration: BoxDecoration(
                 color: context.colors.surface,
                 borderRadius: BorderRadius.circular(18.r),
               ),
+              child: SizedBox(width: 64.w, height: 64.w),
             ),
             SizedBox(height: 6.h),
-            Container(
-              width: 50.w,
-              height: 12.h,
+            DecoratedBox(
               decoration: BoxDecoration(
                 color: context.colors.surfaceStrong,
                 borderRadius: BorderRadius.circular(4.r),
               ),
+              child: SizedBox(width: 50.w, height: 12.h),
             ),
           ],
         ),
@@ -151,9 +153,8 @@ class _HomeBrandCard extends StatelessWidget {
             child: AppImage(
               image: brand.imagePath,
               borderRadius: BorderRadius.circular(16.r),
-              placeholder: (_, _) => ColoredBox(
-                color: context.colors.surfaceStrong,
-              ),
+              placeholder: (_, _) =>
+                  ColoredBox(color: context.colors.surfaceStrong),
               errorWidget: (_, _, _) => ColoredBox(
                 color: context.colors.surfaceStrong,
                 child: Icon(

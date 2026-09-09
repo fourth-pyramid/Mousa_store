@@ -15,22 +15,19 @@ class ThemeSelectionSheet extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildThemeOption(
-            context,
+          _ThemeOptionTile(
             title: context.l10n.light_mode_text,
             value: ThemeMode.light,
             groupValue: currentTheme,
             icon: Icons.light_mode_outlined,
           ),
-          _buildThemeOption(
-            context,
+          _ThemeOptionTile(
             title: context.l10n.dark_mode_text,
             value: ThemeMode.dark,
             groupValue: currentTheme,
             icon: Icons.dark_mode_outlined,
           ),
-          _buildThemeOption(
-            context,
+          _ThemeOptionTile(
             title: context.l10n.system_mode_text,
             value: ThemeMode.system,
             groupValue: currentTheme,
@@ -40,14 +37,23 @@ class ThemeSelectionSheet extends StatelessWidget {
       );
     },
   );
+}
 
-  Widget _buildThemeOption(
-    BuildContext context, {
-    required String title,
-    required ThemeMode value,
-    required ThemeMode groupValue,
-    required IconData icon,
-  }) {
+class _ThemeOptionTile extends StatelessWidget {
+  const _ThemeOptionTile({
+    required this.title,
+    required this.value,
+    required this.groupValue,
+    required this.icon,
+  });
+
+  final String title;
+  final ThemeMode value;
+  final ThemeMode groupValue;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
     final isSelected = value == groupValue;
     final activeColor = context.colors.textPrimary;
     final inactiveColor = context.colors.textSecondary;
@@ -55,7 +61,9 @@ class ThemeSelectionSheet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Material(
-        color: isSelected ? context.colors.surfaceStrong : context.colors.transparent,
+        color: isSelected
+            ? context.colors.surfaceStrong
+            : context.colors.transparent,
         borderRadius: context.radius.smBorder,
         clipBehavior: Clip.antiAlias,
         child: ListTile(
@@ -76,7 +84,9 @@ class ThemeSelectionSheet extends StatelessWidget {
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
-          trailing: isSelected ? Icon(Icons.check_circle, color: activeColor) : null,
+          trailing: isSelected
+              ? Icon(Icons.check_circle, color: activeColor)
+              : null,
         ),
       ),
     );

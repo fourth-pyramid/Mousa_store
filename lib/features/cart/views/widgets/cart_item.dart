@@ -75,11 +75,16 @@ class _CartItemWidgetState extends State<CartItemWidget> {
   Widget build(BuildContext context) {
     String? formattedAttributes;
     if (widget.attributes != null && widget.attributes!.isNotEmpty) {
-      formattedAttributes = widget.attributes!.entries.map((e) => '${e.key}: ${e.value}').join(', ');
+      formattedAttributes = widget.attributes!.entries
+          .map((e) => '${e.key}: ${e.value}')
+          .join(', ');
     }
 
     return Padding(
-      padding: EdgeInsetsDirectional.symmetric(horizontal: 6.0.w, vertical: 10.h),
+      padding: EdgeInsetsDirectional.symmetric(
+        horizontal: 6.0.w,
+        vertical: 10.h,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -94,7 +99,11 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   height: 95.h,
                   width: 90.w,
                   color: context.colors.surface,
-                  child: Icon(Icons.sports_soccer, size: 24.w, color: context.colors.textSecondary),
+                  child: Icon(
+                    Icons.sports_soccer,
+                    size: 24.w,
+                    color: context.colors.textSecondary,
+                  ),
                 ),
               ),
               if (widget.offers != null && widget.offers!.isNotEmpty)
@@ -102,7 +111,10 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   top: 0,
                   end: 0,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.w,
+                      vertical: 2.h,
+                    ),
                     decoration: BoxDecoration(
                       color: context.colors.primary,
                       borderRadius: BorderRadiusDirectional.only(
@@ -128,7 +140,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(widget.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: context.typography.h3),
+                Text(
+                  widget.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.typography.h3,
+                ),
 
                 if (formattedAttributes != null)
                   Padding(
@@ -178,17 +195,22 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                                       final newQ = q + 1;
                                       _quantityNotifier.value = newQ;
                                       unawaited(
-                                        context.read<CartCubit>().updateQuantity(
-                                          cartItemId: widget.cartItemId,
-                                          quantity: newQ,
-                                        ),
+                                        context
+                                            .read<CartCubit>()
+                                            .updateQuantity(
+                                              cartItemId: widget.cartItemId,
+                                              quantity: newQ,
+                                            ),
                                       );
                                     },
                             ),
                           ),
                           ValueListenableBuilder<int>(
                             valueListenable: _quantityNotifier,
-                            builder: (context, q, _) => Text(q.toString(), style: context.typography.bodySmall),
+                            builder: (context, q, _) => Text(
+                              q.toString(),
+                              style: context.typography.bodySmall,
+                            ),
                           ),
                           ValueListenableBuilder<int>(
                             valueListenable: _quantityNotifier,
@@ -203,10 +225,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                                       final newQ = q - 1;
                                       _quantityNotifier.value = newQ;
                                       unawaited(
-                                        context.read<CartCubit>().updateQuantity(
-                                          cartItemId: widget.cartItemId,
-                                          quantity: newQ,
-                                        ),
+                                        context
+                                            .read<CartCubit>()
+                                            .updateQuantity(
+                                              cartItemId: widget.cartItemId,
+                                              quantity: newQ,
+                                            ),
                                       );
                                     },
                             ),
@@ -227,7 +251,9 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     children: [
                       Text(
                         '${context.l10n.piece_price_text}: ${_unitPrice.toStringAsFixed(2)} ${context.l10n.egp_text}',
-                        style: context.typography.bodySmall.copyWith(color: context.colors.textSecondary),
+                        style: context.typography.bodySmall.copyWith(
+                          color: context.colors.textSecondary,
+                        ),
                       ),
                       if (widget.offers != null && widget.offers!.isNotEmpty)
                         Text(
@@ -245,7 +271,10 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   valueListenable: _quantityNotifier,
                   builder: (context, q, _) => Text(
                     '${context.l10n.total_text}: ${(_unitPrice * q).toStringAsFixed(2)} ${context.l10n.egp_text}',
-                    style: context.typography.h3.copyWith(color: context.colors.primary, fontWeight: FontWeight.bold),
+                    style: context.typography.h3.copyWith(
+                      color: context.colors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

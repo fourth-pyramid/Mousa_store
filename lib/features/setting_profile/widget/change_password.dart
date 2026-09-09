@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 import 'package:mousa_store/core/widgets/custom_form_field.dart';
-import 'package:mousa_store/features/setting_profile/service/profile_service.dart';
 import 'package:mousa_store/features/setting_profile/view_model/profile_cubit/profile_cubit.dart';
 
 class ChangePasswordSetting extends StatefulWidget {
@@ -18,15 +18,25 @@ class ChangePasswordSetting extends StatefulWidget {
 }
 
 class _ChangePasswordSettingState extends State<ChangePasswordSetting> {
-  final TextEditingController _oldPasswordController = TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  late final TextEditingController _oldPasswordController;
+  late final TextEditingController _newPasswordController;
+  late final TextEditingController _confirmPasswordController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final ValueNotifier<bool> _obscureOldNotifier = ValueNotifier<bool>(true);
-  final ValueNotifier<bool> _obscureNewNotifier = ValueNotifier<bool>(true);
-  final ValueNotifier<bool> _obscureConfirmNotifier = ValueNotifier<bool>(true);
+  late final ValueNotifier<bool> _obscureOldNotifier;
+  late final ValueNotifier<bool> _obscureNewNotifier;
+  late final ValueNotifier<bool> _obscureConfirmNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _oldPasswordController = TextEditingController();
+    _newPasswordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+    _obscureOldNotifier = ValueNotifier<bool>(true);
+    _obscureNewNotifier = ValueNotifier<bool>(true);
+    _obscureConfirmNotifier = ValueNotifier<bool>(true);
+  }
 
   @override
   void dispose() {
@@ -41,7 +51,7 @@ class _ChangePasswordSettingState extends State<ChangePasswordSetting> {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-    create: (context) => ProfileCubit(ProfileService()),
+    create: (context) => getIt<ProfileCubit>(),
     child: BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is ProfileUpdated) {
@@ -65,10 +75,7 @@ class _ChangePasswordSettingState extends State<ChangePasswordSetting> {
           body: Form(
             key: _formKey,
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16.w,
-                vertical: 10.h,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
               child: Column(
                 children: [
                   Column(
@@ -165,11 +172,7 @@ class _ChangePasswordSettingState extends State<ChangePasswordSetting> {
           ),
           bottomNavigationBar: SafeArea(
             child: Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-                right: 16.w,
-                bottom: 8.h,
-              ),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 8.h),
               child: CustomButton(
                 isLoading: isLoading,
                 text: Text(context.l10n.save_text),

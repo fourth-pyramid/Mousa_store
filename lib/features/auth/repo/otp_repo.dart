@@ -1,4 +1,4 @@
-﻿import 'package:mousa_store/features/auth/model/otp_response.dart';
+import 'package:mousa_store/features/auth/model/otp_response.dart';
 import 'package:mousa_store/features/auth/service/otp_service.dart';
 
 class OtpRepo {
@@ -20,8 +20,7 @@ class OtpRepo {
   Future<OtpResponse> sendCodeForForgetPassword({
     required String email,
     required String otp,
-  }) async =>
-      otpService.sendCodeForForgetPassword(email: email, otp: otp);
+  }) async => otpService.sendCodeForForgetPassword(email: email, otp: otp);
 
   Future<OtpResponse> resendOtpForForgetPassword({
     required String email,

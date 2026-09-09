@@ -13,7 +13,8 @@ class AppSliverGrid<T> extends StatelessWidget {
     this.crossAxisCount = 2,
     this.mainAxisSpacing = 8,
     this.crossAxisSpacing = 8,
-    this.childAspectRatio = 0.74, // ponytail: ratio 0.74 fits product card tightly without overflow
+    this.childAspectRatio =
+        0.74, // ponytail: ratio 0.74 fits product card tightly without overflow
     this.emptyWidget,
     this.loadingItemCount = 6,
     this.loadingBuilder,
@@ -47,7 +48,14 @@ class AppSliverGrid<T> extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             (context, index) => loadingBuilder != null
                 ? loadingBuilder!(context, index)
-                : Card(child: ListTile(title: Text(context.l10n.loading_text, style: context.typography.body))),
+                : Card(
+                    child: ListTile(
+                      title: Text(
+                        context.l10n.loading_text,
+                        style: context.typography.body,
+                      ),
+                    ),
+                  ),
             childCount: loadingItemCount,
           ),
         ),
@@ -57,14 +65,26 @@ class AppSliverGrid<T> extends StatelessWidget {
     if (isError) {
       return SliverFillRemaining(
         hasScrollBody: false,
-        child: Center(child: Text(errorMessage ?? context.l10n.error_occurred_text, style: context.typography.body)),
+        child: Center(
+          child: Text(
+            errorMessage ?? context.l10n.error_occurred_text,
+            style: context.typography.body,
+          ),
+        ),
       );
     }
 
     if (items.isEmpty) {
       return SliverFillRemaining(
         hasScrollBody: false,
-        child: emptyWidget ?? Center(child: Text(context.l10n.empty_category_items_title, style: context.typography.body)),
+        child:
+            emptyWidget ??
+            Center(
+              child: Text(
+                context.l10n.empty_category_items_title,
+                style: context.typography.body,
+              ),
+            ),
       );
     }
 

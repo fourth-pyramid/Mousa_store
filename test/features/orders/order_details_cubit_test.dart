@@ -41,9 +41,9 @@ void main() {
     blocTest<OrderDetailsCubit, OrderDetailsState>(
       'getOrderDetails emits [loading, success] with order details',
       build: () {
-        when(() => mockOrdersRepo.getOrderDetails(100)).thenAnswer(
-          (_) async => sampleDetails,
-        );
+        when(
+          () => mockOrdersRepo.getOrderDetails(100),
+        ).thenAnswer((_) async => sampleDetails);
         return OrderDetailsCubit(mockOrdersRepo);
       },
       act: (cubit) => cubit.getOrderDetails(100),

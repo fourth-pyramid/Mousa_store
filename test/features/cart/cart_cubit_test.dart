@@ -61,7 +61,9 @@ void main() {
     blocTest<CartCubit, CartState>(
       'emits [loading, failure] when getCart throws an exception',
       build: () {
-        when(() => mockCartRepo.getCart()).thenThrow(Exception('Network error'));
+        when(
+          () => mockCartRepo.getCart(),
+        ).thenThrow(Exception('Network error'));
         return CartCubit(mockCartRepo);
       },
       act: (cubit) => cubit.getCart(),

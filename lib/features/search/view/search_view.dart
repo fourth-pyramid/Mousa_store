@@ -23,12 +23,14 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   Timer? _debounceTimer;
-  final TextEditingController _searchController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
+  late final TextEditingController _searchController;
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
+    _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
   }
 
@@ -76,7 +78,9 @@ class _SearchViewState extends State<SearchView> {
       child: InternetStateManager(
         onRestoreInternetConnection: () {
           if (_searchController.text.isNotEmpty) {
-            unawaited(context.read<SearchCubit>().search(_searchController.text));
+            unawaited(
+              context.read<SearchCubit>().search(_searchController.text),
+            );
           }
         },
         child: BlocBuilder<SearchCubit, SearchState>(
@@ -90,16 +94,23 @@ class _SearchViewState extends State<SearchView> {
                 controller: _scrollController,
                 slivers: [
                   SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 12.h,
+                    ),
                     sliver: AppSliverGrid<Product>(
                       items: searchState.products,
                       isLoading: false,
-                      itemBuilder: (context, product, index) => ProductGridCard(product: product),
+                      itemBuilder: (context, product, index) =>
+                          ProductGridCard(product: product),
                     ),
                   ),
                   if (searchState.isLoadingMore)
                     const SliverToBoxAdapter(
-                      child: Padding(padding: EdgeInsets.symmetric(vertical: 16), child: CustomLoadingIndicator()),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: CustomLoadingIndicator(),
+                      ),
                     ),
                 ],
               );
@@ -117,7 +128,9 @@ class _SearchViewState extends State<SearchView> {
               return Center(
                 child: Text(
                   searchState.errorMessage ?? context.l10n.search_failed_text,
-                  style: context.typography.bodySmall.copyWith(color: context.colors.error),
+                  style: context.typography.bodySmall.copyWith(
+                    color: context.colors.error,
+                  ),
                 ),
               );
             }

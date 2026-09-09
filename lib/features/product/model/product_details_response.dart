@@ -361,13 +361,12 @@ class ProductVariant {
     minQuantity: json['min_quantity'] is int ? json['min_quantity'] as int : 1,
     stock: json['stock'] is int ? json['stock'] as int : 0,
     imagePath: json['image_path'] as String? ?? '',
-    imagesPath: List<String>.from((json['images_path'] ?? const <dynamic>[]) as List<dynamic>),
+    imagesPath: List<String>.from(
+      (json['images_path'] ?? const <dynamic>[]) as List<dynamic>,
+    ),
     attributes: json['attributes'] is Map<String, dynamic>
         ? (json['attributes'] as Map<String, dynamic>).map(
-            (k, v) => MapEntry(
-              ProductDetail._normalizeKey(k),
-              v.toString(),
-            ),
+            (k, v) => MapEntry(ProductDetail._normalizeKey(k), v.toString()),
           )
         : null,
     offers: (json['offers'] as List<dynamic>? ?? [])

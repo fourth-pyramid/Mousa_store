@@ -17,5 +17,6 @@ abstract class AppRadius {
   static BorderRadius get lgBorder => BorderRadius.circular(lg);
   static BorderRadius get xlBorder => BorderRadius.circular(xl);
   static BorderRadius get pillBorder => BorderRadius.circular(pill);
-  static BorderRadius get bottomSheet => BorderRadius.vertical(top: Radius.circular(xl));
+  static BorderRadius get bottomSheet =>
+      BorderRadius.vertical(top: Radius.circular(xl));
 }

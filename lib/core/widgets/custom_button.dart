@@ -60,13 +60,18 @@ class AppButton extends StatelessWidget {
         break;
     }
 
-    final effectiveHeight = height != null ? height!.h : context.sizes.buttonHeight;
+    final effectiveHeight = height != null
+        ? height!.h
+        : context.sizes.buttonHeight;
 
     final Widget child = isLoading
         ? SizedBox(
             width: 20.w,
             height: 20.h,
-            child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(fg)),
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(fg),
+            ),
           )
         : Row(
             mainAxisSize: MainAxisSize.min,
@@ -80,12 +85,17 @@ class AppButton extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-              if (icon != null) ...[if (text.isNotEmpty) SizedBox(width: 8.w), icon!],
+              if (icon != null) ...[
+                if (text.isNotEmpty) SizedBox(width: 8.w),
+                icon!,
+              ],
             ],
           );
 
     final hasContent = text.isNotEmpty || icon != null;
-    final effectiveWidth = width != null && width != double.infinity ? width!.w : width;
+    final effectiveWidth = width != null && width != double.infinity
+        ? width!.w
+        : width;
 
     return SizedBox(
       width: isFullWidth ? (effectiveWidth ?? double.infinity) : effectiveWidth,
@@ -97,7 +107,9 @@ class AppButton extends StatelessWidget {
           elevation: 0,
           side: border,
           shape: RoundedRectangleBorder(borderRadius: context.radius.mdBorder),
-          padding: EdgeInsets.symmetric(horizontal: text.isNotEmpty ? 24.w : 12.w),
+          padding: EdgeInsets.symmetric(
+            horizontal: text.isNotEmpty ? 24.w : 12.w,
+          ),
         ),
         onPressed: isLoading ? null : onPressed,
         child: hasContent ? child : const SizedBox.shrink(),

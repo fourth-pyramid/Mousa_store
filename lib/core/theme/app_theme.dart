@@ -18,7 +18,8 @@ class AppThemeFactory {
         toolbarHeight: 56,
         surfaceTintColor: Colors.transparent,
         backgroundColor: AppColorTokens.background,
-        foregroundColor: AppColorTokens.textPrimary, // ponytail: textPrimary prevents white-on-white invisible appbar text
+        foregroundColor: AppColorTokens
+            .textPrimary, // ponytail: textPrimary prevents white-on-white invisible appbar text
         elevation: 0,
         centerTitle: true,
         systemOverlayStyle: const SystemUiOverlayStyle(
@@ -56,21 +57,33 @@ class AppThemeFactory {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColorTokens.surface,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        border: OutlineInputBorder(borderRadius: AppRadius.smBorder, borderSide: BorderSide.none),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: AppRadius.smBorder,
+          borderSide: BorderSide.none,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
           borderSide: const BorderSide(color: AppColorTokens.surfaceStrong),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
-          borderSide: const BorderSide(color: AppColorTokens.primary, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColorTokens.primary,
+            width: 1.5,
+          ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
           borderSide: const BorderSide(color: AppColorTokens.error),
         ),
-        hintStyle: GoogleFonts.cairo(color: AppColorTokens.textMuted, fontSize: 13),
+        hintStyle: GoogleFonts.cairo(
+          color: AppColorTokens.textMuted,
+          fontSize: 13,
+        ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColorTokens.background,
@@ -81,16 +94,24 @@ class AppThemeFactory {
         foregroundColor: Colors.white,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(backgroundColor: AppColorTokens.accent, foregroundColor: Colors.white),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColorTokens.accent,
+          foregroundColor: Colors.white,
+        ),
       ),
-      dividerTheme: const DividerThemeData(color: AppColorTokens.surfaceStrong, thickness: 1, space: 1),
+      dividerTheme: const DividerThemeData(
+        color: AppColorTokens.surfaceStrong,
+        thickness: 1,
+        space: 1,
+      ),
     );
   }
 
   ThemeData _buildDarkTheme() {
     final baseTheme = ThemeData(brightness: Brightness.dark);
     return baseTheme.copyWith(
-      primaryColor: AppColorTokens.darkTextPrimary, // ponytail: dark mode primary must be white for high contrast
+      primaryColor: AppColorTokens
+          .darkTextPrimary, // ponytail: dark mode primary must be white for high contrast
       scaffoldBackgroundColor: AppColorTokens.darkBackground,
       textTheme: GoogleFonts.cairoTextTheme(baseTheme.textTheme),
       appBarTheme: AppBarTheme(
@@ -136,21 +157,33 @@ class AppThemeFactory {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColorTokens.darkSurface,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        border: OutlineInputBorder(borderRadius: AppRadius.smBorder, borderSide: BorderSide.none),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: AppRadius.smBorder,
+          borderSide: BorderSide.none,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
           borderSide: const BorderSide(color: AppColorTokens.darkSurfaceStrong),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
-          borderSide: const BorderSide(color: AppColorTokens.darkTextPrimary, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColorTokens.darkTextPrimary,
+            width: 1.5,
+          ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
           borderSide: const BorderSide(color: AppColorTokens.error),
         ),
-        hintStyle: GoogleFonts.cairo(color: AppColorTokens.darkTextMuted, fontSize: 13),
+        hintStyle: GoogleFonts.cairo(
+          color: AppColorTokens.darkTextMuted,
+          fontSize: 13,
+        ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: AppColorTokens.darkSurface,
@@ -161,9 +194,16 @@ class AppThemeFactory {
         foregroundColor: Colors.white,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(backgroundColor: AppColorTokens.accent, foregroundColor: Colors.white),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColorTokens.accent,
+          foregroundColor: Colors.white,
+        ),
       ),
-      dividerTheme: const DividerThemeData(color: AppColorTokens.darkSurfaceStrong, thickness: 1, space: 1),
+      dividerTheme: const DividerThemeData(
+        color: AppColorTokens.darkSurfaceStrong,
+        thickness: 1,
+        space: 1,
+      ),
     );
   }
 }

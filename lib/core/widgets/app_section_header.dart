@@ -18,50 +18,50 @@ class AppSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
+    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title.toUpperCase(),
+                style: context.typography.h3.copyWith(
+                  color: context.colors.textPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (subtitle != null) ...[
+                const SizedBox(height: 2),
                 Text(
-                  title.toUpperCase(),
-                  style: context.typography.h3.copyWith(
-                    color: context.colors.textPrimary,
-                    fontWeight: FontWeight.bold,
+                  subtitle!,
+                  style: context.typography.bodySmall.copyWith(
+                    color: context.colors.textSecondary,
                   ),
                 ),
-                if (subtitle != null) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle!,
-                    style: context.typography.bodySmall.copyWith(
-                      color: context.colors.textSecondary,
-                    ),
-                  ),
-                ],
               ],
-            ),
+            ],
           ),
-          if (actionLabel != null && onActionTap != null)
-            GestureDetector(
-              onTap: onActionTap,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  actionLabel!.toUpperCase(),
-                  style: context.typography.labelLarge.copyWith(
-                    color: context.colors.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
+        ),
+        if (actionLabel != null && onActionTap != null)
+          GestureDetector(
+            onTap: onActionTap,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text(
+                actionLabel!.toUpperCase(),
+                style: context.typography.labelLarge.copyWith(
+                  color: context.colors.primary,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-        ],
-      ),
-    );
+          ),
+      ],
+    ),
+  );
 }

@@ -21,9 +21,11 @@ class HomeOffersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
     buildWhen: (previous, current) =>
-        previous.offersStatus != current.offersStatus || previous.offerProducts != current.offerProducts,
+        previous.offersStatus != current.offersStatus ||
+        previous.offerProducts != current.offerProducts,
     builder: (context, state) {
-      if (state.offerProducts.isEmpty && state.offersStatus != RequestStatus.loading) {
+      if (state.offerProducts.isEmpty &&
+          state.offersStatus != RequestStatus.loading) {
         return const SizedBox.shrink();
       }
 
@@ -36,7 +38,10 @@ class HomeOffersSection extends StatelessWidget {
             actionLabel: context.l10n.view_all_text,
             onActionTap: () {
               unawaited(
-                navigateWithTransition<void>(context, const CategoryItemsView(fetchType: ItemFetchType.offers)),
+                navigateWithTransition<void>(
+                  context,
+                  const CategoryItemsView(fetchType: ItemFetchType.offers),
+                ),
               );
             },
           ),
@@ -47,7 +52,8 @@ class HomeOffersSection extends StatelessWidget {
             isError: state.offersStatus == RequestStatus.failure,
             errorMessage: state.errorMessage,
             extractProductSummary: _extractProductSummary,
-            favoriteButtonBuilder: (product) => FavoriteButton(productId: product.id, product: product),
+            favoriteButtonBuilder: (product) =>
+                FavoriteButton(productId: product.id, product: product),
           ),
         ],
       );
@@ -60,6 +66,8 @@ class HomeOffersSection extends StatelessWidget {
     price: product.displayPrice,
     description: product.desc,
     imagePath: product.displayImage,
-    offers: (product.offers ?? []).map((offer) => BaseOffer(discountPrice: offer.discountPrice.toInt())).toList(),
+    offers: (product.offers ?? [])
+        .map((offer) => BaseOffer(discountPrice: offer.discountPrice.toInt()))
+        .toList(),
   );
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use // Compatibility with flutter_screenutil and custom form styling APIs
 
 import 'dart:async';
 
@@ -41,7 +41,9 @@ class _CashOnDeliveryContent extends StatefulWidget {
 }
 
 class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
-  final ValueNotifier<_CheckoutFormState> _formStateNotifier = ValueNotifier(const _CheckoutFormState());
+  final ValueNotifier<_CheckoutFormState> _formStateNotifier = ValueNotifier(
+    const _CheckoutFormState(),
+  );
 
   final TextEditingController _tempCityController = TextEditingController();
   final TextEditingController _tempStreetController = TextEditingController();
@@ -75,7 +77,9 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
       final data = response.data as Map<String, dynamic>;
       final innerData = data['data'] as Map<String, dynamic>;
       final listData = innerData['data'] as List;
-      final addresses = listData.map((e) => Address.fromJson(e as Map<String, dynamic>)).toList();
+      final addresses = listData
+          .map((e) => Address.fromJson(e as Map<String, dynamic>))
+          .toList();
 
       if (_isDisposed) return [];
 
@@ -116,18 +120,25 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
       clearGovernorate: true,
     );
 
-    unawaited(context.read<CheckoutCubit>().getShippingFee(governorateId: govId));
+    unawaited(
+      context.read<CheckoutCubit>().getShippingFee(governorateId: govId),
+    );
   }
 
   void _selectTemporaryAddress(bool isTemporary) {
     if (!isTemporary) return;
 
-    _formStateNotifier.value = _formStateNotifier.value.copyWith(isTemporaryAddress: true, clearSelectedAddress: true);
+    _formStateNotifier.value = _formStateNotifier.value.copyWith(
+      isTemporaryAddress: true,
+      clearSelectedAddress: true,
+    );
 
     final currentGov = _formStateNotifier.value.selectedGovernorate;
     if (currentGov != null) {
       final govId = getGovernorateIdByName(currentGov);
-      unawaited(context.read<CheckoutCubit>().getShippingFee(governorateId: govId));
+      unawaited(
+        context.read<CheckoutCubit>().getShippingFee(governorateId: govId),
+      );
     } else {
       unawaited(context.read<CheckoutCubit>().getShippingFee());
     }
@@ -136,10 +147,14 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
   void _onGovernorateChanged(String? governorate) {
     if (governorate == null) return;
 
-    _formStateNotifier.value = _formStateNotifier.value.copyWith(selectedGovernorate: governorate);
+    _formStateNotifier.value = _formStateNotifier.value.copyWith(
+      selectedGovernorate: governorate,
+    );
 
     final govId = getGovernorateIdByName(governorate);
-    unawaited(context.read<CheckoutCubit>().getShippingFee(governorateId: govId));
+    unawaited(
+      context.read<CheckoutCubit>().getShippingFee(governorateId: govId),
+    );
   }
 
   String? _validateName(String? value) {
@@ -244,13 +259,18 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(context.l10n.cash_on_delivery_text), backgroundColor: context.colors.background),
+    appBar: AppBar(
+      title: Text(context.l10n.cash_on_delivery_text),
+      backgroundColor: context.colors.background,
+    ),
     body: InternetStateManager(
       onRestoreInternetConnection: () {
         setState(() {
           _addressesFuture = _fetchAddresses();
         });
-        _formStateNotifier.value = _formStateNotifier.value.copyWith(isLoadingShipping: true);
+        _formStateNotifier.value = _formStateNotifier.value.copyWith(
+          isLoadingShipping: true,
+        );
       },
       child: SafeArea(
         child: Form(
@@ -279,9 +299,16 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
     children: [
       Row(
         children: [
-          Icon(Icons.location_on_outlined, size: 20.r, color: context.colors.textPrimary),
+          Icon(
+            Icons.location_on_outlined,
+            size: 20.r,
+            color: context.colors.textPrimary,
+          ),
           SizedBox(width: 8.w),
-          Text(context.l10n.address_text, style: context.typography.titleMedium),
+          Text(
+            context.l10n.address_text,
+            style: context.typography.titleMedium,
+          ),
         ],
       ),
       SizedBox(height: 12.h),
@@ -289,7 +316,8 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
       FutureBuilder<List<Address>>(
         future: _addressesFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting &&
+              !snapshot.hasData) {
             return const Center(child: CustomLoadingIndicator());
           }
 
@@ -298,7 +326,9 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
           return ValueListenableBuilder<_CheckoutFormState>(
             valueListenable: _formStateNotifier,
             builder: (context, formState, _) => RadioGroup<Object?>(
-              groupValue: formState.isTemporaryAddress ? true : formState.selectedAddress,
+              groupValue: formState.isTemporaryAddress
+                  ? true
+                  : formState.selectedAddress,
               onChanged: (value) {
                 if (value is Address) {
                   _selectAddress(value);
@@ -313,7 +343,9 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
                       padding: EdgeInsets.only(bottom: 10.h),
                       child: _AddressRadioTile(
                         address: address,
-                        isSelected: !formState.isTemporaryAddress && formState.selectedAddress == address,
+                        isSelected:
+                            !formState.isTemporaryAddress &&
+                            formState.selectedAddress == address,
                         onTap: () => _selectAddress(address),
                       ),
                     ),
@@ -349,23 +381,38 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
     children: [
       Row(
         children: [
-          Icon(Icons.person_outline, size: 20.r, color: context.colors.textPrimary),
+          Icon(
+            Icons.person_outline,
+            size: 20.r,
+            color: context.colors.textPrimary,
+          ),
           SizedBox(width: 8.w),
-          Text(context.l10n.enter_full_name_text, style: context.typography.titleMedium),
+          Text(
+            context.l10n.enter_full_name_text,
+            style: context.typography.titleMedium,
+          ),
         ],
       ),
       SizedBox(height: 12.h),
       CustomFormField(
         controller: _fullNameController,
         hint: context.l10n.enter_full_name_text,
-        prefixIcon: Icon(Icons.person_outline, size: 20.r, color: context.colors.textSecondary),
+        prefixIcon: Icon(
+          Icons.person_outline,
+          size: 20.r,
+          color: context.colors.textSecondary,
+        ),
         validator: _validateName,
       ),
       SizedBox(height: 12.h),
       CustomFormField(
         controller: _phoneController,
         hint: context.l10n.phone_number_text,
-        prefixIcon: Icon(Icons.phone_outlined, size: 20.r, color: context.colors.textSecondary),
+        prefixIcon: Icon(
+          Icons.phone_outlined,
+          size: 20.r,
+          color: context.colors.textSecondary,
+        ),
         validator: _validatePhone,
         keyboardType: TextInputType.phone,
       ),
@@ -377,7 +424,11 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
     children: [
       Row(
         children: [
-          Icon(Icons.receipt_long_outlined, size: 20.r, color: context.colors.textPrimary),
+          Icon(
+            Icons.receipt_long_outlined,
+            size: 20.r,
+            color: context.colors.textPrimary,
+          ),
           SizedBox(width: 8.w),
           Text(context.l10n.prices_text, style: context.typography.titleMedium),
         ],
@@ -393,15 +444,20 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
         ),
         child: BlocConsumer<CheckoutCubit, CheckoutState>(
           listener: (context, state) {
-            if (state.shippingFeeStatus == RequestStatus.success && state.shippingFee != null) {
+            if (state.shippingFeeStatus == RequestStatus.success &&
+                state.shippingFee != null) {
               _formStateNotifier.value = _formStateNotifier.value.copyWith(
                 shippingFee: state.shippingFee,
                 isLoadingShipping: false,
               );
             } else if (state.shippingFeeStatus == RequestStatus.failure) {
-              _formStateNotifier.value = _formStateNotifier.value.copyWith(isLoadingShipping: false);
+              _formStateNotifier.value = _formStateNotifier.value.copyWith(
+                isLoadingShipping: false,
+              );
             } else if (state.shippingFeeStatus == RequestStatus.loading) {
-              _formStateNotifier.value = _formStateNotifier.value.copyWith(isLoadingShipping: true);
+              _formStateNotifier.value = _formStateNotifier.value.copyWith(
+                isLoadingShipping: true,
+              );
             }
           },
           builder: (context, state) => ValueListenableBuilder<_CheckoutFormState>(
@@ -416,19 +472,37 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(context.l10n.price_before_shipping_text, style: context.typography.body),
-                      Text('${widget.totalPrice} ${context.l10n.egp_text}', style: context.typography.body),
+                      Text(
+                        context.l10n.price_before_shipping_text,
+                        style: context.typography.body,
+                      ),
+                      Text(
+                        '${widget.totalPrice} ${context.l10n.egp_text}',
+                        style: context.typography.body,
+                      ),
                     ],
                   ),
                   SizedBox(height: 10.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(context.l10n.shipping_fee_text, style: context.typography.body),
+                      Text(
+                        context.l10n.shipping_fee_text,
+                        style: context.typography.body,
+                      ),
                       if (formState.isLoadingShipping)
-                        SizedBox(height: 18.r, width: 18.r, child: const CircularProgressIndicator(strokeWidth: 2))
+                        SizedBox(
+                          height: 18.r,
+                          width: 18.r,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        )
                       else
-                        Text('${formState.shippingFee} ${context.l10n.egp_text}', style: context.typography.body),
+                        Text(
+                          '${formState.shippingFee} ${context.l10n.egp_text}',
+                          style: context.typography.body,
+                        ),
                     ],
                   ),
                   Padding(
@@ -438,10 +512,15 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(context.l10n.total_price_text, style: context.typography.titleMedium),
+                      Text(
+                        context.l10n.total_price_text,
+                        style: context.typography.titleMedium,
+                      ),
                       Text(
                         '${total.toStringAsFixed(total.truncateToDouble() == total ? 0 : 2)} ${context.l10n.egp_text}',
-                        style: context.typography.titleMedium.copyWith(color: context.colors.secondary),
+                        style: context.typography.titleMedium.copyWith(
+                          color: context.colors.secondary,
+                        ),
                       ),
                     ],
                   ),
@@ -454,29 +533,40 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
     ],
   );
 
-  Widget _buildSubmitButton(BuildContext context) => BlocConsumer<CheckoutCubit, CheckoutState>(
-    listener: (context, state) {
-      if (state.checkoutStatus == RequestStatus.success) {
-        unawaited(getIt<CartCubit>().getCart());
-        CustomSnackBar.show(context, state.message ?? '');
-        Navigator.pop(context);
-      } else if (state.checkoutStatus == RequestStatus.failure) {
-        CustomSnackBar.show(context, state.errorMessage ?? context.l10n.error_occurred_text);
-      }
-    },
-    builder: (context, state) {
-      final isLoading = state.checkoutStatus == RequestStatus.loading;
-      return SafeArea(
-        child: Padding(
-          padding: EdgeInsetsDirectional.only(start: 16.w, end: 16.w, bottom: 12.h, top: 6.h),
-          child: CustomButton(
-            text: isLoading ? const CustomLoadingIndicator() : Text(context.l10n.confirm_order_button_text),
-            onPressed: isLoading ? null : _submitOrder,
-          ),
-        ),
+  Widget _buildSubmitButton(BuildContext context) =>
+      BlocConsumer<CheckoutCubit, CheckoutState>(
+        listener: (context, state) {
+          if (state.checkoutStatus == RequestStatus.success) {
+            unawaited(getIt<CartCubit>().getCart());
+            CustomSnackBar.show(context, state.message ?? '');
+            Navigator.pop(context);
+          } else if (state.checkoutStatus == RequestStatus.failure) {
+            CustomSnackBar.show(
+              context,
+              state.errorMessage ?? context.l10n.error_occurred_text,
+            );
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state.checkoutStatus == RequestStatus.loading;
+          return SafeArea(
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(
+                start: 16.w,
+                end: 16.w,
+                bottom: 12.h,
+                top: 6.h,
+              ),
+              child: CustomButton(
+                text: isLoading
+                    ? const CustomLoadingIndicator()
+                    : Text(context.l10n.confirm_order_button_text),
+                onPressed: isLoading ? null : _submitOrder,
+              ),
+            ),
+          );
+        },
       );
-    },
-  );
 }
 
 class _CheckoutFormState {
@@ -502,16 +592,24 @@ class _CheckoutFormState {
     bool clearSelectedAddress = false,
     bool clearGovernorate = false,
   }) => _CheckoutFormState(
-    selectedAddress: clearSelectedAddress ? null : (selectedAddress ?? this.selectedAddress),
+    selectedAddress: clearSelectedAddress
+        ? null
+        : (selectedAddress ?? this.selectedAddress),
     isTemporaryAddress: isTemporaryAddress ?? this.isTemporaryAddress,
-    selectedGovernorate: clearGovernorate ? null : (selectedGovernorate ?? this.selectedGovernorate),
+    selectedGovernorate: clearGovernorate
+        ? null
+        : (selectedGovernorate ?? this.selectedGovernorate),
     shippingFee: shippingFee ?? this.shippingFee,
     isLoadingShipping: isLoadingShipping ?? this.isLoadingShipping,
   );
 }
 
 class _AddressRadioTile extends StatelessWidget {
-  const _AddressRadioTile({required this.address, required this.isSelected, required this.onTap});
+  const _AddressRadioTile({
+    required this.address,
+    required this.isSelected,
+    required this.onTap,
+  });
   final Address address;
   final bool isSelected;
   final VoidCallback onTap;
@@ -524,7 +622,9 @@ class _AddressRadioTile extends StatelessWidget {
       duration: context.durations.fast,
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
-        color: isSelected ? context.colors.surfaceStrong : context.colors.surface,
+        color: isSelected
+            ? context.colors.surfaceStrong
+            : context.colors.surface,
         borderRadius: context.radius.mdBorder,
         border: Border.all(
           color: isSelected ? context.colors.primary : context.colors.border,
@@ -548,9 +648,18 @@ class _AddressRadioTile extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.home_outlined, size: 16.r, color: context.colors.textSecondary),
+                    Icon(
+                      Icons.home_outlined,
+                      size: 16.r,
+                      color: context.colors.textSecondary,
+                    ),
                     SizedBox(width: 6.w),
-                    Text(address.nameAddress, style: context.typography.body.copyWith(fontWeight: FontWeight.bold)),
+                    Text(
+                      address.nameAddress,
+                      style: context.typography.body.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 4.h),
@@ -565,7 +674,10 @@ class _AddressRadioTile extends StatelessWidget {
 }
 
 class _TemporaryAddressRadioTile extends StatelessWidget {
-  const _TemporaryAddressRadioTile({required this.isSelected, required this.onTap});
+  const _TemporaryAddressRadioTile({
+    required this.isSelected,
+    required this.onTap,
+  });
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -577,7 +689,9 @@ class _TemporaryAddressRadioTile extends StatelessWidget {
       duration: context.durations.fast,
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
-        color: isSelected ? context.colors.surfaceStrong : context.colors.surface,
+        color: isSelected
+            ? context.colors.surfaceStrong
+            : context.colors.surface,
         borderRadius: context.radius.mdBorder,
         border: Border.all(
           color: isSelected ? context.colors.primary : context.colors.border,
@@ -598,11 +712,17 @@ class _TemporaryAddressRadioTile extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Icon(Icons.edit_location_alt_outlined, size: 16.r, color: context.colors.textSecondary),
+                Icon(
+                  Icons.edit_location_alt_outlined,
+                  size: 16.r,
+                  color: context.colors.textSecondary,
+                ),
                 SizedBox(width: 6.w),
                 Text(
                   context.l10n.temporary_address_text,
-                  style: context.typography.body.copyWith(fontWeight: FontWeight.bold),
+                  style: context.typography.body.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -639,9 +759,15 @@ class _TemporaryAddressForm extends StatelessWidget {
       children: [
         DropdownButtonFormField<String>(
           initialValue: selectedGovernorate,
-          hint: Text(context.l10n.select_governorate_text, style: context.typography.bodySmall),
+          hint: Text(
+            context.l10n.select_governorate_text,
+            style: context.typography.bodySmall,
+          ),
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 14.w,
+              vertical: 12.h,
+            ),
             filled: true,
             fillColor: context.colors.surface,
             border: OutlineInputBorder(
@@ -660,10 +786,17 @@ class _TemporaryAddressForm extends StatelessWidget {
           dropdownColor: context.colors.surface,
           style: context.typography.body,
           items: egyptGovernoratesList
-              .map((gov) => DropdownMenuItem<String>(value: gov.name, child: Text(gov.name)))
+              .map(
+                (gov) => DropdownMenuItem<String>(
+                  value: gov.name,
+                  child: Text(gov.name),
+                ),
+              )
               .toList(),
           onChanged: onGovernorateChanged,
-          validator: (value) => value == null || value.isEmpty ? context.l10n.required_text : null,
+          validator: (value) => value == null || value.isEmpty
+              ? context.l10n.required_text
+              : null,
         ),
         SizedBox(height: 12.h),
         Row(
@@ -673,7 +806,11 @@ class _TemporaryAddressForm extends StatelessWidget {
                 controller: cityController,
                 label: context.l10n.city_text,
                 hint: context.l10n.city_text,
-                prefixIcon: Icon(Icons.location_city_outlined, size: 18.r, color: context.colors.textSecondary),
+                prefixIcon: Icon(
+                  Icons.location_city_outlined,
+                  size: 18.r,
+                  color: context.colors.textSecondary,
+                ),
                 inputFormatters: [AddressFormatter()],
                 validator: validator,
               ),
@@ -684,7 +821,11 @@ class _TemporaryAddressForm extends StatelessWidget {
                 controller: streetController,
                 hint: context.l10n.enter_address_text,
                 label: context.l10n.address_text,
-                prefixIcon: Icon(Icons.home_outlined, size: 18.r, color: context.colors.textSecondary),
+                prefixIcon: Icon(
+                  Icons.home_outlined,
+                  size: 18.r,
+                  color: context.colors.textSecondary,
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return context.l10n.required_field_text;

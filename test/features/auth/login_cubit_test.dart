@@ -53,7 +53,8 @@ void main() {
         ).thenAnswer((_) async => sampleResponse);
         return LoginCubit(loginRepo: mockLoginRepo);
       },
-      act: (cubit) => cubit.login(email: 'test@example.com', password: 'password123'),
+      act: (cubit) =>
+          cubit.login(email: 'test@example.com', password: 'password123'),
       expect: () => [
         const LoginState(status: LoginStatus.loading),
         LoginState(status: LoginStatus.success, data: sampleResponse),
@@ -71,7 +72,8 @@ void main() {
         ).thenThrow(Exception('Invalid credentials'));
         return LoginCubit(loginRepo: mockLoginRepo);
       },
-      act: (cubit) => cubit.login(email: 'test@example.com', password: 'wrong_password'),
+      act: (cubit) =>
+          cubit.login(email: 'test@example.com', password: 'wrong_password'),
       expect: () => [
         const LoginState(status: LoginStatus.loading),
         predicate<LoginState>(

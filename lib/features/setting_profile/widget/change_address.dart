@@ -12,7 +12,9 @@ import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/features/setting_profile/model/address_model.dart';
 import 'package:mousa_store/features/setting_profile/widget/add_new_address.dart';
 
-final List<String> egyptGovernorates = egyptGovernoratesList.map((e) => e.name).toList();
+final List<String> egyptGovernorates = egyptGovernoratesList
+    .map((e) => e.name)
+    .toList();
 
 class ChangeAddress extends StatefulWidget {
   const ChangeAddress({super.key});
@@ -45,7 +47,9 @@ class _ChangeAddressState extends State<ChangeAddress> {
       final data = response.data as Map<String, dynamic>;
       final innerData = data['data'] as Map<String, dynamic>;
       final listData = innerData['data'] as List<dynamic>;
-      return listData.map((e) => Address.fromJson(e as Map<String, dynamic>)).toList();
+      return listData
+          .map((e) => Address.fromJson(e as Map<String, dynamic>))
+          .toList();
     } on Exception {
       return [];
     }
@@ -59,7 +63,11 @@ class _ChangeAddressState extends State<ChangeAddress> {
     try {
       await DioHelper.postData(
         url: 'address/create',
-        data: {'name_address': nameAddress, 'address': address, 'governorate': governorate},
+        data: {
+          'name_address': nameAddress,
+          'address': address,
+          'governorate': governorate,
+        },
       );
       return true;
     } on Exception {
@@ -108,9 +116,14 @@ class _ChangeAddressState extends State<ChangeAddress> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(context.l10n.delete_address_title_text),
-          content: Text('${context.l10n.delete_confirmation_message_text} "${address.nameAddress}"?'),
+          content: Text(
+            '${context.l10n.delete_confirmation_message_text} "${address.nameAddress}"?',
+          ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: Text(context.l10n.cancel_text)),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(context.l10n.cancel_text),
+            ),
             ElevatedButton(
               onPressed: () async {
                 Navigator.pop(context);
@@ -129,7 +142,11 @@ class _ChangeAddressState extends State<ChangeAddress> {
   Widget build(BuildContext context) => Scaffold(
     floatingActionButton: FloatingActionButton(
       onPressed: () async {
-        final result = await navigateWithTransition<bool>(context, const AddNewAddress(), type: TransitionType.fade);
+        final result = await navigateWithTransition<bool>(
+          context,
+          const AddNewAddress(),
+          type: TransitionType.fade,
+        );
         if (result ?? false) {
           _refreshAddresses();
         }
@@ -149,7 +166,10 @@ class _ChangeAddressState extends State<ChangeAddress> {
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return AppEmptyState(title: context.l10n.no_addresses_yet_text, icon: Icons.location_off_outlined);
+              return AppEmptyState(
+                title: context.l10n.no_addresses_yet_text,
+                icon: Icons.location_off_outlined,
+              );
             }
 
             final addresses = snapshot.data!;
@@ -161,7 +181,10 @@ class _ChangeAddressState extends State<ChangeAddress> {
                   key: Key(address.id.toString()),
                   direction: DismissDirection.endToStart,
                   background: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 6.h,
+                    ),
                     child: Container(
                       color: context.colors.error,
                       alignment: AlignmentDirectional.centerEnd,
@@ -175,13 +198,26 @@ class _ChangeAddressState extends State<ChangeAddress> {
                   },
                   child: Card(
                     color: context.colors.surface,
-                    margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 6.h,
+                    ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.0.h),
                       child: ListTile(
-                        leading: Icon(Icons.location_on, size: 30.w, color: context.colors.primary),
-                        title: Text(address.nameAddress, style: context.typography.titleMedium),
-                        subtitle: Text(address.address, style: context.typography.body),
+                        leading: Icon(
+                          Icons.location_on,
+                          size: 30.w,
+                          color: context.colors.primary,
+                        ),
+                        title: Text(
+                          address.nameAddress,
+                          style: context.typography.titleMedium,
+                        ),
+                        subtitle: Text(
+                          address.address,
+                          style: context.typography.body,
+                        ),
                         onTap: () async {
                           final result = await navigateWithTransition<bool>(
                             context,

@@ -40,6 +40,14 @@ class _AppContentState extends State<AppContent> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    unawaited(
+      precacheImage(const AssetImage('assets/images/mousa_store.png'), context),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) => ScreenUtilInit(
     designSize: const Size(375, 812),
     minTextAdapt: true,
@@ -74,14 +82,17 @@ class _AppContentState extends State<AppContent> {
                 return AnnotatedRegion<SystemUiOverlayStyle>(
                   value: SystemUiOverlayStyle(
                     statusBarColor: Colors.transparent,
-                    statusBarIconBrightness:
-                        isDark ? Brightness.light : Brightness.dark,
-                    statusBarBrightness:
-                        isDark ? Brightness.dark : Brightness.light,
+                    statusBarIconBrightness: isDark
+                        ? Brightness.light
+                        : Brightness.dark,
+                    statusBarBrightness: isDark
+                        ? Brightness.dark
+                        : Brightness.light,
                     systemNavigationBarColor: Colors.transparent,
                     systemNavigationBarDividerColor: Colors.transparent,
-                    systemNavigationBarIconBrightness:
-                        isDark ? Brightness.light : Brightness.dark,
+                    systemNavigationBarIconBrightness: isDark
+                        ? Brightness.light
+                        : Brightness.dark,
                     systemNavigationBarContrastEnforced: false,
                     systemStatusBarContrastEnforced: false,
                   ),
@@ -121,9 +132,7 @@ class _AppContentState extends State<AppContent> {
         );
       }
     } else if (settings.name == '/auth') {
-      return MaterialPageRoute(
-        builder: (_) => const AuthView(),
-      );
+      return MaterialPageRoute(builder: (_) => const AuthView());
     }
     return null;
   }

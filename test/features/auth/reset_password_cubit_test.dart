@@ -24,7 +24,9 @@ void main() {
 
   group('ResetPasswordCubit Tests', () {
     test('initial state is default ResetPasswordState', () async {
-      final cubit = ResetPasswordCubit(resetPasswordRepo: mockResetPasswordRepo);
+      final cubit = ResetPasswordCubit(
+        resetPasswordRepo: mockResetPasswordRepo,
+      );
       expect(cubit.state.status, equals(ResetPasswordStatus.idle));
       await cubit.close();
     });

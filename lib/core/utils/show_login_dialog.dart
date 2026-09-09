@@ -26,13 +26,17 @@ void showLoginDialog(BuildContext context) {
             onPressed: () => Navigator.pop(context),
             child: Text(
               context.l10n.cancel_text,
-              style: context.typography.body.copyWith(color: context.colors.textSecondary),
+              style: context.typography.body.copyWith(
+                color: context.colors.textSecondary,
+              ),
             ),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              unawaited(navigateWithTransition<void>(context, const AuthView()));
+              unawaited(
+                navigateWithTransition<void>(context, const AuthView()),
+              );
             },
             child: Text(
               context.l10n.login_button,
@@ -43,9 +47,7 @@ void showLoginDialog(BuildContext context) {
             ),
           ),
         ],
-        shape: RoundedRectangleBorder(
-          borderRadius: context.radius.mdBorder,
-        ),
+        shape: RoundedRectangleBorder(borderRadius: context.radius.mdBorder),
       ),
     ),
   );

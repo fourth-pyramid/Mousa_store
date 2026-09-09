@@ -4,11 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
 
 Widget _buildTestWidget(Widget child) => ScreenUtilInit(
-      designSize: const Size(375, 812),
-      builder: (_, _) => MaterialApp(
-        home: Scaffold(body: child),
-      ),
-    );
+  designSize: const Size(375, 812),
+  builder: (_, _) => MaterialApp(home: Scaffold(body: child)),
+);
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +32,9 @@ void main() {
       expect(find.byIcon(Icons.search_off), findsOneWidget);
     });
 
-    testWidgets('triggers primary and secondary actions when tapped', (tester) async {
+    testWidgets('triggers primary and secondary actions when tapped', (
+      tester,
+    ) async {
       var primaryTapped = false;
       var secondaryTapped = false;
 

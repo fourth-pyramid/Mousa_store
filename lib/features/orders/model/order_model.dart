@@ -4,7 +4,9 @@ class OrdersResponse {
   factory OrdersResponse.fromJson(Map<String, dynamic> json) => OrdersResponse(
     success: (json['success'] as bool?) ?? false,
     data: List<OrderModel>.from(
-      (json['data'] as List<dynamic>).map((x) => OrderModel.fromJson(x as Map<String, dynamic>)),
+      (json['data'] as List<dynamic>).map(
+        (x) => OrderModel.fromJson(x as Map<String, dynamic>),
+      ),
     ),
   );
 
@@ -23,8 +25,11 @@ class OrderModel {
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
     id: (json['id'] as num?)?.toInt() ?? 0,
-    orderNumber: (json['orderNumber'] ?? json['order_number'])?.toString() ?? '',
-    createdAt: DateTime.parse((json['createdAt'] ?? json['created_at']) as String),
+    orderNumber:
+        (json['orderNumber'] ?? json['order_number'])?.toString() ?? '',
+    createdAt: DateTime.parse(
+      (json['createdAt'] ?? json['created_at']) as String,
+    ),
     status: json['status']?.toString() ?? '',
     type: json['sale_type']?.toString() ?? '',
   );

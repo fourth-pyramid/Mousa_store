@@ -88,7 +88,10 @@ class AppImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (image.isEmpty) {
-      return _buildClipped(context, _buildErrorWidget(context, 'Empty image source', null));
+      return _buildClipped(
+        context,
+        _buildErrorWidget(context, 'Empty image source', null),
+      );
     }
 
     final hasFiniteWidth = width != null && width!.isFinite && width! > 0;
@@ -108,13 +111,15 @@ class AppImage extends StatelessWidget {
 
           if (hasFiniteWidth) {
             calculatedCacheWidth = (width! * dpr).round();
-          } else if (constraints.maxWidth.isFinite && constraints.maxWidth > 0) {
+          } else if (constraints.maxWidth.isFinite &&
+              constraints.maxWidth > 0) {
             calculatedCacheWidth = (constraints.maxWidth * dpr).round();
           }
 
           if (hasFiniteHeight) {
             calculatedCacheHeight = (height! * dpr).round();
-          } else if (constraints.maxHeight.isFinite && constraints.maxHeight > 0) {
+          } else if (constraints.maxHeight.isFinite &&
+              constraints.maxHeight > 0) {
             calculatedCacheHeight = (constraints.maxHeight * dpr).round();
           }
 
@@ -131,14 +136,12 @@ class AppImage extends StatelessWidget {
     }
 
     final dpr = MediaQuery.devicePixelRatioOf(context);
-    final targetCacheWidth = cacheWidth ??
-        (enableAutoCache && hasFiniteWidth
-            ? (width! * dpr).round()
-            : null);
-    final targetCacheHeight = cacheHeight ??
-        (enableAutoCache && hasFiniteHeight
-            ? (height! * dpr).round()
-            : null);
+    final targetCacheWidth =
+        cacheWidth ??
+        (enableAutoCache && hasFiniteWidth ? (width! * dpr).round() : null);
+    final targetCacheHeight =
+        cacheHeight ??
+        (enableAutoCache && hasFiniteHeight ? (height! * dpr).round() : null);
 
     return _buildClipped(
       context,
@@ -152,10 +155,7 @@ class AppImage extends StatelessWidget {
 
   Widget _buildClipped(BuildContext context, Widget child) {
     if (borderRadius != null && borderRadius != BorderRadius.zero) {
-      return ClipRRect(
-        borderRadius: borderRadius!,
-        child: child,
-      );
+      return ClipRRect(borderRadius: borderRadius!, child: child);
     }
     return child;
   }
@@ -176,8 +176,12 @@ class AppImage extends StatelessWidget {
         colorBlendMode: colorBlendMode,
         memCacheWidth: targetCacheWidth,
         memCacheHeight: targetCacheHeight,
-        maxWidthDiskCache: targetCacheWidth != null ? targetCacheWidth * 2 : null,
-        maxHeightDiskCache: targetCacheHeight != null ? targetCacheHeight * 2 : null,
+        maxWidthDiskCache: targetCacheWidth != null
+            ? targetCacheWidth * 2
+            : null,
+        maxHeightDiskCache: targetCacheHeight != null
+            ? targetCacheHeight * 2
+            : null,
         placeholder: (context, url) =>
             placeholder?.call(context, url) ?? _buildPlaceholder(context),
         errorWidget: (context, url, error) =>
@@ -203,20 +207,20 @@ class AppImage extends StatelessWidget {
   }
 
   Widget _buildPlaceholder(BuildContext context) => Container(
-        width: width,
-        height: height,
-        color: context.colors.surfaceStrong,
-        child: Center(
-          child: SizedBox(
-            width: 20,
-            height: 20,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              color: context.colors.primary.withValues(alpha: 0.5),
-            ),
-          ),
+    width: width,
+    height: height,
+    color: context.colors.surfaceStrong,
+    child: Center(
+      child: SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: context.colors.primary.withValues(alpha: 0.5),
         ),
-      );
+      ),
+    ),
+  );
 
   Widget _buildErrorWidget(BuildContext context, String url, dynamic error) =>
       Container(

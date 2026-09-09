@@ -33,9 +33,9 @@ void main() {
     blocTest<CategoryCubit, CategoryState>(
       'getCategories emits [loading, success] when repository succeeds',
       build: () {
-        when(() => mockCategoryRepo.fetchCategories()).thenAnswer(
-          (_) async => [sampleCategory],
-        );
+        when(
+          () => mockCategoryRepo.fetchCategories(),
+        ).thenAnswer((_) async => [sampleCategory]);
         return CategoryCubit(repository: mockCategoryRepo);
       },
       act: (cubit) => cubit.getCategories(),
@@ -51,9 +51,9 @@ void main() {
     blocTest<CategoryCubit, CategoryState>(
       'getCategories emits [loading, failure] when repository fails',
       build: () {
-        when(() => mockCategoryRepo.fetchCategories()).thenThrow(
-          Exception('Failed to fetch categories'),
-        );
+        when(
+          () => mockCategoryRepo.fetchCategories(),
+        ).thenThrow(Exception('Failed to fetch categories'));
         return CategoryCubit(repository: mockCategoryRepo);
       },
       act: (cubit) => cubit.getCategories(),

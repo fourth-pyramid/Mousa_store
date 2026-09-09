@@ -4,7 +4,11 @@ import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
 
 class AuthHeader extends StatelessWidget {
-  const AuthHeader({required this.isLogin, required this.onTabChanged, super.key});
+  const AuthHeader({
+    required this.isLogin,
+    required this.onTabChanged,
+    super.key,
+  });
   final bool isLogin;
   final void Function({required bool isLogin}) onTabChanged;
 
@@ -23,7 +27,12 @@ class AuthHeader extends StatelessWidget {
     child: SafeArea(
       bottom: false,
       child: Padding(
-        padding: EdgeInsets.only(top: 14.h, bottom: 14.h, left: 20.w, right: 20.w),
+        padding: EdgeInsets.only(
+          top: 14.h,
+          bottom: 14.h,
+          left: 20.w,
+          right: 20.w,
+        ),
         child: Column(
           children: [
             Center(
@@ -66,21 +75,28 @@ class AuthHeader extends StatelessWidget {
                       AnimatedPositioned(
                         duration: context.durations.normal,
                         curve: Curves.easeInOutCubic,
-                        left: isRtl ? (isLogin ? tabWidth : 0) : (isLogin ? 0 : tabWidth),
+                        left: isRtl
+                            ? (isLogin ? tabWidth : 0)
+                            : (isLogin ? 0 : tabWidth),
                         width: tabWidth,
                         top: 0,
                         bottom: 0,
                         child: Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [context.colors.secondary, context.colors.error],
+                              colors: [
+                                context.colors.secondary,
+                                context.colors.error,
+                              ],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                             ),
                             borderRadius: context.radius.smBorder,
                             boxShadow: [
                               BoxShadow(
-                                color: context.colors.error.withValues(alpha: 0.35),
+                                color: context.colors.error.withValues(
+                                  alpha: 0.35,
+                                ),
                                 blurRadius: 10,
                                 offset: const Offset(0, 3),
                               ),
@@ -98,8 +114,12 @@ class AuthHeader extends StatelessWidget {
                                 child: AnimatedDefaultTextStyle(
                                   duration: context.durations.fast,
                                   style: context.typography.labelLarge.copyWith(
-                                    color: isLogin ? Colors.white : const Color(0xFF9E9E9E),
-                                    fontWeight: isLogin ? FontWeight.bold : FontWeight.w500,
+                                    color: isLogin
+                                        ? Colors.white
+                                        : const Color(0xFF9E9E9E),
+                                    fontWeight: isLogin
+                                        ? FontWeight.bold
+                                        : FontWeight.w500,
                                     fontSize: 13.sp,
                                   ),
                                   child: Text(context.l10n.auth_login),
@@ -115,8 +135,12 @@ class AuthHeader extends StatelessWidget {
                                 child: AnimatedDefaultTextStyle(
                                   duration: context.durations.fast,
                                   style: context.typography.labelLarge.copyWith(
-                                    color: !isLogin ? Colors.white : const Color(0xFF9E9E9E),
-                                    fontWeight: !isLogin ? FontWeight.bold : FontWeight.w500,
+                                    color: !isLogin
+                                        ? Colors.white
+                                        : const Color(0xFF9E9E9E),
+                                    fontWeight: !isLogin
+                                        ? FontWeight.bold
+                                        : FontWeight.w500,
                                     fontSize: 13.sp,
                                   ),
                                   child: Text(context.l10n.auth_register),

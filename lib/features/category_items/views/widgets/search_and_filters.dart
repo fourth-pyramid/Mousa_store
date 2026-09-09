@@ -18,7 +18,9 @@ class SearchAndFilters extends StatelessWidget {
         child: Material(
           elevation: 3,
           borderRadius: context.radius.mdBorder,
-          shadowColor: context.colors.textPrimary.withAlpha((0.2 * 255).toInt()),
+          shadowColor: context.colors.textPrimary.withAlpha(
+            (0.2 * 255).toInt(),
+          ),
           child: const SearchTextField(),
         ),
       ),

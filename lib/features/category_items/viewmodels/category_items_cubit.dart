@@ -71,7 +71,7 @@ class CategoryItemsCubit extends SafeCubit<CategoryItemsState> {
               extraction.minPrice;
           maxPrice =
               double.tryParse(attrResponse.data.maxPrice) ??
-                extraction.maxPrice;
+              extraction.maxPrice;
         } on Object catch (e) {
           debugPrint('Error fetching global attributes: $e');
         }

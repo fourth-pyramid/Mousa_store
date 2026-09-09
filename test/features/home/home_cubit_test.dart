@@ -2,25 +2,25 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mousa_store/features/brands/models/brand.dart';
+import 'package:mousa_store/features/home/domain/usecases/fetch_home_data_use_case.dart';
 import 'package:mousa_store/features/home/models/banner_model.dart';
-import 'package:mousa_store/features/home/repositories/home_repository.dart';
 import 'package:mousa_store/features/home/viewmodels/home_cubit.dart';
 import 'package:mousa_store/features/home/viewmodels/home_state.dart';
 
-class MockHomeRepository extends Mock implements HomeRepository {}
+class MockFetchHomeDataUseCase extends Mock implements FetchHomeDataUseCase {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late MockHomeRepository mockHomeRepository;
+  late MockFetchHomeDataUseCase mockFetchHomeDataUseCase;
 
   setUp(() {
-    mockHomeRepository = MockHomeRepository();
+    mockFetchHomeDataUseCase = MockFetchHomeDataUseCase();
   });
 
   group('HomeCubit Tests', () {
     test('initial state is default HomeState', () async {
-      final cubit = HomeCubit(repository: mockHomeRepository);
+      final cubit = HomeCubit(useCase: mockFetchHomeDataUseCase);
       expect(cubit.state.brandsStatus, equals(RequestStatus.initial));
       expect(cubit.state.bannerStatus, equals(RequestStatus.initial));
       await cubit.close();
@@ -29,7 +29,7 @@ void main() {
     blocTest<HomeCubit, HomeState>(
       'fetchBanners emits loading and success with banners',
       build: () {
-        when(() => mockHomeRepository.getBanners()).thenAnswer(
+        when(() => mockFetchHomeDataUseCase.getBanners()).thenAnswer(
           (_) async => [
             const BannerModel(
               id: 1,
@@ -39,7 +39,7 @@ void main() {
             ),
           ],
         );
-        return HomeCubit(repository: mockHomeRepository);
+        return HomeCubit(useCase: mockFetchHomeDataUseCase);
       },
       act: (cubit) => cubit.fetchBanners(),
       expect: () => [
@@ -56,12 +56,16 @@ void main() {
     blocTest<HomeCubit, HomeState>(
       'fetchBrands emits loading and success with brands',
       build: () {
-        when(() => mockHomeRepository.getBrands()).thenAnswer(
+        when(() => mockFetchHomeDataUseCase.getBrands()).thenAnswer(
           (_) async => [
-            const Brand(id: 1, name: 'Nike', imagePath: 'https://example.com/nike.png'),
+            const Brand(
+              id: 1,
+              name: 'Nike',
+              imagePath: 'https://example.com/nike.png',
+            ),
           ],
         );
-        return HomeCubit(repository: mockHomeRepository);
+        return HomeCubit(useCase: mockFetchHomeDataUseCase);
       },
       act: (cubit) => cubit.fetchBrands(),
       expect: () => [

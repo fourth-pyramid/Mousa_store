@@ -17,9 +17,7 @@ class BrandCubit extends SafeCubit<BrandState> {
     try {
       final brands = await repository.fetchBrands();
 
-      emit(
-        state.copyWith(status: RequestStatus.success, brands: brands),
-      );
+      emit(state.copyWith(status: RequestStatus.success, brands: brands));
     } on Object catch (e) {
       emit(
         state.copyWith(

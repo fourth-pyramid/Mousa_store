@@ -17,7 +17,11 @@ import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
 class OtpView extends StatelessWidget {
-  const OtpView({required this.email, this.flowType = OtpFlowType.signup, super.key});
+  const OtpView({
+    required this.email,
+    this.flowType = OtpFlowType.signup,
+    super.key,
+  });
   final String email;
   final OtpFlowType flowType;
 
@@ -32,7 +36,10 @@ class OtpView extends StatelessWidget {
     create: (_) => getIt<OtpCubit>(param1: flowType)..startTimer(),
     child: Scaffold(
       body: Padding(
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 24.w, vertical: 24.h),
+        padding: EdgeInsetsDirectional.symmetric(
+          horizontal: 24.w,
+          vertical: 24.h,
+        ),
         child: BlocConsumer<OtpCubit, OtpState>(
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
@@ -42,13 +49,21 @@ class OtpView extends StatelessWidget {
                   navigateWithTransition<void>(
                     type: TransitionType.fade,
                     context,
-                    ResetPasswordView(email: email, resetToken: state.resetToken ?? ''),
+                    ResetPasswordView(
+                      email: email,
+                      resetToken: state.resetToken ?? '',
+                    ),
                   ),
                 );
               } else if (state.flowType == OtpFlowType.signup) {
                 CustomSnackBar.show(context, state.message);
                 unawaited(
-                  navigateWithTransition<void>(context, const AuthView(), type: TransitionType.fade, replace: true),
+                  navigateWithTransition<void>(
+                    context,
+                    const AuthView(),
+                    type: TransitionType.fade,
+                    replace: true,
+                  ),
                 );
               }
             } else if (state.status == OtpStatus.error) {
@@ -62,13 +77,17 @@ class OtpView extends StatelessWidget {
               children: [
                 Text(
                   context.l10n.otp_verification,
-                  style: context.typography.h2.copyWith(fontWeight: FontWeight.bold),
+                  style: context.typography.h2.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(height: 16.h),
                 Text(
                   context.l10n.enter_otp,
                   textAlign: TextAlign.center,
-                  style: context.typography.body.copyWith(color: context.colors.textSecondary),
+                  style: context.typography.body.copyWith(
+                    color: context.colors.textSecondary,
+                  ),
                 ),
                 SizedBox(height: 40.h),
                 Directionality(
@@ -95,13 +114,17 @@ class OtpView extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 TextButton(
-                  onPressed: state.remainingSeconds == 0 ? () => cubit.resendOtp(email) : null,
+                  onPressed: state.remainingSeconds == 0
+                      ? () => cubit.resendOtp(email)
+                      : null,
                   child: Text(
                     state.remainingSeconds == 0
                         ? context.l10n.resend_code
                         : '${context.l10n.resend_after} ${formatTime(state.remainingSeconds)}',
                     style: TextStyle(
-                      color: state.remainingSeconds == 0 ? context.colors.primary : context.colors.textSecondary,
+                      color: state.remainingSeconds == 0
+                          ? context.colors.primary
+                          : context.colors.textSecondary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

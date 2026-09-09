@@ -31,7 +31,8 @@ class OrderView extends StatelessWidget {
       builder: (context) => Scaffold(
         appBar: AppBar(title: Text(context.l10n.orders_text.toUpperCase())),
         body: InternetStateManager(
-          onRestoreInternetConnection: () => context.read<OrdersCubit>().getOrders(),
+          onRestoreInternetConnection: () =>
+              context.read<OrdersCubit>().getOrders(),
           child: RefreshIndicator(
             color: context.colors.primary,
             onRefresh: () => context.read<OrdersCubit>().getOrders(),
@@ -70,11 +71,18 @@ class OrderView extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final order = state.orders[index];
                             return OrderCard(
-                              orderNumber: '${context.l10n.order_number_text} : ${order.orderNumber}',
+                              orderNumber:
+                                  '${context.l10n.order_number_text} : ${order.orderNumber}',
                               orderDate:
                                   '${context.l10n.order_date_text} : ${DateFormat('yyyy-MM-dd HH:mm').format(order.createdAt)}',
-                              deliveredText: _getStatusText(order.status, context.l10n),
-                              deliveredColor: _getStatusColor(order.status, context),
+                              deliveredText: _getStatusText(
+                                order.status,
+                                context.l10n,
+                              ),
+                              deliveredColor: _getStatusColor(
+                                order.status,
+                                context,
+                              ),
                               onTap: () {
                                 unawaited(
                                   navigateWithTransition<void>(
@@ -93,7 +101,9 @@ class OrderView extends StatelessWidget {
                         return Center(
                           child: Text(
                             state.errorMessage ?? '',
-                            style: context.typography.bodySmall.copyWith(color: context.colors.error),
+                            style: context.typography.bodySmall.copyWith(
+                              color: context.colors.error,
+                            ),
                           ),
                         );
                       }

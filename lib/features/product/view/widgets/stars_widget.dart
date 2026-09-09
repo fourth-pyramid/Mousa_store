@@ -11,7 +11,11 @@ class StarsWidget extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     children: List.generate(
       5,
-      (index) => Icon(index < rate ? Icons.star : Icons.star_border, color: context.colors.secondary, size: size),
+      (index) => Icon(
+        index < rate ? Icons.star : Icons.star_border,
+        color: context.colors.secondary,
+        size: size,
+      ),
     ),
   );
 }

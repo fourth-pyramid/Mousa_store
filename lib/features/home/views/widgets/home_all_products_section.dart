@@ -18,7 +18,8 @@ class HomeAllProductsSection extends StatelessWidget {
   Widget build(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
     buildWhen: (previous, current) =>
         previous.allProductsStatus != current.allProductsStatus ||
-        previous.allProductsPaginationStatus != current.allProductsPaginationStatus ||
+        previous.allProductsPaginationStatus !=
+            current.allProductsPaginationStatus ||
         previous.allProducts != current.allProducts ||
         previous.hasReachedMax != current.hasReachedMax,
     builder: (context, state) => SliverMainAxisGroup(
@@ -41,14 +42,19 @@ class HomeAllProductsSection extends StatelessWidget {
             isLoading: state.allProductsStatus == RequestStatus.loading,
             isError: state.allProductsStatus == RequestStatus.failure,
             errorMessage: state.errorMessage,
-            itemBuilder: (context, product, index) => ProductGridCard(product: product),
+            itemBuilder: (context, product, index) =>
+                ProductGridCard(product: product),
             loadingBuilder: (context, index) => const AppSkeletonCard(),
           ),
         ),
-        if (state.allProductsPaginationStatus == RequestStatus.loading && !state.hasReachedMax)
+        if (state.allProductsPaginationStatus == RequestStatus.loading &&
+            !state.hasReachedMax)
           SliverToBoxAdapter(
             child: Center(
-              child: Padding(padding: EdgeInsets.symmetric(vertical: 24.h), child: const CustomLoadingIndicator()),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.h),
+                child: const CustomLoadingIndicator(),
+              ),
             ),
           ),
       ],

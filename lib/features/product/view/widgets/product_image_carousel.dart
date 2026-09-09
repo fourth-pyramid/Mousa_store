@@ -34,7 +34,11 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
       return Container(
         height: 220.h,
         color: context.colors.surface,
-        child: Icon(Icons.image_not_supported, size: 48.r, color: context.colors.textMuted),
+        child: Icon(
+          Icons.image_not_supported,
+          size: 48.r,
+          color: context.colors.textMuted,
+        ),
       );
     }
 
@@ -73,8 +77,10 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                         image: imageUrl,
                         width: double.infinity,
                         fit: BoxFit.contain,
-                        errorWidget: (context, url, error) =>
-                            Icon(Icons.image_not_supported, color: context.colors.textMuted),
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.image_not_supported,
+                          color: context.colors.textMuted,
+                        ),
                       ),
                     ),
                   ),

@@ -1,19 +1,24 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/features/auth/model/user.dart';
-import 'package:mousa_store/features/setting_profile/service/profile_service.dart';
+import 'package:mousa_store/features/setting_profile/repo/profile_repo.dart';
 import 'package:mousa_store/features/setting_profile/view_model/profile_cubit/profile_cubit.dart';
 
-class MockProfileService extends Mock implements ProfileService {}
+class MockProfileRepo extends Mock implements ProfileRepo {}
+
+class MockAuthService extends Mock implements AuthService {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late MockProfileService mockProfileService;
+  late MockProfileRepo mockProfileRepo;
+  late MockAuthService mockAuthService;
 
   setUp(() {
-    mockProfileService = MockProfileService();
+    mockProfileRepo = MockProfileRepo();
+    mockAuthService = MockAuthService();
   });
 
   final sampleUser = User(
@@ -28,7 +33,10 @@ void main() {
 
   group('ProfileCubit Tests', () {
     test('initial state is ProfileInitial', () async {
-      final cubit = ProfileCubit(mockProfileService);
+      final cubit = ProfileCubit(
+        profileRepo: mockProfileRepo,
+        authService: mockAuthService,
+      );
       expect(cubit.state, isA<ProfileInitial>());
       await cubit.close();
     });
@@ -36,27 +44,29 @@ void main() {
     blocTest<ProfileCubit, ProfileState>(
       'emits [ProfileLoading, ProfileLoaded] when getProfile succeeds',
       build: () {
-        when(() => mockProfileService.getProfile()).thenAnswer((_) async => sampleUser);
-        return ProfileCubit(mockProfileService);
+        when(
+          () => mockProfileRepo.getProfile(),
+        ).thenAnswer((_) async => sampleUser);
+        return ProfileCubit(
+          profileRepo: mockProfileRepo,
+          authService: mockAuthService,
+        );
       },
       act: (cubit) => cubit.getProfile(),
-      expect: () => [
-        isA<ProfileLoading>(),
-        isA<ProfileLoaded>(),
-      ],
+      expect: () => [isA<ProfileLoading>(), isA<ProfileLoaded>()],
     );
 
     blocTest<ProfileCubit, ProfileState>(
       'emits [ProfileLoading, ProfileError] when getProfile returns null',
       build: () {
-        when(() => mockProfileService.getProfile()).thenAnswer((_) async => null);
-        return ProfileCubit(mockProfileService);
+        when(() => mockProfileRepo.getProfile()).thenAnswer((_) async => null);
+        return ProfileCubit(
+          profileRepo: mockProfileRepo,
+          authService: mockAuthService,
+        );
       },
       act: (cubit) => cubit.getProfile(),
-      expect: () => [
-        isA<ProfileLoading>(),
-        isA<ProfileError>(),
-      ],
+      expect: () => [isA<ProfileLoading>(), isA<ProfileError>()],
     );
   });
 }

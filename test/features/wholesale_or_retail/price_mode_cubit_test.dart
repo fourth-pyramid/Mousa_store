@@ -19,8 +19,7 @@ void main() {
     });
 
     test('setPriceMode updates state to retail and changes mode', () async {
-      final cubit = PriceModeCubit()
-        ..setPriceMode(PriceMode.retail);
+      final cubit = PriceModeCubit()..setPriceMode(PriceMode.retail);
       expect(cubit.state.mode, equals(PriceMode.retail));
 
       cubit.setPriceMode(PriceMode.wholesale);

@@ -21,15 +21,28 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignupFormState extends State<SignupForm> {
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _confirmPasswordController;
+  late final TextEditingController _phoneController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ValueNotifier<bool> _obscurePasswordNotifier = ValueNotifier<bool>(true);
-  final ValueNotifier<bool> _obscureConfirmPasswordNotifier = ValueNotifier<bool>(true);
+  late final ValueNotifier<bool> _obscurePasswordNotifier;
+  late final ValueNotifier<bool> _obscureConfirmPasswordNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+    _phoneController = TextEditingController();
+    _obscurePasswordNotifier = ValueNotifier<bool>(true);
+    _obscureConfirmPasswordNotifier = ValueNotifier<bool>(true);
+  }
 
   @override
   void dispose() {
@@ -48,7 +61,10 @@ class _SignupFormState extends State<SignupForm> {
   Widget build(BuildContext context) => BlocConsumer<SignupCubit, SignupState>(
     listener: (context, state) {
       if (state.status == SignupStatus.success) {
-        CustomSnackBar.show(context, state.response?.message ?? context.l10n.success_text);
+        CustomSnackBar.show(
+          context,
+          state.response?.message ?? context.l10n.success_text,
+        );
         unawaited(
           navigateWithTransition<void>(
             type: TransitionType.fade,
@@ -57,7 +73,10 @@ class _SignupFormState extends State<SignupForm> {
           ),
         );
       } else if (state.status == SignupStatus.failure) {
-        CustomSnackBar.show(context, state.errorMessage ?? context.l10n.error_text);
+        CustomSnackBar.show(
+          context,
+          state.errorMessage ?? context.l10n.error_text,
+        );
       }
     },
     builder: (context, state) {
@@ -66,25 +85,36 @@ class _SignupFormState extends State<SignupForm> {
       return Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsetsDirectional.symmetric(horizontal: 24.w, vertical: 16.h),
+          padding: EdgeInsetsDirectional.symmetric(
+            horizontal: 24.w,
+            vertical: 16.h,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
                 context.l10n.welcome_start_text,
-                style: context.typography.h2.copyWith(fontWeight: FontWeight.bold),
+                style: context.typography.h2.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 4.h),
               Text(
                 'أنشئ حسابك الجديد للبدء بالتسوق في موسى ستور',
-                style: context.typography.caption.copyWith(color: context.colors.textSecondary),
+                style: context.typography.caption.copyWith(
+                  color: context.colors.textSecondary,
+                ),
               ),
               SizedBox(height: 20.h),
               CustomFormField(
                 controller: _firstNameController,
                 hint: context.l10n.first_name_text,
-                prefixIcon: Icon(Icons.person_outline, size: 20.r, color: context.colors.textSecondary),
+                prefixIcon: Icon(
+                  Icons.person_outline,
+                  size: 20.r,
+                  color: context.colors.textSecondary,
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return context.l10n.first_name_validation_error;
@@ -96,7 +126,11 @@ class _SignupFormState extends State<SignupForm> {
               CustomFormField(
                 controller: _lastNameController,
                 hint: context.l10n.last_name_text,
-                prefixIcon: Icon(Icons.person_outline, size: 20.r, color: context.colors.textSecondary),
+                prefixIcon: Icon(
+                  Icons.person_outline,
+                  size: 20.r,
+                  color: context.colors.textSecondary,
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return context.l10n.last_name_validation_error;
@@ -108,13 +142,19 @@ class _SignupFormState extends State<SignupForm> {
               CustomFormField(
                 controller: _emailController,
                 hint: context.l10n.email_text,
-                prefixIcon: Icon(Icons.email_outlined, size: 20.r, color: context.colors.textSecondary),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  size: 20.r,
+                  color: context.colors.textSecondary,
+                ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return context.l10n.email_validation_error;
                   }
-                  if (!RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$').hasMatch(value)) {
+                  if (!RegExp(
+                    r'^[a-zA-Z0-9._%+-]+@gmail\.com$',
+                  ).hasMatch(value)) {
                     return context.l10n.email_validation_error;
                   }
                   return null;
@@ -124,7 +164,11 @@ class _SignupFormState extends State<SignupForm> {
               CustomFormField(
                 controller: _phoneController,
                 hint: context.l10n.phone_number_text,
-                prefixIcon: Icon(Icons.phone_outlined, size: 20.r, color: context.colors.textSecondary),
+                prefixIcon: Icon(
+                  Icons.phone_outlined,
+                  size: 20.r,
+                  color: context.colors.textSecondary,
+                ),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -139,16 +183,23 @@ class _SignupFormState extends State<SignupForm> {
                 builder: (context, obscurePassword, _) => CustomFormField(
                   controller: _passwordController,
                   hint: context.l10n.password_text,
-                  prefixIcon: Icon(Icons.lock_outline, size: 20.r, color: context.colors.textSecondary),
+                  prefixIcon: Icon(
+                    Icons.lock_outline,
+                    size: 20.r,
+                    color: context.colors.textSecondary,
+                  ),
                   obscureText: obscurePassword,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      obscurePassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
                       size: 20.r,
                       color: context.colors.textSecondary,
                     ),
                     onPressed: () {
-                      _obscurePasswordNotifier.value = !_obscurePasswordNotifier.value;
+                      _obscurePasswordNotifier.value =
+                          !_obscurePasswordNotifier.value;
                     },
                   ),
                   validator: (value) {
@@ -165,31 +216,39 @@ class _SignupFormState extends State<SignupForm> {
               SizedBox(height: 16.h),
               ValueListenableBuilder<bool>(
                 valueListenable: _obscureConfirmPasswordNotifier,
-                builder: (context, obscureConfirmPassword, _) => CustomFormField(
-                  controller: _confirmPasswordController,
-                  hint: context.l10n.confirm_password_text,
-                  prefixIcon: Icon(Icons.lock_outline, size: 20.r, color: context.colors.textSecondary),
-                  obscureText: obscureConfirmPassword,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                      size: 20.r,
-                      color: context.colors.textSecondary,
+                builder: (context, obscureConfirmPassword, _) =>
+                    CustomFormField(
+                      controller: _confirmPasswordController,
+                      hint: context.l10n.confirm_password_text,
+                      prefixIcon: Icon(
+                        Icons.lock_outline,
+                        size: 20.r,
+                        color: context.colors.textSecondary,
+                      ),
+                      obscureText: obscureConfirmPassword,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          obscureConfirmPassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          size: 20.r,
+                          color: context.colors.textSecondary,
+                        ),
+                        onPressed: () {
+                          _obscureConfirmPasswordNotifier.value =
+                              !_obscureConfirmPasswordNotifier.value;
+                        },
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return context.l10n.confirm_password_validation_error;
+                        }
+                        if (value != _passwordController.text) {
+                          return context.l10n.confirm_password_validation_error;
+                        }
+                        return null;
+                      },
                     ),
-                    onPressed: () {
-                      _obscureConfirmPasswordNotifier.value = !_obscureConfirmPasswordNotifier.value;
-                    },
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return context.l10n.confirm_password_validation_error;
-                    }
-                    if (value != _passwordController.text) {
-                      return context.l10n.confirm_password_validation_error;
-                    }
-                    return null;
-                  },
-                ),
               ),
               SizedBox(height: 24.h),
 

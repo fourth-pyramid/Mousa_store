@@ -49,61 +49,60 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocListener<FavoriteCubit, FavoriteState>(
-      bloc: getIt<FavoriteCubit>(),
-      listener: (context, state) {
-        if (state is FavoriteLoaded || state is FavoriteSuccess) {
-          final isFav = getIt<FavoriteCubit>().isFavorite(widget.productId);
-          if (_isFavoriteNotifier.value != isFav) {
-            _isFavoriteNotifier.value = isFav;
+  Widget build(BuildContext context) =>
+      BlocListener<FavoriteCubit, FavoriteState>(
+        bloc: getIt<FavoriteCubit>(),
+        listener: (context, state) {
+          if (state is FavoriteLoaded || state is FavoriteSuccess) {
+            final isFav = getIt<FavoriteCubit>().isFavorite(widget.productId);
+            if (_isFavoriteNotifier.value != isFav) {
+              _isFavoriteNotifier.value = isFav;
+            }
           }
-        }
-      },
-      child: ValueListenableBuilder<bool>(
-        valueListenable: _isFavoriteNotifier,
-        builder: (context, isFavorite, child) {
-          final heartColor = isFavorite
-              ? (widget.activeColor ?? context.colors.accent)
-              : (widget.inactiveColor ?? context.colors.textSecondary);
+        },
+        child: ValueListenableBuilder<bool>(
+          valueListenable: _isFavoriteNotifier,
+          builder: (context, isFavorite, child) {
+            final heartColor = isFavorite
+                ? (widget.activeColor ?? context.colors.accent)
+                : (widget.inactiveColor ?? context.colors.textSecondary);
 
-          return GestureDetector(
-            onTap: () {
-              if (getIt<AuthService>().isLoggedIn) {
-                _isFavoriteNotifier.value = !isFavorite;
-                unawaited(
-                  getIt<FavoriteCubit>().addFavorite(
-                    productId: widget.productId,
-                    product: widget.product,
-                  ),
-                );
+            return GestureDetector(
+              onTap: () {
+                if (getIt<AuthService>().isLoggedIn) {
+                  _isFavoriteNotifier.value = !isFavorite;
+                  unawaited(
+                    getIt<FavoriteCubit>().addFavorite(
+                      productId: widget.productId,
+                      product: widget.product,
+                    ),
+                  );
 
-                CustomSnackBar.show(
-                  context,
-                  _isFavoriteNotifier.value
-                      ? context.l10n.product_added_to_favorites_text
-                      : context.l10n.product_removed_from_favorites_text,
-                );
-              } else {
-                showLoginDialog(context);
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.all(8.r),
-              decoration: BoxDecoration(
-                color: context.colors.surface,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: context.colors.border,
+                  CustomSnackBar.show(
+                    context,
+                    _isFavoriteNotifier.value
+                        ? context.l10n.product_added_to_favorites_text
+                        : context.l10n.product_removed_from_favorites_text,
+                  );
+                } else {
+                  showLoginDialog(context);
+                }
+              },
+              child: Container(
+                padding: EdgeInsets.all(8.r),
+                decoration: BoxDecoration(
+                  color: context.colors.surface,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: context.colors.border),
+                ),
+                child: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border_rounded,
+                  size: widget.size ?? 18.w,
+                  color: heartColor,
                 ),
               ),
-              child: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border_rounded,
-                size: widget.size ?? 18.w,
-                color: heartColor,
-              ),
-            ),
-          );
-        },
-      ),
-    );
+            );
+          },
+        ),
+      );
 }

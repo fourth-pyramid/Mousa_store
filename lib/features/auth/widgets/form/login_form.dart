@@ -23,10 +23,18 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ValueNotifier<bool> _obscurePasswordNotifier = ValueNotifier<bool>(true);
+  late final ValueNotifier<bool> _obscurePasswordNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _obscurePasswordNotifier = ValueNotifier<bool>(true);
+  }
 
   @override
   void dispose() {
@@ -40,11 +48,20 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) => Form(
     key: _formKey,
     child: SingleChildScrollView(
-      padding: EdgeInsetsDirectional.symmetric(horizontal: 24.w, vertical: 16.h),
+      padding: EdgeInsetsDirectional.symmetric(
+        horizontal: 24.w,
+        vertical: 16.h,
+      ),
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status == LoginStatus.success) {
-            unawaited(navigateWithTransition<void>(context, const PurchaseTypeView(), type: TransitionType.fade));
+            unawaited(
+              navigateWithTransition<void>(
+                context,
+                const PurchaseTypeView(),
+                type: TransitionType.fade,
+              ),
+            );
           } else if (state.status == LoginStatus.emailNotVerified) {
             unawaited(
               navigateWithTransition<void>(
@@ -54,7 +71,10 @@ class _LoginFormState extends State<LoginForm> {
               ),
             );
           } else if (state.status == LoginStatus.failure) {
-            CustomSnackBar.show(context, state.error ?? context.l10n.login_failed_text);
+            CustomSnackBar.show(
+              context,
+              state.error ?? context.l10n.login_failed_text,
+            );
           }
         },
         builder: (context, state) {
@@ -65,13 +85,17 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               Text(
                 context.l10n.welcome_back_text,
-                style: context.typography.h2.copyWith(fontWeight: FontWeight.bold),
+                style: context.typography.h2.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 4.h),
               Text(
                 'سجل الدخول للمتابعة إلى موسى ستور',
-                style: context.typography.caption.copyWith(color: context.colors.textSecondary),
+                style: context.typography.caption.copyWith(
+                  color: context.colors.textSecondary,
+                ),
               ),
               SizedBox(height: 24.h),
               CustomFormField(
@@ -105,7 +129,9 @@ class _LoginFormState extends State<LoginForm> {
                   obscureText: obscurePassword,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      obscurePassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
                       size: 20.r,
                       color: context.colors.textSecondary,
                     ),
@@ -132,7 +158,11 @@ class _LoginFormState extends State<LoginForm> {
                 child: TextButton(
                   onPressed: () {
                     unawaited(
-                      navigateWithTransition<void>(context, const ForgetPasswordView(), type: TransitionType.fade),
+                      navigateWithTransition<void>(
+                        context,
+                        const ForgetPasswordView(),
+                        type: TransitionType.fade,
+                      ),
                     );
                   },
                   child: Text(
@@ -169,7 +199,13 @@ class _LoginFormState extends State<LoginForm> {
               Center(
                 child: TextButton.icon(
                   onPressed: () {
-                    unawaited(navigateWithTransition<void>(context, const PurchaseTypeView(), replace: true));
+                    unawaited(
+                      navigateWithTransition<void>(
+                        context,
+                        const PurchaseTypeView(),
+                        replace: true,
+                      ),
+                    );
                   },
                   icon: Icon(
                     Icons.arrow_back_rounded,

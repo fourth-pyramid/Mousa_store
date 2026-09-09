@@ -1,40 +1,42 @@
 part of 'profile_cubit.dart';
 
-abstract class ProfileState extends Equatable {}
+sealed class ProfileState extends Equatable {
+  const ProfileState();
 
-class ProfileInitial extends ProfileState {
   @override
   List<Object?> get props => [];
 }
 
-class ProfileLoading extends ProfileState {
-  @override
-  List<Object?> get props => [];
+final class ProfileInitial extends ProfileState {
+  const ProfileInitial();
 }
 
-class ProfileLoaded extends ProfileState {
-  ProfileLoaded(this.user);
+final class ProfileLoading extends ProfileState {
+  const ProfileLoading();
+}
+
+final class ProfileLoaded extends ProfileState {
+  const ProfileLoaded(this.user);
   final User user;
 
   @override
   List<Object?> get props => [user];
 }
 
-class ProfileError extends ProfileState {
-  ProfileError(this.message);
+final class ProfileError extends ProfileState {
+  const ProfileError(this.message);
   final String message;
 
   @override
   List<Object?> get props => [message];
 }
 
-class ProfileUpdating extends ProfileState {
-  @override
-  List<Object?> get props => [];
+final class ProfileUpdating extends ProfileState {
+  const ProfileUpdating();
 }
 
-class ProfileUpdated extends ProfileState {
-  ProfileUpdated(this.user, this.message);
+final class ProfileUpdated extends ProfileState {
+  const ProfileUpdated(this.user, this.message);
   final User user;
   final String message;
 

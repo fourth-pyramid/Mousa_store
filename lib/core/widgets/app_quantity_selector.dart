@@ -17,39 +17,37 @@ class AppQuantitySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-      decoration: BoxDecoration(
-        color: context.colors.surface,
-        borderRadius: context.radius.smBorder,
-        border: Border.all(
-          color: context.colors.border,
+    decoration: BoxDecoration(
+      color: context.colors.surface,
+      borderRadius: context.radius.smBorder,
+      border: Border.all(color: context.colors.border),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+          padding: EdgeInsets.zero,
+          icon: const Icon(Icons.remove, size: 16),
+          onPressed: quantity > min ? () => onChanged(quantity - 1) : null,
         ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-            padding: EdgeInsets.zero,
-            icon: const Icon(Icons.remove, size: 16),
-            onPressed: quantity > min ? () => onChanged(quantity - 1) : null,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              quantity.toString(),
-              style: context.typography.body.copyWith(
-                color: context.colors.textPrimary,
-                fontWeight: FontWeight.bold,
-              ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(
+            quantity.toString(),
+            style: context.typography.body.copyWith(
+              color: context.colors.textPrimary,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          IconButton(
-            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-            padding: EdgeInsets.zero,
-            icon: const Icon(Icons.add, size: 16),
-            onPressed: quantity < max ? () => onChanged(quantity + 1) : null,
-          ),
-        ],
-      ),
-    );
+        ),
+        IconButton(
+          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+          padding: EdgeInsets.zero,
+          icon: const Icon(Icons.add, size: 16),
+          onPressed: quantity < max ? () => onChanged(quantity + 1) : null,
+        ),
+      ],
+    ),
+  );
 }

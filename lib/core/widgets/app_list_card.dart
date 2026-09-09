@@ -48,7 +48,10 @@ class AppListCard extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1.0,
               child: DecoratedBox(
-                decoration: BoxDecoration(color: context.colors.surface, borderRadius: context.radius.mdBorder),
+                decoration: BoxDecoration(
+                  color: context.colors.surface,
+                  borderRadius: context.radius.mdBorder,
+                ),
                 child: Stack(
                   children: [
                     Positioned.fill(
@@ -57,16 +60,24 @@ class AppListCard extends StatelessWidget {
                         fit: imageFit,
                         borderRadius: context.radius.mdBorder,
                         errorWidget: (_, _, _) => Center(
-                          child: Icon(Icons.sports_soccer, size: 28.w, color: context.colors.textSecondary),
+                          child: Icon(
+                            Icons.sports_soccer,
+                            size: 28.w,
+                            color: context.colors.textSecondary,
+                          ),
                         ),
                       ),
                     ),
-                    if (favoriteButton != null) Positioned(top: 6.h, right: 6.w, child: favoriteButton!),
+                    if (favoriteButton != null)
+                      Positioned(top: 6.h, right: 6.w, child: favoriteButton!),
                     if (discount != null && discount! > 0)
                       Positioned(
                         top: 6.h,
                         left: 6.w,
-                        child: AppBadge(label: '-$discount%', variant: AppBadgeVariant.accent),
+                        child: AppBadge(
+                          label: '-$discount%',
+                          variant: AppBadgeVariant.accent,
+                        ),
                       ),
                   ],
                 ),
@@ -83,7 +94,12 @@ class AppListCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 2.h),
-            if (numPrice != null) AppPrice(price: numPrice, originalPrice: numOldPrice, currency: priceLabel ?? 'EGP'),
+            if (numPrice != null)
+              AppPrice(
+                price: numPrice,
+                originalPrice: numOldPrice,
+                currency: priceLabel ?? 'EGP',
+              ),
           ],
         ),
       ),

@@ -35,18 +35,15 @@ void main() {
     blocTest<OrdersCubit, OrdersState>(
       'getOrders emits [loading, success] with orders list',
       build: () {
-        when(() => mockOrdersRepo.getOrders()).thenAnswer(
-          (_) async => [sampleOrder],
-        );
+        when(
+          () => mockOrdersRepo.getOrders(),
+        ).thenAnswer((_) async => [sampleOrder]);
         return OrdersCubit(mockOrdersRepo);
       },
       act: (cubit) => cubit.getOrders(),
       expect: () => [
         const OrdersState(status: OrdersStatus.loading),
-        OrdersState(
-          status: OrdersStatus.success,
-          orders: [sampleOrder],
-        ),
+        OrdersState(status: OrdersStatus.success, orders: [sampleOrder]),
       ],
     );
   });

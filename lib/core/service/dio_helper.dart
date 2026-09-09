@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_classes_with_only_static_members, avoid_dynamic_calls
+// ignore_for_file: avoid_classes_with_only_static_members, avoid_dynamic_calls // Static Dio client abstraction with dynamic HTTP JSON payload processing
 
 import 'dart:async';
 
@@ -53,7 +53,9 @@ class DioHelper {
                 }
               }
             } else {
-              debugPrint('❌ Failed to refresh token. Triggering session expiration');
+              debugPrint(
+                '❌ Failed to refresh token. Triggering session expiration',
+              );
               onSessionExpired?.call();
             }
           }
@@ -224,10 +226,7 @@ class DioHelper {
   static CustomDioError _handleError(DioException e) {
     // Cancelled requests are intentional — not real errors
     if (e.type == DioExceptionType.cancel) {
-      return CustomDioError(
-        message: 'Request cancelled',
-        originalException: e,
-      );
+      return CustomDioError(message: 'Request cancelled', originalException: e);
     }
 
     var errorMessage = 'حدث خطأ، حاول مرة أخرى';
@@ -290,34 +289,38 @@ class DuplicateRequestInterceptor extends Interceptor {
     if (existingCompleter != null) {
       debugPrint('⚡ DEDUP: coalescing duplicate GET request — ${options.path}');
       unawaited(
-        existingCompleter.future.then((res) {
-          handler.resolve(
-            Response<dynamic>(
-              requestOptions: options,
-              data: res.data,
-              headers: res.headers,
-              statusCode: res.statusCode,
-              statusMessage: res.statusMessage,
-              isRedirect: res.isRedirect,
-              redirects: res.redirects,
-              extra: res.extra,
-            ),
-          );
-        }).catchError((Object err) {
-          if (err is DioException) {
-            handler.reject(
-              DioException(
-                requestOptions: options,
-                error: err.error,
-                response: err.response,
-                type: err.type,
-                message: err.message,
-              ),
-            );
-          } else {
-            handler.reject(DioException(requestOptions: options, error: err));
-          }
-        }),
+        existingCompleter.future
+            .then((res) {
+              handler.resolve(
+                Response<dynamic>(
+                  requestOptions: options,
+                  data: res.data,
+                  headers: res.headers,
+                  statusCode: res.statusCode,
+                  statusMessage: res.statusMessage,
+                  isRedirect: res.isRedirect,
+                  redirects: res.redirects,
+                  extra: res.extra,
+                ),
+              );
+            })
+            .catchError((Object err) {
+              if (err is DioException) {
+                handler.reject(
+                  DioException(
+                    requestOptions: options,
+                    error: err.error,
+                    response: err.response,
+                    type: err.type,
+                    message: err.message,
+                  ),
+                );
+              } else {
+                handler.reject(
+                  DioException(requestOptions: options, error: err),
+                );
+              }
+            }),
       );
       return;
     }

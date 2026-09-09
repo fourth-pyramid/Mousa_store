@@ -35,11 +35,8 @@ void main() {
         ).thenAnswer((_) async => {});
         return ReviewCubit(mockReviewRepo);
       },
-      act: (cubit) => cubit.addReview(
-        productId: 1,
-        rate: 5.0,
-        comment: 'Great product!',
-      ),
+      act: (cubit) =>
+          cubit.addReview(productId: 1, rate: 5.0, comment: 'Great product!'),
       expect: () => [
         const ReviewState(status: ReviewStatus.loading),
         const ReviewState(status: ReviewStatus.success),

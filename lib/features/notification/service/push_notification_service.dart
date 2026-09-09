@@ -25,17 +25,18 @@ class PushNotificationService {
   static Future<void> initialize() async {
     try {
       /// -------- Awesome Notifications --------
-      await AwesomeNotifications().initialize('resource://drawable/ic_notification', [
-        NotificationChannel(
-          channelKey: 'basic_channel',
-          channelName: 'Basic Notifications',
-          channelDescription: 'Used for basic push notifications',
-          importance: NotificationImportance.High,
-          channelShowBadge: true,
-          defaultColor: AppColorTokens.accent,
-          ledColor: AppColorTokens.accent,
-        ),
-      ], debug: true);
+      await AwesomeNotifications()
+          .initialize('resource://drawable/ic_notification', [
+            NotificationChannel(
+              channelKey: 'basic_channel',
+              channelName: 'Basic Notifications',
+              channelDescription: 'Used for basic push notifications',
+              importance: NotificationImportance.High,
+              channelShowBadge: true,
+              defaultColor: AppColorTokens.accent,
+              ledColor: AppColorTokens.accent,
+            ),
+          ], debug: true);
 
       final isAllowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isAllowed) {
@@ -65,7 +66,9 @@ class PushNotificationService {
                 color: AppColorTokens.accent,
                 title: message.notification!.title,
                 body: message.notification!.body,
-                payload: message.data.map((key, value) => MapEntry(key, value.toString())),
+                payload: message.data.map(
+                  (key, value) => MapEntry(key, value.toString()),
+                ),
               ),
             ),
           );
@@ -87,7 +90,9 @@ class PushNotificationService {
       }
 
       /// -------- TOKEN REFRESH --------
-      _fcm.onTokenRefresh.listen((newToken) => unawaited(sendTokenToBackend(newToken)));
+      _fcm.onTokenRefresh.listen(
+        (newToken) => unawaited(sendTokenToBackend(newToken)),
+      );
     } on Object catch (e) {
       debugPrint('❌ Push Notification Init Error: $e');
     }
@@ -129,9 +134,14 @@ class PushNotificationService {
       final authToken = CacheHelper.getToken();
       final endpoint = authToken != null ? 'fcm-token-user' : 'fcm-token';
 
-      debugPrint('🚀 Sending token to backend: $token with Device ID: $deviceId to endpoint: $endpoint');
+      debugPrint(
+        '🚀 Sending token to backend: $token with Device ID: $deviceId to endpoint: $endpoint',
+      );
 
-      final response = await DioHelper.postData(url: '$endpoint?fcm_token=$token&device_id=$deviceId', data: {});
+      final response = await DioHelper.postData(
+        url: '$endpoint?fcm_token=$token&device_id=$deviceId',
+        data: {},
+      );
 
       if (response.statusCode == 200) {
         debugPrint('✅ Token sent successfully');
@@ -141,7 +151,9 @@ class PushNotificationService {
     } on Object catch (e) {
       debugPrint('🔴 Send token error: $e');
     } finally {
-      _inFlight.remove(token); // allow re-send if token genuinely refreshed later
+      _inFlight.remove(
+        token,
+      ); // allow re-send if token genuinely refreshed later
     }
   }
 }

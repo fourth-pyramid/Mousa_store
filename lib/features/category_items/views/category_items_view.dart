@@ -34,12 +34,13 @@ class CategoryItemsView extends StatefulWidget {
 }
 
 class _CategoryItemsViewState extends State<CategoryItemsView> {
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
   bool _showBackToTopButton = false;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
   }
 

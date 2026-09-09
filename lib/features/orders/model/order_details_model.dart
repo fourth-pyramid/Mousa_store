@@ -67,33 +67,22 @@ class OrderProduct {
   });
 
   factory OrderProduct.fromJson(Map<String, dynamic> json) {
-
-
-    if (json['attributes'] is Map) {
-      final map = json['attributes'] as Map;
-      // ignore: avoid_print
-      print('attributes keys: ${map.keys.toList()}');
-      // ignore: avoid_print
-      print('attributes values: ${map.values.toList()}');
-    }
-
     Map<String, dynamic>? attributes;
     if (json['attributes'] is Map) {
       final rawMap = Map<dynamic, dynamic>.from(json['attributes'] as Map);
       attributes = Map<String, dynamic>.fromEntries(
-        rawMap.entries.where(
-          (entry) =>
-              entry.key.toString().trim().isNotEmpty && entry.value != null,
-        ).map((e) => MapEntry(e.key.toString(), e.value)),
+        rawMap.entries
+            .where(
+              (entry) =>
+                  entry.key.toString().trim().isNotEmpty && entry.value != null,
+            )
+            .map((e) => MapEntry(e.key.toString(), e.value)),
       );
 
       if (attributes.isEmpty) {
         attributes = null;
       }
     }
-
-    // ignore: avoid_print
-    print('attributes after filtering: $attributes');
 
     return OrderProduct(
       productName: json['product_name']?.toString() ?? '',

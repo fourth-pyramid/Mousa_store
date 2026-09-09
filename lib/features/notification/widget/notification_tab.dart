@@ -24,18 +24,43 @@ class NotificationTabs extends StatelessWidget {
     padding: const EdgeInsets.all(16),
     child: Row(
       children: [
-        _buildTab(context: context, title: context.l10n.all_tab_text, count: allCount, index: 0),
+        _buildTab(
+          context: context,
+          title: context.l10n.all_tab_text,
+          count: allCount,
+          index: 0,
+        ),
         const SizedBox(width: 8),
-        _buildTab(context: context, title: context.l10n.orders_text, count: ordersCount, index: 1),
+        _buildTab(
+          context: context,
+          title: context.l10n.orders_text,
+          count: ordersCount,
+          index: 1,
+        ),
         const SizedBox(width: 8),
-        _buildTab(context: context, title: context.l10n.offers_tab_text, count: offersCount, index: 2),
+        _buildTab(
+          context: context,
+          title: context.l10n.offers_tab_text,
+          count: offersCount,
+          index: 2,
+        ),
         const SizedBox(width: 8),
-        _buildTab(context: context, title: context.l10n.alerts_tab_text, count: alertsCount, index: 3),
+        _buildTab(
+          context: context,
+          title: context.l10n.alerts_tab_text,
+          count: alertsCount,
+          index: 3,
+        ),
       ],
     ),
   );
 
-  Widget _buildTab({required String title, required BuildContext context, required int count, required int index}) {
+  Widget _buildTab({
+    required String title,
+    required BuildContext context,
+    required int count,
+    required int index,
+  }) {
     final isSelected = selectedIndex == index;
     final displayText = count > 0 ? '$title ($count)' : title;
 
@@ -48,12 +73,16 @@ class NotificationTabs extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected ? context.colors.primary : context.colors.surface,
             borderRadius: BorderRadius.circular(20),
-            border: !isSelected ? Border.all(color: context.colors.border) : null,
+            border: !isSelected
+                ? Border.all(color: context.colors.border)
+                : null,
           ),
           child: Text(
             displayText,
             style: context.typography.labelMedium.copyWith(
-              color: isSelected ? context.colors.onPrimary : context.colors.textSecondary,
+              color: isSelected
+                  ? context.colors.onPrimary
+                  : context.colors.textSecondary,
               fontWeight: FontWeight.w600,
             ),
           ),

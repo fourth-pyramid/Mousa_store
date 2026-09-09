@@ -14,10 +14,7 @@ class CustomLoadingIndicator extends StatelessWidget {
       child: SizedBox(
         width: 24,
         height: 24,
-        child: CircularProgressIndicator(
-          color: effectiveColor,
-          strokeWidth: 2,
-        ),
+        child: CircularProgressIndicator(color: effectiveColor, strokeWidth: 2),
       ),
     );
   }

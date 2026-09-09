@@ -32,9 +32,7 @@ class BrandCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colors.surface,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: context.colors.border.withValues(alpha: 0.7),
-        ),
+        border: Border.all(color: context.colors.border.withValues(alpha: 0.7)),
         boxShadow: [
           BoxShadow(
             color: context.colors.textPrimary.withValues(alpha: 0.04),
@@ -52,9 +50,8 @@ class BrandCard extends StatelessWidget {
               child: AppImage(
                 image: brand.imagePath,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-                placeholder: (_, _) => ColoredBox(
-                  color: context.colors.surfaceStrong,
-                ),
+                placeholder: (_, _) =>
+                    ColoredBox(color: context.colors.surfaceStrong),
                 errorWidget: (_, _, _) => ColoredBox(
                   color: context.colors.surfaceStrong,
                   child: Icon(

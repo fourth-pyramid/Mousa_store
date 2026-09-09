@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_dynamic_calls
+// ignore_for_file: avoid_dynamic_calls // Handles unstructured Map responses from legacy remote API endpoints
 import 'package:equatable/equatable.dart';
 import 'package:mousa_store/core/utils/safe_cubit.dart';
 import 'package:mousa_store/features/favorites/repositories/favorite_repo.dart';
@@ -7,7 +7,7 @@ import 'package:mousa_store/features/product/model/product.dart';
 part 'favorite_state.dart';
 
 class FavoriteCubit extends SafeCubit<FavoriteState> {
-  FavoriteCubit(this.favoriteRepo) : super(FavoriteInitial());
+  FavoriteCubit(this.favoriteRepo) : super(const FavoriteInitial());
   // ponytail: no auto-fetch in constructor — callers invoke getFavorites() explicitly
   final FavoriteRepo favoriteRepo;
   Set<int> favoriteIds = {};
@@ -32,7 +32,9 @@ class FavoriteCubit extends SafeCubit<FavoriteState> {
                   : int.tryParse(e['id'].toString()) ?? 0,
             );
             try {
-              newFavoriteProducts.add(Product.fromJson(e as Map<String, dynamic>));
+              newFavoriteProducts.add(
+                Product.fromJson(e as Map<String, dynamic>),
+              );
             } on Object {
               // Handle parsing error for individual item
             }
@@ -114,6 +116,6 @@ class FavoriteCubit extends SafeCubit<FavoriteState> {
   void reset() {
     favoriteIds = {};
     favoriteProducts = [];
-    emit(FavoriteInitial());
+    emit(const FavoriteInitial());
   }
 }

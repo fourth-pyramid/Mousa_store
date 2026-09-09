@@ -35,7 +35,10 @@ Future<void> main() async {
   // Handle automatic session expiration and redirection
   DioHelper.onSessionExpired = () {
     unawaited(getIt<AuthService>().logout());
-    navigatorKey.currentState?.pushNamedAndRemoveUntil('/auth', (route) => false);
+    navigatorKey.currentState?.pushNamedAndRemoveUntil(
+      '/auth',
+      (route) => false,
+    );
   };
 
   runApp(
@@ -49,9 +52,15 @@ Future<void> main() async {
         options: InternetStateOptions(
           checkConnectionPeriodic: const Duration(seconds: 5),
           labels: InternetStateLabels(
-            noInternetTitle: () => lookupAppLocalizations(getIt<LanguageCubit>().state.locale).no_internet_title,
-            descriptionText: () => lookupAppLocalizations(getIt<LanguageCubit>().state.locale).no_internet_description,
-            tryAgainText: () => lookupAppLocalizations(getIt<LanguageCubit>().state.locale).try_again_text,
+            noInternetTitle: () => lookupAppLocalizations(
+              getIt<LanguageCubit>().state.locale,
+            ).no_internet_title,
+            descriptionText: () => lookupAppLocalizations(
+              getIt<LanguageCubit>().state.locale,
+            ).no_internet_description,
+            tryAgainText: () => lookupAppLocalizations(
+              getIt<LanguageCubit>().state.locale,
+            ).try_again_text,
           ),
         ),
 

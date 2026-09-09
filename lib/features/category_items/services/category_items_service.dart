@@ -50,9 +50,7 @@ class CategoryItemsService {
           break;
         case ItemFetchType.brand:
           if (brandId == null) {
-            throw ArgumentError(
-              'brandId is required for brand fetch type',
-            );
+            throw ArgumentError('brandId is required for brand fetch type');
           }
           url = 'filter/product';
           queryParams['brand_id'] = brandId;

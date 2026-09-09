@@ -32,7 +32,9 @@ class ProductBottomActionBar extends StatefulWidget {
 }
 
 class _ProductBottomActionBarState extends State<ProductBottomActionBar> {
-  final ValueNotifier<bool> _showQuantitySelectorNotifier = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> _showQuantitySelectorNotifier = ValueNotifier<bool>(
+    false,
+  );
 
   @override
   void dispose() {
@@ -42,16 +44,15 @@ class _ProductBottomActionBarState extends State<ProductBottomActionBar> {
 
   @override
   Widget build(BuildContext context) {
-    final minQty = widget.selectedVariant?.minQuantity ?? widget.product.minQuantity;
+    final minQty =
+        widget.selectedVariant?.minQuantity ?? widget.product.minQuantity;
     final maxQty = widget.selectedVariant?.stock ?? widget.product.displayStock;
     final effectiveQuantity = widget.selectedQuantity;
 
     return Container(
       decoration: BoxDecoration(
         color: context.colors.surface,
-        border: Border(
-          top: BorderSide(color: context.colors.border),
-        ),
+        border: Border(top: BorderSide(color: context.colors.border)),
       ),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: SafeArea(
@@ -83,7 +84,8 @@ class _ProductBottomActionBarState extends State<ProductBottomActionBar> {
                   SizedBox(width: 12.w),
                   GestureDetector(
                     onTap: () {
-                      _showQuantitySelectorNotifier.value = !_showQuantitySelectorNotifier.value;
+                      _showQuantitySelectorNotifier.value =
+                          !_showQuantitySelectorNotifier.value;
                     },
                     child: Container(
                       height: 48.h,
@@ -96,7 +98,9 @@ class _ProductBottomActionBarState extends State<ProductBottomActionBar> {
                       child: Center(
                         child: Text(
                           'QTY: $effectiveQuantity',
-                          style: context.typography.labelLarge.copyWith(color: context.colors.textPrimary),
+                          style: context.typography.labelLarge.copyWith(
+                            color: context.colors.textPrimary,
+                          ),
                         ),
                       ),
                     ),
@@ -129,14 +133,17 @@ class _AddToCartButton extends StatelessWidget {
       final isLoading = cartState.actionStatus == RequestStatus.loading;
       final cart = cartState.cart;
       final targetPropertyId = selectedVariant?.id ?? product.id;
-      final isInCart = cart?.items.any((item) => item.id == targetPropertyId) ?? false;
+      final isInCart =
+          cart?.items.any((item) => item.id == targetPropertyId) ?? false;
 
       return AppButton(
         isLoading: isLoading,
         text: isInCart
             ? context.l10n.product_added_text
             : context.l10n.add_to_cart_text,
-        variant: isInCart ? AppButtonVariant.secondary : AppButtonVariant.primary,
+        variant: isInCart
+            ? AppButtonVariant.secondary
+            : AppButtonVariant.primary,
         onPressed: isInCart
             ? null
             : () {

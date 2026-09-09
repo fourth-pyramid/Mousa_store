@@ -44,8 +44,8 @@ class _BrandsViewState extends State<BrandsView> {
 
             if (state.status == RequestStatus.failure) {
               return AppErrorState(
-                message: state.errorMessage ??
-                    context.l10n.error_while_loading_text,
+                message:
+                    state.errorMessage ?? context.l10n.error_while_loading_text,
                 onRetry: () => context.read<BrandCubit>().getBrands(),
               );
             }

@@ -33,27 +33,24 @@ void main() {
     blocTest<BrandCubit, BrandState>(
       'getBrands emits [loading, success] when repository succeeds',
       build: () {
-        when(() => mockBrandRepo.fetchBrands()).thenAnswer(
-          (_) async => [sampleBrand],
-        );
+        when(
+          () => mockBrandRepo.fetchBrands(),
+        ).thenAnswer((_) async => [sampleBrand]);
         return BrandCubit(repository: mockBrandRepo);
       },
       act: (cubit) => cubit.getBrands(),
       expect: () => [
         const BrandState(status: RequestStatus.loading),
-        const BrandState(
-          status: RequestStatus.success,
-          brands: [sampleBrand],
-        ),
+        const BrandState(status: RequestStatus.success, brands: [sampleBrand]),
       ],
     );
 
     blocTest<BrandCubit, BrandState>(
       'getBrands emits [loading, failure] when repository fails',
       build: () {
-        when(() => mockBrandRepo.fetchBrands()).thenThrow(
-          Exception('Failed to fetch brands'),
-        );
+        when(
+          () => mockBrandRepo.fetchBrands(),
+        ).thenThrow(Exception('Failed to fetch brands'));
         return BrandCubit(repository: mockBrandRepo);
       },
       act: (cubit) => cubit.getBrands(),

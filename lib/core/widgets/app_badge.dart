@@ -44,9 +44,7 @@ class AppBadge extends StatelessWidget {
         color: bg,
         borderRadius: context.radius.xsBorder,
         border: variant == AppBadgeVariant.outline
-            ? Border.all(
-                color: context.colors.border,
-              )
+            ? Border.all(color: context.colors.border)
             : null,
       ),
       child: Text(

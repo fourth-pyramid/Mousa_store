@@ -70,7 +70,9 @@ class LayoutView extends StatefulWidget {
 }
 
 class _LayoutViewState extends State<LayoutView> {
-  final ValueNotifier<LayoutTab> _currentTabNotifier = ValueNotifier<LayoutTab>(LayoutTab.home);
+  final ValueNotifier<LayoutTab> _currentTabNotifier = ValueNotifier<LayoutTab>(
+    LayoutTab.home,
+  );
   final ValueNotifier<int> _rebuildNotifier = ValueNotifier<int>(0);
   DateTime? _lastBackPressTime;
 
@@ -97,9 +99,7 @@ class _LayoutViewState extends State<LayoutView> {
       case LayoutTab.home:
         _screens[index] = BlocProvider(
           create: (context) => getIt<HomeCubit>(),
-          child: const HomeView(
-            key: PageStorageKey('home'),
-          ),
+          child: const HomeView(key: PageStorageKey('home')),
         );
       case LayoutTab.cart:
         _screens[index] = BlocProvider.value(
@@ -128,8 +128,16 @@ class _LayoutViewState extends State<LayoutView> {
           color: context.colors.transparent,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-            decoration: BoxDecoration(color: context.colors.textPrimary, borderRadius: context.radius.smBorder),
-            child: Text(message, style: context.typography.body.copyWith(color: context.colors.surface)),
+            decoration: BoxDecoration(
+              color: context.colors.textPrimary,
+              borderRadius: context.radius.smBorder,
+            ),
+            child: Text(
+              message,
+              style: context.typography.body.copyWith(
+                color: context.colors.surface,
+              ),
+            ),
           ),
         ),
       ),
@@ -180,7 +188,9 @@ class _LayoutViewState extends State<LayoutView> {
             }
 
             final now = DateTime.now();
-            if (_lastBackPressTime == null || now.difference(_lastBackPressTime!) > const Duration(seconds: 2)) {
+            if (_lastBackPressTime == null ||
+                now.difference(_lastBackPressTime!) >
+                    const Duration(seconds: 2)) {
               _lastBackPressTime = now;
               showToast(context.l10n.press_again_to_exit_text);
               return;
@@ -200,61 +210,70 @@ class _LayoutViewState extends State<LayoutView> {
                   offstage: !isCurrent,
                   child: TickerMode(
                     enabled: isCurrent,
-                    child: KeyedSubtree(key: ValueKey(tab), child: _getScreen(tab)),
+                    child: KeyedSubtree(
+                      key: ValueKey(tab),
+                      child: _getScreen(tab),
+                    ),
                   ),
                 );
               }).toList(),
             ),
             bottomNavigationBar: Builder(
               builder: (context) => DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: context.colors.surface,
-                    border: Border(top: BorderSide(color: context.colors.border)),
-                  ),
-                  child: SafeArea(
-                    top: false,
-                    child: Container(
-                      height: 60,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: LayoutTab.values.map((tab) {
-                          final isSelected = currentTab == tab;
-                          final activeColor = context.colors.textPrimary;
-                          final inactiveColor = context.colors.textSecondary;
+                decoration: BoxDecoration(
+                  color: context.colors.surface,
+                  border: Border(top: BorderSide(color: context.colors.border)),
+                ),
+                child: SafeArea(
+                  top: false,
+                  child: Container(
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: LayoutTab.values.map((tab) {
+                        final isSelected = currentTab == tab;
+                        final activeColor = context.colors.textPrimary;
+                        final inactiveColor = context.colors.textSecondary;
 
-                          return Expanded(
-                            child: InkWell(
-                              onTap: () => _currentTabNotifier.value = tab,
-                              splashColor: context.colors.transparent,
-                              highlightColor: context.colors.transparent,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    isSelected ? tab.activeIcon : tab.icon,
-                                    color: isSelected ? activeColor : inactiveColor,
-                                    size: 22,
+                        return Expanded(
+                          child: InkWell(
+                            onTap: () => _currentTabNotifier.value = tab,
+                            splashColor: context.colors.transparent,
+                            highlightColor: context.colors.transparent,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  isSelected ? tab.activeIcon : tab.icon,
+                                  color: isSelected
+                                      ? activeColor
+                                      : inactiveColor,
+                                  size: 22,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  tab.label(context),
+                                  style: context.typography.caption.copyWith(
+                                    color: isSelected
+                                        ? activeColor
+                                        : inactiveColor,
+                                    fontSize: 10,
+                                    fontWeight: isSelected
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                    letterSpacing: 0.5,
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    tab.label(context),
-                                    style: context.typography.caption.copyWith(
-                                      color: isSelected ? activeColor : inactiveColor,
-                                      fontSize: 10,
-                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                      letterSpacing: 0.5,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
+              ),
             ),
           ),
         ),

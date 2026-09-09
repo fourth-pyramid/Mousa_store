@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_dynamic_calls
+// ignore_for_file: avoid_dynamic_calls // Unstructured JSON responses from remote categories endpoint
 
 import 'package:flutter/rendering.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';

@@ -31,11 +31,7 @@ void main() {
 
   final sampleResponse = CategoryItemsResponse(
     success: true,
-    data: CategoryItemsData(
-      currentPage: 1,
-      lastPage: 1,
-      data: [sampleProduct],
-    ),
+    data: CategoryItemsData(currentPage: 1, lastPage: 1, data: [sampleProduct]),
   );
 
   group('CategoryItemsCubit Tests', () {
@@ -72,9 +68,7 @@ void main() {
       },
       act: (cubit) => cubit.fetchItems(),
       expect: () => [
-        const CategoryItemsState(
-          status: CategoryItemsStatus.loading,
-        ),
+        const CategoryItemsState(status: CategoryItemsStatus.loading),
         predicate<CategoryItemsState>(
           (s) =>
               s.status == CategoryItemsStatus.success &&

@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
-import 'package:mousa_store/features/setting_profile/service/profile_service.dart';
 import 'package:mousa_store/features/setting_profile/view_model/profile_cubit/profile_cubit.dart';
 import 'package:phone_text_field/phone_text_field.dart';
 
@@ -17,7 +17,7 @@ class ChangePhoneNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
     create: (context) {
-      final cubit = ProfileCubit(ProfileService());
+      final cubit = getIt<ProfileCubit>();
       unawaited(cubit.getProfile());
       return cubit;
     },
@@ -33,8 +33,14 @@ class _ChangePhoneNumberBody extends StatefulWidget {
 }
 
 class _ChangePhoneNumberBodyState extends State<_ChangePhoneNumberBody> {
-  final ValueNotifier<String> _phoneNumberNotifier = ValueNotifier<String>('');
+  late final ValueNotifier<String> _phoneNumberNotifier;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneNumberNotifier = ValueNotifier<String>('');
+  }
 
   @override
   void dispose() {
@@ -96,11 +102,7 @@ class _ChangePhoneNumberBodyState extends State<_ChangePhoneNumberBody> {
             ),
             bottomNavigationBar: SafeArea(
               child: Padding(
-                padding: EdgeInsets.only(
-                  left: 16.w,
-                  right: 16.w,
-                  bottom: 8.h,
-                ),
+                padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 8.h),
                 child: CustomButton(
                   isLoading: isLoading,
                   text: Text(context.l10n.save_text),
@@ -110,7 +112,9 @@ class _ChangePhoneNumberBodyState extends State<_ChangePhoneNumberBody> {
                       final currentUser = CacheHelper.getUser();
 
                       if (currentUser != null) {
-                        unawaited(cubit.updatePhone(phone: _phoneNumberNotifier.value));
+                        unawaited(
+                          cubit.updatePhone(phone: _phoneNumberNotifier.value),
+                        );
                       } else {
                         CustomSnackBar.show(
                           context,

@@ -33,9 +33,8 @@ void main() {
       'emits [loading, success] when sendEmail succeeds',
       build: () {
         when(
-          () => mockOtpRepo.sendEmailForForgetPassword(
-            email: 'user@example.com',
-          ),
+          () =>
+              mockOtpRepo.sendEmailForForgetPassword(email: 'user@example.com'),
         ).thenAnswer((_) async => sampleSuccessResponse);
         return ForgotPasswordCubit(otpRepo: mockOtpRepo);
       },

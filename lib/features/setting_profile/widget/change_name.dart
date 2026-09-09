@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 import 'package:mousa_store/core/widgets/custom_form_field.dart';
-import 'package:mousa_store/features/setting_profile/service/profile_service.dart';
 import 'package:mousa_store/features/setting_profile/view_model/profile_cubit/profile_cubit.dart';
 
 class ChangeName extends StatefulWidget {
@@ -20,15 +20,15 @@ class ChangeName extends StatefulWidget {
 }
 
 class _ChangeNameState extends State<ChangeName> {
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
   final _formKey = GlobalKey<FormState>(); // Declare GlobalKey for Form
 
   @override
   void initState() {
     super.initState();
-    _firstNameController = TextEditingController();
-    _lastNameController = TextEditingController();
+    _firstNameController = TextEditingController(text: widget.firstName);
+    _lastNameController = TextEditingController(text: widget.lastName);
   }
 
   @override
@@ -40,7 +40,7 @@ class _ChangeNameState extends State<ChangeName> {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-    create: (context) => ProfileCubit(ProfileService()),
+    create: (context) => getIt<ProfileCubit>(),
     child: BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is ProfileUpdated) {
@@ -99,11 +99,7 @@ class _ChangeNameState extends State<ChangeName> {
           ),
           bottomNavigationBar: SafeArea(
             child: Padding(
-              padding: EdgeInsets.only(
-                left: 16.w,
-                right: 16.w,
-                bottom: 8.h,
-              ),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 8.h),
               child: CustomButton(
                 isLoading: isLoading,
                 text: Text(context.l10n.save_text),

@@ -7,27 +7,27 @@ class AppSkeletonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Skeletonizer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: context.colors.surface,
-                borderRadius: context.radius.mdBorder,
-              ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            decoration: BoxDecoration(
+              color: context.colors.surface,
+              borderRadius: context.radius.mdBorder,
             ),
           ),
-          const SizedBox(height: 8),
-          Container(height: 12, width: 60, color: context.colors.surfaceStrong),
-          const SizedBox(height: 4),
-          Container(height: 16, width: 120, color: context.colors.surfaceStrong),
-          const SizedBox(height: 4),
-          Container(height: 16, width: 80, color: context.colors.surfaceStrong),
-        ],
-      ),
-    );
+        ),
+        const SizedBox(height: 8),
+        Container(height: 12, width: 60, color: context.colors.surfaceStrong),
+        const SizedBox(height: 4),
+        Container(height: 16, width: 120, color: context.colors.surfaceStrong),
+        const SizedBox(height: 4),
+        Container(height: 16, width: 80, color: context.colors.surfaceStrong),
+      ],
+    ),
+  );
 }
 
 class AppSkeletonGrid extends StatelessWidget {
@@ -44,7 +44,8 @@ class AppSkeletonGrid extends StatelessWidget {
       crossAxisCount: 2,
       mainAxisSpacing: context.spacing.cardGap,
       crossAxisSpacing: context.spacing.cardGap,
-      childAspectRatio: 0.74, // ponytail: ratio 0.74 matches product grid layout
+      childAspectRatio:
+          0.74, // ponytail: ratio 0.74 matches product grid layout
     ),
     itemCount: itemCount,
     itemBuilder: (context, index) => const AppSkeletonCard(),

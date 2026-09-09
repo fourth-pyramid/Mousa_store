@@ -76,7 +76,9 @@ class QuantitySelector extends StatelessWidget {
                         fontWeight: isSelected
                             ? FontWeight.bold
                             : FontWeight.normal,
-                        color: isSelected ? context.colors.onPrimary : context.colors.textPrimary,
+                        color: isSelected
+                            ? context.colors.onPrimary
+                            : context.colors.textPrimary,
                       ),
                     ),
                   ),

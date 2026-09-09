@@ -40,10 +40,20 @@ class SearchCubit extends SafeCubit<SearchState> {
     _cancelToken = CancelToken();
 
     lastQuery = query;
-    emit(state.copyWith(status: SearchStatus.loading, currentPage: 1, hasReachedMax: false));
+    emit(
+      state.copyWith(
+        status: SearchStatus.loading,
+        currentPage: 1,
+        hasReachedMax: false,
+      ),
+    );
 
     try {
-      final response = await _searchRepo.searchProducts(query, perPage: perPage, cancelToken: _cancelToken);
+      final response = await _searchRepo.searchProducts(
+        query,
+        perPage: perPage,
+        cancelToken: _cancelToken,
+      );
 
       final products = response.data?.data ?? [];
       final currentPage = response.data?.currentPage ?? 1;
@@ -65,7 +75,12 @@ class SearchCubit extends SafeCubit<SearchState> {
     } on Object catch (e) {
       // Ignore cancellation — it's intentional
       if (e.toString().contains('Request cancelled')) return;
-      emit(state.copyWith(status: SearchStatus.failure, errorMessage: e.toString()));
+      emit(
+        state.copyWith(
+          status: SearchStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -88,7 +103,8 @@ class SearchCubit extends SafeCubit<SearchState> {
       final currentPage = response.data?.currentPage ?? state.currentPage;
       final lastPage = response.data?.lastPage ?? state.lastPage;
 
-      final updatedProducts = List<Product>.from(state.products)..addAll(newProducts);
+      final updatedProducts = List<Product>.from(state.products)
+        ..addAll(newProducts);
 
       emit(
         state.copyWith(

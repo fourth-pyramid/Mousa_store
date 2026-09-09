@@ -39,7 +39,8 @@ class AppEmptyState extends StatefulWidget {
   State<AppEmptyState> createState() => _AppEmptyStateState();
 }
 
-class _AppEmptyStateState extends State<AppEmptyState> with TickerProviderStateMixin {
+class _AppEmptyStateState extends State<AppEmptyState>
+    with TickerProviderStateMixin {
   late final AnimationController _pulseController;
   late final AnimationController _entranceController;
 
@@ -52,27 +53,33 @@ class _AppEmptyStateState extends State<AppEmptyState> with TickerProviderStateM
   void initState() {
     super.initState();
 
-    _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 3));
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
     unawaited(_pulseController.repeat(reverse: true));
 
-    _entranceController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+    _entranceController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
 
-    _floatAnimation = Tween<double>(
-      begin: 0.0,
-      end: -8.0,
-    ).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
+    _floatAnimation = Tween<double>(begin: 0.0, end: -8.0).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
 
-    _pulseScaleAnimation = Tween<double>(
-      begin: 0.96,
-      end: 1.04,
-    ).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
+    _pulseScaleAnimation = Tween<double>(begin: 0.96, end: 1.04).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
 
-    _fadeAnimation = CurvedAnimation(parent: _entranceController, curve: Curves.easeOut);
+    _fadeAnimation = CurvedAnimation(
+      parent: _entranceController,
+      curve: Curves.easeOut,
+    );
 
-    _scaleAnimation = Tween<double>(
-      begin: 0.9,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _entranceController, curve: Curves.easeOutCubic));
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.0).animate(
+      CurvedAnimation(parent: _entranceController, curve: Curves.easeOutCubic),
+    );
 
     unawaited(_entranceController.forward());
   }
@@ -149,7 +156,11 @@ class _AppEmptyStateState extends State<AppEmptyState> with TickerProviderStateM
                           child: Center(
                             child:
                                 widget.iconWidget ??
-                                Icon(widget.icon ?? Icons.inbox_outlined, size: 34.w, color: primaryColor),
+                                Icon(
+                                  widget.icon ?? Icons.inbox_outlined,
+                                  size: 34.w,
+                                  color: primaryColor,
+                                ),
                           ),
                         ),
                       ],
@@ -165,19 +176,28 @@ class _AppEmptyStateState extends State<AppEmptyState> with TickerProviderStateM
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                if (widget.description != null && widget.description!.isNotEmpty) ...[
+                if (widget.description != null &&
+                    widget.description!.isNotEmpty) ...[
                   SizedBox(height: 8.h),
                   Text(
                     widget.description!,
                     textAlign: TextAlign.center,
-                    style: context.typography.bodySmall.copyWith(color: context.colors.textSecondary),
+                    style: context.typography.bodySmall.copyWith(
+                      color: context.colors.textSecondary,
+                    ),
                   ),
                 ],
-                if (widget.actionLabel != null && widget.onActionTap != null) ...[
+                if (widget.actionLabel != null &&
+                    widget.onActionTap != null) ...[
                   SizedBox(height: 24.h),
-                  AppButton(text: widget.actionLabel!, onPressed: widget.onActionTap, isFullWidth: false),
+                  AppButton(
+                    text: widget.actionLabel!,
+                    onPressed: widget.onActionTap,
+                    isFullWidth: false,
+                  ),
                 ],
-                if (widget.secondaryActionLabel != null && widget.onSecondaryActionTap != null) ...[
+                if (widget.secondaryActionLabel != null &&
+                    widget.onSecondaryActionTap != null) ...[
                   SizedBox(height: 12.h),
                   AppButton(
                     text: widget.secondaryActionLabel!,

@@ -103,7 +103,9 @@ class DeepLinkService {
     _navigatorKey!.currentState?.popUntil((route) => route.isFirst);
 
     // Push the product details view
-    unawaited(_navigatorKey!.currentState?.pushNamed('/product', arguments: productId));
+    unawaited(
+      _navigatorKey!.currentState?.pushNamed('/product', arguments: productId),
+    );
   }
 
   /// Generate a shareable link for a product

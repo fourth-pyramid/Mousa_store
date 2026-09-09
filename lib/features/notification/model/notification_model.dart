@@ -65,7 +65,9 @@ class NotificationModel {
           : DateTime.now(),
       type: getNotificationType(json['type'] as String?),
       data: extraData,
-      readAt: json['read_at'] != null ? DateTime.tryParse(json['read_at'].toString()) : null,
+      readAt: json['read_at'] != null
+          ? DateTime.tryParse(json['read_at'].toString())
+          : null,
     ); // ponytail: safe field extraction
   }
 

@@ -1,11 +1,11 @@
 import 'package:mousa_store/core/utils/safe_cubit.dart';
-import 'package:mousa_store/features/home/repositories/home_repository.dart';
+import 'package:mousa_store/features/home/domain/usecases/fetch_home_data_use_case.dart';
 import 'package:mousa_store/features/home/viewmodels/home_state.dart';
 
 class HomeCubit extends SafeCubit<HomeState> {
-  HomeCubit({required this.repository}) : super(const HomeState());
+  HomeCubit({required this.useCase}) : super(const HomeState());
 
-  final HomeRepository repository;
+  final FetchHomeDataUseCase useCase;
 
   Future<void> fetchAllData() async {
     await Future.wait([
@@ -21,13 +21,8 @@ class HomeCubit extends SafeCubit<HomeState> {
   Future<void> fetchBrands() async {
     emit(state.copyWith(brandsStatus: RequestStatus.loading));
     try {
-      final brands = await repository.getBrands();
-      emit(
-        state.copyWith(
-          brandsStatus: RequestStatus.success,
-          brands: brands,
-        ),
-      );
+      final brands = await useCase.getBrands();
+      emit(state.copyWith(brandsStatus: RequestStatus.success, brands: brands));
     } on Object catch (e) {
       emit(
         state.copyWith(
@@ -41,7 +36,7 @@ class HomeCubit extends SafeCubit<HomeState> {
   Future<void> fetchBanners() async {
     emit(state.copyWith(bannerStatus: RequestStatus.loading));
     try {
-      final banners = await repository.getBanners();
+      final banners = await useCase.getBanners();
       emit(
         state.copyWith(bannerStatus: RequestStatus.success, banners: banners),
       );
@@ -58,7 +53,7 @@ class HomeCubit extends SafeCubit<HomeState> {
   Future<void> fetchCategories() async {
     emit(state.copyWith(categoriesStatus: RequestStatus.loading));
     try {
-      final categories = await repository.getCategories();
+      final categories = await useCase.getCategories();
       emit(
         state.copyWith(
           categoriesStatus: RequestStatus.success,
@@ -78,7 +73,7 @@ class HomeCubit extends SafeCubit<HomeState> {
   Future<void> fetchOfferItems() async {
     emit(state.copyWith(offersStatus: RequestStatus.loading));
     try {
-      final response = await repository.getOfferItems();
+      final response = await useCase.getOfferItems();
       emit(
         state.copyWith(
           offersStatus: RequestStatus.success,
@@ -98,7 +93,7 @@ class HomeCubit extends SafeCubit<HomeState> {
   Future<void> fetchRecentlyItems() async {
     emit(state.copyWith(recentlyStatus: RequestStatus.loading));
     try {
-      final response = await repository.getRecentlyItems();
+      final response = await useCase.getRecentlyItems();
       emit(
         state.copyWith(
           recentlyStatus: RequestStatus.success,
@@ -123,7 +118,7 @@ class HomeCubit extends SafeCubit<HomeState> {
     }
 
     try {
-      final response = await repository.getProducts(page: page);
+      final response = await useCase.getProducts(page: page);
       final newProducts = response.data?.data ?? [];
       final currentPage = response.data?.currentPage ?? 1;
       final lastPage = response.data?.lastPage ?? 1;

@@ -1,4 +1,4 @@
-﻿import 'package:mousa_store/core/service/cache_helper.dart';
+import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
 import 'package:mousa_store/features/auth/model/user.dart';
 import 'package:mousa_store/features/setting_profile/model/profile_update_response.dart';
@@ -37,7 +37,9 @@ class ProfileService {
         data: data,
       );
 
-      return ProfileUpdateResponse.fromJson(response.data as Map<String, dynamic>);
+      return ProfileUpdateResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
     } on Exception catch (e) {
       return ProfileUpdateResponse(success: false, message: e.toString());
     }

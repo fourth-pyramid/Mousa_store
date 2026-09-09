@@ -25,7 +25,10 @@ void main() {
 
   group('OtpCubit Tests', () {
     test('initial state sets flowType correctly', () async {
-      final cubit = OtpCubit(otpRepo: mockOtpRepo, flowType: OtpFlowType.signup);
+      final cubit = OtpCubit(
+        otpRepo: mockOtpRepo,
+        flowType: OtpFlowType.signup,
+      );
       expect(cubit.state.flowType, equals(OtpFlowType.signup));
       expect(cubit.state.status, equals(OtpStatus.idle));
       await cubit.close();
@@ -42,20 +45,14 @@ void main() {
       'emits [loading, success] when verifyOtp succeeds for signup',
       build: () {
         when(
-          () => mockOtpRepo.verifyOtp(
-            email: 'test@example.com',
-            otp: '1234',
-          ),
+          () => mockOtpRepo.verifyOtp(email: 'test@example.com', otp: '1234'),
         ).thenAnswer((_) async => sampleOtpSuccess);
         return OtpCubit(otpRepo: mockOtpRepo, flowType: OtpFlowType.signup)
           ..setOtpCode('1234');
       },
       act: (cubit) => cubit.verifyOtp('test@example.com'),
       expect: () => [
-        const OtpState(
-          otpCode: '1234',
-          status: OtpStatus.loading,
-        ),
+        const OtpState(otpCode: '1234', status: OtpStatus.loading),
         const OtpState(
           otpCode: '1234',
           status: OtpStatus.success,

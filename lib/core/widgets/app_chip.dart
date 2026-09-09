@@ -21,7 +21,9 @@ class AppChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = isSelected ? context.colors.primary : context.colors.surface;
-    final fg = isSelected ? context.colors.onPrimary : context.colors.textPrimary;
+    final fg = isSelected
+        ? context.colors.onPrimary
+        : context.colors.textPrimary;
 
     return GestureDetector(
       onTap: onTap,
@@ -31,17 +33,12 @@ class AppChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: bg,
           borderRadius: context.radius.pillBorder,
-          border: Border.all(
-            color: isSelected ? bg : context.colors.border,
-          ),
+          border: Border.all(color: isSelected ? bg : context.colors.border),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (icon != null) ...[
-              icon!,
-              SizedBox(width: 6.w),
-            ],
+            if (icon != null) ...[icon!, SizedBox(width: 6.w)],
             Text(
               label,
               style: context.typography.labelMedium.copyWith(color: fg),
@@ -51,7 +48,9 @@ class AppChip extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                 decoration: BoxDecoration(
-                  color: isSelected ? fg.withValues(alpha: 0.2) : context.colors.secondary,
+                  color: isSelected
+                      ? fg.withValues(alpha: 0.2)
+                      : context.colors.secondary,
                   borderRadius: context.radius.pillBorder,
                 ),
                 child: Text(

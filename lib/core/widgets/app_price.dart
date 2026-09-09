@@ -30,17 +30,27 @@ class AppPrice extends StatelessWidget {
         Text(
           '$currency ${price.toStringAsFixed(0)}',
           style: isLarge
-              ? context.typography.titleLarge.copyWith(color: textPrimary, fontWeight: FontWeight.bold)
-              : context.typography.body.copyWith(color: textPrimary, fontWeight: FontWeight.bold),
+              ? context.typography.titleLarge.copyWith(
+                  color: textPrimary,
+                  fontWeight: FontWeight.bold,
+                )
+              : context.typography.body.copyWith(
+                  color: textPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
         ),
         if (hasDiscount) ...[
           const SizedBox(width: 8),
           Text(
             '$currency ${originalPrice!.toStringAsFixed(0)}',
-            style: (isLarge ? context.typography.body : context.typography.bodySmall).copyWith(
-              decoration: TextDecoration.lineThrough,
-              color: textMuted,
-            ),
+            style:
+                (isLarge
+                        ? context.typography.body
+                        : context.typography.bodySmall)
+                    .copyWith(
+                      decoration: TextDecoration.lineThrough,
+                      color: textMuted,
+                    ),
           ),
         ],
       ],

@@ -20,14 +20,18 @@ class ProfileAppbar extends StatelessWidget {
       builder: (context, child) {
         final isLoggedIn = authService.isLoggedIn;
         final user = authService.user;
-        final userName = user != null ? '${user.firstName} ${user.lastName}' : '';
+        final userName = user != null
+            ? '${user.firstName} ${user.lastName}'
+            : '';
 
         return Row(
           children: [
             AppImage.asset(
               'assets/images/mousa_store.png',
               height: 60,
-              color: context.colors.textPrimary == Colors.white ? Colors.white : null,
+              color: context.colors.textPrimary == Colors.white
+                  ? Colors.white
+                  : null,
               fit: BoxFit.contain,
             ),
             const SizedBox(width: 8),
@@ -38,7 +42,9 @@ class ProfileAppbar extends StatelessWidget {
                 children: [
                   Text(
                     context.l10n.welcome_text.toUpperCase(),
-                    style: context.typography.caption.copyWith(color: context.colors.textSecondary),
+                    style: context.typography.caption.copyWith(
+                      color: context.colors.textSecondary,
+                    ),
                   ),
                   if (user != null)
                     Text(
@@ -54,7 +60,12 @@ class ProfileAppbar extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   unawaited(
-                    navigateWithTransition<void>(context, const AuthView(), type: TransitionType.fade, replace: true),
+                    navigateWithTransition<void>(
+                      context,
+                      const AuthView(),
+                      type: TransitionType.fade,
+                      replace: true,
+                    ),
                   );
                 },
                 child: Text(

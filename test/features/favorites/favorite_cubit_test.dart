@@ -25,17 +25,20 @@ void main() {
   );
 
   group('FavoriteCubit Tests', () {
-    test('initial state is FavoriteInitial and isFavorite returns false', () async {
-      final cubit = FavoriteCubit(mockFavoriteRepo);
-      expect(cubit.state, isA<FavoriteInitial>());
-      expect(cubit.isFavorite(10), isFalse);
-      await cubit.close();
-    });
+    test(
+      'initial state is FavoriteInitial and isFavorite returns false',
+      () async {
+        final cubit = FavoriteCubit(mockFavoriteRepo);
+        expect(cubit.state, isA<FavoriteInitial>());
+        expect(cubit.isFavorite(10), isFalse);
+        await cubit.close();
+      },
+    );
 
     test('addFavorite toggles favorite state and calls repository', () async {
-      when(() => mockFavoriteRepo.addFavorite(productId: 10)).thenAnswer(
-        (_) async => {'success': true},
-      );
+      when(
+        () => mockFavoriteRepo.addFavorite(productId: 10),
+      ).thenAnswer((_) async => {'success': true});
 
       final cubit = FavoriteCubit(mockFavoriteRepo);
       await cubit.addFavorite(productId: 10, product: sampleProduct);

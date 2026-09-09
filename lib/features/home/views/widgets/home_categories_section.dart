@@ -19,52 +19,52 @@ class HomeCategoriesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.categoriesStatus != current.categoriesStatus ||
-          previous.categories != current.categories,
-      builder: (context, state) {
-        if (state.categories.isEmpty &&
-            state.categoriesStatus != RequestStatus.loading) {
-          return const SizedBox.shrink();
-        }
+    buildWhen: (previous, current) =>
+        previous.categoriesStatus != current.categoriesStatus ||
+        previous.categories != current.categories,
+    builder: (context, state) {
+      if (state.categories.isEmpty &&
+          state.categoriesStatus != RequestStatus.loading) {
+        return const SizedBox.shrink();
+      }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20.h),
-            AppSectionHeader(
-              title: context.l10n.shop_by_category_text,
-            ),
-            SizedBox(height: 12.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 6.w),
-              child: state.categoriesStatus == RequestStatus.loading
-                  ? _buildLoadingSkeleton(context)
-                  : GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.categories.length,
-                      gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 6.w,
-                            mainAxisSpacing: 6.h,
-                            childAspectRatio: 1.15,
-                          ),
-                      itemBuilder: (context, index) {
-                        final category = state.categories[index];
-                        return _HomeCategoryCard(
-                          category: category,
-                        );
-                      },
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 20.h),
+          AppSectionHeader(title: context.l10n.shop_by_category_text),
+          SizedBox(height: 12.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 6.w),
+            child: state.categoriesStatus == RequestStatus.loading
+                ? const _CategoriesLoadingSkeleton()
+                : GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.categories.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 6.w,
+                      mainAxisSpacing: 6.h,
+                      childAspectRatio: 1.15,
                     ),
-            ),
-          ],
-        );
-      },
-    );
+                    itemBuilder: (context, index) {
+                      final category = state.categories[index];
+                      return _HomeCategoryCard(category: category);
+                    },
+                  ),
+          ),
+        ],
+      );
+    },
+  );
+}
 
-  Widget _buildLoadingSkeleton(BuildContext context) => Skeletonizer(
+class _CategoriesLoadingSkeleton extends StatelessWidget {
+  const _CategoriesLoadingSkeleton();
+
+  @override
+  Widget build(BuildContext context) => Skeletonizer(
     child: GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -75,7 +75,7 @@ class HomeCategoriesSection extends StatelessWidget {
         mainAxisSpacing: 10.h,
         childAspectRatio: 1.15,
       ),
-      itemBuilder: (context, index) => Container(
+      itemBuilder: (context, index) => DecoratedBox(
         decoration: BoxDecoration(
           color: context.colors.surface,
           borderRadius: BorderRadius.circular(16.r),
@@ -86,9 +86,7 @@ class HomeCategoriesSection extends StatelessWidget {
 }
 
 class _HomeCategoryCard extends StatelessWidget {
-  const _HomeCategoryCard({
-    required this.category,
-  });
+  const _HomeCategoryCard({required this.category});
 
   final Category category;
 

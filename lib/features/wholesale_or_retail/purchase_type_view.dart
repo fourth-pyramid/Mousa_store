@@ -18,7 +18,9 @@ class PurchaseTypeView extends StatefulWidget {
 }
 
 class _PurchaseTypeViewState extends State<PurchaseTypeView> {
-  final ValueNotifier<String?> _selectedTypeNotifier = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _selectedTypeNotifier = ValueNotifier<String?>(
+    null,
+  );
 
   @override
   void dispose() {
@@ -41,7 +43,9 @@ class _PurchaseTypeViewState extends State<PurchaseTypeView> {
                   'assets/images/mousa_store.png',
                   height: 180.h,
                   width: 180.w,
-                  color: context.colors.textPrimary == Colors.white ? Colors.white : null,
+                  color: context.colors.textPrimary == Colors.white
+                      ? Colors.white
+                      : null,
                   fit: BoxFit.contain,
                 ),
                 SizedBox(height: 14.h),
@@ -58,27 +62,41 @@ class _PurchaseTypeViewState extends State<PurchaseTypeView> {
                 Text(
                   context.l10n.do_you_want_to_buy_wholesale_or_retail,
                   textAlign: TextAlign.center,
-                  style: context.typography.body.copyWith(color: context.colors.textSecondary),
+                  style: context.typography.body.copyWith(
+                    color: context.colors.textSecondary,
+                  ),
                 ),
                 SizedBox(height: 28.h),
                 AppButton(
                   onPressed: () => _selectedTypeNotifier.value = 'wholesale',
                   text: context.l10n.wholesale_text,
-                  variant: selectedTypeRaw == 'wholesale' ? AppButtonVariant.primary : AppButtonVariant.outline,
+                  variant: selectedTypeRaw == 'wholesale'
+                      ? AppButtonVariant.primary
+                      : AppButtonVariant.outline,
                 ),
                 SizedBox(height: 10.h),
                 AppButton(
                   onPressed: () => _selectedTypeNotifier.value = 'retail',
                   text: context.l10n.retail_text,
-                  variant: selectedTypeRaw == 'retail' ? AppButtonVariant.primary : AppButtonVariant.outline,
+                  variant: selectedTypeRaw == 'retail'
+                      ? AppButtonVariant.primary
+                      : AppButtonVariant.outline,
                 ),
                 SizedBox(height: 32.h),
                 AppButton(
                   onPressed: selectedTypeRaw != null
                       ? () {
-                          final mode = selectedTypeRaw == 'wholesale' ? PriceMode.wholesale : PriceMode.retail;
+                          final mode = selectedTypeRaw == 'wholesale'
+                              ? PriceMode.wholesale
+                              : PriceMode.retail;
                           context.read<PriceModeCubit>().setPriceMode(mode);
-                          unawaited(navigateWithTransition<void>(context, const LayoutView(), replace: true));
+                          unawaited(
+                            navigateWithTransition<void>(
+                              context,
+                              const LayoutView(),
+                              replace: true,
+                            ),
+                          );
                         }
                       : null,
                   text: context.l10n.continue_text,

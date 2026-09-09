@@ -160,7 +160,8 @@ class ProductDetailsController extends ChangeNotifier {
                       final k = e.key.trim().toLowerCase();
                       return (k == 'color' || k == 'اللون') &&
                           e.value == selectedColor;
-                    }) ?? false),
+                    }) ??
+                    false),
           )
           .map((v) => v.attributes?[attrKey])
           .whereType<String>()

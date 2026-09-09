@@ -1,17 +1,32 @@
 part of 'contact_cubit.dart';
 
-abstract class ContactState {}
+sealed class ContactState extends Equatable {
+  const ContactState();
 
-class ContactInitial extends ContactState {}
-
-class ContactLoading extends ContactState {}
-
-class ContactLoaded extends ContactState {
-  ContactLoaded(this.contact);
-  final ContactModel contact;
+  @override
+  List<Object?> get props => [];
 }
 
-class ContactError extends ContactState {
-  ContactError(this.message);
+final class ContactInitial extends ContactState {
+  const ContactInitial();
+}
+
+final class ContactLoading extends ContactState {
+  const ContactLoading();
+}
+
+final class ContactLoaded extends ContactState {
+  const ContactLoaded(this.contact);
+  final ContactModel contact;
+
+  @override
+  List<Object?> get props => [contact];
+}
+
+final class ContactError extends ContactState {
+  const ContactError(this.message);
   final String message;
+
+  @override
+  List<Object?> get props => [message];
 }

@@ -22,7 +22,9 @@ class ProductReviewsSection extends StatelessWidget {
           children: [
             Text(
               context.l10n.no_reviews_yet_text,
-              style: context.typography.body.copyWith(color: context.colors.textSecondary),
+              style: context.typography.body.copyWith(
+                color: context.colors.textSecondary,
+              ),
             ),
           ],
         ),
@@ -86,7 +88,9 @@ class _ReviewItem extends StatelessWidget {
         if (review.createdAt != null)
           Text(
             formatDate(review.createdAt!),
-            style: context.typography.bodySmall.copyWith(color: context.colors.textSecondary),
+            style: context.typography.bodySmall.copyWith(
+              color: context.colors.textSecondary,
+            ),
           ),
       ],
     ),

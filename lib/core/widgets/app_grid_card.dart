@@ -47,7 +47,10 @@ class AppGridCard extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1.0,
             child: DecoratedBox(
-              decoration: BoxDecoration(color: context.colors.surface, borderRadius: context.radius.mdBorder),
+              decoration: BoxDecoration(
+                color: context.colors.surface,
+                borderRadius: context.radius.mdBorder,
+              ),
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -56,16 +59,24 @@ class AppGridCard extends StatelessWidget {
                       fit: imageFit,
                       borderRadius: context.radius.mdBorder,
                       errorWidget: (_, _, _) => Center(
-                        child: Icon(Icons.sports_soccer, size: 32.w, color: context.colors.textSecondary),
+                        child: Icon(
+                          Icons.sports_soccer,
+                          size: 32.w,
+                          color: context.colors.textSecondary,
+                        ),
                       ),
                     ),
                   ),
-                  if (favoriteButton != null) Positioned(top: 8.h, right: 8.w, child: favoriteButton!),
+                  if (favoriteButton != null)
+                    Positioned(top: 8.h, right: 8.w, child: favoriteButton!),
                   if (discount != null && discount! > 0)
                     Positioned(
                       top: 8.h,
                       left: 8.w,
-                      child: AppBadge(label: '-$discount%', variant: AppBadgeVariant.accent),
+                      child: AppBadge(
+                        label: '-$discount%',
+                        variant: AppBadgeVariant.accent,
+                      ),
                     ),
                 ],
               ),
@@ -79,21 +90,30 @@ class AppGridCard extends StatelessWidget {
               description!.toUpperCase(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: context.typography.caption.copyWith(color: context.colors.textSecondary),
+              style: context.typography.caption.copyWith(
+                color: context.colors.textSecondary,
+              ),
             ),
           SizedBox(height: 2.h),
           Text(
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: context.typography.body.copyWith(color: context.colors.textPrimary, fontWeight: FontWeight.w600),
+            style: context.typography.body.copyWith(
+              color: context.colors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           SizedBox(height: 4.h),
           if (numPrice != null)
             FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
-              child: AppPrice(price: numPrice, originalPrice: numOldPrice, currency: priceLabel ?? 'EGP'),
+              child: AppPrice(
+                price: numPrice,
+                originalPrice: numOldPrice,
+                currency: priceLabel ?? 'EGP',
+              ),
             ),
         ],
       ),

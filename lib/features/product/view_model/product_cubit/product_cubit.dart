@@ -14,7 +14,9 @@ class ProductCubit extends SafeCubit<ProductState> {
 
   void refreshData({bool showLoading = true}) {
     if (_currentProductId != null) {
-      unawaited(fetchProduct(productId: _currentProductId!, showLoading: showLoading));
+      unawaited(
+        fetchProduct(productId: _currentProductId!, showLoading: showLoading),
+      );
     }
   }
 

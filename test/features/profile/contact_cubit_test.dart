@@ -33,16 +33,13 @@ void main() {
     blocTest<ContactCubit, ContactState>(
       'getContactInfo emits [ContactLoading, ContactLoaded] when succeeds',
       build: () {
-        when(() => mockContactRepo.getContactInfo()).thenAnswer(
-          (_) async => (data: sampleContact, error: null),
-        );
+        when(
+          () => mockContactRepo.getContactInfo(),
+        ).thenAnswer((_) async => (data: sampleContact, error: null));
         return ContactCubit(mockContactRepo);
       },
       act: (cubit) => cubit.getContactInfo(),
-      expect: () => [
-        isA<ContactLoading>(),
-        isA<ContactLoaded>(),
-      ],
+      expect: () => [isA<ContactLoading>(), isA<ContactLoaded>()],
     );
   });
 }

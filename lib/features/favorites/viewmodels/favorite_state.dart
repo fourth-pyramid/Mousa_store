@@ -1,19 +1,22 @@
 part of 'favorite_cubit.dart';
 
-abstract class FavoriteState extends Equatable {}
+sealed class FavoriteState extends Equatable {
+  const FavoriteState();
 
-class FavoriteInitial extends FavoriteState {
   @override
   List<Object?> get props => [];
 }
 
-class FavoriteLoading extends FavoriteState {
-  @override
-  List<Object?> get props => [];
+final class FavoriteInitial extends FavoriteState {
+  const FavoriteInitial();
 }
 
-class FavoriteLoaded extends FavoriteState {
-  FavoriteLoaded(this.favoriteIds, {this.favoriteProducts = const []});
+final class FavoriteLoading extends FavoriteState {
+  const FavoriteLoading();
+}
+
+final class FavoriteLoaded extends FavoriteState {
+  const FavoriteLoaded(this.favoriteIds, {this.favoriteProducts = const []});
   final Set<int> favoriteIds;
   final List<Product> favoriteProducts;
 
@@ -21,8 +24,8 @@ class FavoriteLoaded extends FavoriteState {
   List<Object?> get props => [favoriteIds, favoriteProducts];
 }
 
-class FavoriteSuccess extends FavoriteState {
-  FavoriteSuccess(
+final class FavoriteSuccess extends FavoriteState {
+  const FavoriteSuccess(
     this.message,
     this.favoriteIds, {
     this.favoriteProducts = const [],
@@ -35,8 +38,8 @@ class FavoriteSuccess extends FavoriteState {
   List<Object?> get props => [message, favoriteIds, favoriteProducts];
 }
 
-class FavoriteError extends FavoriteState {
-  FavoriteError(this.message);
+final class FavoriteError extends FavoriteState {
+  const FavoriteError(this.message);
   final String message;
 
   @override

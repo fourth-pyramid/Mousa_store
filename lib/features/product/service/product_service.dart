@@ -1,4 +1,4 @@
-﻿import 'package:mousa_store/core/service/dio_helper.dart';
+import 'package:mousa_store/core/service/dio_helper.dart';
 import 'package:mousa_store/features/product/model/product_details_response.dart';
 
 class ProductService {
@@ -19,7 +19,8 @@ class ProductService {
       final product = ProductDetailsResponse.fromJson(map);
 
       // ponytail: validate product exists and has valid info
-      if (product.data.id == 0 || (product.data.name.isEmpty && product.data.displayPrice == '0')) {
+      if (product.data.id == 0 ||
+          (product.data.name.isEmpty && product.data.displayPrice == '0')) {
         throw Exception('Product not found');
       }
 

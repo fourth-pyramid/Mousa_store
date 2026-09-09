@@ -32,9 +32,8 @@ class CheckoutRepo {
   Future<String> getShippingFee({int? governorateId}) async {
     try {
       final response = await service.getShippingFee();
-      // ignore: avoid_dynamic_calls
-      final responseData =
-          response.data as Map<String, dynamic>;
+      // ignore: avoid_dynamic_calls // response.data is untyped dynamic from DioResponse prior to cast
+      final responseData = response.data as Map<String, dynamic>;
       final data = responseData['data'] as List;
 
       if (governorateId != null) {

@@ -29,8 +29,12 @@ class ProductShareHelper {
       ..writeln();
 
     // Add Attributes (like Color, Size) if selected
-    if (selectedVariant != null && selectedVariant.attributes != null && selectedVariant.attributes!.isNotEmpty) {
-      final attributesText = selectedVariant.attributes!.entries.map((e) => '${e.key}: ${e.value}').join(', ');
+    if (selectedVariant != null &&
+        selectedVariant.attributes != null &&
+        selectedVariant.attributes!.isNotEmpty) {
+      final attributesText = selectedVariant.attributes!.entries
+          .map((e) => '${e.key}: ${e.value}')
+          .join(', ');
       shareMessage.writeln('✨ $attributesText');
     }
 
@@ -40,7 +44,9 @@ class ProductShareHelper {
         : '$displayPrice ${l10n.egp_text}';
 
     if (discountedPrice != null && discountPercentage != null) {
-      shareMessage.writeln('🔥 $discountPercentage% ${l10n.discount_text}! (${l10n.egp_text} $priceText) 🔥');
+      shareMessage.writeln(
+        '🔥 $discountPercentage% ${l10n.discount_text}! (${l10n.egp_text} $priceText) 🔥',
+      );
     } else {
       shareMessage.writeln('💰 $priceText');
     }
