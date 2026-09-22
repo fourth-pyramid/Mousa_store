@@ -1909,7 +1909,20 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shopping cart is only available after log in. Please log in to add products and complete your purchase.'**
   String get cart_login_prompt_text;
+
+  /// Clear all button text in filter bottom sheet
+  String get clear_all_text;
+
+  /// Min price label
+  String get min_price_text;
+
+  /// Max price label
+  String get max_price_text;
+
+  /// Label indicating number of filters applied
+  String get filters_applied_text;
 }
+
 
 class _AppLocalizationsDelegate
     extends LocalizationsDelegate<AppLocalizations> {

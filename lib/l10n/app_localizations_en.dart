@@ -961,4 +961,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cart_login_prompt_text =>
       'Shopping cart is only available after log in. Please log in to add products and complete your purchase.';
+
+  @override
+  String get clear_all_text => 'Clear all';
+
+  @override
+  String get min_price_text => 'Min';
+
+  @override
+  String get max_price_text => 'Max';
+
+  @override
+  String get filters_applied_text => 'applied';
 }
+

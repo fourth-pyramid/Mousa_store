@@ -1094,5 +1094,21 @@
   "cart_login_prompt_text": "Shopping cart is only available after log in. Please log in to add products and complete your purchase.",
   "@cart_login_prompt_text": {
     "description": "Description prompt asking user to log in to view cart"
+  },
+  "clear_all_text": "Clear all",
+  "@clear_all_text": {
+    "description": "Clear all button text in filter bottom sheet"
+  },
+  "min_price_text": "Min",
+  "@min_price_text": {
+    "description": "Min price label"
+  },
+  "max_price_text": "Max",
+  "@max_price_text": {
+    "description": "Max price label"
+  },
+  "filters_applied_text": "applied",
+  "@filters_applied_text": {
+    "description": "Label indicating number of filters applied"
   }
 }

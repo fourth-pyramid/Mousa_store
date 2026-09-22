@@ -950,4 +950,17 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get cart_login_prompt_text =>
       'سلة التسوق متاحة فقط بعد تسجيل الدخول. يرجى تسجيل الدخول لإضافة المنتجات وإكمال الشراء.';
+
+  @override
+  String get clear_all_text => 'مسح الكل';
+
+  @override
+  String get min_price_text => 'الحد الأدنى';
+
+  @override
+  String get max_price_text => 'الحد الأقصى';
+
+  @override
+  String get filters_applied_text => 'محدد';
 }
+

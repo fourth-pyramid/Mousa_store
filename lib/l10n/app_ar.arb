@@ -1094,5 +1094,21 @@
   "cart_login_prompt_text": "سلة التسوق متاحة فقط بعد تسجيل الدخول. يرجى تسجيل الدخول لإضافة المنتجات وإكمال الشراء.",
   "@cart_login_prompt_text": {
     "description": "Description prompt asking user to log in to view cart"
+  },
+  "clear_all_text": "مسح الكل",
+  "@clear_all_text": {
+    "description": "Clear all button text in filter bottom sheet"
+  },
+  "min_price_text": "الحد الأدنى",
+  "@min_price_text": {
+    "description": "Min price label"
+  },
+  "max_price_text": "الحد الأقصى",
+  "@max_price_text": {
+    "description": "Max price label"
+  },
+  "filters_applied_text": "محدد",
+  "@filters_applied_text": {
+    "description": "Label indicating number of filters applied"
   }
 }
