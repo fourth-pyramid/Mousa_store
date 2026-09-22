@@ -23,4 +23,11 @@ class AppRadiusTokens {
   BorderRadius get xlBorder => AppRadius.xlBorder;
   BorderRadius get pillBorder => AppRadius.pillBorder;
   BorderRadius get bottomSheet => AppRadius.bottomSheet;
+
+  // Semantic aliases
+  BorderRadius get cardBorder => AppRadius.cardBorder;
+  BorderRadius get searchBorder => AppRadius.searchBorder;
+  BorderRadius get chipBorder => AppRadius.chipBorder;
+  BorderRadius get buttonBorder => AppRadius.buttonBorder;
+  BorderRadius get dialogBorder => AppRadius.dialogBorder;
 }

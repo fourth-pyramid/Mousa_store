@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
@@ -41,86 +40,90 @@ class _ContactUsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: Text(context.l10n.contact_us_text.toUpperCase())),
-    body: InternetStateManager(
-      onRestoreInternetConnection: () =>
-          context.read<ContactCubit>().getContactInfo(),
-      noInternetScreen: const NoInternetScreen(),
-      child: BlocBuilder<ContactCubit, ContactState>(
-        builder: (context, state) {
-          if (state case ContactError(:final message)) {
-            return Center(
-              child: Text(
-                message,
-                style: context.typography.bodySmall.copyWith(
-                  color: context.colors.error,
+    body: SafeArea(
+      child: InternetStateManager(
+        onRestoreInternetConnection: () =>
+            context.read<ContactCubit>().getContactInfo(),
+        noInternetScreen: const NoInternetScreen(),
+        child: BlocBuilder<ContactCubit, ContactState>(
+          builder: (context, state) {
+            if (state case ContactError(:final message)) {
+              return Center(
+                child: Text(
+                  message,
+                  style: context.typography.bodySmall.copyWith(
+                    color: context.colors.error,
+                  ),
                 ),
-              ),
-            );
-          }
+              );
+            }
 
-          final contact = switch (state) {
-            ContactLoaded(:final contact) => contact,
-            _ => null,
-          };
-          final isLoading = state is ContactLoading || state is ContactInitial;
+            final contact = switch (state) {
+              ContactLoaded(:final contact) => contact,
+              _ => null,
+            };
+            final isLoading =
+                state is ContactLoading || state is ContactInitial;
 
-          return Skeletonizer(
-            enabled: isLoading,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-              child: Column(
-                children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: context.colors.surface,
-                      shape: BoxShape.circle,
+            return Skeletonizer(
+              enabled: isLoading,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+                child: Column(
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: context.colors.surface,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(24.r),
+                        child: Icon(
+                          Icons.headset_mic_outlined,
+                          size: 48.w,
+                          color: context.colors.textPrimary,
+                        ),
+                      ),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.all(24.r),
-                      child: Icon(
-                        Icons.headset_mic_outlined,
-                        size: 48.w,
+                    SizedBox(height: 16.h),
+                    Text(
+                      context.l10n.contact_us_text.toUpperCase(),
+                      style: context.typography.titleMedium.copyWith(
                         color: context.colors.textPrimary,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    context.l10n.contact_us_text.toUpperCase(),
-                    style: context.typography.titleMedium.copyWith(
-                      color: context.colors.textPrimary,
-                    ),
-                  ),
-                  SizedBox(height: 32.h),
-                  if (contact?.phone != null || isLoading)
-                    _ContactCard(
-                      icon: Icons.phone_android_rounded,
-                      title: context.l10n.phone_text,
-                      subtitle: contact?.phone ?? 'Loading...',
-                      onTap: () =>
-                          _launchUrl('+20${contact?.phone}', scheme: 'tel'),
-                    ),
-                  SizedBox(height: 12.h),
-                  if (contact?.email != null || isLoading)
-                    _ContactCard(
-                      icon: Icons.email_outlined,
-                      title: context.l10n.email_text,
-                      subtitle: contact?.email ?? 'Loading...',
-                      onTap: () => _launchUrl(contact?.email, scheme: 'mailto'),
-                    ),
-                  SizedBox(height: 12.h),
-                  if (contact?.address != null || isLoading)
-                    _ContactCard(
-                      icon: Icons.location_on_outlined,
-                      title: context.l10n.address_text,
-                      subtitle: contact?.address ?? 'Loading...',
-                      onTap: () {},
-                    ),
-                ],
+                    SizedBox(height: 32.h),
+                    if (contact?.phone != null || isLoading)
+                      _ContactCard(
+                        icon: Icons.phone_android_rounded,
+                        title: context.l10n.phone_text,
+                        subtitle: contact?.phone ?? 'Loading...',
+                        onTap: () =>
+                            _launchUrl('+20${contact?.phone}', scheme: 'tel'),
+                      ),
+                    SizedBox(height: 12.h),
+                    if (contact?.email != null || isLoading)
+                      _ContactCard(
+                        icon: Icons.email_outlined,
+                        title: context.l10n.email_text,
+                        subtitle: contact?.email ?? 'Loading...',
+                        onTap: () =>
+                            _launchUrl(contact?.email, scheme: 'mailto'),
+                      ),
+                    SizedBox(height: 12.h),
+                    if (contact?.address != null || isLoading)
+                      _ContactCard(
+                        icon: Icons.location_on_outlined,
+                        title: context.l10n.address_text,
+                        subtitle: contact?.address ?? 'Loading...',
+                        onTap: () {},
+                      ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     ),
   );

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/features/cart/models/cart_response.dart';

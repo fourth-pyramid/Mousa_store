@@ -90,7 +90,7 @@ class AppImage extends StatelessWidget {
     if (image.isEmpty) {
       return _buildClipped(
         context,
-        _buildErrorWidget(context, 'Empty image source', null),
+        _AppImageErrorWidget(width: width, height: height),
       );
     }
 
@@ -183,10 +183,11 @@ class AppImage extends StatelessWidget {
             ? targetCacheHeight * 2
             : null,
         placeholder: (context, url) =>
-            placeholder?.call(context, url) ?? _buildPlaceholder(context),
+            placeholder?.call(context, url) ??
+            _AppImagePlaceholder(width: width, height: height),
         errorWidget: (context, url, error) =>
             errorWidget?.call(context, url, error) ??
-            _buildErrorWidget(context, url, error),
+            _AppImageErrorWidget(width: width, height: height),
       );
     }
 
@@ -202,37 +203,56 @@ class AppImage extends StatelessWidget {
       cacheHeight: targetCacheHeight,
       errorBuilder: (context, error, stackTrace) =>
           errorWidget?.call(context, image, error) ??
-          _buildErrorWidget(context, image, error),
+          _AppImageErrorWidget(width: width, height: height),
     );
   }
+}
 
-  Widget _buildPlaceholder(BuildContext context) => Container(
+class _AppImagePlaceholder extends StatelessWidget {
+  const _AppImagePlaceholder({this.width, this.height});
+
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
     width: width,
     height: height,
-    color: context.colors.surfaceStrong,
-    child: Center(
-      child: SizedBox(
-        width: 20,
-        height: 20,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: context.colors.primary.withValues(alpha: 0.5),
+    child: ColoredBox(
+      color: context.colors.surfaceStrong,
+      child: Center(
+        child: SizedBox(
+          width: 20.r,
+          height: 20.r,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: context.colors.primary.withValues(alpha: 0.5),
+          ),
         ),
       ),
     ),
   );
+}
 
-  Widget _buildErrorWidget(BuildContext context, String url, dynamic error) =>
-      Container(
-        width: width,
-        height: height,
-        color: context.colors.surface,
-        child: Center(
-          child: Icon(
-            Icons.broken_image_outlined,
-            color: context.colors.textSecondary.withValues(alpha: 0.6),
-            size: 24,
-          ),
+class _AppImageErrorWidget extends StatelessWidget {
+  const _AppImageErrorWidget({this.width, this.height});
+
+  final double? width;
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: width,
+    height: height,
+    child: ColoredBox(
+      color: context.colors.surface,
+      child: Center(
+        child: Icon(
+          Icons.broken_image_outlined,
+          color: context.colors.textSecondary.withValues(alpha: 0.6),
+          size: 24.r,
         ),
-      );
+      ),
+    ),
+  );
 }

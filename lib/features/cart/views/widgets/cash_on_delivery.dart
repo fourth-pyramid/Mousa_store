@@ -4,13 +4,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
 import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
-import 'package:mousa_store/core/utils/address_formatter.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/utils/governorates_data.dart';
@@ -280,21 +278,61 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildAddressSection(context),
+                _AddressSection(
+                  addressesFuture: _addressesFuture,
+                  formStateNotifier: _formStateNotifier,
+                  tempCityController: _tempCityController,
+                  tempStreetController: _tempStreetController,
+                  onSelectAddress: _selectAddress,
+                  onSelectTemporaryAddress: _selectTemporaryAddress,
+                  onGovernorateChanged: _onGovernorateChanged,
+                  validateAddress: _validateAddress,
+                ),
                 SizedBox(height: 20.h),
-                _buildContactSection(context),
+                _ContactSection(
+                  fullNameController: _fullNameController,
+                  phoneController: _phoneController,
+                  validateName: _validateName,
+                  validatePhone: _validatePhone,
+                ),
                 SizedBox(height: 20.h),
-                _buildPriceSection(context),
+                _PriceSection(
+                  totalPrice: widget.totalPrice,
+                  formStateNotifier: _formStateNotifier,
+                ),
               ],
             ),
           ),
         ),
       ),
     ),
-    bottomNavigationBar: _buildSubmitButton(context),
+    bottomNavigationBar: _SubmitButton(onSubmit: _submitOrder),
   );
+}
 
-  Widget _buildAddressSection(BuildContext context) => Column(
+class _AddressSection extends StatelessWidget {
+  const _AddressSection({
+    required this.addressesFuture,
+    required this.formStateNotifier,
+    required this.tempCityController,
+    required this.tempStreetController,
+    required this.onSelectAddress,
+    required this.onSelectTemporaryAddress,
+    required this.onGovernorateChanged,
+    required this.validateAddress,
+  });
+
+  final Future<List<Address>> addressesFuture;
+  final ValueNotifier<_CheckoutFormState> formStateNotifier;
+  final TextEditingController tempCityController;
+  final TextEditingController tempStreetController;
+  final ValueChanged<Address> onSelectAddress;
+  final ValueChanged<bool> onSelectTemporaryAddress;
+  final ValueChanged<String?> onGovernorateChanged;
+  final String? Function(String?) validateAddress;
+
+  @override
+  Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Row(
@@ -314,7 +352,7 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
       SizedBox(height: 12.h),
 
       FutureBuilder<List<Address>>(
-        future: _addressesFuture,
+        future: addressesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting &&
               !snapshot.hasData) {
@@ -324,16 +362,16 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
           final addresses = snapshot.data ?? [];
 
           return ValueListenableBuilder<_CheckoutFormState>(
-            valueListenable: _formStateNotifier,
+            valueListenable: formStateNotifier,
             builder: (context, formState, _) => RadioGroup<Object?>(
               groupValue: formState.isTemporaryAddress
                   ? true
                   : formState.selectedAddress,
               onChanged: (value) {
                 if (value is Address) {
-                  _selectAddress(value);
+                  onSelectAddress(value);
                 } else if (value == true) {
-                  _selectTemporaryAddress(true);
+                  onSelectTemporaryAddress(true);
                 }
               },
               child: Column(
@@ -346,14 +384,14 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
                         isSelected:
                             !formState.isTemporaryAddress &&
                             formState.selectedAddress == address,
-                        onTap: () => _selectAddress(address),
+                        onTap: () => onSelectAddress(address),
                       ),
                     ),
                   ),
 
                   _TemporaryAddressRadioTile(
                     isSelected: formState.isTemporaryAddress,
-                    onTap: () => _selectTemporaryAddress(true),
+                    onTap: () => onSelectTemporaryAddress(true),
                   ),
 
                   if (formState.isTemporaryAddress)
@@ -361,10 +399,10 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
                       padding: EdgeInsets.only(top: 10.h),
                       child: _TemporaryAddressForm(
                         selectedGovernorate: formState.selectedGovernorate,
-                        onGovernorateChanged: _onGovernorateChanged,
-                        cityController: _tempCityController,
-                        streetController: _tempStreetController,
-                        validator: _validateAddress,
+                        onGovernorateChanged: onGovernorateChanged,
+                        cityController: tempCityController,
+                        streetController: tempStreetController,
+                        validator: validateAddress,
                       ),
                     ),
                 ],
@@ -375,8 +413,23 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
       ),
     ],
   );
+}
 
-  Widget _buildContactSection(BuildContext context) => Column(
+class _ContactSection extends StatelessWidget {
+  const _ContactSection({
+    required this.fullNameController,
+    required this.phoneController,
+    required this.validateName,
+    required this.validatePhone,
+  });
+
+  final TextEditingController fullNameController;
+  final TextEditingController phoneController;
+  final String? Function(String?) validateName;
+  final String? Function(String?) validatePhone;
+
+  @override
+  Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Row(
@@ -395,31 +448,42 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
       ),
       SizedBox(height: 12.h),
       CustomFormField(
-        controller: _fullNameController,
+        controller: fullNameController,
         hint: context.l10n.enter_full_name_text,
         prefixIcon: Icon(
           Icons.person_outline,
           size: 20.r,
           color: context.colors.textSecondary,
         ),
-        validator: _validateName,
+        validator: validateName,
       ),
       SizedBox(height: 12.h),
       CustomFormField(
-        controller: _phoneController,
+        controller: phoneController,
         hint: context.l10n.phone_number_text,
         prefixIcon: Icon(
           Icons.phone_outlined,
           size: 20.r,
           color: context.colors.textSecondary,
         ),
-        validator: _validatePhone,
+        validator: validatePhone,
         keyboardType: TextInputType.phone,
       ),
     ],
   );
+}
 
-  Widget _buildPriceSection(BuildContext context) => Column(
+class _PriceSection extends StatelessWidget {
+  const _PriceSection({
+    required this.totalPrice,
+    required this.formStateNotifier,
+  });
+
+  final String totalPrice;
+  final ValueNotifier<_CheckoutFormState> formStateNotifier;
+
+  @override
+  Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Row(
@@ -435,105 +499,114 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
       ),
       SizedBox(height: 12.h),
 
-      Container(
-        padding: EdgeInsets.all(16.r),
+      DecoratedBox(
         decoration: BoxDecoration(
           color: context.colors.surface,
           borderRadius: context.radius.mdBorder,
           border: Border.all(color: context.colors.border),
         ),
-        child: BlocConsumer<CheckoutCubit, CheckoutState>(
-          listener: (context, state) {
-            if (state.shippingFeeStatus == RequestStatus.success &&
-                state.shippingFee != null) {
-              _formStateNotifier.value = _formStateNotifier.value.copyWith(
-                shippingFee: state.shippingFee,
-                isLoadingShipping: false,
-              );
-            } else if (state.shippingFeeStatus == RequestStatus.failure) {
-              _formStateNotifier.value = _formStateNotifier.value.copyWith(
-                isLoadingShipping: false,
-              );
-            } else if (state.shippingFeeStatus == RequestStatus.loading) {
-              _formStateNotifier.value = _formStateNotifier.value.copyWith(
-                isLoadingShipping: true,
-              );
-            }
-          },
-          builder: (context, state) => ValueListenableBuilder<_CheckoutFormState>(
-            valueListenable: _formStateNotifier,
-            builder: (context, formState, _) {
-              final subtotal = double.tryParse(widget.totalPrice) ?? 0;
-              final shipping = double.tryParse(formState.shippingFee) ?? 0;
-              final total = subtotal + shipping;
+        child: Padding(
+          padding: EdgeInsets.all(16.r),
+          child: BlocConsumer<CheckoutCubit, CheckoutState>(
+            listener: (context, state) {
+              if (state.shippingFeeStatus == RequestStatus.success &&
+                  state.shippingFee != null) {
+                formStateNotifier.value = formStateNotifier.value.copyWith(
+                  shippingFee: state.shippingFee,
+                  isLoadingShipping: false,
+                );
+              } else if (state.shippingFeeStatus == RequestStatus.failure) {
+                formStateNotifier.value = formStateNotifier.value.copyWith(
+                  isLoadingShipping: false,
+                );
+              } else if (state.shippingFeeStatus == RequestStatus.loading) {
+                formStateNotifier.value = formStateNotifier.value.copyWith(
+                  isLoadingShipping: true,
+                );
+              }
+            },
+            builder: (context, state) => ValueListenableBuilder<_CheckoutFormState>(
+              valueListenable: formStateNotifier,
+              builder: (context, formState, _) {
+                final subtotal = double.tryParse(totalPrice) ?? 0;
+                final shipping = double.tryParse(formState.shippingFee) ?? 0;
+                final total = subtotal + shipping;
 
-              return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        context.l10n.price_before_shipping_text,
-                        style: context.typography.body,
-                      ),
-                      Text(
-                        '${widget.totalPrice} ${context.l10n.egp_text}',
-                        style: context.typography.body,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        context.l10n.shipping_fee_text,
-                        style: context.typography.body,
-                      ),
-                      if (formState.isLoadingShipping)
-                        SizedBox(
-                          height: 18.r,
-                          width: 18.r,
-                          child: const CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        )
-                      else
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Text(
-                          '${formState.shippingFee} ${context.l10n.egp_text}',
+                          context.l10n.price_before_shipping_text,
                           style: context.typography.body,
                         ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    child: Divider(height: 1, color: context.colors.border),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        context.l10n.total_price_text,
-                        style: context.typography.titleMedium,
-                      ),
-                      Text(
-                        '${total.toStringAsFixed(total.truncateToDouble() == total ? 0 : 2)} ${context.l10n.egp_text}',
-                        style: context.typography.titleMedium.copyWith(
-                          color: context.colors.secondary,
+                        Text(
+                          '$totalPrice ${context.l10n.egp_text}',
+                          style: context.typography.body,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              );
-            },
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          context.l10n.shipping_fee_text,
+                          style: context.typography.body,
+                        ),
+                        if (formState.isLoadingShipping)
+                          SizedBox(
+                            height: 18.r,
+                            width: 18.r,
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          )
+                        else
+                          Text(
+                            '${formState.shippingFee} ${context.l10n.egp_text}',
+                            style: context.typography.body,
+                          ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                      child: Divider(height: 1, color: context.colors.border),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          context.l10n.total_price_text,
+                          style: context.typography.titleMedium,
+                        ),
+                        Text(
+                          '${total.toStringAsFixed(total.truncateToDouble() == total ? 0 : 2)} ${context.l10n.egp_text}',
+                          style: context.typography.titleMedium.copyWith(
+                            color: context.colors.secondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
     ],
   );
+}
 
-  Widget _buildSubmitButton(BuildContext context) =>
+class _SubmitButton extends StatelessWidget {
+  const _SubmitButton({required this.onSubmit});
+
+  final VoidCallback onSubmit;
+
+  @override
+  Widget build(BuildContext context) =>
       BlocConsumer<CheckoutCubit, CheckoutState>(
         listener: (context, state) {
           if (state.checkoutStatus == RequestStatus.success) {
@@ -561,7 +634,7 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
                 text: isLoading
                     ? const CustomLoadingIndicator()
                     : Text(context.l10n.confirm_order_button_text),
-                onPressed: isLoading ? null : _submitOrder,
+                onPressed: isLoading ? null : onSubmit,
               ),
             ),
           );
@@ -811,7 +884,6 @@ class _TemporaryAddressForm extends StatelessWidget {
                   size: 18.r,
                   color: context.colors.textSecondary,
                 ),
-                inputFormatters: [AddressFormatter()],
                 validator: validator,
               ),
             ),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
@@ -65,7 +64,7 @@ class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      titleSpacing: 16,
+      titleSpacing: 16.w,
       title: AppSearchField(
         controller: _searchController,
         autofocus: true,
@@ -106,10 +105,10 @@ class _SearchViewState extends State<SearchView> {
                     ),
                   ),
                   if (searchState.isLoadingMore)
-                    const SliverToBoxAdapter(
+                    SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        child: CustomLoadingIndicator(),
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        child: const CustomLoadingIndicator(),
                       ),
                     ),
                 ],

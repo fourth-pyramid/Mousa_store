@@ -491,6 +491,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get product_load_failed_text => 'Failed to load product';
 
   @override
+  String get product_details_text => 'Product Details';
+
+  @override
   String get back_text => 'Back';
 
   @override

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';

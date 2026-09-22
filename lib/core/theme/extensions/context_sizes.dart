@@ -11,10 +11,12 @@ class AppSizesTokens {
 
   double get buttonHeight => AppSizes.buttonHeight;
   double get inputHeight => AppSizes.inputHeight;
+  double get searchBarHeight => AppSizes.searchBarHeight;
   double get minTouchTarget => AppSizes.minTouchTarget;
   double get iconSm => AppSizes.iconSm;
   double get iconMd => AppSizes.iconMd;
   double get iconLg => AppSizes.iconLg;
   double get iconXl => AppSizes.iconXl;
   double get navBarHeight => AppSizes.navBarHeight;
+  double get navIconSize => AppSizes.navIconSize;
 }

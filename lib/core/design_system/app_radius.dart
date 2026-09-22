@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mousa_store/core/utils/screen_utils.dart';
 
-/// SPORTCORE Controlled Radius System
+/// SPORTCORE Controlled Radius System — premium upgrade
 abstract class AppRadius {
-  static double get xs => 6.r;
-  static double get sm => 10.r;
-  static double get md => 14.r;
-  static double get lg => 20.r;
-  static double get xl => 28.r;
+  static double get xs => 8.r;
+  static double get sm => 12.r;
+  static double get md => 16.r;
+  static double get lg => 24.r;
+  static double get xl => 32.r;
   static double get pill => 999.r;
 
   // Pre-built BorderRadius helpers
@@ -19,4 +19,11 @@ abstract class AppRadius {
   static BorderRadius get pillBorder => BorderRadius.circular(pill);
   static BorderRadius get bottomSheet =>
       BorderRadius.vertical(top: Radius.circular(xl));
+
+  // Semantic aliases for intent-revealing usage
+  static BorderRadius get cardBorder => mdBorder;
+  static BorderRadius get searchBorder => pillBorder;
+  static BorderRadius get chipBorder => pillBorder;
+  static BorderRadius get buttonBorder => smBorder;
+  static BorderRadius get dialogBorder => lgBorder;
 }

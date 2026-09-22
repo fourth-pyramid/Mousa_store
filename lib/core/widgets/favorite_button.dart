@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';

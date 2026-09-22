@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
 import 'package:mousa_store/features/notification/view_model/notification_cubit.dart';
@@ -79,7 +78,7 @@ class _NotificationListState extends State<NotificationList> {
                   return Column(
                     children: [
                       SizedBox(height: 16.h),
-                      _buildMarkAllReadButton(context),
+                      const _NotificationCaughtUpIndicator(),
                       SizedBox(height: 24.h),
                     ],
                   );
@@ -92,27 +91,34 @@ class _NotificationListState extends State<NotificationList> {
           );
         },
       );
+}
 
-  Widget _buildMarkAllReadButton(BuildContext context) => Center(
+class _NotificationCaughtUpIndicator extends StatelessWidget {
+  const _NotificationCaughtUpIndicator();
+
+  @override
+  Widget build(BuildContext context) => Center(
     child: Column(
       children: [
-        Container(
+        SizedBox(
           width: 56.w,
           height: 56.w,
-          decoration: BoxDecoration(
-            color: context.colors.surface,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: context.colors.primary.withValues(alpha: 0.3),
-                blurRadius: 15,
-              ),
-            ],
-          ),
-          child: Icon(
-            Icons.check,
-            color: context.colors.textPrimary,
-            size: 28.w,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: context.colors.surface,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: context.colors.primary.withValues(alpha: 0.3),
+                  blurRadius: 15.r,
+                ),
+              ],
+            ),
+            child: Icon(
+              Icons.check,
+              color: context.colors.textPrimary,
+              size: 28.w,
+            ),
           ),
         ),
 

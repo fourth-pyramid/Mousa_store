@@ -30,6 +30,8 @@ class AppSemanticTypography {
   final TextStyle labelMedium;
   final TextStyle caption;
   final TextStyle button;
+  final TextStyle price;
+  final TextStyle overline;
 
   const AppSemanticTypography._({
     required this.display,
@@ -50,6 +52,8 @@ class AppSemanticTypography {
     required this.labelMedium,
     required this.caption,
     required this.button,
+    required this.price,
+    required this.overline,
   });
 
   static AppSemanticTypography get light {
@@ -74,6 +78,8 @@ class AppSemanticTypography {
       labelMedium: AppTypography.label(color: textSecondary),
       caption: AppTypography.caption(),
       button: AppTypography.button(),
+      price: AppTypography.price(),
+      overline: AppTypography.overline(),
     );
   }
 
@@ -101,6 +107,8 @@ class AppSemanticTypography {
       labelMedium: AppTypography.label(color: darkTextSecondary),
       caption: AppTypography.caption(color: darkTextMuted),
       button: AppTypography.button(),
+      price: AppTypography.price(color: darkTextPrimary),
+      overline: AppTypography.overline(color: darkTextMuted),
     );
   }
 }

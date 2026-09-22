@@ -48,6 +48,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   description: localization.onboarding_desc_1,
                   isLastPage: isLastPage,
                   localization: localization,
+                  pageCount: 3,
                 ),
                 OnboardingPage(
                   controller: _controller,
@@ -56,6 +57,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   description: localization.onboarding_desc_2,
                   isLastPage: isLastPage,
                   localization: localization,
+                  pageCount: 3,
                 ),
                 OnboardingPage(
                   controller: _controller,
@@ -64,6 +66,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   description: localization.onboarding_desc_3,
                   isLastPage: isLastPage,
                   localization: localization,
+                  pageCount: 3,
                 ),
               ],
             ),

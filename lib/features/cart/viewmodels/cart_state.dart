@@ -29,6 +29,9 @@ final class CartState extends Equatable {
     successType: successType ?? this.successType,
   );
 
+  /// Helper getter for badge count in navigation bar
+  int get cartCount => cart?.items.length ?? 0;
+
   @override
   List<Object?> get props => [
     status,

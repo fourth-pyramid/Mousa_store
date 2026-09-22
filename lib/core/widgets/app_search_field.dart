@@ -25,47 +25,66 @@ class AppSearchField extends StatelessWidget {
   final VoidCallback? onClear;
 
   @override
-  Widget build(BuildContext context) => TextField(
-    controller: controller,
-    onChanged: onChanged,
-    onSubmitted: onSubmitted,
-    onTap: onTap,
-    readOnly: readOnly,
-    autofocus: autofocus,
-    style: context.typography.body.copyWith(color: context.colors.textPrimary),
-    decoration: InputDecoration(
-      hintText: hint,
-      hintStyle: context.typography.body.copyWith(
-        color: context.colors.textSecondary,
+  Widget build(BuildContext context) => Container(
+    height: context.sizes.searchBarHeight,
+    decoration: BoxDecoration(
+      color: context.colors.surface,
+      borderRadius: context.radius.searchBorder,
+      boxShadow: AppShadows.card,
+      border: Border.all(color: context.colors.border, width: 0.5),
+    ),
+    child: TextField(
+      controller: controller,
+      onChanged: onChanged,
+      onSubmitted: onSubmitted,
+      onTap: onTap,
+      readOnly: readOnly,
+      autofocus: autofocus,
+      style: context.typography.body.copyWith(
+        color: context.colors.textPrimary,
       ),
-      filled: true,
-      fillColor: context.colors.surface,
-      prefixIcon: Icon(
-        Icons.search,
-        color: context.colors.textSecondary,
-        size: context.sizes.iconMd,
-      ),
-      suffixIcon: controller?.text.isNotEmpty ?? false
-          ? IconButton(
-              icon: Icon(
-                Icons.close,
-                color: context.colors.textSecondary,
-                size: context.sizes.iconSm,
-              ),
-              onPressed: () {
-                controller?.clear();
-                onClear?.call();
-              },
-            )
-          : null,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      border: OutlineInputBorder(
-        borderRadius: context.radius.smBorder,
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: context.radius.smBorder,
-        borderSide: BorderSide(color: context.colors.primary, width: 1.5),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: context.typography.body.copyWith(
+          color: context.colors.textMuted,
+        ),
+        filled: false,
+        prefixIcon: Padding(
+          padding: EdgeInsetsDirectional.only(start: 14.w, end: 8.w),
+          child: Icon(
+            Icons.search_rounded,
+            color: context.colors.textSecondary,
+            size: context.sizes.iconLg,
+          ),
+        ),
+        prefixIconConstraints: BoxConstraints(
+          minWidth: 42.w,
+          minHeight: 42.h,
+        ),
+        suffixIcon: controller?.text.isNotEmpty ?? false
+            ? GestureDetector(
+                onTap: () {
+                  controller?.clear();
+                  onClear?.call();
+                },
+                child: Padding(
+                  padding: EdgeInsetsDirectional.only(end: 12.w),
+                  child: Icon(
+                    Icons.cancel_rounded,
+                    color: context.colors.textMuted,
+                    size: context.sizes.iconMd,
+                  ),
+                ),
+              )
+            : null,
+        suffixIconConstraints: BoxConstraints(
+          minWidth: 36.w,
+          minHeight: 36.h,
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
       ),
     ),
   );

@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/design_system/design_system.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -159,21 +158,23 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
 
                   // Counter
                   if (widget.images.length > 1)
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 14.w,
-                        vertical: 6.h,
-                      ),
+                    DecoratedBox(
                       decoration: BoxDecoration(
                         color: Colors.black54,
                         borderRadius: BorderRadius.circular(20.r),
                       ),
-                      child: Text(
-                        '${_currentIndex + 1} / ${widget.images.length}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 14.w,
+                          vertical: 6.h,
+                        ),
+                        child: Text(
+                          '${_currentIndex + 1} / ${widget.images.length}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -228,14 +229,16 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
                                 fit: BoxFit.cover,
                                 memCacheWidth: (44.w * 2).round(),
                                 memCacheHeight: (44.h * 2).round(),
-                                errorWidget: (context, url, error) => Container(
+                                errorWidget: (context, url, error) => SizedBox(
                                   width: 44.w,
                                   height: 44.h,
-                                  color: Colors.white12,
-                                  child: const Icon(
-                                    Icons.image_not_supported,
-                                    color: Colors.white38,
-                                    size: 20,
+                                  child: ColoredBox(
+                                    color: Colors.white12,
+                                    child: Icon(
+                                      Icons.image_not_supported,
+                                      color: Colors.white38,
+                                      size: 20.r,
+                                    ),
                                   ),
                                 ),
                               ),

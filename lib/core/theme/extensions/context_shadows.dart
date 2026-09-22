@@ -11,7 +11,14 @@ class AppShadowsTokens {
 
   List<BoxShadow> get none => AppShadows.none;
   List<BoxShadow> get subtle => AppShadows.subtle;
-  List<BoxShadow> get card => AppShadows.subtle;
+  List<BoxShadow> get card => AppShadows.card;
+  List<BoxShadow> get cardLifted => AppShadows.cardLifted;
+  List<BoxShadow> get nav => AppShadows.nav;
+  List<BoxShadow> get float => AppShadows.float;
+  List<BoxShadow> get accentGlow => AppShadows.accentGlow;
+  List<BoxShadow> get cardDark => AppShadows.cardDark;
+
+  // Legacy aliases
   List<BoxShadow> get sm => AppShadows.subtle;
-  List<BoxShadow> get md => AppShadows.subtle;
+  List<BoxShadow> get md => AppShadows.card;
 }

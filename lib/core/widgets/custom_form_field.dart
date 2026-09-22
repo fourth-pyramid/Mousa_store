@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 
 class AppTextField extends StatelessWidget {
@@ -44,12 +43,13 @@ class AppTextField extends StatelessWidget {
     children: [
       if (label != null) ...[
         Text(
-          label!.toUpperCase(),
+          label!,
           style: context.typography.labelMedium.copyWith(
             color: context.colors.textSecondary,
+            fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(height: 6.h),
+        SizedBox(height: 8.h),
       ],
       TextFormField(
         focusNode: focusNode,
@@ -69,15 +69,15 @@ class AppTextField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: context.typography.body.copyWith(
-            color: context.colors.textSecondary,
+            color: context.colors.textMuted,
           ),
           filled: true,
           fillColor: context.colors.surface,
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
           contentPadding: EdgeInsets.symmetric(
-            horizontal: 18.w,
-            vertical: 16.h,
+            horizontal: 16.w,
+            vertical: 14.h,
           ),
           border: OutlineInputBorder(
             borderRadius: context.radius.mdBorder,
@@ -85,11 +85,16 @@ class AppTextField extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: context.radius.mdBorder,
-            borderSide: BorderSide(color: context.colors.border),
+            borderSide: BorderSide(
+              color: context.colors.border,
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: context.radius.mdBorder,
-            borderSide: BorderSide(color: context.colors.primary, width: 1.5),
+            borderSide: BorderSide(
+              color: context.colors.primary,
+              width: 1.5,
+            ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: context.radius.mdBorder,

@@ -11,8 +11,8 @@ class AppRating extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      Icon(Icons.star_rounded, size: 16, color: context.colors.secondary),
-      const SizedBox(width: 4),
+      Icon(Icons.star_rounded, size: 16.r, color: context.colors.secondary),
+      SizedBox(width: 4.w),
       Text(
         rating.toStringAsFixed(1),
         style: context.typography.caption.copyWith(
@@ -21,7 +21,7 @@ class AppRating extends StatelessWidget {
         ),
       ),
       if (reviewCount != null) ...[
-        const SizedBox(width: 4),
+        SizedBox(width: 4.w),
         Text(
           '($reviewCount)',
           style: context.typography.caption.copyWith(

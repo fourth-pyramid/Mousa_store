@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
-import 'package:mousa_store/core/utils/address_formatter.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/governorates_data.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
@@ -60,9 +58,21 @@ class _AddNewAddressState extends State<AddNewAddress> {
       }
     }
 
+    var initialCity = '';
+    var initialStreet = '';
+    if (initialAddressText.isNotEmpty) {
+      if (initialAddressText.contains(' - ')) {
+        final parts = initialAddressText.split(' - ');
+        initialCity = parts.first.trim();
+        initialStreet = parts.sublist(1).join(' - ').trim();
+      } else {
+        initialStreet = initialAddressText.trim();
+      }
+    }
+
     _nameController = TextEditingController(text: widget.address?.nameAddress);
-    _cityController = TextEditingController();
-    _streetController = TextEditingController();
+    _cityController = TextEditingController(text: initialCity);
+    _streetController = TextEditingController(text: initialStreet);
     _selectedGovernorateNotifier.value = initialGovernorate;
   }
 
@@ -84,14 +94,14 @@ class _AddNewAddressState extends State<AddNewAddress> {
     if (_selectedGovernorateNotifier.value == null) return false;
 
     final fullAddress =
-        '${_selectedGovernorateNotifier.value} - ${_cityController.text} - ${_streetController.text}';
+        '${_selectedGovernorateNotifier.value} - ${_cityController.text.trim()} - ${_streetController.text.trim()}';
 
     try {
       if (widget.address == null) {
         await DioHelper.postData(
           url: 'address/create',
           data: {
-            'name_address': _nameController.text,
+            'name_address': _nameController.text.trim(),
             'address': fullAddress,
             'governorate': _selectedGovernorateNotifier.value,
           },
@@ -101,7 +111,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
           url: 'address/update',
           data: {
             'address_id': widget.address!.id.toString(),
-            'name_address': _nameController.text,
+            'name_address': _nameController.text.trim(),
             'address': fullAddress,
             'governorate': _selectedGovernorateNotifier.value,
           },
@@ -150,8 +160,8 @@ class _AddNewAddressState extends State<AddNewAddress> {
                           decoration: InputDecoration(
                             labelText: context.l10n.governorate_text,
                             contentPadding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 12.h,
+                              horizontal: 12.w,
+                              vertical: 14.h,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: context.radius.smBorder,
@@ -159,9 +169,9 @@ class _AddNewAddressState extends State<AddNewAddress> {
                           ),
                           items: governorates
                               .map(
-                                (value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
+                                (gov) => DropdownMenuItem(
+                                  value: gov,
+                                  child: Text(gov),
                                 ),
                               )
                               .toList(),
@@ -182,7 +192,6 @@ class _AddNewAddressState extends State<AddNewAddress> {
               controller: _cityController,
               focusNode: _cityFocus,
               hint: context.l10n.city_text,
-              inputFormatters: [AddressFormatter()],
               validator: (value) => value == null || value.isEmpty
                   ? context.l10n.required_text
                   : null,
@@ -192,7 +201,6 @@ class _AddNewAddressState extends State<AddNewAddress> {
               controller: _streetController,
               focusNode: _streetFocus,
               hint: context.l10n.street_text,
-              inputFormatters: [AddressFormatter()],
               validator: (value) => value == null || value.isEmpty
                   ? context.l10n.required_text
                   : null,

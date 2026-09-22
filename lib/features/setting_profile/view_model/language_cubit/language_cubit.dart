@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
@@ -9,9 +10,12 @@ import 'package:mousa_store/features/cart/viewmodels/cart_cubit.dart';
 import 'package:mousa_store/features/favorites/viewmodels/favorite_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LanguageState {
+class LanguageState extends Equatable {
   const LanguageState(this.locale);
   final Locale locale;
+
+  @override
+  List<Object?> get props => [locale];
 }
 
 class LanguageCubit extends SafeCubit<LanguageState> {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
@@ -9,9 +10,12 @@ import 'package:mousa_store/features/favorites/viewmodels/favorite_cubit.dart';
 
 enum PriceMode { wholesale, retail }
 
-class PriceModeState {
-  PriceModeState(this.mode);
+class PriceModeState extends Equatable {
+  const PriceModeState(this.mode);
   final PriceMode mode;
+
+  @override
+  List<Object?> get props => [mode];
 }
 
 class PriceModeCubit extends SafeCubit<PriceModeState> {

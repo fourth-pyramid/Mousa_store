@@ -40,7 +40,7 @@ class AppPrice extends StatelessWidget {
                 ),
         ),
         if (hasDiscount) ...[
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Text(
             '$currency ${originalPrice!.toStringAsFixed(0)}',
             style:

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
@@ -22,73 +21,88 @@ class CartInformation extends StatelessWidget {
     );
 
     final totalPrice = cart.total;
-    return Container(
-      padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w, vertical: 8.h),
-      height: 145.h,
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                context.l10n.order_value_text,
-                style: context.typography.titleMedium,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                '${totalPrice.toStringAsFixed(2)}${context.l10n.currency_text} ',
-                style: context.typography.titleMedium,
-              ),
-              const Spacer(),
-              Text(
-                '($itemCount ${context.l10n.products_plural_text})',
-                style: context.typography.titleMedium,
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.symmetric(vertical: 6.h),
-            child: Text(
-              context.l10n.delivery_charges_notice_text,
-              style: context.typography.body,
-            ),
-          ),
-
-          Padding(
-            padding: EdgeInsetsDirectional.only(top: 8.h),
-            child: Row(
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(
+          16.w,
+          8.h,
+          16.w,
+          84.h,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Flexible(
-                  flex: 3,
-                  child: CustomFadeButton(
-                    text: context.l10n.continue_shopping_text,
-                    onPressed: gnToHome ?? () {},
+                Expanded(
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          context.l10n.order_value_text,
+                          style: context.typography.titleMedium,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(width: 6.w),
+                      Text(
+                        '${totalPrice.toStringAsFixed(2)}${context.l10n.currency_text} ',
+                        style: context.typography.titleMedium,
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(width: 6.w),
-                Flexible(
-                  flex: 2,
-                  child: CustomButton(
-                    text: Text(context.l10n.checkout_text),
-                    onPressed: () {
-                      unawaited(
-                        navigateWithTransition<void>(
-                          context,
-                          CashOnDelivery(
-                            totalPrice: totalPrice.toStringAsFixed(2),
-                          ),
-                          type: TransitionType.fade,
-                        ),
-                      );
-                    },
-                  ),
+                SizedBox(width: 8.w),
+                Text(
+                  '($itemCount ${context.l10n.products_plural_text})',
+                  style: context.typography.titleMedium,
                 ),
               ],
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsetsDirectional.symmetric(vertical: 6.h),
+              child: Text(
+                context.l10n.delivery_charges_notice_text,
+                style: context.typography.body,
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsetsDirectional.only(top: 8.h),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child: CustomFadeButton(
+                      text: context.l10n.continue_shopping_text,
+                      onPressed: gnToHome ?? () {},
+                    ),
+                  ),
+                  SizedBox(width: 6.w),
+                  Flexible(
+                    flex: 2,
+                    child: CustomButton(
+                      text: Text(context.l10n.checkout_text),
+                      onPressed: () {
+                        unawaited(
+                          navigateWithTransition<void>(
+                            context,
+                            CashOnDelivery(
+                              totalPrice: totalPrice.toStringAsFixed(2),
+                            ),
+                            type: TransitionType.fade,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

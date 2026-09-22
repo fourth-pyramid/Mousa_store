@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
@@ -69,7 +68,7 @@ class _ChangePhoneNumberBodyState extends State<_ChangePhoneNumberBody> {
             body: Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.r),
                 child: Column(
                   children: [
                     Column(
@@ -102,7 +101,11 @@ class _ChangePhoneNumberBodyState extends State<_ChangePhoneNumberBody> {
             ),
             bottomNavigationBar: SafeArea(
               child: Padding(
-                padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 8.h),
+                padding: EdgeInsetsDirectional.only(
+                  start: 16.w,
+                  end: 16.w,
+                  bottom: 8.h,
+                ),
                 child: CustomButton(
                   isLoading: isLoading,
                   text: Text(context.l10n.save_text),

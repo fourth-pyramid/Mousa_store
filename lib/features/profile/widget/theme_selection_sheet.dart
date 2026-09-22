@@ -59,7 +59,7 @@ class _ThemeOptionTile extends StatelessWidget {
     final inactiveColor = context.colors.textSecondary;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: EdgeInsets.symmetric(vertical: 4.h),
       child: Material(
         color: isSelected
             ? context.colors.surfaceStrong

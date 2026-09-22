@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/design_system/design_system.dart';
 import 'package:mousa_store/features/category_items/views/widgets/filter_widget.dart';
 import 'package:mousa_store/features/category_items/views/widgets/sort_widget.dart';

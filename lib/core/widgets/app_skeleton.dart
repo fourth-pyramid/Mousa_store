@@ -10,21 +10,32 @@ class AppSkeletonCard extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AspectRatio(
-          aspectRatio: 1,
-          child: Container(
+        Expanded(
+          child: DecoratedBox(
             decoration: BoxDecoration(
               color: context.colors.surface,
               borderRadius: context.radius.mdBorder,
             ),
           ),
         ),
-        const SizedBox(height: 8),
-        Container(height: 12, width: 60, color: context.colors.surfaceStrong),
-        const SizedBox(height: 4),
-        Container(height: 16, width: 120, color: context.colors.surfaceStrong),
-        const SizedBox(height: 4),
-        Container(height: 16, width: 80, color: context.colors.surfaceStrong),
+        SizedBox(height: 8.h),
+        SizedBox(
+          height: 12.h,
+          width: 60.w,
+          child: ColoredBox(color: context.colors.surfaceStrong),
+        ),
+        SizedBox(height: 4.h),
+        SizedBox(
+          height: 16.h,
+          width: 120.w,
+          child: ColoredBox(color: context.colors.surfaceStrong),
+        ),
+        SizedBox(height: 4.h),
+        SizedBox(
+          height: 16.h,
+          width: 80.w,
+          child: ColoredBox(color: context.colors.surfaceStrong),
+        ),
       ],
     ),
   );
@@ -36,18 +47,24 @@ class AppSkeletonGrid extends StatelessWidget {
   final int itemCount;
 
   @override
-  Widget build(BuildContext context) => GridView.builder(
-    padding: EdgeInsets.all(context.spacing.screenPadding),
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      mainAxisSpacing: context.spacing.cardGap,
-      crossAxisSpacing: context.spacing.cardGap,
-      childAspectRatio:
-          0.74, // ponytail: ratio 0.74 matches product grid layout
-    ),
-    itemCount: itemCount,
-    itemBuilder: (context, index) => const AppSkeletonCard(),
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final crossAxisCount = (constraints.maxWidth / 160.w).floor().clamp(2, 4);
+
+      return GridView.builder(
+        padding: EdgeInsets.all(context.spacing.screenPadding),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          mainAxisSpacing: context.spacing.cardGap,
+          crossAxisSpacing: context.spacing.cardGap,
+          childAspectRatio:
+              0.74, // ponytail: ratio 0.74 matches product grid layout
+        ),
+        itemCount: itemCount,
+        itemBuilder: (context, index) => const AppSkeletonCard(),
+      );
+    },
   );
 }

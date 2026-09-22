@@ -125,17 +125,20 @@ class _LayoutViewState extends State<LayoutView> {
     final overlayEntry = OverlayEntry(
       builder: (context) => Center(
         child: Material(
-          color: context.colors.transparent,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          color: Colors.transparent,
+          child: DecoratedBox(
             decoration: BoxDecoration(
               color: context.colors.textPrimary,
               borderRadius: context.radius.smBorder,
+              boxShadow: AppShadows.float,
             ),
-            child: Text(
-              message,
-              style: context.typography.body.copyWith(
-                color: context.colors.surface,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
+              child: Text(
+                message,
+                style: context.typography.body.copyWith(
+                  color: context.colors.surface,
+                ),
               ),
             ),
           ),
@@ -199,85 +202,286 @@ class _LayoutViewState extends State<LayoutView> {
           },
           child: Scaffold(
             body: Stack(
-              children: LayoutTab.values.map((tab) {
-                final isCurrent = currentTab == tab;
-                final index = tab.index;
-                if (!isCurrent && _screens[index] == null) {
-                  return const SizedBox.shrink();
-                }
+              children: [
+                ...LayoutTab.values.map((tab) {
+                  final isCurrent = currentTab == tab;
+                  final index = tab.index;
+                  if (!isCurrent && _screens[index] == null) {
+                    return const SizedBox.shrink();
+                  }
 
-                return Offstage(
-                  offstage: !isCurrent,
-                  child: TickerMode(
-                    enabled: isCurrent,
-                    child: KeyedSubtree(
-                      key: ValueKey(tab),
-                      child: _getScreen(tab),
+                  return Offstage(
+                    offstage: !isCurrent,
+                    child: TickerMode(
+                      enabled: isCurrent,
+                      child: KeyedSubtree(
+                        key: ValueKey(tab),
+                        child: _getScreen(tab),
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
-            bottomNavigationBar: Builder(
-              builder: (context) => DecoratedBox(
-                decoration: BoxDecoration(
-                  color: context.colors.surface,
-                  border: Border(top: BorderSide(color: context.colors.border)),
-                ),
-                child: SafeArea(
-                  top: false,
-                  child: Container(
-                    height: 60,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: LayoutTab.values.map((tab) {
-                        final isSelected = currentTab == tab;
-                        final activeColor = context.colors.textPrimary;
-                        final inactiveColor = context.colors.textSecondary;
-
-                        return Expanded(
-                          child: InkWell(
-                            onTap: () => _currentTabNotifier.value = tab,
-                            splashColor: context.colors.transparent,
-                            highlightColor: context.colors.transparent,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  isSelected ? tab.activeIcon : tab.icon,
-                                  color: isSelected
-                                      ? activeColor
-                                      : inactiveColor,
-                                  size: 22,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  tab.label(context),
-                                  style: context.typography.caption.copyWith(
-                                    color: isSelected
-                                        ? activeColor
-                                        : inactiveColor,
-                                    fontSize: 10,
-                                    fontWeight: isSelected
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                  );
+                }),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: _FloatingBottomNav(
+                    currentTab: currentTab,
+                    onTabSelected: (tab) => _currentTabNotifier.value = tab,
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
       ),
     ),
+  );
+}
+
+/// Premium floating pill bottom navigation bar
+class _FloatingBottomNav extends StatelessWidget {
+  const _FloatingBottomNav({
+    required this.currentTab,
+    required this.onTabSelected,
+  });
+
+  final LayoutTab currentTab;
+  final ValueChanged<LayoutTab> onTabSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 10.h),
+        child: Container(
+          height: context.sizes.navBarHeight,
+          decoration: BoxDecoration(
+            color: isDark ? context.colors.surface : context.colors.background,
+            borderRadius: BorderRadius.circular(32.r),
+            boxShadow: AppShadows.nav,
+            border: Border.all(
+              color: context.colors.border.withValues(alpha: 0.5),
+              width: 0.8,
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: LayoutTab.values
+                  .map(
+                    (tab) => _NavItem(
+                      tab: tab,
+                      isSelected: currentTab == tab,
+                      onTap: () => onTabSelected(tab),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NavItem extends StatelessWidget {
+  const _NavItem({
+    required this.tab,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final LayoutTab tab;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final activeColor = context.colors.accent;
+    final inactiveColor = context.colors.textMuted;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: context.durations.fast,
+          curve: Curves.easeInOut,
+          child: tab == LayoutTab.cart
+              ? _CartNavItem(
+                  tab: tab,
+                  isSelected: isSelected,
+                  activeColor: activeColor,
+                  inactiveColor: inactiveColor,
+                )
+              : _SimpleNavItem(
+                  tab: tab,
+                  isSelected: isSelected,
+                  activeColor: activeColor,
+                  inactiveColor: inactiveColor,
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SimpleNavItem extends StatelessWidget {
+  const _SimpleNavItem({
+    required this.tab,
+    required this.isSelected,
+    required this.activeColor,
+    required this.inactiveColor,
+  });
+
+  final LayoutTab tab;
+  final bool isSelected;
+  final Color activeColor;
+  final Color inactiveColor;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      AnimatedSwitcher(
+        duration: context.durations.fast,
+        transitionBuilder: (child, animation) => ScaleTransition(
+          scale: animation,
+          child: FadeTransition(opacity: animation, child: child),
+        ),
+        child: Icon(
+          isSelected ? tab.activeIcon : tab.icon,
+          key: ValueKey(isSelected),
+          color: isSelected ? activeColor : inactiveColor,
+          size: context.sizes.navIconSize,
+        ),
+      ),
+      SizedBox(height: 3.h),
+      AnimatedDefaultTextStyle(
+        duration: context.durations.fast,
+        style: context.typography.caption.copyWith(
+          color: isSelected ? activeColor : inactiveColor,
+          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+          fontSize: 10.sp,
+        ),
+        child: Text(tab.label(context)),
+      ),
+      SizedBox(height: 3.h),
+      AnimatedContainer(
+        duration: context.durations.fast,
+        width: isSelected ? 18.w : 0,
+        height: 2.5.h,
+        decoration: BoxDecoration(
+          color: activeColor,
+          borderRadius: BorderRadius.circular(2.r),
+        ),
+      ),
+    ],
+  );
+}
+
+class _CartNavItem extends StatelessWidget {
+  const _CartNavItem({
+    required this.tab,
+    required this.isSelected,
+    required this.activeColor,
+    required this.inactiveColor,
+  });
+
+  final LayoutTab tab;
+  final bool isSelected;
+  final Color activeColor;
+  final Color inactiveColor;
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<CartCubit, CartState>(
+    bloc: getIt<CartCubit>(),
+    buildWhen: (prev, curr) => prev.cartCount != curr.cartCount,
+    builder: (context, state) {
+      final count = state.cartCount;
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              AnimatedSwitcher(
+                duration: context.durations.fast,
+                transitionBuilder: (child, animation) => ScaleTransition(
+                  scale: animation,
+                  child: FadeTransition(opacity: animation, child: child),
+                ),
+                child: Icon(
+                  isSelected ? tab.activeIcon : tab.icon,
+                  key: ValueKey(isSelected),
+                  color: isSelected ? activeColor : inactiveColor,
+                  size: context.sizes.navIconSize,
+                ),
+              ),
+              if (count > 0)
+                Positioned(
+                  top: -4.h,
+                  right: -8.w,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 4.w,
+                      vertical: 1.h,
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 16.r,
+                      minHeight: 16.r,
+                    ),
+                    decoration: BoxDecoration(
+                      color: context.colors.accent,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: context.colors.surface,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Text(
+                      count > 99 ? '99+' : count.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 8.sp,
+                        fontWeight: FontWeight.w800,
+                        height: 1.0,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          SizedBox(height: 3.h),
+          AnimatedDefaultTextStyle(
+            duration: context.durations.fast,
+            style: context.typography.caption.copyWith(
+              color: isSelected ? activeColor : inactiveColor,
+              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+              fontSize: 10.sp,
+            ),
+            child: Text(tab.label(context)),
+          ),
+          SizedBox(height: 3.h),
+          AnimatedContainer(
+            duration: context.durations.fast,
+            width: isSelected ? 18.w : 0,
+            height: 2.5.h,
+            decoration: BoxDecoration(
+              color: activeColor,
+              borderRadius: BorderRadius.circular(2.r),
+            ),
+          ),
+        ],
+      );
+    },
   );
 }

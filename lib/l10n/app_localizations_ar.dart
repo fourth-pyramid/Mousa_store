@@ -487,6 +487,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get product_load_failed_text => 'فشل تحميل المنتج';
 
   @override
+  String get product_details_text => 'تفاصيل المنتج';
+
+  @override
   String get back_text => 'العودة';
 
   @override

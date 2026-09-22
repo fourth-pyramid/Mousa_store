@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_error_state.dart';
@@ -61,18 +60,29 @@ class _BrandsViewState extends State<BrandsView> {
               );
             }
 
-            return GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12.w,
-                mainAxisSpacing: 12.h,
-                childAspectRatio: 1.1,
-              ),
-              itemCount: state.brands.length,
-              itemBuilder: (context, index) {
-                final brand = state.brands[index];
-                return BrandCard(brand: brand);
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final crossAxisCount = (constraints.maxWidth / 160.w)
+                    .floor()
+                    .clamp(2, 4);
+
+                return GridView.builder(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 16.h,
+                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 12.w,
+                    mainAxisSpacing: 12.h,
+                    childAspectRatio: 1.1,
+                  ),
+                  itemCount: state.brands.length,
+                  itemBuilder: (context, index) {
+                    final brand = state.brands[index];
+                    return BrandCard(brand: brand);
+                  },
+                );
               },
             );
           },

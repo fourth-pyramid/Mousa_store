@@ -2,14 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
+import 'package:mousa_store/core/models/offer.dart' as core_offer;
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
+import 'package:mousa_store/core/widgets/favorite_button.dart';
 import 'package:mousa_store/features/cart/viewmodels/cart_cubit.dart';
+import 'package:mousa_store/features/product/model/product.dart'
+    as core_product;
 import 'package:mousa_store/features/product/model/product_details_response.dart';
 import 'package:mousa_store/features/product/view/widgets/add_review_section.dart';
 import 'package:mousa_store/features/product/view/widgets/product_accordion.dart';
@@ -17,12 +20,12 @@ import 'package:mousa_store/features/product/view/widgets/product_attribute_sect
 import 'package:mousa_store/features/product/view/widgets/product_bottom_action_bar.dart';
 import 'package:mousa_store/features/product/view/widgets/product_info_section.dart';
 import 'package:mousa_store/features/product/view/widgets/product_reviews_section.dart';
+import 'package:mousa_store/features/product/view/widgets/product_share_helper.dart';
 import 'package:mousa_store/features/product/view_model/product_cubit/product_cubit.dart';
 import 'package:mousa_store/features/product/view_model/product_cubit/product_state.dart';
 import 'package:mousa_store/features/product/view_model/product_details_controller.dart';
 import 'package:mousa_store/features/product/view_model/reviews_cubit/review_cubit.dart';
 import 'package:mousa_store/features/product/view_model/reviews_cubit/review_state.dart';
-import 'package:mousa_store/features/search/view/widgets/search_text_field.dart';
 
 class ProductDetailsView extends StatelessWidget {
   const ProductDetailsView({required this.productId, super.key});
@@ -77,7 +80,81 @@ class _ProductDetailsContentState extends State<_ProductDetailsContent> {
   ) => ValueListenableBuilder<ProductDetailsController?>(
     valueListenable: _controllerNotifier,
     builder: (context, controller, _) => Scaffold(
-      appBar: AppBar(title: const SearchTextField()),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          context.l10n.product_details_text,
+          style: context.typography.titleMedium.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          if (controller != null) ...[
+            IconButton(
+              icon: Icon(
+                Icons.share_outlined,
+                color: context.colors.textPrimary,
+              ),
+              onPressed: () {
+                final product = controller.product;
+                final variant = controller.selectedVariant;
+                final price =
+                    double.tryParse(variant?.price ?? product.displayPrice) ??
+                    0;
+                final activeOffer = variant?.offers?.firstOrNull;
+                double? discountedPrice;
+                if (activeOffer?.disscountPrice != null &&
+                    activeOffer!.disscountPrice > 0) {
+                  discountedPrice =
+                      price - (price * activeOffer.disscountPrice / 100);
+                }
+                unawaited(
+                  ProductShareHelper.shareProduct(
+                    context,
+                    product: product,
+                    selectedVariant: variant,
+                    discountedPrice: discountedPrice,
+                    displayPrice: variant?.price ?? product.displayPrice,
+                    discountPercentage: activeOffer?.disscountPrice.toInt(),
+                  ),
+                );
+              },
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.only(end: 12.w),
+              child: FavoriteButton(
+                productId: controller.product.id,
+                size: 24.w,
+                product: core_product.Product(
+                  id: controller.product.id,
+                  name: controller.product.name,
+                  desc: controller.product.desc,
+                  price:
+                      controller.selectedVariant?.price ??
+                      controller.product.displayPrice,
+                  imagePath:
+                      controller.selectedVariant?.imagePath ??
+                      controller.product.displayImage,
+                  imagesPath: controller.product.imagesPath,
+                  offers: (controller.selectedVariant?.offers ?? [])
+                      .map(
+                        (o) => core_offer.Offer(
+                          id: o.id,
+                          start: o.start,
+                          end: o.end,
+                          productId: o.productId ?? 0,
+                          createdAt: o.createdAt,
+                          updatedAt: o.updatedAt,
+                          discountPrice: o.disscountPrice,
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
       body: InternetStateManager(
         noInternetScreen: const NoInternetScreen(),
         onRestoreInternetConnection: () {
@@ -163,6 +240,7 @@ class _ProductDetailsScrollBody extends StatelessWidget {
               ),
             ),
             _AddReviewWrapper(productId: controller.product.id),
+            SizedBox(height: 16.h),
           ],
         ),
       ),
@@ -252,11 +330,12 @@ class _ProductDescriptionSection extends StatelessWidget {
 
     return ProductAccordion(
       title: context.l10n.product_description_text,
+      icon: Icons.description_outlined,
       child: Text(
         product.desc,
         style: context.typography.body.copyWith(
           color: context.colors.textSecondary,
-          height: 1.5,
+          height: 1.6,
         ),
       ),
     );
@@ -277,6 +356,7 @@ class _ProductAttributesSection extends StatelessWidget {
 
     return ProductAccordion(
       title: context.l10n.product_properties_text,
+      icon: Icons.tune_rounded,
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {
@@ -385,11 +465,21 @@ class _ProductReviewsHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            reviewsTitle,
-            style: context.typography.titleMedium.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            children: [
+              Icon(
+                Icons.star_outline_rounded,
+                size: 20.r,
+                color: context.colors.primary,
+              ),
+              SizedBox(width: 8.w),
+              Text(
+                reviewsTitle,
+                style: context.typography.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
           InkWell(
             onTap: () {

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
@@ -175,9 +174,10 @@ class NotificationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<NotificationCubit>();
-    final isUnread =
-        !notification.isRead && !cubit.isNotificationRead(notification.id);
+    final isUnread = context.select<NotificationCubit, bool>(
+      (cubit) =>
+          !notification.isRead && !cubit.isNotificationRead(notification.id),
+    );
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
@@ -194,7 +194,7 @@ class NotificationItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildIcon(context),
+                _NotificationIconWidget(notification: notification),
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Column(
@@ -230,79 +230,73 @@ class NotificationItem extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildIcon(BuildContext context) {
-    switch (notification.type) {
-      case NotificationType.orderConfirmed:
-      case NotificationType.orderShipped:
-      case NotificationType.paymentSuccess:
-      case NotificationType.orderStatus:
-        final isCancelled =
-            notification.subtitle.contains('إلغاء') ||
-            notification.title.contains('إلغاء') ||
-            (notification.data != null &&
-                notification.data!['status'] == 'cancelled');
-        if (isCancelled) {
-          return _iconContainer(
-            context,
-            icon: Icons.cancel_outlined,
-            backgroundColor: const Color(0xFFFFEBEE),
-            iconColor: context.colors.error,
-          );
-        }
-        return _iconContainer(
-          context,
-          icon: Icons.local_shipping_outlined,
-          backgroundColor: const Color(0xFFE3F2FD),
-          iconColor: context.colors.info,
-        );
-      case NotificationType.specialOffer:
-      case NotificationType.cartOffer:
-      case NotificationType.favoriteOffer:
-        return _iconContainer(
-          context,
-          icon: Icons.local_offer_outlined,
-          backgroundColor: const Color(0xFFFFECB3),
-          iconColor: context.colors.pending,
-        );
-      case NotificationType.reward:
-        return _iconContainer(
-          context,
-          icon: Icons.card_giftcard,
-          backgroundColor: const Color(0xFFFFE0B2),
-          iconColor: context.colors.pending,
-        );
-      case NotificationType.limitedStock:
-      case NotificationType.lowStock:
-      case NotificationType.lowStockFavorite:
-        return _iconContainer(
-          context,
-          icon: Icons.warning_amber_rounded,
-          backgroundColor: const Color(0xFFFFF3E0),
-          iconColor: context.colors.warning,
-        );
-      case NotificationType.broadcast:
-        return _iconContainer(
-          context,
-          icon: Icons.campaign_outlined,
-          backgroundColor: const Color(0xFFF3E5F5),
-          iconColor: context.colors.primary,
-        );
-    }
+class _NotificationIconWidget extends StatelessWidget {
+  const _NotificationIconWidget({required this.notification});
+
+  final NotificationModel notification;
+
+  @override
+  Widget build(BuildContext context) {
+    final (icon, bg, color) = switch (notification.type) {
+      NotificationType.orderConfirmed ||
+      NotificationType.orderShipped ||
+      NotificationType.paymentSuccess ||
+      NotificationType.orderStatus =>
+        _isOrderCancelled()
+            ? (
+                Icons.cancel_outlined,
+                const Color(0xFFFFEBEE),
+                context.colors.error,
+              )
+            : (
+                Icons.local_shipping_outlined,
+                const Color(0xFFE3F2FD),
+                context.colors.info,
+              ),
+      NotificationType.specialOffer ||
+      NotificationType.cartOffer ||
+      NotificationType.favoriteOffer => (
+        Icons.local_offer_outlined,
+        const Color(0xFFFFECB3),
+        context.colors.pending,
+      ),
+      NotificationType.reward => (
+        Icons.card_giftcard,
+        const Color(0xFFFFE0B2),
+        context.colors.pending,
+      ),
+      NotificationType.limitedStock ||
+      NotificationType.lowStock ||
+      NotificationType.lowStockFavorite => (
+        Icons.warning_amber_rounded,
+        const Color(0xFFFFF3E0),
+        context.colors.warning,
+      ),
+      NotificationType.broadcast => (
+        Icons.campaign_outlined,
+        const Color(0xFFF3E5F5),
+        context.colors.primary,
+      ),
+    };
+
+    return SizedBox(
+      width: 48.w,
+      height: 48.w,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: context.radius.smBorder,
+        ),
+        child: Icon(icon, color: color, size: 24.w),
+      ),
+    );
   }
 
-  Widget _iconContainer(
-    BuildContext context, {
-    required IconData icon,
-    required Color backgroundColor,
-    required Color iconColor,
-  }) => Container(
-    width: 48.w,
-    height: 48.w,
-    decoration: BoxDecoration(
-      color: backgroundColor,
-      borderRadius: context.radius.smBorder,
-    ),
-    child: Icon(icon, color: iconColor, size: 24.w),
-  );
+  bool _isOrderCancelled() =>
+      notification.subtitle.contains('إلغاء') ||
+      notification.title.contains('إلغاء') ||
+      (notification.data != null &&
+          notification.data!['status'] == 'cancelled');
 }

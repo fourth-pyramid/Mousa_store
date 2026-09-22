@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
@@ -38,19 +37,27 @@ class HomeCategoriesSection extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 6.w),
             child: state.categoriesStatus == RequestStatus.loading
                 ? const _CategoriesLoadingSkeleton()
-                : GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.categories.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 6.w,
-                      mainAxisSpacing: 6.h,
-                      childAspectRatio: 1.15,
-                    ),
-                    itemBuilder: (context, index) {
-                      final category = state.categories[index];
-                      return _HomeCategoryCard(category: category);
+                : LayoutBuilder(
+                    builder: (context, constraints) {
+                      final crossAxisCount = (constraints.maxWidth / 160.w)
+                          .floor()
+                          .clamp(2, 4);
+
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.categories.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 6.w,
+                          mainAxisSpacing: 6.h,
+                          childAspectRatio: 1.15,
+                        ),
+                        itemBuilder: (context, index) {
+                          final category = state.categories[index];
+                          return _HomeCategoryCard(category: category);
+                        },
+                      );
                     },
                   ),
           ),
@@ -65,22 +72,31 @@ class _CategoriesLoadingSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Skeletonizer(
-    child: GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 4,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 10.w,
-        mainAxisSpacing: 10.h,
-        childAspectRatio: 1.15,
-      ),
-      itemBuilder: (context, index) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.colors.surface,
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-      ),
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        final crossAxisCount = (constraints.maxWidth / 160.w).floor().clamp(
+          2,
+          4,
+        );
+
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 4,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 10.w,
+            mainAxisSpacing: 10.h,
+            childAspectRatio: 1.15,
+          ),
+          itemBuilder: (context, index) => DecoratedBox(
+            decoration: BoxDecoration(
+              color: context.colors.surface,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+        );
+      },
     ),
   );
 }
@@ -108,18 +124,11 @@ class _HomeCategoryCard extends StatelessWidget {
     onTap: () => _onTap(context),
     child: DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: context.colors.border.withValues(alpha: 0.6)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: context.radius.lgBorder,
+        boxShadow: AppShadows.card,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15.r),
+        borderRadius: context.radius.lgBorder,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -136,41 +145,44 @@ class _HomeCategoryCard extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
+            // Richer 3-stop gradient for readability
+            DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withValues(alpha: 0.25),
-                    Colors.black.withValues(alpha: 0.85),
+                    Colors.black.withValues(alpha: 0.3),
+                    Colors.black.withValues(alpha: 0.88),
                   ],
-                  stops: const [0.0, 0.45, 1.0],
+                  stops: const [0.0, 0.5, 1.0],
                 ),
               ),
             ),
+            // Accent top edge highlight
             Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 3.h,
+                color: AppColorTokens.accent.withValues(alpha: 0.85),
+              ),
+            ),
+            PositionedDirectional(
               bottom: 10.h,
-              left: 12.w,
-              right: 12.w,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    category.name,
-                    style: context.typography.h3.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.sp,
-                      height: 1.1,
-                      letterSpacing: 0.3,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+              start: 10.w,
+              end: 10.w,
+              child: Text(
+                category.name,
+                style: context.typography.h3.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                  height: 1.1,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

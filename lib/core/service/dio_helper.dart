@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:mousa_store/core/config/app_env.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/pretty_dio_logger.dart';
 
@@ -14,7 +15,9 @@ class DioHelper {
   static void init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://bynona.store/api/v1/',
+        baseUrl: AppEnv.baseUrl,
+        connectTimeout: Duration(milliseconds: AppEnv.apiTimeout),
+        receiveTimeout: Duration(milliseconds: AppEnv.apiTimeout),
         receiveDataWhenStatusError: true,
         headers: {'Accept': 'application/json'},
       ),

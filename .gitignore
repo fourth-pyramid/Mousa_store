@@ -53,5 +53,7 @@ android/app/*.jks
 
 # Firebase
 lib/firebase_options.dart
+.agents
+.env
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist

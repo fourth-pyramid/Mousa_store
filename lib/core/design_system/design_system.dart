@@ -5,6 +5,7 @@ export 'package:mousa_store/core/theme/extensions/context_shadows.dart';
 export 'package:mousa_store/core/theme/extensions/context_sizes.dart';
 export 'package:mousa_store/core/theme/extensions/context_spacing.dart';
 export 'package:mousa_store/core/theme/extensions/context_typography.dart';
+export 'package:mousa_store/core/utils/screen_utils.dart';
 export 'app_colors.dart';
 export 'app_durations.dart';
 export 'app_radius.dart';

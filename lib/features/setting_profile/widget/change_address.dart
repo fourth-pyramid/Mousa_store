@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
@@ -185,11 +184,20 @@ class _ChangeAddressState extends State<ChangeAddress> {
                       horizontal: 8.w,
                       vertical: 6.h,
                     ),
-                    child: Container(
+                    child: ColoredBox(
                       color: context.colors.error,
-                      alignment: AlignmentDirectional.centerEnd,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Icon(Icons.delete, color: context.colors.onError),
+                      child: Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.symmetric(
+                            horizontal: 20.w,
+                          ),
+                          child: Icon(
+                            Icons.delete,
+                            color: context.colors.onError,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   confirmDismiss: (_) async {

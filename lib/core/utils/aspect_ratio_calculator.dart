@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mousa_store/core/utils/screen_utils.dart';
 
 double aspectRatioCalculator(
   BoxConstraints constraints, {

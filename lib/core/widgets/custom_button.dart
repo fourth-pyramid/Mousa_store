@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/design_system/design_system.dart';
 
 enum AppButtonVariant { primary, secondary, accent, outline, ghost }
 
-class AppButton extends StatelessWidget {
+class AppButton extends StatefulWidget {
   const AppButton({
     required this.onPressed,
     required this.text,
@@ -17,6 +16,7 @@ class AppButton extends StatelessWidget {
     this.width,
     this.backgroundColor,
     this.textColor,
+    this.borderRadius,
   });
 
   final String text;
@@ -29,42 +29,90 @@ class AppButton extends StatelessWidget {
   final double? width;
   final Color? backgroundColor;
   final Color? textColor;
+  final BorderRadius? borderRadius;
+
+  @override
+  State<AppButton> createState() => _AppButtonState();
+}
+
+class _AppButtonState extends State<AppButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _scaleController;
+  late final Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 80),
+      reverseDuration: const Duration(milliseconds: 120),
+      lowerBound: 0.96,
+      value: 1.0,
+    );
+    _scaleAnimation = _scaleController;
+  }
+
+  @override
+  void dispose() {
+    _scaleController.dispose();
+    super.dispose();
+  }
+
+  void _onTapDown(_) {
+    if (widget.onPressed != null && !widget.isLoading) {
+      _scaleController.reverse();
+    }
+  }
+
+  void _onTapUp(_) => _scaleController.forward();
+  void _onTapCancel() => _scaleController.forward();
 
   @override
   Widget build(BuildContext context) {
     Color bg;
     Color fg;
     var border = BorderSide.none;
+    var shadows = <BoxShadow>[];
 
-    switch (variant) {
+    switch (widget.variant) {
       case AppButtonVariant.primary:
-        bg = backgroundColor ?? context.colors.secondary;
-        fg = textColor ?? context.colors.onSecondary;
+        bg = widget.backgroundColor ?? context.colors.secondary;
+        fg = widget.textColor ?? context.colors.onSecondary;
+        shadows = AppShadows.accentGlow;
         break;
       case AppButtonVariant.secondary:
-        bg = backgroundColor ?? context.colors.surfaceStrong;
-        fg = textColor ?? context.colors.textPrimary;
+        bg = widget.backgroundColor ?? context.colors.surfaceStrong;
+        fg = widget.textColor ?? context.colors.textPrimary;
+        shadows = AppShadows.subtle;
         break;
       case AppButtonVariant.accent:
-        bg = backgroundColor ?? context.colors.accent;
-        fg = textColor ?? context.colors.onSecondary;
+        bg = widget.backgroundColor ?? context.colors.accent;
+        fg = widget.textColor ?? context.colors.onSecondary;
+        shadows = AppShadows.accentGlow;
         break;
       case AppButtonVariant.outline:
-        bg = context.colors.transparent;
-        fg = textColor ?? context.colors.textPrimary;
+        bg = Colors.transparent;
+        fg = widget.textColor ?? context.colors.textPrimary;
         border = BorderSide(color: context.colors.border, width: 1.5);
         break;
       case AppButtonVariant.ghost:
-        bg = context.colors.transparent;
-        fg = textColor ?? context.colors.textPrimary;
+        bg = Colors.transparent;
+        fg = widget.textColor ?? context.colors.textPrimary;
         break;
     }
 
-    final effectiveHeight = height != null
-        ? height!.h
-        : context.sizes.buttonHeight;
+    final effectiveHeight =
+        widget.height != null ? widget.height!.h : context.sizes.buttonHeight;
 
-    final Widget child = isLoading
+    final effectiveBorderRadius =
+        widget.borderRadius ??
+        (widget.variant == AppButtonVariant.primary ||
+                widget.variant == AppButtonVariant.accent
+            ? context.radius.smBorder
+            : context.radius.smBorder);
+
+    final Widget child = widget.isLoading
         ? SizedBox(
             width: 20.w,
             height: 20.h,
@@ -77,42 +125,56 @@ class AppButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (text.isNotEmpty)
+              if (widget.text.isNotEmpty)
                 Text(
-                  text.toUpperCase(),
+                  widget.text.toUpperCase(),
                   style: context.typography.labelLarge.copyWith(
                     color: fg,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
                   ),
                 ),
-              if (icon != null) ...[
-                if (text.isNotEmpty) SizedBox(width: 8.w),
-                icon!,
+              if (widget.icon != null) ...[
+                if (widget.text.isNotEmpty) SizedBox(width: 8.w),
+                widget.icon!,
               ],
             ],
           );
 
-    final hasContent = text.isNotEmpty || icon != null;
-    final effectiveWidth = width != null && width != double.infinity
-        ? width!.w
-        : width;
+    final hasContent = widget.text.isNotEmpty || widget.icon != null;
+    final effectiveWidth =
+        widget.width != null && widget.width != double.infinity
+            ? widget.width!.w
+            : widget.width;
 
-    return SizedBox(
-      width: isFullWidth ? (effectiveWidth ?? double.infinity) : effectiveWidth,
-      height: effectiveHeight,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bg,
-          foregroundColor: fg,
-          elevation: 0,
-          side: border,
-          shape: RoundedRectangleBorder(borderRadius: context.radius.mdBorder),
-          padding: EdgeInsets.symmetric(
-            horizontal: text.isNotEmpty ? 24.w : 12.w,
+    return GestureDetector(
+      onTapDown: _onTapDown,
+      onTapUp: _onTapUp,
+      onTapCancel: _onTapCancel,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
+          width: widget.isFullWidth
+              ? (effectiveWidth ?? double.infinity)
+              : effectiveWidth,
+          height: effectiveHeight,
+          decoration: BoxDecoration(
+            color: bg,
+            borderRadius: effectiveBorderRadius,
+            border: border != BorderSide.none ? Border.fromBorderSide(border) : null,
+            boxShadow: widget.onPressed != null ? shadows : null,
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: widget.isLoading ? null : widget.onPressed,
+              borderRadius: effectiveBorderRadius,
+              splashColor: fg.withValues(alpha: 0.08),
+              highlightColor: fg.withValues(alpha: 0.05),
+              child: Center(child: hasContent ? child : const SizedBox.shrink()),
+            ),
           ),
         ),
-        onPressed: isLoading ? null : onPressed,
-        child: hasContent ? child : const SizedBox.shrink(),
       ),
     );
   }
@@ -126,8 +188,8 @@ class CustomButton extends StatelessWidget {
     super.key,
     this.backgroundColor,
     this.textColor,
-    this.borderRadius = 10.0,
-    this.height = 52.0,
+    this.borderRadius = 12.0,
+    this.height = 50.0,
     this.width = double.infinity,
     this.icon,
     this.controller,

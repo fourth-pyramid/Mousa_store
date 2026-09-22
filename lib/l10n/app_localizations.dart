@@ -1028,6 +1028,12 @@ abstract class AppLocalizations {
   /// **'Failed to load product'**
   String get product_load_failed_text;
 
+  /// Title for product details page
+  ///
+  /// In en, this message translates to:
+  /// **'Product Details'**
+  String get product_details_text;
+
   /// Back button text
   ///
   /// In en, this message translates to:

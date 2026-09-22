@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -13,8 +12,7 @@ class AppSliverGrid<T> extends StatelessWidget {
     this.crossAxisCount = 2,
     this.mainAxisSpacing = 8,
     this.crossAxisSpacing = 8,
-    this.childAspectRatio =
-        0.74, // ponytail: ratio 0.74 fits product card tightly without overflow
+    this.childAspectRatio = 0.70,
     this.emptyWidget,
     this.loadingItemCount = 6,
     this.loadingBuilder,

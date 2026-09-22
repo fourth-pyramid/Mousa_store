@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mousa_store/core/utils/screen_utils.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 
 Widget _buildTestWidget(Widget child) => ScreenUtilInit(

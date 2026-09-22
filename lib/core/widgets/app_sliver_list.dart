@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_list_card.dart';
@@ -35,9 +34,9 @@ class AppSliverList<T> extends StatelessWidget {
   final Widget Function(T)? favoriteButtonBuilder;
 
   double _cardWidth(double maxWidth) {
-    if (maxWidth >= 1200) return 200;
-    if (maxWidth >= 800) return 180;
-    return (maxWidth * 0.40).clamp(140.0, 160.0);
+    if (maxWidth >= 1200) return 200.w;
+    if (maxWidth >= 800) return 180.w;
+    return (maxWidth * 0.40).clamp(140.0.w, 160.0.w);
   }
 
   @override
@@ -46,7 +45,7 @@ class AppSliverList<T> extends StatelessWidget {
       final cardWidth = _cardWidth(constraints.maxWidth);
 
       if (isLoading) {
-        return _buildSkeleton(cardWidth);
+        return _SliverListSkeleton(cardWidth: cardWidth);
       }
 
       if (isError) {
@@ -79,13 +78,14 @@ class AppSliverList<T> extends StatelessWidget {
                 final product = extractProductSummary(products[index]);
 
                 return Padding(
-                  padding: const EdgeInsetsDirectional.only(end: 12),
+                  padding: EdgeInsetsDirectional.only(end: 12.w),
                   child: SizedBox(
                     width: cardWidth,
-                    child: _buildProductCard(
-                      context,
-                      product,
-                      originalItem: products[index],
+                    child: _SliverProductCardItem(
+                      product: product,
+                      favoriteButton: favoriteButtonBuilder?.call(
+                        products[index],
+                      ),
                     ),
                   ),
                 );
@@ -96,12 +96,16 @@ class AppSliverList<T> extends StatelessWidget {
       );
     },
   );
+}
 
-  Widget _buildProductCard(
-    BuildContext context,
-    ProductSummary product, {
-    required T originalItem,
-  }) {
+class _SliverProductCardItem extends StatelessWidget {
+  const _SliverProductCardItem({required this.product, this.favoriteButton});
+
+  final ProductSummary product;
+  final Widget? favoriteButton;
+
+  @override
+  Widget build(BuildContext context) {
     final price = double.tryParse(product.price) ?? 0;
     var finalPrice = price;
     var oldPrice = '';
@@ -121,7 +125,7 @@ class AppSliverList<T> extends StatelessWidget {
       description: product.description,
       image: product.imagePath,
       discount: discount,
-      favoriteButton: favoriteButtonBuilder?.call(originalItem),
+      favoriteButton: favoriteButton,
       priceLabel: AppLocalizations.of(context)!.egp_text,
       discountLabel: AppLocalizations.of(context)!.discount_text,
       onTap: () {
@@ -134,8 +138,15 @@ class AppSliverList<T> extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _buildSkeleton(double cardWidth) => Skeletonizer(
+class _SliverListSkeleton extends StatelessWidget {
+  const _SliverListSkeleton({required this.cardWidth});
+
+  final double cardWidth;
+
+  @override
+  Widget build(BuildContext context) => Skeletonizer(
     ignoreContainers: true,
     child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -145,7 +156,7 @@ class AppSliverList<T> extends StatelessWidget {
           children: List.generate(
             3,
             (_) => Padding(
-              padding: const EdgeInsetsDirectional.only(end: 12),
+              padding: EdgeInsetsDirectional.only(end: 12.w),
               child: SizedBox(
                 width: cardWidth,
                 child: AppListCard(

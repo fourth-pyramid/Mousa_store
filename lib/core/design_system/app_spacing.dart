@@ -1,4 +1,4 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mousa_store/core/utils/screen_utils.dart';
 
 /// SPORTCORE 4px-base Spacing Tokens
 abstract class AppSpacing {

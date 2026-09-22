@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_bottom_sheet.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
@@ -40,20 +39,22 @@ class _AttributeSection extends StatelessWidget {
             Text(title, style: context.typography.titleLarge),
             if (selectedIds.isNotEmpty) ...[
               SizedBox(width: 8.w),
-              Container(
-                padding: EdgeInsetsDirectional.symmetric(
-                  horizontal: 8.w,
-                  vertical: 4.h,
-                ),
+              DecoratedBox(
                 decoration: BoxDecoration(
                   color: context.colors.primary,
                   borderRadius: context.radius.smBorder,
                 ),
-                child: Text(
-                  '${selectedIds.length}',
-                  style: context.typography.caption.copyWith(
-                    color: context.colors.onPrimary,
-                    fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.symmetric(
+                    horizontal: 8.w,
+                    vertical: 4.h,
+                  ),
+                  child: Text(
+                    '${selectedIds.length}',
+                    style: context.typography.caption.copyWith(
+                      color: context.colors.onPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -70,7 +71,19 @@ class _AttributeSection extends StatelessWidget {
                 .map(
                   (attrValue) => Padding(
                     padding: EdgeInsetsDirectional.only(end: 8.w),
-                    child: _buildChip(context, attrValue),
+                    child: _AttributeFilterChip(
+                      attrValue: attrValue,
+                      isSelected: selectedIds.contains(attrValue.id),
+                      onTap: () {
+                        final newSelection = Set<int>.from(selectedIds);
+                        if (selectedIds.contains(attrValue.id)) {
+                          newSelection.remove(attrValue.id);
+                        } else {
+                          newSelection.add(attrValue.id);
+                        }
+                        onChanged(newSelection);
+                      },
+                    ),
                   ),
                 )
                 .toList(),
@@ -79,57 +92,53 @@ class _AttributeSection extends StatelessWidget {
       ),
     ],
   );
+}
 
-  Widget _buildChip(BuildContext context, AttributeValue attrValue) {
-    final isSelected = selectedIds.contains(attrValue.id);
+class _AttributeFilterChip extends StatelessWidget {
+  const _AttributeFilterChip({
+    required this.attrValue,
+    required this.isSelected,
+    required this.onTap,
+  });
 
-    return GestureDetector(
-      onTap: () {
-        final newSelection = Set<int>.from(selectedIds);
-        if (isSelected) {
-          newSelection.remove(attrValue.id);
-        } else {
-          newSelection.add(attrValue.id);
-        }
-        onChanged(newSelection);
-      },
-      child: AnimatedContainer(
-        duration: context.durations.fast,
-        padding: EdgeInsetsDirectional.symmetric(
-          horizontal: 16.w,
-          vertical: 8.h,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? context.colors.primary
-              : context.colors.transparent,
-          borderRadius: context.radius.xsBorder,
-          border: Border.all(
-            color: isSelected ? context.colors.primary : context.colors.border,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (isSelected) ...[
-              Icon(Icons.check, size: 16.r, color: context.colors.onPrimary),
-              SizedBox(width: 4.w),
-            ],
-            Text(
-              attrValue.value,
-              style: context.typography.body.copyWith(
-                color: isSelected
-                    ? context.colors.onPrimary
-                    : context.colors.textPrimary,
-                fontWeight: isSelected ? FontWeight.bold : null,
-              ),
-            ),
-          ],
+  final AttributeValue attrValue;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: AnimatedContainer(
+      duration: context.durations.fast,
+      padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: isSelected ? context.colors.primary : context.colors.transparent,
+        borderRadius: context.radius.xsBorder,
+        border: Border.all(
+          color: isSelected ? context.colors.primary : context.colors.border,
+          width: isSelected ? 2 : 1,
         ),
       ),
-    );
-  }
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isSelected) ...[
+            Icon(Icons.check, size: 16.r, color: context.colors.onPrimary),
+            SizedBox(width: 4.w),
+          ],
+          Text(
+            attrValue.value,
+            style: context.typography.body.copyWith(
+              color: isSelected
+                  ? context.colors.onPrimary
+                  : context.colors.textPrimary,
+              fontWeight: isSelected ? FontWeight.bold : null,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class FilterWidget extends StatelessWidget {
@@ -347,13 +356,11 @@ class FilterWidget extends StatelessWidget {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                _buildPriceLabel(
-                                                  priceRange.start,
-                                                  context,
+                                                _PriceBadge(
+                                                  value: priceRange.start,
                                                 ),
-                                                _buildPriceLabel(
-                                                  priceRange.end,
-                                                  context,
+                                                _PriceBadge(
+                                                  value: priceRange.end,
                                                 ),
                                               ],
                                             ),
@@ -493,9 +500,15 @@ class FilterWidget extends StatelessWidget {
       );
     },
   );
+}
 
-  Widget _buildPriceLabel(double value, BuildContext context) => Container(
-    padding: EdgeInsetsDirectional.symmetric(horizontal: 12.w, vertical: 6.h),
+class _PriceBadge extends StatelessWidget {
+  const _PriceBadge({required this.value});
+
+  final double value;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
     decoration: BoxDecoration(
       color: context.colors.primary.withAlpha((0.1 * 255).toInt()),
       borderRadius: context.radius.xsBorder,
@@ -503,11 +516,14 @@ class FilterWidget extends StatelessWidget {
         color: context.colors.primary.withAlpha((0.3 * 255).toInt()),
       ),
     ),
-    child: Text(
-      '${value.toInt()} EGP',
-      style: context.typography.body.copyWith(
-        color: context.colors.primary,
-        fontWeight: FontWeight.bold,
+    child: Padding(
+      padding: EdgeInsetsDirectional.symmetric(horizontal: 12.w, vertical: 6.h),
+      child: Text(
+        '${value.toInt()} EGP',
+        style: context.typography.body.copyWith(
+          color: context.colors.primary,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
   );

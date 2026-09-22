@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
@@ -205,9 +204,11 @@ class ProfileView extends StatelessWidget {
                       }
 
                       return ListView.separated(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 16.h,
+                        padding: EdgeInsets.fromLTRB(
+                          20.w,
+                          16.h,
+                          20.w,
+                          100.h,
                         ),
                         itemCount: sections.length,
                         separatorBuilder: (_, _) => SizedBox(height: 24.h),

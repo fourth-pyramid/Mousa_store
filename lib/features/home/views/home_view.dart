@@ -86,8 +86,8 @@ class _HomeViewState extends State<HomeView> {
           onRefresh: () async => context.read<HomeCubit>().fetchAllData(),
           child: CustomScrollView(
             controller: _scrollController,
-            slivers: const [
-              SliverToBoxAdapter(
+            slivers: [
+              const SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -100,26 +100,29 @@ class _HomeViewState extends State<HomeView> {
                   ],
                 ),
               ),
-              HomeAllProductsSection(),
-              SliverToBoxAdapter(child: SizedBox(height: 20)),
+              const HomeAllProductsSection(),
+              SliverToBoxAdapter(child: SizedBox(height: 100.h)),
             ],
           ),
         ),
       ),
     ),
     floatingActionButton: _showBackToTopButton
-        ? FloatingActionButton(
-            mini: true,
-            onPressed: () {
-              unawaited(
-                _scrollController.animateTo(
-                  0,
-                  duration: context.durations.pageTransition,
-                  curve: Curves.easeInOut,
-                ),
-              );
-            },
-            child: const Icon(Icons.arrow_upward, size: 18),
+        ? Padding(
+            padding: EdgeInsets.only(bottom: 75.h),
+            child: FloatingActionButton(
+              mini: true,
+              onPressed: () {
+                unawaited(
+                  _scrollController.animateTo(
+                    0,
+                    duration: context.durations.pageTransition,
+                    curve: Curves.easeInOut,
+                  ),
+                );
+              },
+              child: const Icon(Icons.arrow_upward, size: 18),
+            ),
           )
         : null,
     floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,

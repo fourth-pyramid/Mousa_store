@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/design_system/design_system.dart';
 
 enum AppBadgeVariant { neutral, accent, success, outline }
@@ -18,6 +17,7 @@ class AppBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     Color bg;
     Color fg;
+    Border? customBorder;
 
     switch (variant) {
       case AppBadgeVariant.neutral:
@@ -26,33 +26,34 @@ class AppBadge extends StatelessWidget {
         break;
       case AppBadgeVariant.accent:
         bg = context.colors.accent;
-        fg = context.colors.onSecondary;
+        fg = Colors.white;
         break;
       case AppBadgeVariant.success:
-        bg = context.colors.success;
-        fg = context.colors.onPrimary;
+        bg = context.colors.success.withValues(alpha: 0.15);
+        fg = context.colors.success;
         break;
       case AppBadgeVariant.outline:
         bg = context.colors.transparent;
         fg = context.colors.textPrimary;
+        customBorder = Border.all(color: context.colors.border);
         break;
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.h),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: context.radius.xsBorder,
-        border: variant == AppBadgeVariant.outline
-            ? Border.all(color: context.colors.border)
-            : null,
+        borderRadius: context.radius.chipBorder,
+        border: customBorder,
+        boxShadow: variant == AppBadgeVariant.accent ? AppShadows.subtle : null,
       ),
       child: Text(
         label.toUpperCase(),
         style: context.typography.caption.copyWith(
           color: fg,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 0.5,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.3,
+          height: 1.2,
         ),
       ),
     );

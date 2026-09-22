@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mousa_store/core/models/offer.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
@@ -95,14 +94,16 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 height: 95.h,
                 width: 90.w,
                 borderRadius: BorderRadius.circular(12.r),
-                errorWidget: (context, url, error) => Container(
+                errorWidget: (context, url, error) => SizedBox(
                   height: 95.h,
                   width: 90.w,
-                  color: context.colors.surface,
-                  child: Icon(
-                    Icons.sports_soccer,
-                    size: 24.w,
-                    color: context.colors.textSecondary,
+                  child: ColoredBox(
+                    color: context.colors.surface,
+                    child: Icon(
+                      Icons.sports_soccer,
+                      size: 24.w,
+                      color: context.colors.textSecondary,
+                    ),
                   ),
                 ),
               ),
@@ -110,11 +111,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 PositionedDirectional(
                   top: 0,
                   end: 0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 6.w,
-                      vertical: 2.h,
-                    ),
+                  child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: context.colors.primary,
                       borderRadius: BorderRadiusDirectional.only(
@@ -122,12 +119,18 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                         bottomStart: Radius.circular(8.r),
                       ),
                     ),
-                    child: Text(
-                      '${widget.offers!.first.discountPrice.toInt()}%-',
-                      style: context.typography.caption.copyWith(
-                        color: context.colors.onPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 9.sp,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 2.h,
+                      ),
+                      child: Text(
+                        '${widget.offers!.first.discountPrice.toInt()}%-',
+                        style: context.typography.caption.copyWith(
+                          color: context.colors.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 9.sp,
+                        ),
                       ),
                     ),
                   ),
@@ -172,70 +175,94 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: 34.h,
-                      width: 100.w,
+                    DecoratedBox(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r),
+                        borderRadius: context.radius.smBorder,
                         border: Border.all(color: context.colors.border),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ValueListenableBuilder<int>(
-                            valueListenable: _quantityNotifier,
-                            builder: (context, q, _) => IconButton(
-                              icon: const Icon(Icons.add),
-                              iconSize: 16.r,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: q >= widget.stock
-                                  ? null
-                                  : () {
-                                      final newQ = q + 1;
-                                      _quantityNotifier.value = newQ;
-                                      unawaited(
-                                        context
-                                            .read<CartCubit>()
-                                            .updateQuantity(
-                                              cartItemId: widget.cartItemId,
-                                              quantity: newQ,
-                                            ),
-                                      );
-                                    },
-                            ),
+                      child: SizedBox(
+                        height: 34.h,
+                        child: ValueListenableBuilder<int>(
+                          valueListenable: _quantityNotifier,
+                          builder: (context, q, _) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.add),
+                                iconSize: 16.r,
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(
+                                  minWidth: 32.w,
+                                  minHeight: 34.h,
+                                ),
+                                style: IconButton.styleFrom(
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  minimumSize: Size(32.w, 34.h),
+                                  padding: EdgeInsets.zero,
+                                ),
+                                onPressed: q >= widget.stock
+                                    ? null
+                                    : () {
+                                        final newQ = q + 1;
+                                        _quantityNotifier.value = newQ;
+                                        unawaited(
+                                          context
+                                              .read<CartCubit>()
+                                              .updateQuantity(
+                                                cartItemId: widget.cartItemId,
+                                                quantity: newQ,
+                                              ),
+                                        );
+                                      },
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(minWidth: 24.w),
+                                  child: Center(
+                                    child: Text(
+                                      q.toString(),
+                                      style: context.typography.bodySmall
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.remove),
+                                iconSize: 16.r,
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(
+                                  minWidth: 32.w,
+                                  minHeight: 34.h,
+                                ),
+                                style: IconButton.styleFrom(
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  minimumSize: Size(32.w, 34.h),
+                                  padding: EdgeInsets.zero,
+                                ),
+                                onPressed: q <= widget.minQuantity
+                                    ? null
+                                    : () {
+                                        final newQ = q - 1;
+                                        _quantityNotifier.value = newQ;
+                                        unawaited(
+                                          context
+                                              .read<CartCubit>()
+                                              .updateQuantity(
+                                                cartItemId: widget.cartItemId,
+                                                quantity: newQ,
+                                              ),
+                                        );
+                                      },
+                              ),
+                            ],
                           ),
-                          ValueListenableBuilder<int>(
-                            valueListenable: _quantityNotifier,
-                            builder: (context, q, _) => Text(
-                              q.toString(),
-                              style: context.typography.bodySmall,
-                            ),
-                          ),
-                          ValueListenableBuilder<int>(
-                            valueListenable: _quantityNotifier,
-                            builder: (context, q, _) => IconButton(
-                              icon: const Icon(Icons.remove),
-                              iconSize: 16.r,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: q <= widget.minQuantity
-                                  ? null
-                                  : () {
-                                      final newQ = q - 1;
-                                      _quantityNotifier.value = newQ;
-                                      unawaited(
-                                        context
-                                            .read<CartCubit>()
-                                            .updateQuantity(
-                                              cartItemId: widget.cartItemId,
-                                              quantity: newQ,
-                                            ),
-                                      );
-                                    },
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
