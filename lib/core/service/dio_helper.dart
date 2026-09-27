@@ -277,8 +277,7 @@ class DioHelper {
 class DuplicateRequestInterceptor extends Interceptor {
   final _inFlight = <String, Completer<Response<dynamic>>>{};
 
-  static String _key(RequestOptions o) =>
-      '${o.method}::${o.path}::${o.queryParameters}';
+  static String _key(RequestOptions o) => '${o.method}::${o.uri}';
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -328,7 +327,10 @@ class DuplicateRequestInterceptor extends Interceptor {
       return;
     }
 
-    _inFlight[key] = Completer<Response<dynamic>>();
+    final completer = Completer<Response<dynamic>>();
+    // Prevents unhandled asynchronous exception in Dart VM when requests fail and have no dedup listeners
+    completer.future.ignore();
+    _inFlight[key] = completer;
     handler.next(options);
   }
 
@@ -339,7 +341,9 @@ class DuplicateRequestInterceptor extends Interceptor {
   ) {
     final key = _key(response.requestOptions);
     final completer = _inFlight.remove(key);
-    completer?.complete(response);
+    if (completer != null && !completer.isCompleted) {
+      completer.complete(response);
+    }
     handler.next(response);
   }
 
@@ -347,7 +351,9 @@ class DuplicateRequestInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final key = _key(err.requestOptions);
     final completer = _inFlight.remove(key);
-    completer?.completeError(err);
+    if (completer != null && !completer.isCompleted) {
+      completer.completeError(err);
+    }
     handler.next(err);
   }
 }

@@ -92,15 +92,15 @@ class AppGridCard extends StatelessWidget {
                       // Favorite button top-right
                       if (favoriteButton != null)
                         Positioned(
-                          top: 6.h,
-                          right: 6.w,
-                          child: _GlassFavoriteWrapper(child: favoriteButton!),
+                          top: 8.h,
+                          right: 8.w,
+                          child: favoriteButton!,
                         ),
                       // Discount badge top-left
                       if (discount != null && discount! > 0)
                         Positioned(
-                          top: 6.h,
-                          left: 6.w,
+                          top: 8.h,
+                          left: 8.w,
                           child: AppBadge(
                             label: '-$discount%',
                             variant: AppBadgeVariant.accent,
@@ -159,22 +159,4 @@ class AppGridCard extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Glass morphic circle wrapper for the favorite button
-class _GlassFavoriteWrapper extends StatelessWidget {
-  const _GlassFavoriteWrapper({required this.child});
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: 32.r,
-    height: 32.r,
-    decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: 0.88),
-      shape: BoxShape.circle,
-      boxShadow: AppShadows.subtle,
-    ),
-    child: child,
-  );
 }

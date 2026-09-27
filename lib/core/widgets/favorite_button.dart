@@ -17,6 +17,7 @@ class FavoriteButton extends StatefulWidget {
     this.size,
     this.activeColor,
     this.inactiveColor,
+    this.backgroundColor,
     super.key,
   });
 
@@ -25,13 +26,17 @@ class FavoriteButton extends StatefulWidget {
   final double? size;
   final Color? activeColor;
   final Color? inactiveColor;
+  final Color? backgroundColor;
 
   @override
   State<FavoriteButton> createState() => _FavoriteButtonState();
 }
 
-class _FavoriteButtonState extends State<FavoriteButton> {
+class _FavoriteButtonState extends State<FavoriteButton>
+    with SingleTickerProviderStateMixin {
   late final ValueNotifier<bool> _isFavoriteNotifier;
+  late final AnimationController _animController;
+  late final Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -39,10 +44,27 @@ class _FavoriteButtonState extends State<FavoriteButton> {
     _isFavoriteNotifier = ValueNotifier<bool>(
       getIt<FavoriteCubit>().isFavorite(widget.productId),
     );
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _scaleAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 1.0, end: 1.25)
+            .chain(CurveTween(curve: Curves.easeOutCubic)),
+        weight: 45,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 1.25, end: 1.0)
+            .chain(CurveTween(curve: Curves.easeInCubic)),
+        weight: 55,
+      ),
+    ]).animate(_animController);
   }
 
   @override
   void dispose() {
+    _animController.dispose();
     _isFavoriteNotifier.dispose();
     super.dispose();
   }
@@ -63,13 +85,18 @@ class _FavoriteButtonState extends State<FavoriteButton> {
           valueListenable: _isFavoriteNotifier,
           builder: (context, isFavorite, child) {
             final heartColor = isFavorite
-                ? (widget.activeColor ?? context.colors.accent)
-                : (widget.inactiveColor ?? context.colors.textSecondary);
+                ? (widget.activeColor ?? AppColorTokens.accent)
+                : (widget.inactiveColor ?? const Color(0xFF374151));
+
+            final buttonSize = widget.size ?? 32.r;
+            final iconSize = (buttonSize * 0.54).clamp(14.0, 22.0);
 
             return GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
                 if (getIt<AuthService>().isLoggedIn) {
                   _isFavoriteNotifier.value = !isFavorite;
+                  unawaited(_animController.forward(from: 0.0));
                   unawaited(
                     getIt<FavoriteCubit>().addFavorite(
                       productId: widget.productId,
@@ -87,17 +114,39 @@ class _FavoriteButtonState extends State<FavoriteButton> {
                   showLoginDialog(context);
                 }
               },
-              child: Container(
-                padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                  color: context.colors.surface,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: context.colors.border),
+              child: AnimatedBuilder(
+                animation: _scaleAnimation,
+                builder: (context, animChild) => Transform.scale(
+                  scale: _scaleAnimation.value,
+                  child: animChild,
                 ),
-                child: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border_rounded,
-                  size: widget.size ?? 18.w,
-                  color: heartColor,
+                child: Container(
+                  width: buttonSize,
+                  height: buttonSize,
+                  decoration: BoxDecoration(
+                    color: widget.backgroundColor ??
+                        Colors.white.withValues(alpha: 0.94),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.12),
+                        blurRadius: 8.r,
+                        offset: Offset(0, 2.h),
+                      ),
+                    ],
+                    border: Border.all(
+                      color: Colors.black.withValues(alpha: 0.06),
+                      width: 0.8.r,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    isFavorite
+                        ? Icons.favorite_rounded
+                        : Icons.favorite_border_rounded,
+                    size: iconSize,
+                    color: heartColor,
+                  ),
                 ),
               ),
             );

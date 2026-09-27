@@ -77,16 +77,7 @@ class AppListCard extends StatelessWidget {
                           Positioned(
                             top: 6.h,
                             right: 6.w,
-                            child: Container(
-                              width: 28.r,
-                              height: 28.r,
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.88),
-                                shape: BoxShape.circle,
-                                boxShadow: AppShadows.subtle,
-                              ),
-                              child: favoriteButton,
-                            ),
+                            child: favoriteButton!,
                           ),
                         if (discount != null && discount! > 0)
                           Positioned(
