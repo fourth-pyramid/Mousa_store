@@ -7,8 +7,8 @@ import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/utils/show_login_dialog.dart';
-import 'package:mousa_store/features/favorites/viewmodels/favorite_cubit.dart';
-import 'package:mousa_store/features/product/model/product.dart';
+import 'package:mousa_store/features/favorites/presentation/bloc/favorite_bloc.dart';
+import 'package:mousa_store/features/product/data/models/product.dart';
 
 class FavoriteButton extends StatefulWidget {
   const FavoriteButton({
@@ -42,7 +42,7 @@ class _FavoriteButtonState extends State<FavoriteButton>
   void initState() {
     super.initState();
     _isFavoriteNotifier = ValueNotifier<bool>(
-      getIt<FavoriteCubit>().isFavorite(widget.productId),
+      getIt<FavoriteBloc>().isFavorite(widget.productId),
     );
     _animController = AnimationController(
       vsync: this,
@@ -71,14 +71,12 @@ class _FavoriteButtonState extends State<FavoriteButton>
 
   @override
   Widget build(BuildContext context) =>
-      BlocListener<FavoriteCubit, FavoriteState>(
-        bloc: getIt<FavoriteCubit>(),
+      BlocListener<FavoriteBloc, FavoriteState>(
+        bloc: getIt<FavoriteBloc>(),
         listener: (context, state) {
-          if (state is FavoriteLoaded || state is FavoriteSuccess) {
-            final isFav = getIt<FavoriteCubit>().isFavorite(widget.productId);
-            if (_isFavoriteNotifier.value != isFav) {
-              _isFavoriteNotifier.value = isFav;
-            }
+          final isFav = state.isFavorite(widget.productId);
+          if (_isFavoriteNotifier.value != isFav) {
+            _isFavoriteNotifier.value = isFav;
           }
         },
         child: ValueListenableBuilder<bool>(
@@ -97,8 +95,8 @@ class _FavoriteButtonState extends State<FavoriteButton>
                 if (getIt<AuthService>().isLoggedIn) {
                   _isFavoriteNotifier.value = !isFavorite;
                   unawaited(_animController.forward(from: 0.0));
-                  unawaited(
-                    getIt<FavoriteCubit>().addFavorite(
+                  getIt<FavoriteBloc>().add(
+                    FavoriteToggled(
                       productId: widget.productId,
                       product: widget.product,
                     ),

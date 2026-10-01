@@ -5,8 +5,8 @@ import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_grid_card.dart';
 import 'package:mousa_store/core/widgets/favorite_button.dart';
-import 'package:mousa_store/features/product/model/product.dart';
-import 'package:mousa_store/features/product/view/product_details_view.dart';
+import 'package:mousa_store/features/product/data/models/product.dart';
+import 'package:mousa_store/features/product/presentation/pages/product_details_page.dart';
 
 class ProductGridCard extends StatelessWidget {
   const ProductGridCard({required this.product, super.key});

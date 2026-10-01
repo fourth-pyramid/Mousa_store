@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_list_card.dart';
-import 'package:mousa_store/features/product/model/product_summary.dart';
-import 'package:mousa_store/features/product/view/product_details_view.dart';
+import 'package:mousa_store/features/product/data/models/product_summary.dart';
+import 'package:mousa_store/features/product/presentation/pages/product_details_page.dart';
 import 'package:mousa_store/l10n/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

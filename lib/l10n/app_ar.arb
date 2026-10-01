@@ -855,7 +855,7 @@
   "@reviews_title_text": {
     "description": "Reviews section title"
   },
-  "review_added_text": "تم إضافة التقييم",
+  "review_added_text": "تم إرسال التقييم بنجاح",
   "@review_added_text": {
     "description": "Success message for submitting review"
   },

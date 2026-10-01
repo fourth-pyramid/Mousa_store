@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
-import 'package:mousa_store/features/auth/model/user.dart';
+import 'package:mousa_store/features/auth/data/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

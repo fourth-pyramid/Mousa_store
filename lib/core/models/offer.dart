@@ -1,62 +1,38 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-@immutable
-class Offer extends Equatable {
-  const Offer({
-    required this.id,
-    required this.start,
-    required this.end,
-    required this.productId,
-    required this.createdAt,
-    required this.updatedAt,
-    // required this.title,
-    // required this.desc,
-    required this.discountPrice,
-  });
+part 'offer.freezed.dart';
+
+@Freezed(toJson: false, fromJson: false)
+abstract class Offer with _$Offer {
+  const Offer._();
+
+  const factory Offer({
+    required int id,
+    required int productId,
+    String? start,
+    String? end,
+    String? createdAt,
+    String? updatedAt,
+    @Default(0.0) double discountPrice,
+  }) = _Offer;
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-    id: json['id'] is int ? json['id'] as int : 0,
-    start: json['start'] as String?,
-    end: json['end'] as String?,
-    productId: json['product_id'] is int ? json['product_id'] as int : 0,
-    createdAt: json['created_at'] as String?,
-    updatedAt: json['updated_at'] as String?,
-    // title: json['title'] as String,
-    // desc: json['desc'] as String,
-    discountPrice: (json['disscount_price'] as num?)?.toDouble() ?? 0.0,
-  );
-
-  final int id;
-  final String? start;
-  final String? end;
-  final int productId;
-  final String? createdAt;
-  final String? updatedAt;
-  // final String title;
-  // final String desc;
-  final double discountPrice;
+        id: json['id'] is int ? json['id'] as int : 0,
+        productId: json['product_id'] is int ? json['product_id'] as int : 0,
+        start: json['start'] as String?,
+        end: json['end'] as String?,
+        createdAt: json['created_at'] as String?,
+        updatedAt: json['updated_at'] as String?,
+        discountPrice: (json['disscount_price'] as num?)?.toDouble() ?? 0.0,
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'start': start,
-    'end': end,
-    'product_id': productId,
-    'created_at': createdAt,
-    'updated_at': updatedAt,
-    // 'title': title,
-    // 'desc': desc,
-    'disscount_price': discountPrice,
-  };
-
-  @override
-  List<Object?> get props => [
-    id,
-    start,
-    end,
-    productId,
-    createdAt,
-    updatedAt,
-    discountPrice,
-  ];
+        'id': id,
+        'product_id': productId,
+        'start': start,
+        'end': end,
+        'created_at': createdAt,
+        'updated_at': updatedAt,
+        'disscount_price': discountPrice,
+      };
 }

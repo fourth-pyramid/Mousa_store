@@ -1,31 +1,31 @@
-import 'package:mousa_store/features/brands/models/brand.dart';
-import 'package:mousa_store/features/brands/repositories/brand_repo.dart';
-import 'package:mousa_store/features/categories/models/category.dart';
-import 'package:mousa_store/features/categories/repositories/category_repo.dart';
-import 'package:mousa_store/features/home/models/banner_model.dart';
-import 'package:mousa_store/features/home/repositories/home_repository.dart';
-import 'package:mousa_store/features/product/model/product_list_response.dart';
+import 'package:mousa_store/features/brands/domain/entities/brand.dart';
+import 'package:mousa_store/features/brands/domain/repositories/brand_repository.dart';
+import 'package:mousa_store/features/categories/domain/entities/category.dart';
+import 'package:mousa_store/features/categories/domain/repositories/category_repository.dart';
+import 'package:mousa_store/features/home/data/models/banner_model.dart';
+import 'package:mousa_store/features/home/domain/repositories/home_repository.dart';
+import 'package:mousa_store/features/product/data/models/product_list_response.dart';
 
 /// Domain UseCase that coordinates multiple repositories (Home, Category, Brand)
 /// ensuring repositories remain decoupled and do not depend on each other.
 class FetchHomeDataUseCase {
-  FetchHomeDataUseCase({
+  const FetchHomeDataUseCase({
     required HomeRepository homeRepository,
-    required CategoryRepo categoryRepo,
-    required BrandRepo brandRepo,
+    required CategoryRepository categoryRepo,
+    required BrandRepository brandRepo,
   }) : _homeRepository = homeRepository,
        _categoryRepo = categoryRepo,
        _brandRepo = brandRepo;
 
   final HomeRepository _homeRepository;
-  final CategoryRepo _categoryRepo;
-  final BrandRepo _brandRepo;
+  final CategoryRepository _categoryRepo;
+  final BrandRepository _brandRepo;
 
   Future<List<BannerModel>> getBanners() => _homeRepository.getBanners();
 
-  Future<List<Brand>> getBrands() => _brandRepo.fetchBrands();
+  Future<List<Brand>> getBrands() => _brandRepo.getBrands();
 
-  Future<List<Category>> getCategories() => _categoryRepo.fetchCategories();
+  Future<List<Category>> getCategories() => _categoryRepo.getCategories();
 
   Future<ProductListResponse> getProducts({int page = 1}) =>
       _homeRepository.getProducts(page: page);

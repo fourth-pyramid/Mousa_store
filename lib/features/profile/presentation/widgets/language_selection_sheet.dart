@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mousa_store/core/utils/context_extensions.dart';
+import 'package:mousa_store/features/setting_profile/presentation/bloc/language_bloc.dart';
+
+class LanguageSelectionSheet extends StatelessWidget {
+  const LanguageSelectionSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocBuilder<LanguageBloc, LanguageState>(
+        builder: (context, state) {
+          final currentLocale = state.locale;
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _LanguageOptionTile(
+                title: context.l10n.english_text,
+                value: const Locale('en'),
+                groupValue: currentLocale,
+                flagText: '🇺🇸',
+              ),
+              _LanguageOptionTile(
+                title: context.l10n.arabic_text,
+                value: const Locale('ar'),
+                groupValue: currentLocale,
+                flagText: '🇪🇬',
+              ),
+            ],
+          );
+        },
+      );
+}
+
+class _LanguageOptionTile extends StatelessWidget {
+  const _LanguageOptionTile({
+    required this.title,
+    required this.value,
+    required this.groupValue,
+    required this.flagText,
+  });
+
+  final String title;
+  final Locale value;
+  final Locale groupValue;
+  final String flagText;
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected = value.languageCode == groupValue.languageCode;
+    final activeColor = context.colors.textPrimary;
+    final inactiveColor = context.colors.textSecondary;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: Material(
+        color: isSelected
+            ? context.colors.surfaceStrong
+            : context.colors.transparent,
+        borderRadius: context.radius.smBorder,
+        clipBehavior: Clip.antiAlias,
+        child: ListTile(
+          onTap: () {
+            if (isSelected) {
+              Navigator.pop(context);
+              return;
+            }
+
+            context.read<LanguageBloc>().add(LanguageEvent.changed(value));
+            Navigator.pop(context);
+          },
+          leading: Text(flagText, style: TextStyle(fontSize: 24.sp)),
+          title: Text(
+            title,
+            style: context.typography.bodyLarge.copyWith(
+              color: isSelected ? activeColor : inactiveColor,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          trailing: isSelected
+              ? Icon(Icons.check_circle, color: activeColor)
+              : null,
+        ),
+      ),
+    );
+  }
+}

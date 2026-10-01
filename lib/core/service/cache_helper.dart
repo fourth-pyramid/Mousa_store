@@ -5,7 +5,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mousa_store/features/auth/model/user.dart';
+import 'package:mousa_store/features/auth/data/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper {

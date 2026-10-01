@@ -102,6 +102,27 @@ class _AppButtonState extends State<AppButton>
         break;
     }
 
+    final isEnabled = widget.onPressed != null && !widget.isLoading;
+    if (!isEnabled && !widget.isLoading) {
+      if (widget.variant == AppButtonVariant.outline) {
+        bg = Colors.transparent;
+        fg = context.colors.textMuted;
+        border = BorderSide(
+          color: context.colors.border.withValues(alpha: 0.5),
+          width: 1.5,
+        );
+        shadows = const [];
+      } else if (widget.variant == AppButtonVariant.ghost) {
+        bg = Colors.transparent;
+        fg = context.colors.textMuted;
+        shadows = const [];
+      } else {
+        bg = context.colors.surfaceStrong;
+        fg = context.colors.textMuted;
+        shadows = const [];
+      }
+    }
+
     final effectiveHeight =
         widget.height != null ? widget.height!.h : context.sizes.buttonHeight;
 
@@ -112,7 +133,7 @@ class _AppButtonState extends State<AppButton>
             ? context.radius.smBorder
             : context.radius.smBorder);
 
-    final Widget child = widget.isLoading
+    final child = widget.isLoading
         ? SizedBox(
             width: 20.w,
             height: 20.h,
@@ -121,24 +142,27 @@ class _AppButtonState extends State<AppButton>
               valueColor: AlwaysStoppedAnimation<Color>(fg),
             ),
           )
-        : Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (widget.text.isNotEmpty)
-                Text(
-                  widget.text.toUpperCase(),
-                  style: context.typography.labelLarge.copyWith(
-                    color: fg,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.8,
+        : IconTheme.merge(
+            data: IconThemeData(color: fg),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.text.isNotEmpty)
+                  Text(
+                    widget.text.toUpperCase(),
+                    style: context.typography.labelLarge.copyWith(
+                      color: fg,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.8,
+                    ),
                   ),
-                ),
-              if (widget.icon != null) ...[
-                if (widget.text.isNotEmpty) SizedBox(width: 8.w),
-                widget.icon!,
+                if (widget.icon != null) ...[
+                  if (widget.text.isNotEmpty) SizedBox(width: 8.w),
+                  widget.icon!,
+                ],
               ],
-            ],
+            ),
           );
 
     final hasContent = widget.text.isNotEmpty || widget.icon != null;

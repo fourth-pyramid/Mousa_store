@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
-import 'package:mousa_store/features/auth/model/user.dart';
-import 'package:mousa_store/features/notification/service/push_notification_service.dart';
+import 'package:mousa_store/features/auth/data/models/user.dart';
+import 'package:mousa_store/features/notification/data/datasources/push_notification_service.dart';
 
 class AuthService extends ChangeNotifier {
   AuthService() {

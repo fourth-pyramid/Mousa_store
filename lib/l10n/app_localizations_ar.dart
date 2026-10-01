@@ -663,7 +663,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reviews_title_text => 'المراجعات';
 
   @override
-  String get review_added_text => 'تم إضافة التقييم';
+  String get review_added_text => 'تم إرسال التقييم بنجاح';
 
   @override
   String get no_reviews_yet_text => 'لا توجد تقييمات بعد';

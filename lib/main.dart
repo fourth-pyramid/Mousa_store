@@ -12,9 +12,9 @@ import 'package:mousa_store/core/main/app_initializer.dart';
 import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/core/service/deep_link_service.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
-import 'package:mousa_store/features/setting_profile/view_model/language_cubit/language_cubit.dart';
-import 'package:mousa_store/features/setting_profile/view_model/theme_cubit/theme_cubit.dart';
-import 'package:mousa_store/features/wholesale_or_retail/view_model/price_mode_cubit.dart';
+import 'package:mousa_store/features/setting_profile/presentation/bloc/language_bloc.dart';
+import 'package:mousa_store/features/setting_profile/presentation/bloc/theme_bloc.dart';
+import 'package:mousa_store/features/wholesale_or_retail/presentation/bloc/price_mode_bloc.dart';
 import 'package:mousa_store/firebase_options.dart';
 import 'package:mousa_store/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,22 +55,22 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => getIt<ThemeCubit>()),
-        BlocProvider(create: (context) => getIt<LanguageCubit>()),
-        BlocProvider(create: (context) => getIt<PriceModeCubit>()),
+        BlocProvider(create: (context) => getIt<ThemeBloc>()),
+        BlocProvider(create: (context) => getIt<LanguageBloc>()),
+        BlocProvider(create: (context) => getIt<PriceModeBloc>()),
       ],
       child: InternetStateManagerInitializer(
         options: InternetStateOptions(
           checkConnectionPeriodic: const Duration(seconds: 5),
           labels: InternetStateLabels(
             noInternetTitle: () => lookupAppLocalizations(
-              getIt<LanguageCubit>().state.locale,
+              getIt<LanguageBloc>().state.locale,
             ).no_internet_title,
             descriptionText: () => lookupAppLocalizations(
-              getIt<LanguageCubit>().state.locale,
+              getIt<LanguageBloc>().state.locale,
             ).no_internet_description,
             tryAgainText: () => lookupAppLocalizations(
-              getIt<LanguageCubit>().state.locale,
+              getIt<LanguageBloc>().state.locale,
             ).try_again_text,
           ),
         ),

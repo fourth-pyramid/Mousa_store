@@ -4,7 +4,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
-import 'package:mousa_store/features/wholesale_or_retail/view_model/price_mode_cubit.dart';
+import 'package:mousa_store/features/wholesale_or_retail/presentation/bloc/price_mode_bloc.dart';
 
 class DeepLinkService {
   DeepLinkService._();
@@ -60,7 +60,7 @@ class DeepLinkService {
 
     // Ensure price mode is set to retail if not already set to prevent errors
     if (CacheHelper.getPriceMode() == null) {
-      getIt<PriceModeCubit>().setPriceMode(PriceMode.retail);
+      getIt<PriceModeBloc>().add(const PriceModeEvent.modeChanged(PriceMode.retail));
     }
 
     // Handle product deep links

@@ -6,13 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/theme/app_theme.dart';
 import 'package:mousa_store/core/utils/screen_utils.dart';
-import 'package:mousa_store/features/auth/auth_view.dart';
-import 'package:mousa_store/features/notification/service/push_notification_service.dart';
-import 'package:mousa_store/features/onboarding/on_boarding_view.dart';
-import 'package:mousa_store/features/product/view/product_details_view.dart';
-import 'package:mousa_store/features/setting_profile/view_model/language_cubit/language_cubit.dart';
-import 'package:mousa_store/features/setting_profile/view_model/theme_cubit/theme_cubit.dart';
-import 'package:mousa_store/features/wholesale_or_retail/purchase_type_view.dart';
+import 'package:mousa_store/features/auth/presentation/pages/auth_page.dart';
+import 'package:mousa_store/features/notification/data/datasources/push_notification_service.dart';
+import 'package:mousa_store/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:mousa_store/features/product/presentation/pages/product_details_page.dart';
+import 'package:mousa_store/features/setting_profile/presentation/bloc/language_bloc.dart';
+import 'package:mousa_store/features/setting_profile/presentation/bloc/theme_bloc.dart';
+import 'package:mousa_store/features/wholesale_or_retail/presentation/pages/purchase_type_page.dart';
 
 class AppContent extends StatefulWidget {
   const AppContent({
@@ -52,13 +52,13 @@ class _AppContentState extends State<AppContent> {
     designSize: const Size(375, 812),
     minTextAdapt: true,
     splitScreenMode: true,
-    builder: (_, _) => BlocBuilder<ThemeCubit, ThemeState>(
+    builder: (_, _) => BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, themeState) {
         final themeFactory = AppThemeFactory();
         final lightTheme = themeFactory.lightTheme;
         final darkTheme = themeFactory.darkTheme;
 
-        return BlocBuilder<LanguageCubit, LanguageState>(
+        return BlocBuilder<LanguageBloc, LanguageState>(
           builder: (context, languageState) {
             final isFirst = CacheHelper.isFirstOpen();
 

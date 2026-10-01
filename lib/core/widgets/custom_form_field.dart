@@ -18,6 +18,7 @@ class AppTextField extends StatelessWidget {
     this.obscureText = false,
     this.readOnly = false,
     this.maxLines = 1,
+    this.minLines,
     this.inputFormatters,
   });
 
@@ -34,6 +35,7 @@ class AppTextField extends StatelessWidget {
   final bool obscureText;
   final bool readOnly;
   final int maxLines;
+  final int? minLines;
   final List<TextInputFormatter>? inputFormatters;
 
   @override
@@ -59,6 +61,7 @@ class AppTextField extends StatelessWidget {
         obscureText: obscureText,
         readOnly: readOnly,
         maxLines: maxLines,
+        minLines: minLines,
         onTap: onTap,
         onChanged: onChanged,
         inputFormatters: inputFormatters,
@@ -126,6 +129,8 @@ class CustomFormField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.readOnly = false,
+    this.maxLines = 1,
+    this.minLines,
     this.inputFormatters,
   });
 
@@ -141,6 +146,8 @@ class CustomFormField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final bool readOnly;
+  final int maxLines;
+  final int? minLines;
   final List<TextInputFormatter>? inputFormatters;
 
   @override
@@ -164,6 +171,8 @@ class CustomFormField extends StatelessWidget {
     keyboardType: keyboardType,
     obscureText: obscureText,
     readOnly: readOnly,
+    maxLines: maxLines,
+    minLines: minLines,
     inputFormatters: inputFormatters,
   );
 }

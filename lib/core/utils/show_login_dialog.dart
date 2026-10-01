@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
-import 'package:mousa_store/features/auth/auth_view.dart';
+import 'package:mousa_store/features/auth/presentation/pages/auth_page.dart';
 
 void showLoginDialog(BuildContext context) {
   unawaited(
