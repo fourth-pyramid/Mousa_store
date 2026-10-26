@@ -20,6 +20,7 @@ class PushNotificationService {
   static final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   // ponytail: dedup concurrent sendTokenToBackend calls with the same token
   static final Set<String> _inFlight = {};
+  static String? _lastToken;
 
   /// ============== INITIALIZE =================
   static Future<void> initialize() async {
@@ -81,18 +82,15 @@ class PushNotificationService {
         // handle navigation here
       });
 
-      /// -------- Get Initial Token --------
-      final token = await _fcm.getToken();
-      debugPrint(' Initial FCM Token: $token');
+      /// -------- Listen for FCM Registration & Token Refresh --------
+      _fcm.onRegistered.listen((token) {
+        debugPrint('🔔 FCM Registered Token: $token');
+        _lastToken = token;
+        unawaited(sendTokenToBackend(token));
+      });
 
-      if (token != null) {
-        await sendTokenToBackend(token);
-      }
-
-      /// -------- TOKEN REFRESH --------
-      _fcm.onTokenRefresh.listen(
-        (newToken) => unawaited(sendTokenToBackend(newToken)),
-      );
+      /// -------- Register with FCM --------
+      await _fcm.register();
     } on Object catch (e) {
       debugPrint('❌ Push Notification Init Error: $e');
     }
@@ -100,10 +98,10 @@ class PushNotificationService {
 
   static Future<void> updateTokenToServer() async {
     try {
-      final token = await _fcm.getToken();
-      if (token != null) {
-        await sendTokenToBackend(token);
+      if (_lastToken != null) {
+        await sendTokenToBackend(_lastToken!);
       }
+      await _fcm.register();
     } on Object catch (e) {
       debugPrint('❌ Update Token To Server Error: $e');
     }
