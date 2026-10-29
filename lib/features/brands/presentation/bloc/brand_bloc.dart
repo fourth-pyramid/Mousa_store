@@ -24,10 +24,7 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
       emit(state.copyWith(status: BrandStatus.success, brands: brands));
     } on Object catch (e) {
       emit(
-        state.copyWith(
-          status: BrandStatus.failure,
-          errorMessage: e.toString(),
-        ),
+        state.copyWith(status: BrandStatus.failure, errorMessage: e.toString()),
       );
     }
   }
@@ -42,10 +39,7 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
       emit(state.copyWith(status: BrandStatus.success, brands: brands));
     } on Object catch (e) {
       emit(
-        state.copyWith(
-          status: BrandStatus.failure,
-          errorMessage: e.toString(),
-        ),
+        state.copyWith(status: BrandStatus.failure, errorMessage: e.toString()),
       );
     }
   }

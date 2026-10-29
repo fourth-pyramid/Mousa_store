@@ -9,12 +9,10 @@ sealed class ProfileEvent with _$ProfileEvent {
     String? firstName,
     String? lastName,
   }) = ProfileNameUpdated;
-  const factory ProfileEvent.emailUpdated({
-    required String email,
-  }) = ProfileEmailUpdated;
-  const factory ProfileEvent.phoneUpdated({
-    required String phone,
-  }) = ProfilePhoneUpdated;
+  const factory ProfileEvent.emailUpdated({required String email}) =
+      ProfileEmailUpdated;
+  const factory ProfileEvent.phoneUpdated({required String phone}) =
+      ProfilePhoneUpdated;
   const factory ProfileEvent.passwordChanged({
     required String oldPassword,
     required String password,

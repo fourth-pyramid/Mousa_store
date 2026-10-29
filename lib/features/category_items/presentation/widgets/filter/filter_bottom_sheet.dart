@@ -146,7 +146,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       ),
       decoration: BoxDecoration(
         color: context.colors.background,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       clipBehavior: Clip.antiAlias,
       child: ValueListenableBuilder<Brand?>(
@@ -178,9 +178,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                           Expanded(
                             child: SingleChildScrollView(
                               physics: const BouncingScrollPhysics(),
-                              padding: EdgeInsetsDirectional.only(
-                                bottom: 20.h,
-                                top: 8.h,
+                              padding: const EdgeInsetsDirectional.only(
+                                bottom: 20,
+                                top: 8,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,14 +193,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                                       onBrandSelected: (brand) =>
                                           _selectedBrandNotifier.value = brand,
                                     ),
-                                    SizedBox(height: 16.h),
+                                    const SizedBox(height: 16),
                                     Divider(
-                                      height: 1.h,
-                                      indent: 16.w,
-                                      endIndent: 16.w,
+                                      height: 1,
+                                      indent: 16,
+                                      endIndent: 16,
                                       color: context.colors.divider,
                                     ),
-                                    SizedBox(height: 10.h),
+                                    const SizedBox(height: 10),
                                   ],
 
                                   // Price Range Section
@@ -214,14 +214,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
                                   // Dynamic Attribute Sections
                                   if (availableAttributes.isNotEmpty) ...[
-                                    SizedBox(height: 16.h),
+                                    const SizedBox(height: 16),
                                     Divider(
-                                      height: 1.h,
-                                      indent: 16.w,
-                                      endIndent: 16.w,
+                                      height: 1,
+                                      indent: 16,
+                                      endIndent: 16,
                                       color: context.colors.divider,
                                     ),
-                                    SizedBox(height: 10.h),
+                                    const SizedBox(height: 10),
                                   ],
 
                                   ...availableAttributes.map((attr) {
@@ -229,7 +229,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                                         selectedAttributes[attr.key] ?? {};
 
                                     return Padding(
-                                      padding: EdgeInsets.only(bottom: 14.h),
+                                      padding: const EdgeInsets.only(
+                                        bottom: 14,
+                                      ),
                                       child: FilterAttributeSection(
                                         title: attr.key,
                                         values: attr.values,

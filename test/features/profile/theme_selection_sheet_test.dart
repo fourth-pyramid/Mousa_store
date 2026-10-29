@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mousa_store/core/utils/screen_utils.dart';
 import 'package:mousa_store/features/profile/presentation/widgets/theme_selection_sheet.dart';
 import 'package:mousa_store/features/setting_profile/presentation/bloc/theme_bloc.dart';
 import 'package:mousa_store/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Widget _buildTestWidget({required ThemeBloc themeBloc}) => ScreenUtilInit(
-  designSize: const Size(375, 812),
-  builder: (_, _) => BlocProvider<ThemeBloc>.value(
-    value: themeBloc,
-    child: const MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: Locale('en'),
-      home: Scaffold(body: ThemeSelectionSheet()),
-    ),
-  ),
-);
+Widget _buildTestWidget({required ThemeBloc themeBloc}) =>
+    BlocProvider<ThemeBloc>.value(
+      value: themeBloc,
+      child: const MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: Locale('en'),
+        home: Scaffold(body: ThemeSelectionSheet()),
+      ),
+    );
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

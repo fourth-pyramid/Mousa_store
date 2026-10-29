@@ -48,9 +48,7 @@ void main() {
         flowType: OtpFlowType.signup,
       ),
       act: (bloc) => bloc.add(const OtpEvent.codeChanged('123456')),
-      expect: () => [
-        const OtpState(otpCode: '123456'),
-      ],
+      expect: () => [const OtpState(otpCode: '123456')],
     );
 
     blocTest<OtpBloc, OtpState>(
@@ -61,9 +59,7 @@ void main() {
         flowType: OtpFlowType.signup,
       ),
       act: (bloc) => bloc.add(const OtpEvent.timerTicked(30)),
-      expect: () => [
-        const OtpState(remainingSeconds: 30),
-      ],
+      expect: () => [const OtpState(remainingSeconds: 30)],
     );
 
     blocTest<OtpBloc, OtpState>(
@@ -88,10 +84,7 @@ void main() {
       },
       expect: () => [
         const OtpState(otpCode: '123456'),
-        const OtpState(
-          status: OtpStatus.loading,
-          otpCode: '123456',
-        ),
+        const OtpState(status: OtpStatus.loading, otpCode: '123456'),
         const OtpState(
           status: OtpStatus.success,
           otpCode: '123456',
@@ -123,10 +116,7 @@ void main() {
       },
       expect: () => [
         const OtpState(otpCode: '000000'),
-        const OtpState(
-          status: OtpStatus.loading,
-          otpCode: '000000',
-        ),
+        const OtpState(status: OtpStatus.loading, otpCode: '000000'),
         predicate<OtpState>(
           (state) =>
               state.status == OtpStatus.error &&
@@ -139,9 +129,7 @@ void main() {
       'emits [loading, success] when resend succeeds',
       build: () {
         when(
-          () => mockResendOtpUseCase.resendSignupOtp(
-            email: 'test@example.com',
-          ),
+          () => mockResendOtpUseCase.resendSignupOtp(email: 'test@example.com'),
         ).thenAnswer((_) async => sampleOtpResponse);
         return OtpBloc(
           verifyOtpUseCase: mockVerifyOtpUseCase,
@@ -149,13 +137,10 @@ void main() {
           flowType: OtpFlowType.signup,
         );
       },
-      act: (bloc) => bloc.add(
-        const OtpEvent.resendSubmitted(email: 'test@example.com'),
-      ),
+      act: (bloc) =>
+          bloc.add(const OtpEvent.resendSubmitted(email: 'test@example.com')),
       expect: () => [
-        const OtpState(
-          status: OtpStatus.loading,
-        ),
+        const OtpState(status: OtpStatus.loading),
         const OtpState(
           status: OtpStatus.success,
           message: 'OTP verified successfully',

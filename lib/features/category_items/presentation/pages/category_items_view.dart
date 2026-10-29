@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/locator.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/features/category_items/domain/entities/item_fetch_type.dart';
@@ -35,16 +35,31 @@ class CategoryItemsView extends StatefulWidget {
 class _CategoryItemsViewState extends State<CategoryItemsView> {
   late final ScrollController _scrollController;
   bool _showBackToTopButton = false;
+  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted) {
+            context.read<CategoryItemsBloc>().add(
+              CategoryItemsFetchRequested(
+                fetchType: widget.fetchType,
+                categoryId: widget.categoryId,
+                brandId: widget.brandId,
+              ),
+            );
+          }
+        });
   }
 
   @override
   void dispose() {
+    unawaited(_networkRestoreSubscription?.cancel());
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
@@ -82,27 +97,28 @@ class _CategoryItemsViewState extends State<CategoryItemsView> {
     }
 
     return BlocProvider(
-      create: (context) => getIt<CategoryItemsBloc>(
-        param1: widget.fetchType,
-        param2: widget.fetchType == ItemFetchType.brand
-            ? widget.brandId
-            : widget.categoryId,
-      )..add(
-        CategoryItemsFetchRequested(
-          fetchType: widget.fetchType,
-          categoryId: widget.categoryId,
-          brandId: widget.brandId,
-        ),
-      ),
+      create: (context) =>
+          getIt<CategoryItemsBloc>(
+            param1: widget.fetchType,
+            param2: widget.fetchType == ItemFetchType.brand
+                ? widget.brandId
+                : widget.categoryId,
+          )..add(
+            CategoryItemsFetchRequested(
+              fetchType: widget.fetchType,
+              categoryId: widget.categoryId,
+              brandId: widget.brandId,
+            ),
+          ),
       child: Scaffold(
         appBar: AppBar(
           title: Text(title.toUpperCase()),
           backgroundColor: context.colors.background,
         ),
         body: BlocBuilder<CategoryItemsBloc, CategoryItemsState>(
-          builder: (context, state) => InternetStateManager(
-            noInternetScreen: const NoInternetScreen(),
-            onRestoreInternetConnection: () {
+          builder: (context, state) => RefreshIndicator(
+            color: context.colors.primary,
+            onRefresh: () async {
               context.read<CategoryItemsBloc>().add(
                 CategoryItemsFetchRequested(
                   fetchType: widget.fetchType,
@@ -111,39 +127,27 @@ class _CategoryItemsViewState extends State<CategoryItemsView> {
                 ),
               );
             },
-            child: RefreshIndicator(
-              color: context.colors.primary,
-              onRefresh: () async {
-                context.read<CategoryItemsBloc>().add(
-                  CategoryItemsFetchRequested(
-                    fetchType: widget.fetchType,
-                    categoryId: widget.categoryId,
-                    brandId: widget.brandId,
-                  ),
-                );
-              },
-              child: CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  const SliverToBoxAdapter(child: SearchAndFilters()),
-                  CategoryItemsGrid(
-                    state: state,
-                    theme: Theme.of(context),
-                    scrollController: _scrollController,
-                    emptyWidget: const CategoryItemsEmptyState(),
-                  ),
-                  if (state.status == CategoryItemsStatus.success &&
-                      !state.hasReachedMax)
-                    const SliverToBoxAdapter(
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: CustomLoadingIndicator(),
-                        ),
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                const SliverToBoxAdapter(child: SearchAndFilters()),
+                CategoryItemsGrid(
+                  state: state,
+                  theme: Theme.of(context),
+                  scrollController: _scrollController,
+                  emptyWidget: const CategoryItemsEmptyState(),
+                ),
+                if (state.status == CategoryItemsStatus.success &&
+                    !state.hasReachedMax)
+                  const SliverToBoxAdapter(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: CustomLoadingIndicator(),
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
         ),

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
 import 'package:mousa_store/core/models/offer.dart' as core_offer;
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
@@ -36,8 +36,9 @@ class ProductDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: [
       BlocProvider(
-        create: (context) => getIt<ProductBloc>()
-          ..add(ProductFetchRequested(productId: productId)),
+        create: (context) =>
+            getIt<ProductBloc>()
+              ..add(ProductFetchRequested(productId: productId)),
       ),
       BlocProvider(create: (context) => getIt<ReviewBloc>()),
     ],
@@ -45,60 +46,38 @@ class ProductDetailsPage extends StatelessWidget {
   );
 }
 
-class _ProductDetailsContent extends StatelessWidget {
+class _ProductDetailsContent extends StatefulWidget {
   const _ProductDetailsContent();
 
   @override
-  Widget build(BuildContext context) => InternetStateManager(
-    noInternetScreen: const NoInternetScreen(),
-    onRestoreInternetConnection: () {
-      context.read<ProductBloc>().add(const ProductRefreshRequested());
-    },
-    child: BlocBuilder<ProductBloc, ProductState>(
-      builder: (context, state) {
-        if (state.status == ProductStatus.loading) {
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(
-                context.l10n.product_details_text,
-                style: context.typography.titleMedium.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            body: Center(
-              child: CustomLoadingIndicator(color: context.colors.primary),
-            ),
-          );
-        }
+  State<_ProductDetailsContent> createState() => _ProductDetailsContentState();
+}
 
-        if (state.status == ProductStatus.failure) {
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(
-                context.l10n.product_details_text,
-                style: context.typography.titleMedium.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            body: _ErrorPlaceholder(errorMessage: state.errorMessage),
-          );
-        }
+class _ProductDetailsContentState extends State<_ProductDetailsContent> {
+  StreamSubscription<void>? _networkRestoreSubscription;
 
-        if (state.status == ProductStatus.success &&
-            state.product != null &&
-            state.product!.data.id != 0) {
-          return BlocProvider(
-            key: ValueKey('product_details_${state.product!.data.id}'),
-            create: (context) =>
-                ProductDetailsBloc(product: state.product!.data),
-            child: _ProductDetailsSuccessView(product: state.product!.data),
-          );
-        }
+  @override
+  void initState() {
+    super.initState();
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted) {
+            context.read<ProductBloc>().add(const ProductRefreshRequested());
+          }
+        });
+  }
 
+  @override
+  void dispose() {
+    unawaited(_networkRestoreSubscription?.cancel());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<ProductBloc, ProductState>(
+    builder: (context, state) {
+      if (state.status == ProductStatus.loading) {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -109,13 +88,53 @@ class _ProductDetailsContent extends StatelessWidget {
               ),
             ),
           ),
-          body: _ErrorPlaceholder(
-            errorMessage:
-                state.errorMessage ?? context.l10n.product_load_failed_text,
+          body: Center(
+            child: CustomLoadingIndicator(color: context.colors.primary),
           ),
         );
-      },
-    ),
+      }
+
+      if (state.status == ProductStatus.failure) {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              context.l10n.product_details_text,
+              style: context.typography.titleMedium.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          body: _ErrorPlaceholder(errorMessage: state.errorMessage),
+        );
+      }
+
+      if (state.status == ProductStatus.success &&
+          state.product != null &&
+          state.product!.data.id != 0) {
+        return BlocProvider(
+          key: ValueKey('product_details_${state.product!.data.id}'),
+          create: (context) => ProductDetailsBloc(product: state.product!.data),
+          child: _ProductDetailsSuccessView(product: state.product!.data),
+        );
+      }
+
+      return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            context.l10n.product_details_text,
+            style: context.typography.titleMedium.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        body: _ErrorPlaceholder(
+          errorMessage:
+              state.errorMessage ?? context.l10n.product_load_failed_text,
+        ),
+      );
+    },
   );
 }
 
@@ -131,8 +150,9 @@ class _ProductDetailsSuccessView extends StatefulWidget {
 
 class _ProductDetailsSuccessViewState
     extends State<_ProductDetailsSuccessView> {
-  final FocusNode _pageFocusNode =
-      FocusNode(debugLabel: 'product_details_focus');
+  final FocusNode _pageFocusNode = FocusNode(
+    debugLabel: 'product_details_focus',
+  );
 
   ProductDetail get product => widget.product;
 
@@ -166,80 +186,82 @@ class _ProductDetailsSuccessViewState
               fontWeight: FontWeight.bold,
             ),
           ),
-        actions: [
-          BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
-            builder: (context, detailsState) {
-              final variant = detailsState.selectedVariant;
-              final price =
-                  double.tryParse(variant?.price ?? product.displayPrice) ?? 0;
-              final activeOffer = variant?.offers?.firstOrNull;
-              double? discountedPrice;
-              if (activeOffer?.disscountPrice != null &&
-                  activeOffer!.disscountPrice > 0) {
-                discountedPrice =
-                    price - (price * activeOffer.disscountPrice / 100);
-              }
+          actions: [
+            BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+              builder: (context, detailsState) {
+                final variant = detailsState.selectedVariant;
+                final price =
+                    double.tryParse(variant?.price ?? product.displayPrice) ??
+                    0;
+                final activeOffer = variant?.offers?.firstOrNull;
+                double? discountedPrice;
+                if (activeOffer?.disscountPrice != null &&
+                    activeOffer!.disscountPrice > 0) {
+                  discountedPrice =
+                      price - (price * activeOffer.disscountPrice / 100);
+                }
 
-              return Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.share_outlined,
-                      color: context.colors.textPrimary,
+                return Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.share_outlined,
+                        color: context.colors.textPrimary,
+                      ),
+                      onPressed: () {
+                        unawaited(
+                          ProductShareHelper.shareProduct(
+                            context,
+                            product: product,
+                            selectedVariant: variant,
+                            discountedPrice: discountedPrice,
+                            displayPrice:
+                                variant?.price ?? product.displayPrice,
+                            discountPercentage: activeOffer?.disscountPrice
+                                .toInt(),
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      unawaited(
-                        ProductShareHelper.shareProduct(
-                          context,
-                          product: product,
-                          selectedVariant: variant,
-                          discountedPrice: discountedPrice,
-                          displayPrice: variant?.price ?? product.displayPrice,
-                          discountPercentage:
-                              activeOffer?.disscountPrice.toInt(),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 12),
+                      child: FavoriteButton(
+                        productId: product.id,
+                        size: 24,
+                        product: core_product.Product(
+                          id: product.id,
+                          name: product.name,
+                          desc: product.desc,
+                          price: variant?.price ?? product.displayPrice,
+                          imagePath: variant?.imagePath ?? product.displayImage,
+                          imagesPath: product.imagesPath,
+                          offers: (variant?.offers ?? [])
+                              .map(
+                                (o) => core_offer.Offer(
+                                  id: o.id,
+                                  start: o.start,
+                                  end: o.end,
+                                  productId: o.productId ?? 0,
+                                  createdAt: o.createdAt,
+                                  updatedAt: o.updatedAt,
+                                  discountPrice: o.disscountPrice,
+                                ),
+                              )
+                              .toList(),
                         ),
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.only(end: 12.w),
-                    child: FavoriteButton(
-                      productId: product.id,
-                      size: 24.w,
-                      product: core_product.Product(
-                        id: product.id,
-                        name: product.name,
-                        desc: product.desc,
-                        price: variant?.price ?? product.displayPrice,
-                        imagePath: variant?.imagePath ?? product.displayImage,
-                        imagesPath: product.imagesPath,
-                        offers: (variant?.offers ?? [])
-                            .map(
-                              (o) => core_offer.Offer(
-                                id: o.id,
-                                start: o.start,
-                                end: o.end,
-                                productId: o.productId ?? 0,
-                                createdAt: o.createdAt,
-                                updatedAt: o.updatedAt,
-                                discountPrice: o.disscountPrice,
-                              ),
-                            )
-                            .toList(),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+        body: const _ProductDetailsScrollBody(),
+        bottomNavigationBar: const _ProductBottomActionWrapper(),
       ),
-      body: const _ProductDetailsScrollBody(),
-      bottomNavigationBar: const _ProductBottomActionWrapper(),
     ),
-  ),
-);
+  );
 }
 
 class _ProductDetailsScrollBody extends StatelessWidget {
@@ -268,7 +290,7 @@ class _ProductDetailsScrollBody extends StatelessWidget {
                     ],
                   ),
                   _AddReviewWrapper(productId: detailsState.product.id),
-                  SizedBox(height: 16.h),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
@@ -310,9 +332,9 @@ class _ProductBottomActionWrapper extends StatelessWidget {
         product: detailsState.product,
         selectedVariant: detailsState.selectedVariant,
         selectedQuantity: detailsState.selectedQuantity,
-        onQuantityChanged: (qty) => context
-            .read<ProductDetailsBloc>()
-            .add(ProductDetailsEvent.quantityChanged(qty)),
+        onQuantityChanged: (qty) => context.read<ProductDetailsBloc>().add(
+          ProductDetailsEvent.quantityChanged(qty),
+        ),
       ),
     ),
   );
@@ -399,7 +421,7 @@ class _ProductAttributesSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(bottom: 6.h),
+                      padding: const EdgeInsets.only(bottom: 6),
                       child: Text(
                         attributeKey,
                         style: context.typography.body.copyWith(
@@ -422,7 +444,7 @@ class _ProductAttributesSection extends StatelessWidget {
                             ),
                           ),
                     ),
-                    SizedBox(height: 8.h),
+                    const SizedBox(height: 8),
                   ],
                 );
               }).toList(),
@@ -442,19 +464,19 @@ class _ErrorPlaceholder extends StatelessWidget {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.error_outline, size: 80.w, color: context.colors.error),
-        SizedBox(height: 16.h),
+        Icon(Icons.error_outline, size: 80, color: context.colors.error),
+        const SizedBox(height: 16),
         Text(context.l10n.error_occurred_text, style: context.typography.h2),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32.w),
+          padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Text(
             errorMessage ?? context.l10n.product_load_failed_text,
             style: context.typography.body,
             textAlign: TextAlign.center,
           ),
         ),
-        SizedBox(height: 24.h),
+        const SizedBox(height: 24),
         ElevatedButton.icon(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back),
@@ -480,7 +502,7 @@ class _ProductReviewsHeader extends StatelessWidget {
     final viewAllText = context.l10n.view_all_text;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 8.h),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -488,10 +510,10 @@ class _ProductReviewsHeader extends StatelessWidget {
             children: [
               Icon(
                 Icons.star_outline_rounded,
-                size: 20.r,
+                size: 20,
                 color: context.colors.primary,
               ),
-              SizedBox(width: 8.w),
+              const SizedBox(width: 8),
               Text(
                 reviewsTitle,
                 style: context.typography.titleMedium.copyWith(
@@ -508,10 +530,8 @@ class _ProductReviewsHeader extends StatelessWidget {
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: context.colors.background,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20.r),
-                  ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
                 builder: (context) => AllReviewsSheet(product: product),
               );
@@ -546,7 +566,7 @@ class _ProductReviewsSection extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ProductReviewsSection(product: product),
     );
   }

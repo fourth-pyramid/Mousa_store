@@ -23,9 +23,7 @@ void main() {
       'emits updated locale when LanguageEvent.changed is added',
       build: LanguageBloc.new,
       act: (bloc) => bloc.add(const LanguageEvent.changed(Locale('en'))),
-      expect: () => [
-        const LanguageState(locale: Locale('en')),
-      ],
+      expect: () => [const LanguageState(locale: Locale('en'))],
     );
   });
 }

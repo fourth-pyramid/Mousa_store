@@ -28,7 +28,7 @@ class AppChip extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: context.durations.fast,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: bg,
           borderRadius: context.radius.pillBorder,
@@ -37,15 +37,15 @@ class AppChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (icon != null) ...[icon!, SizedBox(width: 6.w)],
+            if (icon != null) ...[icon!, const SizedBox(width: 6)],
             Text(
               label,
               style: context.typography.labelMedium.copyWith(color: fg),
             ),
             if (badge != null) ...[
-              SizedBox(width: 6.w),
+              const SizedBox(width: 6),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: isSelected
                       ? fg.withValues(alpha: 0.2)

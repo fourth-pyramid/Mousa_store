@@ -222,8 +222,8 @@ class _AppImagePlaceholder extends StatelessWidget {
       color: context.colors.surfaceStrong,
       child: Center(
         child: SizedBox(
-          width: 20.r,
-          height: 20.r,
+          width: 20,
+          height: 20,
           child: CircularProgressIndicator(
             strokeWidth: 2,
             color: context.colors.primary.withValues(alpha: 0.5),
@@ -250,7 +250,7 @@ class _AppImageErrorWidget extends StatelessWidget {
         child: Icon(
           Icons.broken_image_outlined,
           color: context.colors.textSecondary.withValues(alpha: 0.6),
-          size: 24.r,
+          size: 24,
         ),
       ),
     ),

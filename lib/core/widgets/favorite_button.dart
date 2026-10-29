@@ -50,13 +50,17 @@ class _FavoriteButtonState extends State<FavoriteButton>
     );
     _scaleAnimation = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 1.0, end: 1.25)
-            .chain(CurveTween(curve: Curves.easeOutCubic)),
+        tween: Tween<double>(
+          begin: 1.0,
+          end: 1.25,
+        ).chain(CurveTween(curve: Curves.easeOutCubic)),
         weight: 45,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 1.25, end: 1.0)
-            .chain(CurveTween(curve: Curves.easeInCubic)),
+        tween: Tween<double>(
+          begin: 1.25,
+          end: 1.0,
+        ).chain(CurveTween(curve: Curves.easeInCubic)),
         weight: 55,
       ),
     ]).animate(_animController);
@@ -86,7 +90,7 @@ class _FavoriteButtonState extends State<FavoriteButton>
                 ? (widget.activeColor ?? AppColorTokens.accent)
                 : (widget.inactiveColor ?? const Color(0xFF374151));
 
-            final buttonSize = widget.size ?? 32.r;
+            final buttonSize = widget.size ?? 32;
             final iconSize = (buttonSize * 0.54).clamp(14.0, 22.0);
 
             return GestureDetector(
@@ -122,19 +126,20 @@ class _FavoriteButtonState extends State<FavoriteButton>
                   width: buttonSize,
                   height: buttonSize,
                   decoration: BoxDecoration(
-                    color: widget.backgroundColor ??
+                    color:
+                        widget.backgroundColor ??
                         Colors.white.withValues(alpha: 0.94),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.12),
-                        blurRadius: 8.r,
-                        offset: Offset(0, 2.h),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
                       ),
                     ],
                     border: Border.all(
                       color: Colors.black.withValues(alpha: 0.06),
-                      width: 0.8.r,
+                      width: 0.8,
                     ),
                   ),
                   alignment: Alignment.center,

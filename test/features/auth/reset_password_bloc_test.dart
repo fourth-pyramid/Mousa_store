@@ -32,9 +32,8 @@ void main() {
 
     blocTest<ResetPasswordBloc, ResetPasswordState>(
       'emits [ResetPasswordFailure] when passwords do not match',
-      build: () => ResetPasswordBloc(
-        resetPasswordUseCase: mockResetPasswordUseCase,
-      ),
+      build: () =>
+          ResetPasswordBloc(resetPasswordUseCase: mockResetPasswordUseCase),
       act: (bloc) => bloc.add(
         const ResetPasswordEvent.submitted(
           email: 'test@example.com',

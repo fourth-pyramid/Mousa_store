@@ -49,7 +49,7 @@ class AppListCard extends StatelessWidget {
         child: ClipRRect(
           borderRadius: context.radius.cardBorder,
           child: SizedBox(
-            width: 150.w,
+            width: 150,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -67,22 +67,18 @@ class AppListCard extends StatelessWidget {
                             errorWidget: (_, _, _) => Center(
                               child: Icon(
                                 Icons.image_outlined,
-                                size: 28.w,
+                                size: 28,
                                 color: context.colors.textMuted,
                               ),
                             ),
                           ),
                         ),
                         if (favoriteButton != null)
-                          Positioned(
-                            top: 6.h,
-                            right: 6.w,
-                            child: favoriteButton!,
-                          ),
+                          Positioned(top: 6, right: 6, child: favoriteButton!),
                         if (discount != null && discount! > 0)
                           Positioned(
-                            top: 6.h,
-                            left: 6.w,
+                            top: 6,
+                            left: 6,
                             child: AppBadge(
                               label: '-$discount%',
                               variant: AppBadgeVariant.accent,
@@ -95,7 +91,7 @@ class AppListCard extends StatelessWidget {
 
                 // Details Area
                 Padding(
-                  padding: EdgeInsets.all(8.r),
+                  padding: const EdgeInsets.all(8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -110,7 +106,7 @@ class AppListCard extends StatelessWidget {
                         ),
                       ),
                       if (numPrice != null) ...[
-                        SizedBox(height: 4.h),
+                        const SizedBox(height: 4),
                         AppPrice(
                           price: numPrice,
                           originalPrice: numOldPrice,

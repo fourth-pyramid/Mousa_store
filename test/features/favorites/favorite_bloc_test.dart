@@ -32,15 +32,18 @@ void main() {
   );
 
   group('FavoriteBloc Tests', () {
-    test('initial state is default FavoriteState and isFavorite returns false', () async {
-      final bloc = FavoriteBloc(
-        getFavoritesUseCase: getFavoritesUseCase,
-        toggleFavoriteUseCase: toggleFavoriteUseCase,
-      );
-      expect(bloc.state.status, equals(FavoriteStatus.initial));
-      expect(bloc.isFavorite(10), isFalse);
-      await bloc.close();
-    });
+    test(
+      'initial state is default FavoriteState and isFavorite returns false',
+      () async {
+        final bloc = FavoriteBloc(
+          getFavoritesUseCase: getFavoritesUseCase,
+          toggleFavoriteUseCase: toggleFavoriteUseCase,
+        );
+        expect(bloc.state.status, equals(FavoriteStatus.initial));
+        expect(bloc.isFavorite(10), isFalse);
+        await bloc.close();
+      },
+    );
 
     blocTest<FavoriteBloc, FavoriteState>(
       'FavoritesFetchRequested emits [loading, success] with products',

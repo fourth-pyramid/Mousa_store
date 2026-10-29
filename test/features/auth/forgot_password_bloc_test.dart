@@ -16,10 +16,7 @@ void main() {
     mockForgotPasswordUseCase = MockForgotPasswordUseCase();
   });
 
-  final sampleResponse = OtpResponse(
-    success: true,
-    message: 'Reset code sent',
-  );
+  final sampleResponse = OtpResponse(success: true, message: 'Reset code sent');
 
   group('ForgotPasswordBloc Tests', () {
     test('initial state is ForgotPasswordInitial', () async {

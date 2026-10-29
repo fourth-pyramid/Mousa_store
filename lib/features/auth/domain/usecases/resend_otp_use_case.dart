@@ -5,11 +5,9 @@ class ResendOtpUseCase {
   const ResendOtpUseCase(this._repository);
   final AuthRepository _repository;
 
-  Future<OtpResponse> resendSignupOtp({
-    required String email,
-  }) => _repository.resendOtp(email: email);
+  Future<OtpResponse> resendSignupOtp({required String email}) =>
+      _repository.resendOtp(email: email);
 
-  Future<OtpResponse> resendForgotPasswordOtp({
-    required String email,
-  }) => _repository.resendForgotPasswordOtp(email: email);
+  Future<OtpResponse> resendForgotPasswordOtp({required String email}) =>
+      _repository.resendForgotPasswordOtp(email: email);
 }

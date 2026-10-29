@@ -36,9 +36,9 @@ class FilterPriceSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 16.w,
-            vertical: 8.h,
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 16,
+            vertical: 8,
           ),
           child: Text(
             context.l10n.prices_text,
@@ -47,11 +47,11 @@ class FilterPriceSection extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 6.h),
+        const SizedBox(height: 6),
 
         // Dual Min/Max Price Display Cards
         Padding(
-          padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
           child: Row(
             children: [
               Expanded(
@@ -61,10 +61,10 @@ class FilterPriceSection extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 12.w),
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
                 child: Container(
-                  width: 14.w,
-                  height: 2.h,
+                  width: 14,
+                  height: 2,
                   decoration: BoxDecoration(
                     color: context.colors.textMuted,
                     borderRadius: context.radius.pillBorder,
@@ -81,7 +81,7 @@ class FilterPriceSection extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: 12.h),
+        const SizedBox(height: 12),
 
         // Themed Range Slider
         SliderTheme(
@@ -90,7 +90,7 @@ class FilterPriceSection extends StatelessWidget {
             inactiveTrackColor: context.colors.surfaceStrong,
             thumbColor: context.colors.primary,
             overlayColor: context.colors.primary.withValues(alpha: 0.12),
-            trackHeight: 4.h,
+            trackHeight: 4,
             rangeThumbShape: const RoundRangeSliderThumbShape(
               enabledThumbRadius: 9,
               elevation: 3,
@@ -107,7 +107,7 @@ class FilterPriceSection extends StatelessWidget {
 
         // Quick Price Presets
         if (rangeSpan > 100) ...[
-          SizedBox(height: 4.h),
+          const SizedBox(height: 4),
           _PricePresetsRow(
             minPossible: effectiveMin,
             maxPossible: effectiveMax,
@@ -128,10 +128,13 @@ class _PriceValueCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: EdgeInsetsDirectional.symmetric(horizontal: 14.w, vertical: 10.h),
+    padding: const EdgeInsetsDirectional.symmetric(
+      horizontal: 14,
+      vertical: 10,
+    ),
     decoration: BoxDecoration(
       color: context.colors.surface,
-      borderRadius: BorderRadius.circular(12.r),
+      borderRadius: BorderRadius.circular(12),
       border: Border.all(color: context.colors.border),
     ),
     child: Column(
@@ -143,7 +146,7 @@ class _PriceValueCard extends StatelessWidget {
             color: context.colors.textSecondary,
           ),
         ),
-        SizedBox(height: 2.h),
+        const SizedBox(height: 2),
         Row(
           children: [
             Text(
@@ -153,7 +156,7 @@ class _PriceValueCard extends StatelessWidget {
                 color: context.colors.primary,
               ),
             ),
-            SizedBox(width: 4.w),
+            const SizedBox(width: 4),
             Text(
               context.l10n.egp_text,
               style: context.typography.caption.copyWith(
@@ -203,7 +206,7 @@ class _PricePresetsRow extends StatelessWidget {
     ];
 
     return Padding(
-      padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
       child: Row(
         children: presets.map((preset) {
           final isSelected =
@@ -212,19 +215,19 @@ class _PricePresetsRow extends StatelessWidget {
 
           return Expanded(
             child: Padding(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 3.w),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 3),
               child: InkWell(
                 onTap: () => onPresetSelected(preset.range),
-                borderRadius: BorderRadius.circular(8.r),
+                borderRadius: BorderRadius.circular(8),
                 child: AnimatedContainer(
                   duration: context.durations.fast,
-                  padding: EdgeInsetsDirectional.symmetric(vertical: 6.h),
+                  padding: const EdgeInsetsDirectional.symmetric(vertical: 6),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: isSelected
                         ? context.colors.primary.withValues(alpha: 0.1)
                         : context.colors.surfaceStrong.withValues(alpha: 0.4),
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: isSelected
                           ? context.colors.primary

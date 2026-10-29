@@ -21,7 +21,7 @@ class NotificationTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.all(16.w),
+    padding: const EdgeInsets.all(16),
     child: Row(
       children: [
         _NotificationTabButton(
@@ -31,7 +31,7 @@ class NotificationTabs extends StatelessWidget {
           isSelected: selectedIndex == 0,
           onTap: () => onChanged(0),
         ),
-        SizedBox(width: 8.w),
+        const SizedBox(width: 8),
         _NotificationTabButton(
           title: context.l10n.orders_text,
           count: ordersCount,
@@ -39,7 +39,7 @@ class NotificationTabs extends StatelessWidget {
           isSelected: selectedIndex == 1,
           onTap: () => onChanged(1),
         ),
-        SizedBox(width: 8.w),
+        const SizedBox(width: 8),
         _NotificationTabButton(
           title: context.l10n.offers_tab_text,
           count: offersCount,
@@ -47,7 +47,7 @@ class NotificationTabs extends StatelessWidget {
           isSelected: selectedIndex == 2,
           onTap: () => onChanged(2),
         ),
-        SizedBox(width: 8.w),
+        const SizedBox(width: 8),
         _NotificationTabButton(
           title: context.l10n.alerts_tab_text,
           count: alertsCount,
@@ -85,13 +85,13 @@ class _NotificationTabButton extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: isSelected ? context.colors.primary : context.colors.surface,
-            borderRadius: BorderRadius.circular(20.r),
+            borderRadius: BorderRadius.circular(20),
             border: !isSelected
                 ? Border.all(color: context.colors.border)
                 : null,
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Center(
               child: Text(
                 displayText,

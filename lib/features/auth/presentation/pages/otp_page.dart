@@ -6,13 +6,11 @@ import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
+import 'package:mousa_store/core/widgets/app_otp_field.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 import 'package:mousa_store/features/auth/presentation/bloc/otp_bloc.dart';
 import 'package:mousa_store/features/auth/presentation/pages/auth_page.dart';
 import 'package:mousa_store/features/auth/presentation/pages/reset_password_page.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/otp_field_style.dart';
-import 'package:otp_text_field/style.dart';
 
 typedef OtpView = OtpPage;
 
@@ -33,12 +31,13 @@ class OtpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt<OtpBloc>(param1: flowType)..add(const OtpEvent.started()),
+    create: (_) =>
+        getIt<OtpBloc>(param1: flowType)..add(const OtpEvent.started()),
     child: Scaffold(
       body: Padding(
-        padding: EdgeInsetsDirectional.symmetric(
-          horizontal: 24.w,
-          vertical: 24.h,
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 24,
+          vertical: 24,
         ),
         child: BlocConsumer<OtpBloc, OtpState>(
           listenWhen: (previous, current) => previous.status != current.status,
@@ -81,7 +80,7 @@ class OtpPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 16.h),
+                const SizedBox(height: 16),
                 Text(
                   context.l10n.enter_otp,
                   textAlign: TextAlign.center,
@@ -89,24 +88,15 @@ class OtpPage extends StatelessWidget {
                     color: context.colors.textSecondary,
                   ),
                 ),
-                SizedBox(height: 40.h),
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: OTPTextField(
-                    length: 6,
-                    width: 1.sw,
-                    fieldWidth: 50.w,
-                    style: context.typography.titleMedium,
-                    textFieldAlignment: MainAxisAlignment.spaceAround,
-                    fieldStyle: FieldStyle.box,
-                    otpFieldStyle: OtpFieldStyle(),
-                    onChanged: (code) =>
-                        bloc.add(OtpEvent.codeChanged(code)),
-                    onCompleted: (code) =>
-                        bloc.add(OtpEvent.codeChanged(code)),
+                const SizedBox(height: 40),
+                AppOtpField(
+                  style: context.typography.titleMedium.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
+                  onChanged: (code) => bloc.add(OtpEvent.codeChanged(code)),
+                  onCompleted: (code) => bloc.add(OtpEvent.codeChanged(code)),
                 ),
-                SizedBox(height: 40.h),
+                const SizedBox(height: 40),
 
                 CustomButton(
                   isLoading: state.status == OtpStatus.loading,
@@ -114,7 +104,7 @@ class OtpPage extends StatelessWidget {
                   onPressed: () =>
                       bloc.add(OtpEvent.verifySubmitted(email: email)),
                 ),
-                SizedBox(height: 20.h),
+                const SizedBox(height: 20),
                 TextButton(
                   onPressed: state.remainingSeconds == 0
                       ? () => bloc.add(OtpEvent.resendSubmitted(email: email))

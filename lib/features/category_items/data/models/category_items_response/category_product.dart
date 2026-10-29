@@ -53,20 +53,24 @@ abstract class CategoryProduct with _$CategoryProduct {
       desc: json['description'] as String? ?? json['desc'] as String? ?? '',
       price: json['price']?.toString(),
       imagePath: json['image_path'] as String? ?? '',
-      imagesPath: (json['images_path'] as List<dynamic>?)
+      imagesPath:
+          (json['images_path'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           [],
       brand: brandData,
-      categories: (json['categories'] as List<dynamic>?)
+      categories:
+          (json['categories'] as List<dynamic>?)
               ?.map((e) => ItemCategory.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      offers: (json['offers'] as List<dynamic>?)
+      offers:
+          (json['offers'] as List<dynamic>?)
               ?.map((e) => Offer.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      variants: (json['variants'] as List<dynamic>?)
+      variants:
+          (json['variants'] as List<dynamic>?)
               ?.map((e) => Variant.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -86,21 +90,21 @@ abstract class CategoryProduct with _$CategoryProduct {
       (variants?.isNotEmpty ?? false) ? variants!.first.stock : (stock ?? 0);
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'min_quantity': minQuantity,
-        'stock': stock,
-        'created_at': createdAt?.toIso8601String(),
-        'updated_at': updatedAt?.toIso8601String(),
-        'brand_id': brandId,
-        'name': name,
-        'desc': desc,
-        'price': price,
-        'image_path': imagePath,
-        'images_path': imagesPath,
-        'brand': brand?.toJson(),
-        'categories': categories?.map((e) => e.toJson()).toList(),
-        'offers': offers?.map((e) => e.toJson()).toList(),
-        'variants': variants?.map((e) => e.toJson()).toList(),
-        'attributes': attributes,
-      };
+    'id': id,
+    'min_quantity': minQuantity,
+    'stock': stock,
+    'created_at': createdAt?.toIso8601String(),
+    'updated_at': updatedAt?.toIso8601String(),
+    'brand_id': brandId,
+    'name': name,
+    'desc': desc,
+    'price': price,
+    'image_path': imagePath,
+    'images_path': imagesPath,
+    'brand': brand?.toJson(),
+    'categories': categories?.map((e) => e.toJson()).toList(),
+    'offers': offers?.map((e) => e.toJson()).toList(),
+    'variants': variants?.map((e) => e.toJson()).toList(),
+    'attributes': attributes,
+  };
 }

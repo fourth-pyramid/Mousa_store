@@ -123,8 +123,9 @@ class _AppButtonState extends State<AppButton>
       }
     }
 
-    final effectiveHeight =
-        widget.height != null ? widget.height!.h : context.sizes.buttonHeight;
+    final effectiveHeight = widget.height != null
+        ? widget.height!
+        : context.sizes.buttonHeight;
 
     final effectiveBorderRadius =
         widget.borderRadius ??
@@ -135,8 +136,8 @@ class _AppButtonState extends State<AppButton>
 
     final child = widget.isLoading
         ? SizedBox(
-            width: 20.w,
-            height: 20.h,
+            width: 20,
+            height: 20,
             child: CircularProgressIndicator(
               strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(fg),
@@ -144,32 +145,39 @@ class _AppButtonState extends State<AppButton>
           )
         : IconTheme.merge(
             data: IconThemeData(color: fg),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.text.isNotEmpty)
-                  Text(
-                    widget.text.toUpperCase(),
-                    style: context.typography.labelLarge.copyWith(
-                      color: fg,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.8,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (widget.text.isNotEmpty)
+                    Flexible(
+                      child: Text(
+                        widget.text.toUpperCase(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.typography.labelLarge.copyWith(
+                          color: fg,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
                     ),
-                  ),
-                if (widget.icon != null) ...[
-                  if (widget.text.isNotEmpty) SizedBox(width: 8.w),
-                  widget.icon!,
+                  if (widget.icon != null) ...[
+                    if (widget.text.isNotEmpty) const SizedBox(width: 8),
+                    widget.icon!,
+                  ],
                 ],
-              ],
+              ),
             ),
           );
 
     final hasContent = widget.text.isNotEmpty || widget.icon != null;
     final effectiveWidth =
         widget.width != null && widget.width != double.infinity
-            ? widget.width!.w
-            : widget.width;
+        ? widget.width!
+        : widget.width;
 
     return GestureDetector(
       onTapDown: _onTapDown,
@@ -181,11 +189,14 @@ class _AppButtonState extends State<AppButton>
           width: widget.isFullWidth
               ? (effectiveWidth ?? double.infinity)
               : effectiveWidth,
-          height: effectiveHeight,
+          height: widget.height,
+          constraints: BoxConstraints(minHeight: effectiveHeight),
           decoration: BoxDecoration(
             color: bg,
             borderRadius: effectiveBorderRadius,
-            border: border != BorderSide.none ? Border.fromBorderSide(border) : null,
+            border: border != BorderSide.none
+                ? Border.fromBorderSide(border)
+                : null,
             boxShadow: widget.onPressed != null ? shadows : null,
           ),
           child: Material(
@@ -195,7 +206,9 @@ class _AppButtonState extends State<AppButton>
               borderRadius: effectiveBorderRadius,
               splashColor: fg.withValues(alpha: 0.08),
               highlightColor: fg.withValues(alpha: 0.05),
-              child: Center(child: hasContent ? child : const SizedBox.shrink()),
+              child: Center(
+                child: hasContent ? child : const SizedBox.shrink(),
+              ),
             ),
           ),
         ),

@@ -5,27 +5,47 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mousa_store/core/config/app_env.dart';
+import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/pretty_dio_logger.dart';
+import 'package:mousa_store/core/service/stability_interceptor.dart';
 
 class DioHelper {
-  static late Dio dio;
+  static Dio? _dio;
+
+  /// Returns the global Dio instance, automatically initializing if needed.
+  static Dio get dio {
+    _dio ??= _createDio();
+    return _dio!;
+  }
+
+  static set dio(Dio value) {
+    _dio = value;
+  }
+
   static VoidCallback? onSessionExpired;
 
-  static void init() {
-    dio = Dio(
+  static final Map<String, dynamic> _initialHeaders = {
+    'Accept': 'application/json',
+  };
+
+  static Dio _createDio() {
+    final client = Dio(
       BaseOptions(
         baseUrl: AppEnv.baseUrl,
         connectTimeout: Duration(milliseconds: AppEnv.apiTimeout),
         receiveTimeout: Duration(milliseconds: AppEnv.apiTimeout),
         receiveDataWhenStatusError: true,
-        headers: {'Accept': 'application/json'},
+        headers: Map<String, dynamic>.from(_initialHeaders),
       ),
     );
 
-    dio.interceptors.add(PrettyDioLogger());
-    dio.interceptors.add(DuplicateRequestInterceptor());
-    dio.interceptors.add(
+    if (getIt.isRegistered<StabilityInterceptor>()) {
+      client.interceptors.add(getIt<StabilityInterceptor>());
+    }
+    client.interceptors.add(PrettyDioLogger());
+    client.interceptors.add(DuplicateRequestInterceptor());
+    client.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
           final priceMode = CacheHelper.getPriceMode();
@@ -66,6 +86,20 @@ class DioHelper {
         },
       ),
     );
+
+    return client;
+  }
+
+  static void init() {
+    _dio = _createDio();
+  }
+
+  /// Ensures StabilityInterceptor is attached at the front of the interceptor pipeline.
+  static void attachStabilityInterceptor(StabilityInterceptor interceptor) {
+    if (_dio != null &&
+        _dio!.interceptors.every((i) => i is! StabilityInterceptor)) {
+      _dio!.interceptors.insert(0, interceptor);
+    }
   }
 
   static Future<bool> refreshAccessToken() async {
@@ -105,15 +139,18 @@ class DioHelper {
   }
 
   static void setToken(String token) {
-    dio.options.headers['Authorization'] = 'Bearer $token';
+    _initialHeaders['Authorization'] = 'Bearer $token';
+    _dio?.options.headers['Authorization'] = 'Bearer $token';
   }
 
   static void setLanguage(String language) {
-    dio.options.headers['Accept-Language'] = language;
+    _initialHeaders['Accept-Language'] = language;
+    _dio?.options.headers['Accept-Language'] = language;
   }
 
   static void setPriceMode(String priceMode) {
-    dio.options.headers['Price-Mode'] = priceMode;
+    _initialHeaders['Price-Mode'] = priceMode;
+    _dio?.options.headers['Price-Mode'] = priceMode;
   }
 
   static Future<Response<dynamic>> getData({

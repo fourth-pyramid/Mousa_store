@@ -5,9 +5,9 @@ import 'package:mousa_store/core/design_system/design_system.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
+import 'package:mousa_store/core/widgets/app_page_indicator.dart';
 import 'package:mousa_store/features/auth/presentation/pages/auth_page.dart';
 import 'package:mousa_store/l10n/app_localizations.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingItem extends StatelessWidget {
   const OnboardingItem({
@@ -50,24 +50,24 @@ class OnboardingItem extends StatelessWidget {
       ),
       SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 28.h),
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 28),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SmoothPageIndicator(
+              AppExpandingDotsIndicator(
                 controller: controller,
                 count: pageCount,
-                effect: ExpandingDotsEffect(
-                  dotHeight: 5.h,
-                  dotWidth: 5.w,
+                effect: ExpandingDotsConfig(
+                  dotHeight: 5,
+                  dotWidth: 5,
                   expansionFactor: 5,
-                  spacing: 5.w,
+                  spacing: 5,
                   activeDotColor: AppColorTokens.accent,
                   dotColor: Colors.white.withValues(alpha: 0.4),
                 ),
               ),
-              SizedBox(height: 20.h),
+              const SizedBox(height: 20),
               Text(
                 title,
                 style: context.typography.h1.copyWith(
@@ -77,7 +77,7 @@ class OnboardingItem extends StatelessWidget {
                   letterSpacing: -0.3,
                 ),
               ),
-              SizedBox(height: 10.h),
+              const SizedBox(height: 10),
               Text(
                 description,
                 style: context.typography.bodyLarge.copyWith(
@@ -85,7 +85,7 @@ class OnboardingItem extends StatelessWidget {
                   height: 1.5,
                 ),
               ),
-              SizedBox(height: 36.h),
+              const SizedBox(height: 36),
               if (isLastPage) ...[
                 _OnboardingButton(
                   label: localization.login_button,
@@ -101,7 +101,7 @@ class OnboardingItem extends StatelessWidget {
                     );
                   },
                 ),
-                SizedBox(height: 12.h),
+                const SizedBox(height: 12),
                 _OnboardingButton(
                   label: localization.sign_up_button,
                   backgroundColor: Colors.transparent,
@@ -132,7 +132,7 @@ class OnboardingItem extends StatelessWidget {
                   },
                 ),
               ],
-              SizedBox(height: 8.h),
+              const SizedBox(height: 8),
             ],
           ),
         ),

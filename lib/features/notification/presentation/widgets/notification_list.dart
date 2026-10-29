@@ -68,18 +68,18 @@ class _NotificationListState extends State<NotificationList> {
             itemBuilder: (context, index) {
               if (index == filtered.length) {
                 if (state.isFetchingMore) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    child: const Center(child: CircularProgressIndicator()),
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 if (state.currentPage >= state.lastPage &&
                     filtered.isNotEmpty) {
-                  return Column(
+                  return const Column(
                     children: [
-                      SizedBox(height: 16.h),
-                      const _NotificationCaughtUpIndicator(),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: 16),
+                      _NotificationCaughtUpIndicator(),
+                      SizedBox(height: 24),
                     ],
                   );
                 }
@@ -101,8 +101,8 @@ class _NotificationCaughtUpIndicator extends StatelessWidget {
     child: Column(
       children: [
         SizedBox(
-          width: 56.w,
-          height: 56.w,
+          width: 56,
+          height: 56,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: context.colors.surface,
@@ -110,18 +110,18 @@ class _NotificationCaughtUpIndicator extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: context.colors.primary.withValues(alpha: 0.3),
-                  blurRadius: 15.r,
+                  blurRadius: 15,
                 ),
               ],
             ),
             child: Icon(
               Icons.check,
               color: context.colors.textPrimary,
-              size: 28.w,
+              size: 28,
             ),
           ),
         ),
-        SizedBox(height: 12.h),
+        const SizedBox(height: 12),
         Text(
           context.l10n.all_caught_up_message_text,
           style: context.typography.bodySmall.copyWith(

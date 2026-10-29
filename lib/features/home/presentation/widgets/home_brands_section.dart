@@ -7,6 +7,7 @@ import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
 import 'package:mousa_store/core/widgets/app_section_header.dart';
+import 'package:mousa_store/core/widgets/app_shimmer.dart';
 import 'package:mousa_store/features/brands/domain/entities/brand.dart';
 import 'package:mousa_store/features/brands/presentation/bloc/brand_bloc.dart';
 import 'package:mousa_store/features/brands/presentation/pages/brands_view.dart';
@@ -14,7 +15,6 @@ import 'package:mousa_store/features/category_items/domain/entities/item_fetch_t
 import 'package:mousa_store/features/category_items/presentation/pages/category_items_view.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_state.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeBrandsSection extends StatelessWidget {
   const HomeBrandsSection({super.key});
@@ -32,7 +32,7 @@ class HomeBrandsSection extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
+          const SizedBox(height: 20),
           AppSectionHeader(
             title: context.l10n.all_brands_text,
             actionLabel: context.l10n.view_all_text,
@@ -48,16 +48,16 @@ class HomeBrandsSection extends StatelessWidget {
               );
             },
           ),
-          SizedBox(height: 12.h),
+          const SizedBox(height: 12),
           SizedBox(
-            height: 88.h,
+            height: 88,
             child: state.brandsStatus == RequestStatus.loading
                 ? const _BrandsLoadingSkeleton()
                 : ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     scrollDirection: Axis.horizontal,
                     itemCount: state.brands.length,
-                    separatorBuilder: (_, _) => SizedBox(width: 12.w),
+                    separatorBuilder: (_, _) => const SizedBox(width: 12),
                     itemBuilder: (context, index) {
                       final brand = state.brands[index];
                       return _HomeBrandCard(brand: brand);
@@ -74,31 +74,31 @@ class _BrandsLoadingSkeleton extends StatelessWidget {
   const _BrandsLoadingSkeleton();
 
   @override
-  Widget build(BuildContext context) => Skeletonizer(
+  Widget build(BuildContext context) => AppShimmer(
     child: ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       scrollDirection: Axis.horizontal,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 6,
-      separatorBuilder: (_, _) => SizedBox(width: 12.w),
+      separatorBuilder: (_, _) => const SizedBox(width: 12),
       itemBuilder: (context, index) => SizedBox(
-        width: 72.w,
+        width: 72,
         child: Column(
           children: [
             DecoratedBox(
               decoration: BoxDecoration(
                 color: context.colors.surface,
-                borderRadius: BorderRadius.circular(18.r),
+                borderRadius: BorderRadius.circular(18),
               ),
-              child: SizedBox(width: 64.w, height: 64.w),
+              child: const SizedBox(width: 64, height: 64),
             ),
-            SizedBox(height: 6.h),
+            const SizedBox(height: 6),
             DecoratedBox(
               decoration: BoxDecoration(
                 color: context.colors.surfaceStrong,
-                borderRadius: BorderRadius.circular(4.r),
+                borderRadius: BorderRadius.circular(4),
               ),
-              child: SizedBox(width: 50.w, height: 12.h),
+              child: const SizedBox(width: 50, height: 12),
             ),
           ],
         ),
@@ -127,16 +127,16 @@ class _HomeBrandCard extends StatelessWidget {
       );
     },
     child: SizedBox(
-      width: 72.w,
+      width: 72,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 64.w,
-            height: 64.w,
+            width: 64,
+            height: 64,
             decoration: BoxDecoration(
               color: context.colors.surface,
-              borderRadius: BorderRadius.circular(18.r),
+              borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: context.colors.border.withValues(alpha: 0.8),
                 width: 1.2,
@@ -151,26 +151,26 @@ class _HomeBrandCard extends StatelessWidget {
             ),
             child: AppImage(
               image: brand.imagePath,
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(16),
               placeholder: (_, _) =>
                   ColoredBox(color: context.colors.surfaceStrong),
               errorWidget: (_, _, _) => ColoredBox(
                 color: context.colors.surfaceStrong,
                 child: Icon(
                   Icons.business_rounded,
-                  size: 24.w,
+                  size: 24,
                   color: context.colors.textSecondary,
                 ),
               ),
             ),
           ),
-          SizedBox(height: 6.h),
+          const SizedBox(height: 6),
           Text(
             brand.name,
             style: context.typography.caption.copyWith(
               color: context.colors.textPrimary,
               fontWeight: FontWeight.w600,
-              fontSize: 11.sp,
+              fontSize: 11,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mousa_store/core/utils/context_extensions.dart';
-import 'package:mousa_store/core/widgets/app_grid_card.dart';
+import 'package:mousa_store/core/widgets/app_skeleton.dart';
 import 'package:mousa_store/core/widgets/app_sliver_grid.dart';
 import 'package:mousa_store/core/widgets/product_grid_card.dart';
 import 'package:mousa_store/features/brands/domain/entities/brand.dart'
@@ -9,7 +8,6 @@ import 'package:mousa_store/features/brands/domain/entities/brand.dart'
 import 'package:mousa_store/features/category_items/data/models/category_items_response/category_product.dart';
 import 'package:mousa_store/features/category_items/presentation/bloc/category_items_bloc.dart';
 import 'package:mousa_store/features/product/data/models/product.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CategoryItemsGrid extends StatefulWidget {
   const CategoryItemsGrid({
@@ -64,7 +62,7 @@ class _CategoryItemsGridState extends State<CategoryItemsGrid> {
 
   @override
   Widget build(BuildContext context) => SliverPadding(
-    padding: EdgeInsets.symmetric(horizontal: 4.0.w),
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
     sliver: AppSliverGrid<CategoryProduct>(
       items: widget.state.products,
       isLoading: widget.state.status == CategoryItemsStatus.loading,
@@ -90,15 +88,7 @@ class _CategoryItemsGridState extends State<CategoryItemsGrid> {
           variants: product.variants,
         ),
       ),
-      loadingBuilder: (context, index) => Skeletonizer(
-        child: AppGridCard(
-          title: 'Loading Product Name...',
-          image: '',
-          price: '000',
-          priceLabel: context.l10n.egp_text,
-          onTap: () {},
-        ),
-      ),
+      loadingBuilder: (context, index) => const AppSkeletonCard(),
     ),
   );
 }

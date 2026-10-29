@@ -1,7 +1,8 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mousa_store/core/service/auth_service.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
+import 'package:mousa_store/core/service/stability_interceptor.dart';
 import 'package:mousa_store/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:mousa_store/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:mousa_store/features/auth/data/repositories/auth_repository_impl.dart';
@@ -104,18 +105,22 @@ Future<void> setupServiceLocator({
 }) async {
   // 1. External & Cross-Cutting Services
   getIt
-    ..registerLazySingleton<Connectivity>(Connectivity.new)
+    ..registerLazySingleton<InternetConnectionService>(
+      InternetConnectionService.new,
+    )
+    ..registerLazySingleton<IInternetConnectionService>(
+      getIt.get<InternetConnectionService>,
+    )
+    ..registerLazySingleton<StabilityInterceptor>(
+      () => StabilityInterceptor(getIt<InternetConnectionService>()),
+    )
     ..registerLazySingleton<AuthService>(AuthService.new)
     // 2. Feature Services (Data Sources)
-    ..registerLazySingleton<AuthRemoteDataSource>(
-      AuthRemoteDataSourceImpl.new,
-    )
+    ..registerLazySingleton<AuthRemoteDataSource>(AuthRemoteDataSourceImpl.new)
     ..registerLazySingleton<AuthLocalDataSource>(
       () => AuthLocalDataSourceImpl(authService: getIt()),
     )
-    ..registerLazySingleton<CartRemoteDataSource>(
-      CartRemoteDataSourceImpl.new,
-    )
+    ..registerLazySingleton<CartRemoteDataSource>(CartRemoteDataSourceImpl.new)
     ..registerLazySingleton<BrandRemoteDataSource>(
       BrandRemoteDataSourceImpl.new,
     )
@@ -149,9 +154,7 @@ Future<void> setupServiceLocator({
     ..registerLazySingleton<ContactRemoteDataSource>(
       ContactRemoteDataSourceImpl.new,
     )
-    ..registerLazySingleton<HomeRemoteDataSource>(
-      HomeRemoteDataSourceImpl.new,
-    )
+    ..registerLazySingleton<HomeRemoteDataSource>(HomeRemoteDataSourceImpl.new)
     ..registerLazySingleton<ProfileRemoteDataSource>(
       ProfileRemoteDataSourceImpl.new,
     )
@@ -183,9 +186,7 @@ Future<void> setupServiceLocator({
     ..registerLazySingleton<SearchRepository>(
       () => SearchRepositoryImpl(getIt()),
     )
-    ..registerLazySingleton<CartRepository>(
-      () => CartRepositoryImpl(getIt()),
-    )
+    ..registerLazySingleton<CartRepository>(() => CartRepositoryImpl(getIt()))
     ..registerLazySingleton<ReviewRepository>(
       () => ReviewRepositoryImpl(getIt()),
     )
@@ -211,27 +212,17 @@ Future<void> setupServiceLocator({
       () => PriceModeRepositoryImpl(localDataSource: getIt()),
     )
     // 4. Domain UseCases
-    ..registerLazySingleton<LoginUseCase>(
-      () => LoginUseCase(getIt()),
-    )
-    ..registerLazySingleton<SignupUseCase>(
-      () => SignupUseCase(getIt()),
-    )
-    ..registerLazySingleton<VerifyOtpUseCase>(
-      () => VerifyOtpUseCase(getIt()),
-    )
-    ..registerLazySingleton<ResendOtpUseCase>(
-      () => ResendOtpUseCase(getIt()),
-    )
+    ..registerLazySingleton<LoginUseCase>(() => LoginUseCase(getIt()))
+    ..registerLazySingleton<SignupUseCase>(() => SignupUseCase(getIt()))
+    ..registerLazySingleton<VerifyOtpUseCase>(() => VerifyOtpUseCase(getIt()))
+    ..registerLazySingleton<ResendOtpUseCase>(() => ResendOtpUseCase(getIt()))
     ..registerLazySingleton<ForgotPasswordUseCase>(
       () => ForgotPasswordUseCase(getIt()),
     )
     ..registerLazySingleton<ResetPasswordUseCase>(
       () => ResetPasswordUseCase(getIt()),
     )
-    ..registerLazySingleton<GetBrandsUseCase>(
-      () => GetBrandsUseCase(getIt()),
-    )
+    ..registerLazySingleton<GetBrandsUseCase>(() => GetBrandsUseCase(getIt()))
     ..registerLazySingleton<GetCategoriesUseCase>(
       () => GetCategoriesUseCase(getIt()),
     )
@@ -250,33 +241,21 @@ Future<void> setupServiceLocator({
     ..registerLazySingleton<GetGlobalAttributesUseCase>(
       () => GetGlobalAttributesUseCase(getIt()),
     )
-    ..registerLazySingleton<GetProductUseCase>(
-      () => GetProductUseCase(getIt()),
-    )
-    ..registerLazySingleton<AddReviewUseCase>(
-      () => AddReviewUseCase(getIt()),
-    )
-    ..registerLazySingleton<GetCartUseCase>(
-      () => GetCartUseCase(getIt()),
-    )
-    ..registerLazySingleton<AddToCartUseCase>(
-      () => AddToCartUseCase(getIt()),
-    )
+    ..registerLazySingleton<GetProductUseCase>(() => GetProductUseCase(getIt()))
+    ..registerLazySingleton<AddReviewUseCase>(() => AddReviewUseCase(getIt()))
+    ..registerLazySingleton<GetCartUseCase>(() => GetCartUseCase(getIt()))
+    ..registerLazySingleton<AddToCartUseCase>(() => AddToCartUseCase(getIt()))
     ..registerLazySingleton<UpdateCartItemUseCase>(
       () => UpdateCartItemUseCase(getIt()),
     )
     ..registerLazySingleton<RemoveFromCartUseCase>(
       () => RemoveFromCartUseCase(getIt()),
     )
-    ..registerLazySingleton<CheckoutUseCase>(
-      () => CheckoutUseCase(getIt()),
-    )
+    ..registerLazySingleton<CheckoutUseCase>(() => CheckoutUseCase(getIt()))
     ..registerLazySingleton<GetShippingFeeUseCase>(
       () => GetShippingFeeUseCase(getIt()),
     )
-    ..registerLazySingleton<GetOrdersUseCase>(
-      () => GetOrdersUseCase(getIt()),
-    )
+    ..registerLazySingleton<GetOrdersUseCase>(() => GetOrdersUseCase(getIt()))
     ..registerLazySingleton<GetOrderDetailsUseCase>(
       () => GetOrderDetailsUseCase(getIt()),
     )
@@ -286,9 +265,7 @@ Future<void> setupServiceLocator({
     ..registerLazySingleton<GetContactInfoUseCase>(
       () => GetContactInfoUseCase(getIt()),
     )
-    ..registerLazySingleton<GetProfileUseCase>(
-      () => GetProfileUseCase(getIt()),
-    )
+    ..registerLazySingleton<GetProfileUseCase>(() => GetProfileUseCase(getIt()))
     ..registerLazySingleton<UpdateProfileUseCase>(
       () => UpdateProfileUseCase(getIt()),
     )
@@ -308,18 +285,11 @@ Future<void> setupServiceLocator({
     // 5. Cubits & Blocs (State Holders)
     ..registerSingleton<ThemeBloc>(ThemeBloc(initialThemeMode))
     ..registerSingleton<PriceModeBloc>(
-      PriceModeBloc(
-        getPriceModeUseCase: getIt(),
-        setPriceModeUseCase: getIt(),
-      ),
+      PriceModeBloc(getPriceModeUseCase: getIt(), setPriceModeUseCase: getIt()),
     )
     ..registerLazySingleton<LanguageBloc>(LanguageBloc.new)
-    ..registerFactory<LoginBloc>(
-      () => LoginBloc(loginUseCase: getIt()),
-    )
-    ..registerFactory<SignupBloc>(
-      () => SignupBloc(signupUseCase: getIt()),
-    )
+    ..registerFactory<LoginBloc>(() => LoginBloc(loginUseCase: getIt()))
+    ..registerFactory<SignupBloc>(() => SignupBloc(signupUseCase: getIt()))
     ..registerFactoryParam<OtpBloc, OtpFlowType, void>(
       (flowType, _) => OtpBloc(
         verifyOtpUseCase: getIt(),
@@ -333,9 +303,7 @@ Future<void> setupServiceLocator({
     ..registerFactory<ResetPasswordBloc>(
       () => ResetPasswordBloc(resetPasswordUseCase: getIt()),
     )
-    ..registerFactory<BrandBloc>(
-      () => BrandBloc(getBrandsUseCase: getIt()),
-    )
+    ..registerFactory<BrandBloc>(() => BrandBloc(getBrandsUseCase: getIt()))
     ..registerFactory<CategoryBloc>(
       () => CategoryBloc(getCategoriesUseCase: getIt()),
     )
@@ -368,18 +336,14 @@ Future<void> setupServiceLocator({
         removeFromCartUseCase: getIt(),
       ),
     )
-    ..registerFactory<ReviewBloc>(
-      () => ReviewBloc(addReviewUseCase: getIt()),
-    )
+    ..registerFactory<ReviewBloc>(() => ReviewBloc(addReviewUseCase: getIt()))
     ..registerFactory<CheckoutBloc>(
       () => CheckoutBloc(
         checkoutUseCase: getIt(),
         getShippingFeeUseCase: getIt(),
       ),
     )
-    ..registerFactory<OrdersBloc>(
-      () => OrdersBloc(getOrdersUseCase: getIt()),
-    )
+    ..registerFactory<OrdersBloc>(() => OrdersBloc(getOrdersUseCase: getIt()))
     ..registerFactory<OrderDetailsBloc>(
       () => OrderDetailsBloc(getOrderDetailsUseCase: getIt()),
     )

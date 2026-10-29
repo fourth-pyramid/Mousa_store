@@ -21,14 +21,13 @@ class UpdateProfileUseCase {
     String? oldPassword,
     String? password,
     String? confirmPassword,
-  }) =>
-      _repository.updateProfile(
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
-        oldPassword: oldPassword,
-        password: password,
-        confirmPassword: confirmPassword,
-      );
+  }) => _repository.updateProfile(
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phone: phone,
+    oldPassword: oldPassword,
+    password: password,
+    confirmPassword: confirmPassword,
+  );
 }

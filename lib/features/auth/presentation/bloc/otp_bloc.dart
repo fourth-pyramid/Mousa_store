@@ -14,9 +14,9 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
     required VerifyOtpUseCase verifyOtpUseCase,
     required ResendOtpUseCase resendOtpUseCase,
     required OtpFlowType flowType,
-  })  : _verifyOtpUseCase = verifyOtpUseCase,
-        _resendOtpUseCase = resendOtpUseCase,
-        super(OtpState(flowType: flowType)) {
+  }) : _verifyOtpUseCase = verifyOtpUseCase,
+       _resendOtpUseCase = resendOtpUseCase,
+       super(OtpState(flowType: flowType)) {
     on<OtpTimerStarted>(_onTimerStarted);
     on<OtpTimerTicked>(_onTimerTicked);
     on<OtpCodeChanged>(_onCodeChanged);
@@ -88,9 +88,7 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
     try {
       final response = state.flowType == OtpFlowType.signup
           ? await _resendOtpUseCase.resendSignupOtp(email: event.email)
-          : await _resendOtpUseCase.resendForgotPasswordOtp(
-              email: event.email,
-            );
+          : await _resendOtpUseCase.resendForgotPasswordOtp(email: event.email);
 
       if (response.success) {
         add(const OtpTimerStarted());

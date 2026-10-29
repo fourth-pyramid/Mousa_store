@@ -1,14 +1,14 @@
-// ignore_for_file: deprecated_member_use // Compatibility with flutter_screenutil and custom form styling APIs
+// ignore_for_file: deprecated_member_use // Compatibility with custom form styling APIs
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
 import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/utils/governorates_data.dart';
@@ -53,12 +53,25 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
   bool _isDisposed = false;
 
   late Future<List<Address>> _addressesFuture;
+  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
     super.initState();
     _initializeUserData();
     _addressesFuture = _fetchAddresses();
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted) {
+            setState(() {
+              _addressesFuture = _fetchAddresses();
+            });
+            _formStateNotifier.value = _formStateNotifier.value.copyWith(
+              isLoadingShipping: true,
+            );
+          }
+        });
   }
 
   void _initializeUserData() {
@@ -247,6 +260,7 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
   @override
   void dispose() {
     _isDisposed = true;
+    unawaited(_networkRestoreSubscription?.cancel());
     _tempCityController.dispose();
     _tempStreetController.dispose();
     _fullNameController.dispose();
@@ -261,47 +275,37 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
       title: Text(context.l10n.cash_on_delivery_text),
       backgroundColor: context.colors.background,
     ),
-    body: InternetStateManager(
-      onRestoreInternetConnection: () {
-        setState(() {
-          _addressesFuture = _fetchAddresses();
-        });
-        _formStateNotifier.value = _formStateNotifier.value.copyWith(
-          isLoadingShipping: true,
-        );
-      },
-      child: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _AddressSection(
-                  addressesFuture: _addressesFuture,
-                  formStateNotifier: _formStateNotifier,
-                  tempCityController: _tempCityController,
-                  tempStreetController: _tempStreetController,
-                  onSelectAddress: _selectAddress,
-                  onSelectTemporaryAddress: _selectTemporaryAddress,
-                  onGovernorateChanged: _onGovernorateChanged,
-                  validateAddress: _validateAddress,
-                ),
-                SizedBox(height: 20.h),
-                _ContactSection(
-                  fullNameController: _fullNameController,
-                  phoneController: _phoneController,
-                  validateName: _validateName,
-                  validatePhone: _validatePhone,
-                ),
-                SizedBox(height: 20.h),
-                _PriceSection(
-                  totalPrice: widget.totalPrice,
-                  formStateNotifier: _formStateNotifier,
-                ),
-              ],
-            ),
+    body: SafeArea(
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _AddressSection(
+                addressesFuture: _addressesFuture,
+                formStateNotifier: _formStateNotifier,
+                tempCityController: _tempCityController,
+                tempStreetController: _tempStreetController,
+                onSelectAddress: _selectAddress,
+                onSelectTemporaryAddress: _selectTemporaryAddress,
+                onGovernorateChanged: _onGovernorateChanged,
+                validateAddress: _validateAddress,
+              ),
+              const SizedBox(height: 20),
+              _ContactSection(
+                fullNameController: _fullNameController,
+                phoneController: _phoneController,
+                validateName: _validateName,
+                validatePhone: _validatePhone,
+              ),
+              const SizedBox(height: 20),
+              _PriceSection(
+                totalPrice: widget.totalPrice,
+                formStateNotifier: _formStateNotifier,
+              ),
+            ],
           ),
         ),
       ),
@@ -339,17 +343,17 @@ class _AddressSection extends StatelessWidget {
         children: [
           Icon(
             Icons.location_on_outlined,
-            size: 20.r,
+            size: 20,
             color: context.colors.textPrimary,
           ),
-          SizedBox(width: 8.w),
+          const SizedBox(width: 8),
           Text(
             context.l10n.address_text,
             style: context.typography.titleMedium,
           ),
         ],
       ),
-      SizedBox(height: 12.h),
+      const SizedBox(height: 12),
 
       FutureBuilder<List<Address>>(
         future: addressesFuture,
@@ -378,7 +382,7 @@ class _AddressSection extends StatelessWidget {
                 children: [
                   ...addresses.map(
                     (address) => Padding(
-                      padding: EdgeInsets.only(bottom: 10.h),
+                      padding: const EdgeInsets.only(bottom: 10),
                       child: _AddressRadioTile(
                         address: address,
                         isSelected:
@@ -396,7 +400,7 @@ class _AddressSection extends StatelessWidget {
 
                   if (formState.isTemporaryAddress)
                     Padding(
-                      padding: EdgeInsets.only(top: 10.h),
+                      padding: const EdgeInsets.only(top: 10),
                       child: _TemporaryAddressForm(
                         selectedGovernorate: formState.selectedGovernorate,
                         onGovernorateChanged: onGovernorateChanged,
@@ -436,34 +440,34 @@ class _ContactSection extends StatelessWidget {
         children: [
           Icon(
             Icons.person_outline,
-            size: 20.r,
+            size: 20,
             color: context.colors.textPrimary,
           ),
-          SizedBox(width: 8.w),
+          const SizedBox(width: 8),
           Text(
             context.l10n.enter_full_name_text,
             style: context.typography.titleMedium,
           ),
         ],
       ),
-      SizedBox(height: 12.h),
+      const SizedBox(height: 12),
       CustomFormField(
         controller: fullNameController,
         hint: context.l10n.enter_full_name_text,
         prefixIcon: Icon(
           Icons.person_outline,
-          size: 20.r,
+          size: 20,
           color: context.colors.textSecondary,
         ),
         validator: validateName,
       ),
-      SizedBox(height: 12.h),
+      const SizedBox(height: 12),
       CustomFormField(
         controller: phoneController,
         hint: context.l10n.phone_number_text,
         prefixIcon: Icon(
           Icons.phone_outlined,
-          size: 20.r,
+          size: 20,
           color: context.colors.textSecondary,
         ),
         validator: validatePhone,
@@ -490,14 +494,14 @@ class _PriceSection extends StatelessWidget {
         children: [
           Icon(
             Icons.receipt_long_outlined,
-            size: 20.r,
+            size: 20,
             color: context.colors.textPrimary,
           ),
-          SizedBox(width: 8.w),
+          const SizedBox(width: 8),
           Text(context.l10n.prices_text, style: context.typography.titleMedium),
         ],
       ),
-      SizedBox(height: 12.h),
+      const SizedBox(height: 12),
 
       DecoratedBox(
         decoration: BoxDecoration(
@@ -506,7 +510,7 @@ class _PriceSection extends StatelessWidget {
           border: Border.all(color: context.colors.border),
         ),
         child: Padding(
-          padding: EdgeInsets.all(16.r),
+          padding: const EdgeInsets.all(16),
           child: BlocConsumer<CheckoutBloc, CheckoutState>(
             listener: (context, state) {
               if (state.shippingFeeStatus == RequestStatus.success &&
@@ -547,7 +551,7 @@ class _PriceSection extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10.h),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -556,12 +560,10 @@ class _PriceSection extends StatelessWidget {
                           style: context.typography.body,
                         ),
                         if (formState.isLoadingShipping)
-                          SizedBox(
-                            height: 18.r,
-                            width: 18.r,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
+                          const SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         else
                           Text(
@@ -571,7 +573,7 @@ class _PriceSection extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Divider(height: 1, color: context.colors.border),
                     ),
                     Row(
@@ -624,11 +626,11 @@ class _SubmitButton extends StatelessWidget {
           final isLoading = state.checkoutStatus == RequestStatus.loading;
           return SafeArea(
             child: Padding(
-              padding: EdgeInsetsDirectional.only(
-                start: 16.w,
-                end: 16.w,
-                bottom: 12.h,
-                top: 6.h,
+              padding: const EdgeInsetsDirectional.only(
+                start: 16,
+                end: 16,
+                bottom: 12,
+                top: 6,
               ),
               child: CustomButton(
                 text: isLoading
@@ -693,7 +695,7 @@ class _AddressRadioTile extends StatelessWidget {
     borderRadius: context.radius.mdBorder,
     child: AnimatedContainer(
       duration: context.durations.fast,
-      padding: EdgeInsets.all(12.r),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: isSelected
             ? context.colors.surfaceStrong
@@ -714,7 +716,7 @@ class _AddressRadioTile extends StatelessWidget {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             visualDensity: VisualDensity.compact,
           ),
-          SizedBox(width: 8.w),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -723,10 +725,10 @@ class _AddressRadioTile extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.home_outlined,
-                      size: 16.r,
+                      size: 16,
                       color: context.colors.textSecondary,
                     ),
-                    SizedBox(width: 6.w),
+                    const SizedBox(width: 6),
                     Text(
                       address.nameAddress,
                       style: context.typography.body.copyWith(
@@ -735,7 +737,7 @@ class _AddressRadioTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 4.h),
+                const SizedBox(height: 4),
                 Text(address.address, style: context.typography.bodySmall),
               ],
             ),
@@ -760,7 +762,7 @@ class _TemporaryAddressRadioTile extends StatelessWidget {
     borderRadius: context.radius.mdBorder,
     child: AnimatedContainer(
       duration: context.durations.fast,
-      padding: EdgeInsets.all(12.r),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: isSelected
             ? context.colors.surfaceStrong
@@ -781,16 +783,16 @@ class _TemporaryAddressRadioTile extends StatelessWidget {
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             visualDensity: VisualDensity.compact,
           ),
-          SizedBox(width: 8.w),
+          const SizedBox(width: 8),
           Expanded(
             child: Row(
               children: [
                 Icon(
                   Icons.edit_location_alt_outlined,
-                  size: 16.r,
+                  size: 16,
                   color: context.colors.textSecondary,
                 ),
-                SizedBox(width: 6.w),
+                const SizedBox(width: 6),
                 Text(
                   context.l10n.temporary_address_text,
                   style: context.typography.body.copyWith(
@@ -822,7 +824,7 @@ class _TemporaryAddressForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: EdgeInsets.all(12.r),
+    padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
       color: context.colors.surface,
       borderRadius: context.radius.mdBorder,
@@ -837,9 +839,9 @@ class _TemporaryAddressForm extends StatelessWidget {
             style: context.typography.bodySmall,
           ),
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 14.w,
-              vertical: 12.h,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 12,
             ),
             filled: true,
             fillColor: context.colors.surface,
@@ -871,7 +873,7 @@ class _TemporaryAddressForm extends StatelessWidget {
               ? context.l10n.required_text
               : null,
         ),
-        SizedBox(height: 12.h),
+        const SizedBox(height: 12),
         Row(
           children: [
             Expanded(
@@ -881,13 +883,13 @@ class _TemporaryAddressForm extends StatelessWidget {
                 hint: context.l10n.city_text,
                 prefixIcon: Icon(
                   Icons.location_city_outlined,
-                  size: 18.r,
+                  size: 18,
                   color: context.colors.textSecondary,
                 ),
                 validator: validator,
               ),
             ),
-            SizedBox(width: 8.w),
+            const SizedBox(width: 8),
             Expanded(
               child: CustomFormField(
                 controller: streetController,
@@ -895,7 +897,7 @@ class _TemporaryAddressForm extends StatelessWidget {
                 label: context.l10n.address_text,
                 prefixIcon: Icon(
                   Icons.home_outlined,
-                  size: 18.r,
+                  size: 18,
                   color: context.colors.textSecondary,
                 ),
                 validator: (value) {

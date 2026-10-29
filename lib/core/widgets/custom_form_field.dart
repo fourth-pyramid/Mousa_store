@@ -51,7 +51,7 @@ class AppTextField extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
       ],
       TextFormField(
         focusNode: focusNode,
@@ -78,9 +78,9 @@ class AppTextField extends StatelessWidget {
           fillColor: context.colors.surface,
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 14.h,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
           ),
           border: OutlineInputBorder(
             borderRadius: context.radius.mdBorder,
@@ -88,16 +88,11 @@ class AppTextField extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: context.radius.mdBorder,
-            borderSide: BorderSide(
-              color: context.colors.border,
-            ),
+            borderSide: BorderSide(color: context.colors.border),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: context.radius.mdBorder,
-            borderSide: BorderSide(
-              color: context.colors.primary,
-              width: 1.5,
-            ),
+            borderSide: BorderSide(color: context.colors.primary, width: 1.5),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: context.radius.mdBorder,

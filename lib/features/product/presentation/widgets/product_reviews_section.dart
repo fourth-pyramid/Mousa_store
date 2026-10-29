@@ -15,7 +15,7 @@ class ProductReviewsSection extends StatelessWidget {
 
     if (reviews.isEmpty) {
       return Padding(
-        padding: EdgeInsets.all(16.w),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,8 +57,8 @@ class _ReviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    margin: EdgeInsets.only(bottom: 12.h),
-    padding: EdgeInsets.all(12.w),
+    margin: const EdgeInsets.only(bottom: 12),
+    padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
       color: context.colors.surface,
       borderRadius: context.radius.smBorder,
@@ -81,7 +81,7 @@ class _ReviewItem extends StatelessWidget {
             StarsWidget(rate: review.rate),
           ],
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
         if (review.comment.isNotEmpty)
           Text(review.comment, style: context.typography.body),
         if (review.createdAt != null)
@@ -113,8 +113,8 @@ class AllReviewsSheet extends StatelessWidget {
     final reviewsTitle = context.l10n.product_reviews_text;
 
     return Container(
-      padding: EdgeInsets.all(16.w),
-      height: 0.8.sh,
+      padding: const EdgeInsets.all(16),
+      height: MediaQuery.sizeOf(context).height * 0.8,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -133,7 +133,7 @@ class AllReviewsSheet extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          const SizedBox(height: 16),
           Expanded(
             child: ListView.builder(
               itemCount: sortedReviews.length,

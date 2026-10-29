@@ -5,8 +5,8 @@ import 'package:mousa_store/features/profile/presentation/bloc/contact_state.dar
 
 class ContactBloc extends Bloc<ContactEvent, ContactState> {
   ContactBloc({required GetContactInfoUseCase getContactInfoUseCase})
-      : _getContactInfoUseCase = getContactInfoUseCase,
-        super(const ContactInitial()) {
+    : _getContactInfoUseCase = getContactInfoUseCase,
+      super(const ContactInitial()) {
     on<ContactFetchRequested>(_onContactFetchRequested);
   }
 

@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   NotificationBloc({required GetNotificationsUseCase getNotificationsUseCase})
-      : _getNotificationsUseCase = getNotificationsUseCase,
-        super(const NotificationState()) {
+    : _getNotificationsUseCase = getNotificationsUseCase,
+      super(const NotificationState()) {
     on<NotificationFetchRequested>(_onNotificationFetchRequested);
     on<NotificationLoadMoreRequested>(_onNotificationLoadMoreRequested);
     on<NotificationFilterChanged>(_onNotificationFilterChanged);

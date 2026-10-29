@@ -36,7 +36,9 @@ void main() {
     blocTest<OrdersBloc, OrdersState>(
       'OrdersFetchRequested emits [loading, success] with orders list',
       build: () {
-        when(() => mockGetOrdersUseCase()).thenAnswer((_) async => [sampleOrder]);
+        when(
+          () => mockGetOrdersUseCase(),
+        ).thenAnswer((_) async => [sampleOrder]);
         return OrdersBloc(getOrdersUseCase: mockGetOrdersUseCase);
       },
       act: (bloc) => bloc.add(const OrdersFetchRequested()),
@@ -49,7 +51,9 @@ void main() {
     blocTest<OrdersBloc, OrdersState>(
       'OrdersSearchQueryChanged filters cached orders by orderNumber',
       build: () {
-        when(() => mockGetOrdersUseCase()).thenAnswer((_) async => [sampleOrder]);
+        when(
+          () => mockGetOrdersUseCase(),
+        ).thenAnswer((_) async => [sampleOrder]);
         return OrdersBloc(getOrdersUseCase: mockGetOrdersUseCase);
       },
       act: (bloc) async {

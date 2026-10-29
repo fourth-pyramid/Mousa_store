@@ -14,9 +14,9 @@ class CartItemsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView.separated(
-    padding: EdgeInsets.symmetric(vertical: 8.h),
+    padding: const EdgeInsets.symmetric(vertical: 8),
     separatorBuilder: (context, index) => Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Divider(height: 1, thickness: 1, color: context.colors.divider),
     ),
     itemCount: items.length,
@@ -29,16 +29,12 @@ class CartItemsList extends StatelessWidget {
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 4),
           child: Container(
             alignment: AlignmentDirectional.centerEnd,
-            padding: EdgeInsetsDirectional.only(end: 15.w),
+            padding: const EdgeInsetsDirectional.only(end: 15),
             decoration: BoxDecoration(
               color: context.colors.error,
               borderRadius: context.radius.mdBorder,
             ),
-            child: Icon(
-              Icons.delete,
-              color: context.colors.onError,
-              size: 32.w,
-            ),
+            child: Icon(Icons.delete, color: context.colors.onError, size: 32),
           ),
         ),
         confirmDismiss: (direction) async =>

@@ -1,20 +1,19 @@
 import 'package:flutter/widgets.dart';
-import 'package:mousa_store/core/utils/screen_utils.dart';
 
 double aspectRatioCalculator(
   BoxConstraints constraints, {
   int crossAxisCount = 2,
 }) {
-  final spacing = 10.w;
+  const spacing = 10.0;
   final width =
       (constraints.maxWidth - (crossAxisCount - 1) * spacing) / crossAxisCount;
 
-  final imageHeight = 100.h;
-  final titleHeight = 18.h;
-  final descriptionHeight = 30.h;
-  final verticalPadding = 8.h * 6;
+  const imageHeight = 100.0;
+  const titleHeight = 18.0;
+  const descriptionHeight = 30.0;
+  const verticalPadding = 8.0 * 6;
 
-  final height =
+  const height =
       imageHeight + titleHeight + descriptionHeight + verticalPadding;
   final childAspectRatio = width / height;
   return childAspectRatio;
@@ -24,9 +23,7 @@ double itemHeightCalculator(
   BoxConstraints constraints, {
   int crossAxisCount = 2,
 }) {
-  final imageHeight = 200.h;
+  const imageHeight = 200.0;
 
-  final height = imageHeight;
-
-  return height;
+  return imageHeight;
 }

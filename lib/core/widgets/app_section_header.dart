@@ -17,7 +17,7 @@ class AppSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -26,14 +26,14 @@ class AppSectionHeader extends StatelessWidget {
             children: [
               // Accent left bar
               Container(
-                width: 3.w,
-                height: 18.h,
+                width: 3,
+                height: 18,
                 decoration: BoxDecoration(
                   color: context.colors.accent,
-                  borderRadius: BorderRadius.circular(2.r),
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              SizedBox(width: 10.w),
+              const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +49,7 @@ class AppSectionHeader extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (subtitle != null) ...[
-                      SizedBox(height: 1.h),
+                      const SizedBox(height: 1),
                       Text(
                         subtitle!,
                         style: context.typography.caption.copyWith(
@@ -70,7 +70,7 @@ class AppSectionHeader extends StatelessWidget {
             onTap: onActionTap,
             behavior: HitTestBehavior.opaque,
             child: Padding(
-              padding: EdgeInsetsDirectional.only(start: 12.w),
+              padding: const EdgeInsetsDirectional.only(start: 12),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -81,10 +81,10 @@ class AppSectionHeader extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  SizedBox(width: 2.w),
+                  const SizedBox(width: 2),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    size: 10.r,
+                    size: 10,
                     color: context.colors.accent,
                   ),
                 ],

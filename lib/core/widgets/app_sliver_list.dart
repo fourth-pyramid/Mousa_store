@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_list_card.dart';
+import 'package:mousa_store/core/widgets/app_shimmer.dart';
 import 'package:mousa_store/features/product/data/models/product_summary.dart';
 import 'package:mousa_store/features/product/presentation/pages/product_details_page.dart';
 import 'package:mousa_store/l10n/app_localizations.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class AppSliverList<T> extends StatelessWidget {
   const AppSliverList({
@@ -34,9 +34,9 @@ class AppSliverList<T> extends StatelessWidget {
   final Widget Function(T)? favoriteButtonBuilder;
 
   double _cardWidth(double maxWidth) {
-    if (maxWidth >= 1200) return 200.w;
-    if (maxWidth >= 800) return 180.w;
-    return (maxWidth * 0.40).clamp(140.0.w, 160.0.w);
+    if (maxWidth >= 1200) return 200;
+    if (maxWidth >= 800) return 180;
+    return (maxWidth * 0.40).clamp(140.0, 160.0);
   }
 
   @override
@@ -69,7 +69,7 @@ class AppSliverList<T> extends StatelessWidget {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
-        padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 16),
         child: IntrinsicHeight(
           child: Row(
             children: List.generate(
@@ -78,7 +78,7 @@ class AppSliverList<T> extends StatelessWidget {
                 final product = extractProductSummary(products[index]);
 
                 return Padding(
-                  padding: EdgeInsetsDirectional.only(end: 12.w),
+                  padding: const EdgeInsetsDirectional.only(end: 12),
                   child: SizedBox(
                     width: cardWidth,
                     child: _SliverProductCardItem(
@@ -146,27 +146,56 @@ class _SliverListSkeleton extends StatelessWidget {
   final double cardWidth;
 
   @override
-  Widget build(BuildContext context) => Skeletonizer(
-    ignoreContainers: true,
+  Widget build(BuildContext context) => AppShimmer(
     child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
       child: IntrinsicHeight(
         child: Row(
           children: List.generate(
             3,
             (_) => Padding(
-              padding: EdgeInsetsDirectional.only(end: 12.w),
+              padding: const EdgeInsetsDirectional.only(end: 12),
               child: SizedBox(
                 width: cardWidth,
-                child: AppListCard(
-                  title: 'Loading',
-                  price: '99',
-                  oldPrice: '129',
-                  description: 'Loading description',
-                  image: '',
-                  discount: 20,
-                  onTap: () {},
+                child: Container(
+                  height: 220,
+                  decoration: BoxDecoration(
+                    color: context.colors.surface,
+                    borderRadius: context.radius.mdBorder,
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: context.colors.surfaceStrong,
+                            borderRadius: context.radius.smBorder,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        height: 14,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: context.colors.surfaceStrong,
+                          borderRadius: context.radius.xsBorder,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        height: 12,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: context.colors.surfaceStrong,
+                          borderRadius: context.radius.xsBorder,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -1923,7 +1923,6 @@ abstract class AppLocalizations {
   String get filters_applied_text;
 }
 
-
 class _AppLocalizationsDelegate
     extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();

@@ -11,7 +11,6 @@ sealed class CheckoutEvent with _$CheckoutEvent {
     int? governorateId,
   }) = CheckoutSubmitted;
 
-  const factory CheckoutEvent.shippingFeeRequested({
-    int? governorateId,
-  }) = ShippingFeeRequested;
+  const factory CheckoutEvent.shippingFeeRequested({int? governorateId}) =
+      ShippingFeeRequested;
 }

@@ -1,15 +1,13 @@
-import 'package:mousa_store/core/utils/screen_utils.dart';
-
-/// SPORTCORE Component Sizing Constants
+/// SPORTCORE Component Sizing Constants — native logical pixels
 abstract class AppSizes {
-  static double get buttonHeight => 48.h;
-  static double get inputHeight => 46.h;
-  static double get searchBarHeight => 46.h;
-  static double get minTouchTarget => 48.r;
-  static double get iconSm => 14.r;
-  static double get iconMd => 18.r;
-  static double get iconLg => 22.r;
-  static double get iconXl => 28.r;
-  static double get navBarHeight => 64.h;
-  static double get navIconSize => 24.r;
+  static const double buttonHeight = 48;
+  static const double inputHeight = 48;
+  static const double searchBarHeight = 48;
+  static const double minTouchTarget = 48;
+  static const double iconSm = 14;
+  static const double iconMd = 18;
+  static const double iconLg = 22;
+  static const double iconXl = 28;
+  static const double navBarHeight = 64;
+  static const double navIconSize = 24;
 }

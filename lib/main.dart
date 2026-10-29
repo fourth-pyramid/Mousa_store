@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/main/app_content.dart';
 import 'package:mousa_store/core/main/app_initializer.dart';
@@ -35,7 +34,6 @@ Future<void> main() async {
 
   await dotenv.load();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await InternetStateManagerInitializer.initialize();
   final prefs = await SharedPreferences.getInstance();
   final initializer = AppInitializer(prefs);
   final result = await initializer.initialize();
@@ -59,28 +57,11 @@ Future<void> main() async {
         BlocProvider(create: (context) => getIt<LanguageBloc>()),
         BlocProvider(create: (context) => getIt<PriceModeBloc>()),
       ],
-      child: InternetStateManagerInitializer(
-        options: InternetStateOptions(
-          checkConnectionPeriodic: const Duration(seconds: 5),
-          labels: InternetStateLabels(
-            noInternetTitle: () => lookupAppLocalizations(
-              getIt<LanguageBloc>().state.locale,
-            ).no_internet_title,
-            descriptionText: () => lookupAppLocalizations(
-              getIt<LanguageBloc>().state.locale,
-            ).no_internet_description,
-            tryAgainText: () => lookupAppLocalizations(
-              getIt<LanguageBloc>().state.locale,
-            ).try_again_text,
-          ),
-        ),
-
-        child: AppContent(
-          navigatorKey: navigatorKey,
-          initialTokenValid: result.tokenValid,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-        ),
+      child: AppContent(
+        navigatorKey: navigatorKey,
+        initialTokenValid: result.tokenValid,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
       ),
     ),
   );

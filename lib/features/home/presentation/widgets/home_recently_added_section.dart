@@ -26,9 +26,9 @@ class HomeRecentlyAddedSection extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
+          const SizedBox(height: 20),
           AppSectionHeader(title: context.l10n.recently_arrived_text),
-          SizedBox(height: 12.h),
+          const SizedBox(height: 12),
           AppSliverList<Product>(
             products: state.recentlyProducts,
             isLoading: state.recentlyStatus == RequestStatus.loading,

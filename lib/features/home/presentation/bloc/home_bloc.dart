@@ -5,8 +5,8 @@ import 'package:mousa_store/features/home/presentation/bloc/home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({required FetchHomeDataUseCase useCase})
-      : _useCase = useCase,
-        super(const HomeState()) {
+    : _useCase = useCase,
+      super(const HomeState()) {
     on<HomeAllDataRequested>(_onHomeAllDataRequested);
     on<HomeBannersRequested>(_onHomeBannersRequested);
     on<HomeBrandsRequested>(_onHomeBrandsRequested);

@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mousa_store/core/design_system/app_colors.dart';
-import 'package:mousa_store/core/utils/screen_utils.dart';
 
 /// SPORTCORE Typography Scale (Cairo font for unified AR / EN support)
 abstract class AppTypography {
+  /// Bundled font family declared in pubspec.yaml (assets/fonts/).
+  static const String fontFamily = 'Cairo';
+
   static TextStyle _font({
     required double fontSize,
     required FontWeight fontWeight,
     required double height,
     Color color = AppColorTokens.textPrimary,
     double letterSpacing = -0.2,
-  }) {
-    final spSize = fontSize.sp;
-    final baseStyle = TextStyle(
-      fontSize: spSize,
-      fontWeight: fontWeight,
-      height: height / fontSize,
-      color: color,
-      letterSpacing: letterSpacing,
-    );
-
-    return GoogleFonts.cairo(textStyle: baseStyle);
-  }
+  }) => TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSize,
+    fontWeight: fontWeight,
+    height: height / fontSize,
+    color: color,
+    letterSpacing: letterSpacing,
+  );
 
   // Scale Definitions (fontSize / lineHeight) - balanced for mobile e-commerce UI
   static TextStyle display({Color color = AppColorTokens.textPrimary}) => _font(

@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
+import 'package:mousa_store/core/widgets/app_phone_field.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 import 'package:mousa_store/core/widgets/custom_form_field.dart';
 import 'package:mousa_store/features/auth/presentation/bloc/signup_bloc.dart';
 import 'package:mousa_store/features/auth/presentation/pages/otp_page.dart';
 import 'package:mousa_store/features/auth/presentation/widgets/sign_with_google.dart';
-import 'package:phone_text_field/phone_text_field.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
@@ -63,7 +63,9 @@ class _SignupFormState extends State<SignupForm> {
         success: (response) {
           CustomSnackBar.show(
             context,
-            response.message.isNotEmpty ? response.message : context.l10n.success_text,
+            response.message.isNotEmpty
+                ? response.message
+                : context.l10n.success_text,
           );
           unawaited(
             navigateWithTransition<void>(
@@ -87,9 +89,9 @@ class _SignupFormState extends State<SignupForm> {
       return Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 24.w,
-            vertical: 16.h,
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 24,
+            vertical: 16,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -101,14 +103,14 @@ class _SignupFormState extends State<SignupForm> {
                 ),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 4.h),
+              const SizedBox(height: 4),
               Text(
                 'أنشئ حسابك واستمتع بتجربة تسوق فريدة',
                 style: context.typography.caption.copyWith(
                   color: context.colors.textSecondary,
                 ),
               ),
-              SizedBox(height: 24.h),
+              const SizedBox(height: 24),
               Row(
                 children: [
                   Expanded(
@@ -117,7 +119,7 @@ class _SignupFormState extends State<SignupForm> {
                       hint: context.l10n.first_name_text,
                       prefixIcon: Icon(
                         Icons.person_outline,
-                        size: 20.r,
+                        size: 20,
                         color: context.colors.textSecondary,
                       ),
                       validator: (value) {
@@ -128,14 +130,14 @@ class _SignupFormState extends State<SignupForm> {
                       },
                     ),
                   ),
-                  SizedBox(width: 12.w),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: CustomFormField(
                       controller: _lastNameController,
                       hint: context.l10n.last_name_text,
                       prefixIcon: Icon(
                         Icons.person_outline,
-                        size: 20.r,
+                        size: 20,
                         color: context.colors.textSecondary,
                       ),
                       validator: (value) {
@@ -148,13 +150,13 @@ class _SignupFormState extends State<SignupForm> {
                   ),
                 ],
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               CustomFormField(
                 controller: _emailController,
                 hint: context.l10n.email_text,
                 prefixIcon: Icon(
                   Icons.email_outlined,
-                  size: 20.r,
+                  size: 20,
                   color: context.colors.textSecondary,
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -165,11 +167,11 @@ class _SignupFormState extends State<SignupForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
-              PhoneTextField(
-                invalidNumberMessage: context.l10n.phone_number_validation_error,
+              const SizedBox(height: 16),
+              AppPhoneField(
+                invalidNumberMessage:
+                    context.l10n.phone_number_validation_error,
                 dialogTitle: '',
-                initialCountryCode: 'EG',
                 searchTextStyle: context.typography.titleMedium,
                 decoration: InputDecoration(
                   labelText: context.l10n.phone_number_text,
@@ -183,7 +185,7 @@ class _SignupFormState extends State<SignupForm> {
                   _phoneController.text = phoneNumber.completeNumber;
                 },
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               ValueListenableBuilder<bool>(
                 valueListenable: _obscurePasswordNotifier,
                 builder: (context, obscurePassword, _) => CustomFormField(
@@ -191,7 +193,7 @@ class _SignupFormState extends State<SignupForm> {
                   hint: context.l10n.password_text,
                   prefixIcon: Icon(
                     Icons.lock_outline,
-                    size: 20.r,
+                    size: 20,
                     color: context.colors.textSecondary,
                   ),
                   obscureText: obscurePassword,
@@ -200,7 +202,7 @@ class _SignupFormState extends State<SignupForm> {
                       obscurePassword
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
-                      size: 20.r,
+                      size: 20,
                       color: context.colors.textSecondary,
                     ),
                     onPressed: () {
@@ -218,7 +220,7 @@ class _SignupFormState extends State<SignupForm> {
                   },
                 ),
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               ValueListenableBuilder<bool>(
                 valueListenable: _obscureConfirmPasswordNotifier,
                 builder: (context, obscureConfirmPassword, _) =>
@@ -227,7 +229,7 @@ class _SignupFormState extends State<SignupForm> {
                       hint: context.l10n.password_confirm_text,
                       prefixIcon: Icon(
                         Icons.lock_outline,
-                        size: 20.r,
+                        size: 20,
                         color: context.colors.textSecondary,
                       ),
                       obscureText: obscureConfirmPassword,
@@ -236,7 +238,7 @@ class _SignupFormState extends State<SignupForm> {
                           obscureConfirmPassword
                               ? Icons.visibility_off_outlined
                               : Icons.visibility_outlined,
-                          size: 20.r,
+                          size: 20,
                           color: context.colors.textSecondary,
                         ),
                         onPressed: () {
@@ -255,7 +257,7 @@ class _SignupFormState extends State<SignupForm> {
                       },
                     ),
               ),
-              SizedBox(height: 24.h),
+              const SizedBox(height: 24),
               CustomButton(
                 isLoading: isLoading,
                 text: Text(context.l10n.auth_register),
@@ -271,13 +273,13 @@ class _SignupFormState extends State<SignupForm> {
                       email: _emailController.text.trim(),
                       phone: _phoneController.text.trim(),
                       password: _passwordController.text.trim(),
-                      passwordConfirmation:
-                          _confirmPasswordController.text.trim(),
+                      passwordConfirmation: _confirmPasswordController.text
+                          .trim(),
                     ),
                   );
                 },
               ),
-              SizedBox(height: 20.h),
+              const SizedBox(height: 20),
               const SignWithGoogle(),
             ],
           ),

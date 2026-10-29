@@ -7,8 +7,7 @@ export 'product_event.dart';
 export 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
-  ProductBloc({required this.getProductUseCase})
-      : super(const ProductState()) {
+  ProductBloc({required this.getProductUseCase}) : super(const ProductState()) {
     on<ProductFetchRequested>(_onFetchRequested);
     on<ProductRefreshRequested>(_onRefreshRequested);
   }

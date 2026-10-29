@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
+import 'package:mousa_store/core/di/service_locator.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
 import 'package:mousa_store/core/widgets/app_search_field.dart';
@@ -23,6 +24,7 @@ class _SearchViewState extends State<SearchView> {
   Timer? _debounceTimer;
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
+  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
@@ -30,10 +32,20 @@ class _SearchViewState extends State<SearchView> {
     _searchController = TextEditingController();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted && _searchController.text.isNotEmpty) {
+            context.read<SearchBloc>().add(
+              SearchQueryChanged(_searchController.text),
+            );
+          }
+        });
   }
 
   @override
   void dispose() {
+    unawaited(_networkRestoreSubscription?.cancel());
     _debounceTimer?.cancel();
     _searchController.dispose();
     _scrollController.dispose();
@@ -63,7 +75,7 @@ class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      titleSpacing: 16.w,
+      titleSpacing: 16,
       title: AppSearchField(
         controller: _searchController,
         autofocus: true,
@@ -76,73 +88,64 @@ class _SearchViewState extends State<SearchView> {
       ),
     ),
     body: SafeArea(
-      child: InternetStateManager(
-        onRestoreInternetConnection: () {
-          if (_searchController.text.isNotEmpty) {
-            context.read<SearchBloc>().add(
-              SearchQueryChanged(_searchController.text),
-            );
+      child: BlocBuilder<SearchBloc, SearchState>(
+        builder: (context, searchState) {
+          if (searchState.status == SearchStatus.loading) {
+            return const Center(child: CustomLoadingIndicator());
           }
-        },
-        child: BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, searchState) {
-            if (searchState.status == SearchStatus.loading) {
-              return const Center(child: CustomLoadingIndicator());
-            }
 
-            if (searchState.status == SearchStatus.success) {
-              return CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 12.h,
-                    ),
-                    sliver: AppSliverGrid<Product>(
-                      items: searchState.products,
-                      isLoading: false,
-                      itemBuilder: (context, product, index) =>
-                          ProductGridCard(product: product),
-                    ),
+          if (searchState.status == SearchStatus.success) {
+            return CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 12,
                   ),
-                  if (searchState.isLoadingMore)
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        child: const CustomLoadingIndicator(),
-                      ),
-                    ),
-                ],
-              );
-            }
-
-            if (searchState.status == SearchStatus.empty) {
-              return AppEmptyState(
-                title: context.l10n.no_results_found_text,
-                description: context.l10n.try_searching_different_keywords_text,
-                icon: Icons.search_off_rounded,
-              );
-            }
-
-            if (searchState.status == SearchStatus.failure) {
-              return Center(
-                child: Text(
-                  searchState.errorMessage ?? context.l10n.search_failed_text,
-                  style: context.typography.bodySmall.copyWith(
-                    color: context.colors.error,
+                  sliver: AppSliverGrid<Product>(
+                    items: searchState.products,
+                    isLoading: false,
+                    itemBuilder: (context, product, index) =>
+                        ProductGridCard(product: product),
                   ),
                 ),
-              );
-            }
-
-            return AppEmptyState(
-              title: context.l10n.search_products_title_text,
-              description: context.l10n.search_products_desc_text,
-              icon: Icons.search_rounded,
+                if (searchState.isLoadingMore)
+                  const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: CustomLoadingIndicator(),
+                    ),
+                  ),
+              ],
             );
-          },
-        ),
+          }
+
+          if (searchState.status == SearchStatus.empty) {
+            return AppEmptyState(
+              title: context.l10n.no_results_found_text,
+              description: context.l10n.try_searching_different_keywords_text,
+              icon: Icons.search_off_rounded,
+            );
+          }
+
+          if (searchState.status == SearchStatus.failure) {
+            return Center(
+              child: Text(
+                searchState.errorMessage ?? context.l10n.search_failed_text,
+                style: context.typography.bodySmall.copyWith(
+                  color: context.colors.error,
+                ),
+              ),
+            );
+          }
+
+          return AppEmptyState(
+            title: context.l10n.search_products_title_text,
+            description: context.l10n.search_products_desc_text,
+            icon: Icons.search_rounded,
+          );
+        },
       ),
     ),
   );

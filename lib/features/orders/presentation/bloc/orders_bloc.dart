@@ -6,8 +6,8 @@ import 'package:mousa_store/features/orders/presentation/bloc/orders_state.dart'
 
 class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   OrdersBloc({required GetOrdersUseCase getOrdersUseCase})
-      : _getOrdersUseCase = getOrdersUseCase,
-        super(const OrdersState()) {
+    : _getOrdersUseCase = getOrdersUseCase,
+      super(const OrdersState()) {
     on<OrdersFetchRequested>(_onOrdersFetchRequested);
     on<OrdersSearchQueryChanged>(_onOrdersSearchQueryChanged);
   }
@@ -42,9 +42,9 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     } else {
       final filteredOrders = _allOrders
           .where(
-            (order) => order.orderNumber
-                .toLowerCase()
-                .contains(event.query.toLowerCase()),
+            (order) => order.orderNumber.toLowerCase().contains(
+              event.query.toLowerCase(),
+            ),
           )
           .toList();
       emit(state.copyWith(orders: filteredOrders));

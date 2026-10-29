@@ -72,7 +72,7 @@ class _ChangePasswordSettingState extends State<ChangePasswordSetting> {
           body: Form(
             key: _formKey,
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Column(
                 children: [
                   Column(
@@ -98,7 +98,7 @@ class _ChangePasswordSettingState extends State<ChangePasswordSetting> {
                         ),
                       ),
 
-                      SizedBox(height: 16.h),
+                      const SizedBox(height: 16),
 
                       ValueListenableBuilder<bool>(
                         valueListenable: _obscureNewNotifier,
@@ -130,7 +130,7 @@ class _ChangePasswordSettingState extends State<ChangePasswordSetting> {
                         ),
                       ),
 
-                      SizedBox(height: 16.h),
+                      const SizedBox(height: 16),
 
                       ValueListenableBuilder<bool>(
                         valueListenable: _obscureConfirmNotifier,
@@ -169,7 +169,7 @@ class _ChangePasswordSettingState extends State<ChangePasswordSetting> {
           ),
           bottomNavigationBar: SafeArea(
             child: Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 8.h),
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
               child: CustomButton(
                 isLoading: isLoading,
                 text: Text(context.l10n.save_text),

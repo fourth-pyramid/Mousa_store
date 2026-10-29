@@ -64,7 +64,7 @@ class AppGridCard extends StatelessWidget {
                           errorWidget: (_, _, _) => Center(
                             child: Icon(
                               Icons.image_outlined,
-                              size: 36.w,
+                              size: 36,
                               color: context.colors.textMuted,
                             ),
                           ),
@@ -75,7 +75,7 @@ class AppGridCard extends StatelessWidget {
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        height: 36.h,
+                        height: 36,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -91,16 +91,12 @@ class AppGridCard extends StatelessWidget {
                       ),
                       // Favorite button top-right
                       if (favoriteButton != null)
-                        Positioned(
-                          top: 8.h,
-                          right: 8.w,
-                          child: favoriteButton!,
-                        ),
+                        Positioned(top: 8, right: 8, child: favoriteButton!),
                       // Discount badge top-left
                       if (discount != null && discount! > 0)
                         Positioned(
-                          top: 8.h,
-                          left: 8.w,
+                          top: 8,
+                          left: 8,
                           child: AppBadge(
                             label: '-$discount%',
                             variant: AppBadgeVariant.accent,
@@ -113,7 +109,7 @@ class AppGridCard extends StatelessWidget {
 
               // Details Area
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -127,7 +123,7 @@ class AppGridCard extends StatelessWidget {
                           color: context.colors.textSecondary,
                         ),
                       ),
-                      SizedBox(height: 2.h),
+                      const SizedBox(height: 2),
                     ],
                     Text(
                       title,
@@ -139,7 +135,7 @@ class AppGridCard extends StatelessWidget {
                       ),
                     ),
                     if (numPrice != null) ...[
-                      SizedBox(height: 4.h),
+                      const SizedBox(height: 4),
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: AlignmentDirectional.centerStart,

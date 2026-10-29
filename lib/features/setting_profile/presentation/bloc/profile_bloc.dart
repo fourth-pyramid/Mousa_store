@@ -12,10 +12,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     required GetProfileUseCase getProfileUseCase,
     required UpdateProfileUseCase updateProfileUseCase,
     required AuthService authService,
-  })  : _getProfileUseCase = getProfileUseCase,
-        _updateProfileUseCase = updateProfileUseCase,
-        _authService = authService,
-        super(const ProfileInitial()) {
+  }) : _getProfileUseCase = getProfileUseCase,
+       _updateProfileUseCase = updateProfileUseCase,
+       _authService = authService,
+       super(const ProfileInitial()) {
     on<ProfileFetchRequested>(_onFetchRequested);
     on<ProfileNameUpdated>(_onNameUpdated);
     on<ProfileEmailUpdated>(_onEmailUpdated);

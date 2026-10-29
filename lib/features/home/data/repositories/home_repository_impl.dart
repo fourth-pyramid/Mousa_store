@@ -4,9 +4,8 @@ import 'package:mousa_store/features/home/domain/repositories/home_repository.da
 import 'package:mousa_store/features/product/data/models/product_list_response.dart';
 
 class HomeRepositoryImpl implements HomeRepository {
-  const HomeRepositoryImpl({
-    required HomeRemoteDataSource remoteDataSource,
-  }) : _remoteDataSource = remoteDataSource;
+  const HomeRepositoryImpl({required HomeRemoteDataSource remoteDataSource})
+    : _remoteDataSource = remoteDataSource;
 
   final HomeRemoteDataSource _remoteDataSource;
 

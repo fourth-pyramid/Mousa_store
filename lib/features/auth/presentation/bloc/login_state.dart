@@ -8,8 +8,7 @@ sealed class LoginState with _$LoginState {
   const factory LoginState.initial() = LoginInitial;
   const factory LoginState.loading() = LoginLoading;
   const factory LoginState.success(LoginResponse data) = LoginSuccess;
-  const factory LoginState.emailNotVerified({
-    required String message,
-  }) = LoginEmailNotVerified;
+  const factory LoginState.emailNotVerified({required String message}) =
+      LoginEmailNotVerified;
   const factory LoginState.failure(String error) = LoginFailure;
 }

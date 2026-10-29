@@ -22,7 +22,7 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
     color: context.colors.surface,
-    margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 12.w),
+    margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
     child: InkWell(
       borderRadius: context.radius.mdBorder,
       onTap: onTap,
@@ -31,11 +31,11 @@ class OrderCard extends StatelessWidget {
         child: Stack(
           children: [
             Padding(
-              padding: EdgeInsetsDirectional.only(
-                start: 16.w,
-                end: 10.w,
-                top: 37.h,
-                bottom: 16.h,
+              padding: const EdgeInsetsDirectional.only(
+                start: 16,
+                end: 10,
+                top: 37,
+                bottom: 16,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +46,9 @@ class OrderCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                  const SizedBox(height: 8),
                   Text(orderDate, style: context.typography.body),
-                  SizedBox(height: 8.h),
+                  const SizedBox(height: 8),
                   Text(type, style: context.typography.body),
                 ],
               ),
@@ -57,13 +57,13 @@ class OrderCard extends StatelessWidget {
             Align(
               alignment: AlignmentDirectional.topEnd,
               child: Container(
-                height: 30.h,
-                width: 100.w,
+                height: 30,
+                width: 100,
                 decoration: BoxDecoration(
                   color: deliveredColor,
-                  borderRadius: BorderRadiusDirectional.only(
-                    bottomStart: Radius.circular(12.r),
-                    topEnd: Radius.circular(12.r),
+                  borderRadius: const BorderRadiusDirectional.only(
+                    bottomStart: Radius.circular(12),
+                    topEnd: Radius.circular(12),
                   ),
                 ),
                 child: Center(

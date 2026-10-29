@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mousa_store/core/utils/screen_utils.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 
-Widget _buildTestWidget(Widget child) => ScreenUtilInit(
-  designSize: const Size(375, 812),
-  builder: (_, _) => MaterialApp(
-    home: Scaffold(body: Center(child: child)),
-  ),
+Widget _buildTestWidget(Widget child) => MaterialApp(
+  home: Scaffold(body: Center(child: child)),
 );
 
 void main() {
@@ -83,5 +79,36 @@ void main() {
       expect(find.byIcon(Icons.add), findsOneWidget);
       expect(find.text('ADD'), findsOneWidget);
     });
+
+    testWidgets(
+      'does not expand to full screen height inside bottomNavigationBar',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: const SizedBox.expand(),
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: AppButton(
+                        text: 'Add to Cart',
+                        height: 52,
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final size = tester.getSize(find.byType(AppButton));
+        expect(size.height, equals(52));
+      },
+    );
   });
 }

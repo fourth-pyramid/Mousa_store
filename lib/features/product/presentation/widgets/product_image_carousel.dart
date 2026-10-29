@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mousa_store/core/design_system/design_system.dart';
+import 'package:mousa_store/core/widgets/app_carousel_slider.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
 import 'package:mousa_store/features/product/presentation/widgets/product_image_viewer.dart';
 
@@ -22,8 +22,7 @@ class ProductImageCarousel extends StatefulWidget {
 
 class _ProductImageCarouselState extends State<ProductImageCarousel> {
   final ValueNotifier<int> _currentImageIndexNotifier = ValueNotifier<int>(0);
-  final CarouselSliderController _carouselController =
-      CarouselSliderController();
+  final AppCarouselController _carouselController = AppCarouselController();
 
   @override
   void dispose() {
@@ -35,12 +34,12 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
   Widget build(BuildContext context) {
     if (widget.images.isEmpty) {
       return Container(
-        height: 300.h,
+        height: 300,
         color: context.colors.surfaceStrong,
         child: Center(
           child: Icon(
             Icons.image_not_supported_outlined,
-            size: 48.r,
+            size: 48,
             color: context.colors.textMuted,
           ),
         ),
@@ -53,20 +52,18 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
       children: [
         // ── Edge-to-Edge Hero ──────────────────────────────────────
         SizedBox(
-          height: 300.h,
+          height: 300,
           child: Stack(
             children: [
               // Carousel
-              CarouselSlider(
-                carouselController: _carouselController,
-                options: CarouselOptions(
-                  height: 300.h,
-                  viewportFraction: 1,
-                  enableInfiniteScroll: widget.images.length > 1,
-                  onPageChanged: (index, reason) {
-                    _currentImageIndexNotifier.value = index;
-                  },
-                ),
+              AppCarouselSlider.items(
+                controller: _carouselController,
+                height: 300,
+                viewportFraction: 1,
+                enableInfiniteScroll: widget.images.length > 1,
+                onPageChanged: (index) {
+                  _currentImageIndexNotifier.value = index;
+                },
                 items: widget.images.asMap().entries.map((entry) {
                   final index = entry.key;
                   final imageUrl = entry.value;
@@ -84,7 +81,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                     child: ColoredBox(
                       color: context.colors.surface,
                       child: Padding(
-                        padding: EdgeInsets.all(16.r),
+                        padding: const EdgeInsets.all(16),
                         child: Center(
                           child: Hero(
                             tag: 'product_image_${imageUrl}_$index',
@@ -96,7 +93,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                               errorWidget: (context, url, error) => Icon(
                                 Icons.image_not_supported_outlined,
                                 color: context.colors.textMuted,
-                                size: 48.r,
+                                size: 48,
                               ),
                             ),
                           ),
@@ -112,7 +109,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: 80.h,
+                height: 80,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -132,41 +129,39 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                   widget.discountPercentage! > 0)
                 Positioned.directional(
                   textDirection: textDirection,
-                  top: 14.h,
-                  start: 14.w,
-                  child: _DiscountBadge(
-                    percentage: widget.discountPercentage!,
-                  ),
+                  top: 14,
+                  start: 14,
+                  child: _DiscountBadge(percentage: widget.discountPercentage!),
                 ),
 
               // ── Zoom hint ────────────────────────────────────────
               Positioned.directional(
                 textDirection: textDirection,
-                bottom: 12.h,
-                start: 14.w,
+                bottom: 12,
+                start: 14,
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8.w,
-                    vertical: 4.h,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.45),
-                    borderRadius: BorderRadius.circular(20.r),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.zoom_in_rounded,
-                        size: 13.r,
+                        size: 13,
                         color: Colors.white,
                       ),
-                      SizedBox(width: 3.w),
+                      SizedBox(width: 3),
                       Text(
                         'تكبير',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 10.sp,
+                          fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -178,7 +173,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
               // ── Dot Indicators ───────────────────────────────────
               if (widget.images.length > 1)
                 Positioned(
-                  bottom: 12.h,
+                  bottom: 12,
                   left: 0,
                   right: 0,
                   child: ValueListenableBuilder<int>(
@@ -189,14 +184,14 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                         final isActive = i == currentIndex;
                         return AnimatedContainer(
                           duration: context.durations.fast,
-                          margin: EdgeInsets.symmetric(horizontal: 3.w),
-                          width: isActive ? 18.w : 6.w,
-                          height: 6.h,
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          width: isActive ? 18 : 6,
+                          height: 6,
                           decoration: BoxDecoration(
                             color: isActive
                                 ? Colors.white
                                 : Colors.white.withValues(alpha: 0.5),
-                            borderRadius: BorderRadius.circular(3.r),
+                            borderRadius: BorderRadius.circular(3),
                           ),
                         );
                       }),
@@ -209,17 +204,17 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
 
         // ── Thumbnails ────────────────────────────────────────────
         if (widget.images.length > 1) ...[
-          SizedBox(height: 14.h),
+          const SizedBox(height: 14),
           ValueListenableBuilder<int>(
             valueListenable: _currentImageIndexNotifier,
             builder: (context, currentImageIndex, _) => SizedBox(
-              height: 68.h,
+              height: 68,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: widget.images.length,
-                separatorBuilder: (context, index) => SizedBox(width: 10.w),
+                separatorBuilder: (context, index) => const SizedBox(width: 10),
                 itemBuilder: (context, index) {
                   final isSelected = currentImageIndex == index;
 
@@ -230,9 +225,9 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                     },
                     child: AnimatedContainer(
                       duration: context.durations.fast,
-                      width: 64.w,
-                      height: 64.h,
-                      padding: EdgeInsets.all(3.r),
+                      width: 64,
+                      height: 64,
+                      padding: const EdgeInsets.all(3),
                       decoration: BoxDecoration(
                         color: context.colors.surface,
                         borderRadius: context.radius.smBorder,
@@ -281,34 +276,34 @@ class _DiscountBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-        decoration: BoxDecoration(
-          color: context.colors.accent,
-          borderRadius: BorderRadius.circular(20.r),
-          boxShadow: [
-            BoxShadow(
-              color: context.colors.accent.withValues(alpha: 0.45),
-              blurRadius: 10,
-              spreadRadius: 1,
-              offset: const Offset(0, 3),
-            ),
-          ],
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    decoration: BoxDecoration(
+      color: context.colors.accent,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: context.colors.accent.withValues(alpha: 0.45),
+          blurRadius: 10,
+          spreadRadius: 1,
+          offset: const Offset(0, 3),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.local_offer_rounded, size: 12.r, color: Colors.white),
-            SizedBox(width: 4.w),
-            Text(
-              '-$percentage%',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 0.3,
-              ),
-            ),
-          ],
+      ],
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(Icons.local_offer_rounded, size: 12, color: Colors.white),
+        const SizedBox(width: 4),
+        Text(
+          '-$percentage%',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.3,
+          ),
         ),
-      );
+      ],
+    ),
+  );
 }

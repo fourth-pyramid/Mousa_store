@@ -4,9 +4,8 @@ part 'cart_event.freezed.dart';
 
 @freezed
 sealed class CartEvent with _$CartEvent {
-  const factory CartEvent.fetchRequested({
-    @Default(false) bool silent,
-  }) = CartFetchRequested;
+  const factory CartEvent.fetchRequested({@Default(false) bool silent}) =
+      CartFetchRequested;
 
   const factory CartEvent.itemAdded({
     required int propertyId,
@@ -18,9 +17,8 @@ sealed class CartEvent with _$CartEvent {
     required int quantity,
   }) = CartQuantityUpdated;
 
-  const factory CartEvent.itemRemoved({
-    required int cartItemId,
-  }) = CartItemRemoved;
+  const factory CartEvent.itemRemoved({required int cartItemId}) =
+      CartItemRemoved;
 
   const factory CartEvent.resetRequested() = CartResetRequested;
 }

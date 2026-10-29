@@ -204,14 +204,9 @@ class ProfileView extends StatelessWidget {
                       }
 
                       return ListView.separated(
-                        padding: EdgeInsets.fromLTRB(
-                          20.w,
-                          16.h,
-                          20.w,
-                          100.h,
-                        ),
+                        padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
                         itemCount: sections.length,
-                        separatorBuilder: (_, _) => SizedBox(height: 24.h),
+                        separatorBuilder: (_, _) => const SizedBox(height: 24),
                         itemBuilder: (context, sectionIndex) {
                           final section = sections[sectionIndex];
                           final items = section['items']! as List<dynamic>;
@@ -226,10 +221,10 @@ class ProfileView extends StatelessWidget {
                                   letterSpacing: 1.0,
                                 ),
                               ),
-                              SizedBox(height: 12.h),
+                              const SizedBox(height: 12),
                               ...items.map(
                                 (item) => Padding(
-                                  padding: EdgeInsets.only(bottom: 8.h),
+                                  padding: const EdgeInsets.only(bottom: 8),
                                   child: Material(
                                     color: context.colors.surface,
                                     borderRadius: context.radius.smBorder,

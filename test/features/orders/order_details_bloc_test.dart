@@ -7,7 +7,8 @@ import 'package:mousa_store/features/orders/presentation/bloc/order_details_bloc
 import 'package:mousa_store/features/orders/presentation/bloc/order_details_event.dart';
 import 'package:mousa_store/features/orders/presentation/bloc/order_details_state.dart';
 
-class MockGetOrderDetailsUseCase extends Mock implements GetOrderDetailsUseCase {}
+class MockGetOrderDetailsUseCase extends Mock
+    implements GetOrderDetailsUseCase {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

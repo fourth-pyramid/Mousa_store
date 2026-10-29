@@ -31,7 +31,7 @@ class _PurchaseTypePageState extends State<PurchaseTypePage> {
   Widget build(BuildContext context) => Scaffold(
     body: SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: BlocBuilder<PriceModeBloc, PriceModeState>(
           builder: (context, state) => ValueListenableBuilder<String?>(
             valueListenable: _selectedTypeNotifier,
@@ -40,14 +40,14 @@ class _PurchaseTypePageState extends State<PurchaseTypePage> {
               children: [
                 AppImage.asset(
                   'assets/images/mousa_store.png',
-                  height: 180.h,
-                  width: 180.w,
+                  height: 180,
+                  width: 180,
                   color: context.colors.textPrimary == Colors.white
                       ? Colors.white
                       : null,
                   fit: BoxFit.contain,
                 ),
-                SizedBox(height: 14.h),
+                const SizedBox(height: 14),
                 Text(
                   context.l10n.choose_your_type_of_shopping.toUpperCase(),
                   style: context.typography.h1.copyWith(
@@ -57,7 +57,7 @@ class _PurchaseTypePageState extends State<PurchaseTypePage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 10.h),
+                const SizedBox(height: 10),
                 Text(
                   context.l10n.do_you_want_to_buy_wholesale_or_retail,
                   textAlign: TextAlign.center,
@@ -65,7 +65,7 @@ class _PurchaseTypePageState extends State<PurchaseTypePage> {
                     color: context.colors.textSecondary,
                   ),
                 ),
-                SizedBox(height: 28.h),
+                const SizedBox(height: 28),
                 AppButton(
                   onPressed: () => _selectedTypeNotifier.value = 'wholesale',
                   text: context.l10n.wholesale_text,
@@ -73,7 +73,7 @@ class _PurchaseTypePageState extends State<PurchaseTypePage> {
                       ? AppButtonVariant.primary
                       : AppButtonVariant.outline,
                 ),
-                SizedBox(height: 10.h),
+                const SizedBox(height: 10),
                 AppButton(
                   onPressed: () => _selectedTypeNotifier.value = 'retail',
                   text: context.l10n.retail_text,
@@ -81,16 +81,16 @@ class _PurchaseTypePageState extends State<PurchaseTypePage> {
                       ? AppButtonVariant.primary
                       : AppButtonVariant.outline,
                 ),
-                SizedBox(height: 32.h),
+                const SizedBox(height: 32),
                 AppButton(
                   onPressed: selectedTypeRaw != null
                       ? () {
                           final mode = selectedTypeRaw == 'wholesale'
                               ? PriceMode.wholesale
                               : PriceMode.retail;
-                          context
-                              .read<PriceModeBloc>()
-                              .add(PriceModeEvent.modeChanged(mode));
+                          context.read<PriceModeBloc>().add(
+                            PriceModeEvent.modeChanged(mode),
+                          );
                           unawaited(
                             navigateWithTransition<void>(
                               context,

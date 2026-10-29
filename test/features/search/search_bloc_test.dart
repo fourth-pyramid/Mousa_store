@@ -91,9 +91,7 @@ void main() {
       'SearchCleared resets state',
       build: () => SearchBloc(searchProductsUseCase: mockSearchProductsUseCase),
       act: (bloc) => bloc.add(const SearchCleared()),
-      expect: () => [
-        const SearchState(),
-      ],
+      expect: () => [const SearchState()],
     );
   });
 }

@@ -42,7 +42,10 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     }
 
     try {
-      final response = await DioHelper.postData(url: 'update-profile', data: data);
+      final response = await DioHelper.postData(
+        url: 'update-profile',
+        data: data,
+      );
       return ProfileUpdateResponse.fromJson(
         response.data as Map<String, dynamic>,
       );

@@ -31,7 +31,7 @@ class HomeOffersSection extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
+          const SizedBox(height: 20),
           AppSectionHeader(
             title: context.l10n.offers_discount_text,
             actionLabel: context.l10n.view_all_text,
@@ -44,7 +44,7 @@ class HomeOffersSection extends StatelessWidget {
               );
             },
           ),
-          SizedBox(height: 12.h),
+          const SizedBox(height: 12),
           AppSliverList<Product>(
             products: state.offerProducts,
             isLoading: state.offersStatus == RequestStatus.loading,

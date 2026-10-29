@@ -19,7 +19,7 @@ class ReviewSummaryCard extends StatelessWidget {
     elevation: 1,
     shape: RoundedRectangleBorder(borderRadius: context.radius.mdBorder),
     child: Padding(
-      padding: EdgeInsets.all(16.w),
+      padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           Expanded(
@@ -31,7 +31,7 @@ class ReviewSummaryCard extends StatelessWidget {
                     ? 0.0
                     : count / totalReviews;
                 return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4.h),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
                     children: [
                       Expanded(
@@ -39,13 +39,13 @@ class ReviewSummaryCard extends StatelessWidget {
                           borderRadius: context.radius.xsBorder,
                           child: LinearProgressIndicator(
                             value: percentage,
-                            minHeight: 8.h,
+                            minHeight: 8,
                             backgroundColor: context.colors.surfaceStrong,
                             color: context.colors.primary,
                           ),
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      const SizedBox(width: 12),
                       Text(
                         star.toString(),
                         style: context.typography.body.copyWith(
@@ -59,7 +59,7 @@ class ReviewSummaryCard extends StatelessWidget {
             ),
           ),
 
-          SizedBox(width: 24.w),
+          const SizedBox(width: 24),
 
           Column(
             children: [
@@ -71,19 +71,19 @@ class ReviewSummaryCard extends StatelessWidget {
                   height: 1,
                 ),
               ),
-              SizedBox(height: 8.h),
+              const SizedBox(height: 8),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: List.generate(
                   5,
                   (index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 1.w),
+                    padding: const EdgeInsets.symmetric(horizontal: 1),
                     child: Icon(
                       index < averageRating.round()
                           ? Icons.star
                           : Icons.star_border,
                       color: context.colors.secondary,
-                      size: 16.w,
+                      size: 16,
                     ),
                   ),
                 ),

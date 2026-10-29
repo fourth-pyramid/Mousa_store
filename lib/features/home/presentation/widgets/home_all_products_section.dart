@@ -26,14 +26,14 @@ class HomeAllProductsSection extends StatelessWidget {
         SliverToBoxAdapter(
           child: Column(
             children: [
-              SizedBox(height: 20.h),
+              const SizedBox(height: 20),
               AppSectionHeader(title: context.l10n.all_products_text),
-              SizedBox(height: 12.h),
+              const SizedBox(height: 12),
             ],
           ),
         ),
         SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           sliver: AppSliverGrid<Product>(
             items: state.allProducts,
             crossAxisSpacing: 10,
@@ -48,11 +48,11 @@ class HomeAllProductsSection extends StatelessWidget {
         ),
         if (state.allProductsPaginationStatus == RequestStatus.loading &&
             !state.hasReachedMax)
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 24.h),
-                child: const CustomLoadingIndicator(),
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: CustomLoadingIndicator(),
               ),
             ),
           ),

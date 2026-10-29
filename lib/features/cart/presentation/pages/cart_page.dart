@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
+import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
@@ -25,12 +26,27 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  StreamSubscription<void>? _networkRestoreSubscription;
+
   @override
   void initState() {
     super.initState();
     if (CacheHelper.getToken() != null) {
       context.read<CartBloc>().add(const CartFetchRequested());
     }
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted && CacheHelper.getToken() != null) {
+            context.read<CartBloc>().add(const CartFetchRequested());
+          }
+        });
+  }
+
+  @override
+  void dispose() {
+    unawaited(_networkRestoreSubscription?.cancel());
+    super.dispose();
   }
 
   @override
@@ -64,62 +80,55 @@ class _CartPageState extends State<CartPage> {
         title: Text(context.l10n.shopping_cart_text.toUpperCase()),
         backgroundColor: context.colors.background,
       ),
-      body: InternetStateManager(
-        onRestoreInternetConnection: () {
-          if (CacheHelper.getToken() != null) {
-            context.read<CartBloc>().add(const CartFetchRequested());
+      body: BlocBuilder<CartBloc, CartState>(
+        builder: (context, state) {
+          if (state.status == RequestStatus.loading && state.cart == null) {
+            return const Center(child: CustomLoadingIndicator());
           }
-        },
-        child: BlocBuilder<CartBloc, CartState>(
-          builder: (context, state) {
-            if (state.status == RequestStatus.loading && state.cart == null) {
-              return const Center(child: CustomLoadingIndicator());
-            }
 
-            final cart = state.cart;
+          final cart = state.cart;
 
-            if (cart == null || cart.items.isEmpty) {
-              return AppEmptyState(
-                title: context.l10n.empty_cart_text,
-                description: context.l10n.start_adding_products_text,
-                actionLabel: context.l10n.explore_products_text,
-                onActionTap: widget.gnToHome,
-                icon: Icons.shopping_bag_outlined,
-              );
-            }
+          if (cart == null || cart.items.isEmpty) {
+            return AppEmptyState(
+              title: context.l10n.empty_cart_text,
+              description: context.l10n.start_adding_products_text,
+              actionLabel: context.l10n.explore_products_text,
+              onActionTap: widget.gnToHome,
+              icon: Icons.shopping_bag_outlined,
+            );
+          }
 
-            return Column(
-              children: [
-                Expanded(
-                  child: BlocBuilder<CartBloc, CartState>(
-                    buildWhen: (previous, current) {
-                      final prevCart = previous.cart;
-                      final currCart = current.cart;
-                      if (prevCart == null || currCart == null) return true;
-                      if (prevCart.items.length != currCart.items.length) {
+          return Column(
+            children: [
+              Expanded(
+                child: BlocBuilder<CartBloc, CartState>(
+                  buildWhen: (previous, current) {
+                    final prevCart = previous.cart;
+                    final currCart = current.cart;
+                    if (prevCart == null || currCart == null) return true;
+                    if (prevCart.items.length != currCart.items.length) {
+                      return true;
+                    }
+                    for (var i = 0; i < prevCart.items.length; i++) {
+                      if (prevCart.items[i].id != currCart.items[i].id) {
                         return true;
                       }
-                      for (var i = 0; i < prevCart.items.length; i++) {
-                        if (prevCart.items[i].id != currCart.items[i].id) {
-                          return true;
-                        }
-                      }
-                      return false;
-                    },
-                    builder: (context, state) =>
-                        CartItemsList(items: state.cart!.items),
-                  ),
+                    }
+                    return false;
+                  },
+                  builder: (context, state) =>
+                      CartItemsList(items: state.cart!.items),
                 ),
-                BlocBuilder<CartBloc, CartState>(
-                  builder: (context, state) => CartInformation(
-                    cart: state.cart!,
-                    gnToHome: widget.gnToHome,
-                  ),
+              ),
+              BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) => CartInformation(
+                  cart: state.cart!,
+                  gnToHome: widget.gnToHome,
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

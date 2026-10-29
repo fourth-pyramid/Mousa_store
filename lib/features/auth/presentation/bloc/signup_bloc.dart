@@ -8,8 +8,8 @@ export 'package:mousa_store/features/auth/presentation/bloc/signup_state.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc({required SignupUseCase signupUseCase})
-      : _signupUseCase = signupUseCase,
-        super(const SignupInitial()) {
+    : _signupUseCase = signupUseCase,
+      super(const SignupInitial()) {
     on<SignupSubmitted>(_onSubmitted);
   }
 

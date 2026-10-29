@@ -9,8 +9,8 @@ export 'package:mousa_store/features/auth/presentation/bloc/login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({required LoginUseCase loginUseCase})
-      : _loginUseCase = loginUseCase,
-        super(const LoginInitial()) {
+    : _loginUseCase = loginUseCase,
+      super(const LoginInitial()) {
     on<LoginSubmitted>(_onSubmitted);
   }
 

@@ -8,7 +8,7 @@ export 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CategoryBloc({required this.getCategoriesUseCase})
-      : super(const CategoryState()) {
+    : super(const CategoryState()) {
     on<CategoryFetchStarted>(_onCategoryFetchStarted);
     on<CategoryRefreshRequested>(_onCategoryRefreshRequested);
   }
@@ -23,10 +23,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     try {
       final categories = await getCategoriesUseCase();
       emit(
-        state.copyWith(
-          status: CategoryStatus.success,
-          categories: categories,
-        ),
+        state.copyWith(status: CategoryStatus.success, categories: categories),
       );
     } on Object catch (e) {
       emit(
@@ -46,10 +43,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     try {
       final categories = await getCategoriesUseCase();
       emit(
-        state.copyWith(
-          status: CategoryStatus.success,
-          categories: categories,
-        ),
+        state.copyWith(status: CategoryStatus.success, categories: categories),
       );
     } on Object catch (e) {
       emit(

@@ -16,11 +16,11 @@ class CategoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
     child: GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 80.h,
+        height: 80,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: context.colors.surface,
@@ -34,9 +34,9 @@ class CategoryListItem extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 10.h,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +51,7 @@ class CategoryListItem extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(height: 4.h),
+                          const SizedBox(height: 4),
                           Row(
                             children: [
                               Text(
@@ -61,10 +61,10 @@ class CategoryListItem extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(width: 4.w),
+                              const SizedBox(width: 4),
                               Icon(
                                 Icons.arrow_forward_rounded,
-                                size: 14.w,
+                                size: 14,
                                 color: context.colors.textSecondary,
                               ),
                             ],
@@ -80,7 +80,7 @@ class CategoryListItem extends StatelessWidget {
                       errorWidget: (_, _, _) => Center(
                         child: Icon(
                           Icons.sports_soccer,
-                          size: 24.w,
+                          size: 24,
                           color: context.colors.textSecondary,
                         ),
                       ),

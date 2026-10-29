@@ -50,16 +50,16 @@ class AppSearchField extends StatelessWidget {
         ),
         filled: false,
         prefixIcon: Padding(
-          padding: EdgeInsetsDirectional.only(start: 14.w, end: 8.w),
+          padding: const EdgeInsetsDirectional.only(start: 14, end: 8),
           child: Icon(
             Icons.search_rounded,
             color: context.colors.textSecondary,
             size: context.sizes.iconLg,
           ),
         ),
-        prefixIconConstraints: BoxConstraints(
-          minWidth: 42.w,
-          minHeight: 42.h,
+        prefixIconConstraints: const BoxConstraints(
+          minWidth: 42,
+          minHeight: 42,
         ),
         suffixIcon: controller?.text.isNotEmpty ?? false
             ? GestureDetector(
@@ -68,7 +68,7 @@ class AppSearchField extends StatelessWidget {
                   onClear?.call();
                 },
                 child: Padding(
-                  padding: EdgeInsetsDirectional.only(end: 12.w),
+                  padding: const EdgeInsetsDirectional.only(end: 12),
                   child: Icon(
                     Icons.cancel_rounded,
                     color: context.colors.textMuted,
@@ -77,11 +77,11 @@ class AppSearchField extends StatelessWidget {
                 ),
               )
             : null,
-        suffixIconConstraints: BoxConstraints(
-          minWidth: 36.w,
-          minHeight: 36.h,
+        suffixIconConstraints: const BoxConstraints(
+          minWidth: 36,
+          minHeight: 36,
         ),
-        contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+        contentPadding: const EdgeInsets.symmetric(vertical: 10),
         border: InputBorder.none,
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,

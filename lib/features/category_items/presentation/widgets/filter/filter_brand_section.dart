@@ -25,9 +25,9 @@ class FilterBrandSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 16.w,
-            vertical: 8.h,
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 16,
+            vertical: 8,
           ),
           child: Row(
             children: [
@@ -38,16 +38,16 @@ class FilterBrandSection extends StatelessWidget {
                 ),
               ),
               if (selectedBrand != null) ...[
-                SizedBox(width: 8.w),
+                const SizedBox(width: 8),
                 DecoratedBox(
                   decoration: BoxDecoration(
                     color: context.colors.primary,
                     borderRadius: context.radius.pillBorder,
                   ),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.symmetric(
-                      horizontal: 8.w,
-                      vertical: 2.h,
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
                     ),
                     child: Text(
                       '1',
@@ -62,15 +62,15 @@ class FilterBrandSection extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 6.h),
+        const SizedBox(height: 6),
         SizedBox(
-          height: 48.h,
+          height: 48,
           child: ListView.separated(
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             itemCount: brands.length + 1,
-            separatorBuilder: (_, _) => SizedBox(width: 8.w),
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
             itemBuilder: (context, index) {
               if (index == 0) {
                 final isAllSelected = selectedBrand == null;
@@ -107,16 +107,16 @@ class _AllBrandsChip extends StatelessWidget {
     color: Colors.transparent,
     child: InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
+      borderRadius: BorderRadius.circular(12),
       child: AnimatedContainer(
         duration: context.durations.fast,
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 14.w),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 14),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isSelected
               ? context.colors.primary
               : context.colors.surfaceStrong.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? context.colors.primary : context.colors.border,
             width: isSelected ? 1.5 : 1,
@@ -127,12 +127,12 @@ class _AllBrandsChip extends StatelessWidget {
           children: [
             Icon(
               Icons.grid_view_rounded,
-              size: 16.r,
+              size: 16,
               color: isSelected
                   ? context.colors.onPrimary
                   : context.colors.textSecondary,
             ),
-            SizedBox(width: 6.w),
+            const SizedBox(width: 6),
             Text(
               context.l10n.all_brands_text,
               style: context.typography.bodySmall.copyWith(
@@ -165,16 +165,16 @@ class _BrandChip extends StatelessWidget {
     color: Colors.transparent,
     child: InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
+      borderRadius: BorderRadius.circular(12),
       child: AnimatedContainer(
         duration: context.durations.fast,
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 12.w),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 12),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isSelected
               ? context.colors.primary
               : context.colors.surfaceStrong.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? context.colors.primary : context.colors.border,
             width: isSelected ? 1.5 : 1,
@@ -187,20 +187,20 @@ class _BrandChip extends StatelessWidget {
               DecoratedBox(
                 decoration: BoxDecoration(
                   color: context.colors.background,
-                  borderRadius: BorderRadius.circular(6.r),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(2.r),
+                  padding: const EdgeInsets.all(2),
                   child: AppImage(
                     image: brand.imagePath!,
-                    width: 20.w,
-                    height: 20.h,
+                    width: 20,
+                    height: 20,
                     fit: BoxFit.contain,
                     errorWidget: (_, _, _) => const SizedBox.shrink(),
                   ),
                 ),
               ),
-              SizedBox(width: 8.w),
+              const SizedBox(width: 8),
             ],
             Text(
               brand.name ?? '',
@@ -212,10 +212,10 @@ class _BrandChip extends StatelessWidget {
               ),
             ),
             if (isSelected) ...[
-              SizedBox(width: 6.w),
+              const SizedBox(width: 6),
               Icon(
                 Icons.check_rounded,
-                size: 16.r,
+                size: 16,
                 color: context.colors.onPrimary,
               ),
             ],

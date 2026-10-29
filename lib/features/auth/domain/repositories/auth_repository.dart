@@ -17,27 +17,18 @@ abstract class AuthRepository {
     required String passwordConfirmation,
   });
 
-  Future<OtpResponse> verifyOtp({
-    required String email,
-    required String otp,
-  });
+  Future<OtpResponse> verifyOtp({required String email, required String otp});
 
-  Future<OtpResponse> resendOtp({
-    required String email,
-  });
+  Future<OtpResponse> resendOtp({required String email});
 
-  Future<OtpResponse> sendEmailForForgotPassword({
-    required String email,
-  });
+  Future<OtpResponse> sendEmailForForgotPassword({required String email});
 
   Future<OtpResponse> verifyForgotPasswordOtp({
     required String email,
     required String otp,
   });
 
-  Future<OtpResponse> resendForgotPasswordOtp({
-    required String email,
-  });
+  Future<OtpResponse> resendForgotPasswordOtp({required String email});
 
   Future<OtpResponse> resetPassword({
     required String email,

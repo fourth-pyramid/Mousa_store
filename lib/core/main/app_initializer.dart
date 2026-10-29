@@ -26,10 +26,10 @@ class AppInitializer {
   Future<InitializationResult> initialize() async {
     await CacheHelper.init();
     await CacheHelper.setFirstOpenDone();
-    DioHelper.init();
     final themeMode = getInitialThemeMode();
     final locale = getInitialLanguage();
     await setupDi(initialThemeMode: themeMode);
+    DioHelper.init();
 
     final authService = getIt<AuthService>();
 

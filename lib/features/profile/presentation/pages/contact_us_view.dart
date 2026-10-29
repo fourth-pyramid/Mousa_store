@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/service_locator.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
+import 'package:mousa_store/core/widgets/app_shimmer.dart';
 import 'package:mousa_store/features/profile/presentation/bloc/contact_bloc.dart';
 import 'package:mousa_store/features/profile/presentation/bloc/contact_state.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactUsView extends StatelessWidget {
@@ -24,8 +24,33 @@ class ContactUsView extends StatelessWidget {
   );
 }
 
-class _ContactUsContent extends StatelessWidget {
+class _ContactUsContent extends StatefulWidget {
   const _ContactUsContent();
+
+  @override
+  State<_ContactUsContent> createState() => _ContactUsContentState();
+}
+
+class _ContactUsContentState extends State<_ContactUsContent> {
+  StreamSubscription<void>? _networkRestoreSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted) {
+            unawaited(context.read<ContactBloc>().getContactInfo());
+          }
+        });
+  }
+
+  @override
+  void dispose() {
+    unawaited(_networkRestoreSubscription?.cancel());
+    super.dispose();
+  }
 
   Future<void> _launchUrl(String? urlString, {String scheme = ''}) async {
     if (urlString == null || urlString.isEmpty) return;
@@ -42,89 +67,84 @@ class _ContactUsContent extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: Text(context.l10n.contact_us_text.toUpperCase())),
     body: SafeArea(
-      child: InternetStateManager(
-        onRestoreInternetConnection: () =>
-            context.read<ContactBloc>().getContactInfo(),
-        noInternetScreen: const NoInternetScreen(),
-        child: BlocBuilder<ContactBloc, ContactState>(
-          builder: (context, state) {
-            if (state case ContactError(:final message)) {
-              return Center(
-                child: Text(
-                  message,
-                  style: context.typography.bodySmall.copyWith(
-                    color: context.colors.error,
-                  ),
-                ),
-              );
-            }
-
-            final contact = switch (state) {
-              ContactLoaded(:final contact) => contact,
-              _ => null,
-            };
-            final isLoading =
-                state is ContactLoading || state is ContactInitial;
-
-            return Skeletonizer(
-              enabled: isLoading,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-                child: Column(
-                  children: [
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: context.colors.surface,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(24.r),
-                        child: Icon(
-                          Icons.headset_mic_outlined,
-                          size: 48.w,
-                          color: context.colors.textPrimary,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      context.l10n.contact_us_text.toUpperCase(),
-                      style: context.typography.titleMedium.copyWith(
-                        color: context.colors.textPrimary,
-                      ),
-                    ),
-                    SizedBox(height: 32.h),
-                    if (contact?.phone != null || isLoading)
-                      _ContactCard(
-                        icon: Icons.phone_android_rounded,
-                        title: context.l10n.phone_text,
-                        subtitle: contact?.phone ?? 'Loading...',
-                        onTap: () =>
-                            _launchUrl('+20${contact?.phone}', scheme: 'tel'),
-                      ),
-                    SizedBox(height: 12.h),
-                    if (contact?.email != null || isLoading)
-                      _ContactCard(
-                        icon: Icons.email_outlined,
-                        title: context.l10n.email_text,
-                        subtitle: contact?.email ?? 'Loading...',
-                        onTap: () =>
-                            _launchUrl(contact?.email, scheme: 'mailto'),
-                      ),
-                    SizedBox(height: 12.h),
-                    if (contact?.address != null || isLoading)
-                      _ContactCard(
-                        icon: Icons.location_on_outlined,
-                        title: context.l10n.address_text,
-                        subtitle: contact?.address ?? 'Loading...',
-                        onTap: () {},
-                      ),
-                  ],
+      child: BlocBuilder<ContactBloc, ContactState>(
+        builder: (context, state) {
+          if (state case ContactError(:final message)) {
+            return Center(
+              child: Text(
+                message,
+                style: context.typography.bodySmall.copyWith(
+                  color: context.colors.error,
                 ),
               ),
             );
-          },
-        ),
+          }
+
+          final contact = switch (state) {
+            ContactLoaded(:final contact) => contact,
+            _ => null,
+          };
+          final isLoading = state is ContactLoading || state is ContactInitial;
+
+          final content = SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            child: Column(
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: context.colors.surface,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Icon(
+                      Icons.headset_mic_outlined,
+                      size: 48,
+                      color: context.colors.textPrimary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  context.l10n.contact_us_text.toUpperCase(),
+                  style: context.typography.titleMedium.copyWith(
+                    color: context.colors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                if (contact?.phone != null || isLoading)
+                  _ContactCard(
+                    icon: Icons.phone_android_rounded,
+                    title: context.l10n.phone_text,
+                    subtitle: contact?.phone ?? 'Loading...',
+                    onTap: () =>
+                        _launchUrl('+20${contact?.phone}', scheme: 'tel'),
+                  ),
+                const SizedBox(height: 12),
+                if (contact?.email != null || isLoading)
+                  _ContactCard(
+                    icon: Icons.email_outlined,
+                    title: context.l10n.email_text,
+                    subtitle: contact?.email ?? 'Loading...',
+                    onTap: () => _launchUrl(contact?.email, scheme: 'mailto'),
+                  ),
+                const SizedBox(height: 12),
+                if (contact?.address != null || isLoading)
+                  _ContactCard(
+                    icon: Icons.location_on_outlined,
+                    title: context.l10n.address_text,
+                    subtitle: contact?.address ?? 'Loading...',
+                    onTap: () {},
+                  ),
+              ],
+            ),
+          );
+
+          if (isLoading) {
+            return AppShimmer(child: content);
+          }
+          return content;
+        },
       ),
     ),
   );

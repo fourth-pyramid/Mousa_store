@@ -963,4 +963,3 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get filters_applied_text => 'محدد';
 }
-

@@ -1,16 +1,14 @@
-import 'package:mousa_store/core/utils/screen_utils.dart';
-
-/// SPORTCORE 4px-base Spacing Tokens
+/// SPORTCORE 4px-base Spacing Tokens — native logical pixels
 abstract class AppSpacing {
-  static double get xxs => 4.r;
-  static double get xs => 8.r;
-  static double get sm => 12.r;
-  static double get md => 16.r;
-  static double get lg => 20.r;
-  static double get xl => 24.r;
-  static double get xxl => 32.r;
-  static double get section => 32.r;
-  static double get sectionLarge => 48.r;
-  static double get screenPadding => 20.w;
-  static double get cardGap => 12.r;
+  static const double xxs = 4;
+  static const double xs = 8;
+  static const double sm = 12;
+  static const double md = 16;
+  static const double lg = 20;
+  static const double xl = 24;
+  static const double xxl = 32;
+  static const double section = 32;
+  static const double sectionLarge = 48;
+  static const double screenPadding = 20;
+  static const double cardGap = 12;
 }

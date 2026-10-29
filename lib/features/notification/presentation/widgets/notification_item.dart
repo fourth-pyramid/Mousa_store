@@ -61,8 +61,9 @@ class NotificationItem extends StatelessWidget {
 
           var isInFavorites = false;
           if (favorites != null) {
-            isInFavorites =
-                favorites.any((p) => p is Product && p.id == productId);
+            isInFavorites = favorites.any(
+              (p) => p is Product && p.id == productId,
+            );
           }
 
           if ((notification.type == NotificationType.cartOffer ||
@@ -164,7 +165,7 @@ class NotificationItem extends StatelessWidget {
     );
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Material(
         color: isUnread
             ? context.colors.primary.withAlpha((0.15 * 255).toInt())
@@ -174,12 +175,12 @@ class NotificationItem extends StatelessWidget {
         child: InkWell(
           onTap: () => _handleNotificationTap(context),
           child: Padding(
-            padding: EdgeInsets.all(14.w),
+            padding: const EdgeInsets.all(14),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _NotificationIconWidget(notification: notification),
-                SizedBox(width: 12.w),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,14 +191,14 @@ class NotificationItem extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 4.h),
+                      const SizedBox(height: 4),
                       Text(
                         notification.subtitle,
                         style: context.typography.bodySmall,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 8.h),
+                      const SizedBox(height: 8),
                       Text(
                         _formatDateTime(context),
                         style: context.typography.caption.copyWith(
@@ -266,14 +267,14 @@ class _NotificationIconWidget extends StatelessWidget {
     };
 
     return SizedBox(
-      width: 48.w,
-      height: 48.w,
+      width: 48,
+      height: 48,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: bg,
           borderRadius: context.radius.smBorder,
         ),
-        child: Icon(icon, color: color, size: 24.w),
+        child: Icon(icon, color: color, size: 24),
       ),
     );
   }

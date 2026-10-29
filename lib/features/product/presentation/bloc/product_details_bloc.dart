@@ -9,7 +9,7 @@ export 'package:mousa_store/features/product/presentation/bloc/product_details_s
 class ProductDetailsBloc
     extends Bloc<ProductDetailsEvent, ProductDetailsState> {
   ProductDetailsBloc({required ProductDetail product})
-      : super(ProductDetailsState.initial(product)) {
+    : super(ProductDetailsState.initial(product)) {
     on<ProductDetailsStarted>(_onStarted);
     on<ProductDetailsAttributeChanged>(_onAttributeChanged);
     on<ProductDetailsQuantityChanged>(_onQuantityChanged);
@@ -48,7 +48,9 @@ class ProductDetailsBloc
 
       if (matchingVariant == null && isColor) {
         matchingVariant = product.variants!
-            .where((v) => v.attributes?[event.key] == event.value && v.stock > 0)
+            .where(
+              (v) => v.attributes?[event.key] == event.value && v.stock > 0,
+            )
             .firstOrNull;
       }
 

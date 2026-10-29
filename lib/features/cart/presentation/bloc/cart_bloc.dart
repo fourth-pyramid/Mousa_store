@@ -265,10 +265,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  void _onResetRequested(
-    CartResetRequested event,
-    Emitter<CartState> emit,
-  ) {
+  void _onResetRequested(CartResetRequested event, Emitter<CartState> emit) {
     _pendingQuantities.clear();
     for (final timer in _debounceTimers.values) {
       timer.cancel();

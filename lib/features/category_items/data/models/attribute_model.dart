@@ -7,15 +7,13 @@ part 'attribute_model.freezed.dart';
 abstract class AttributeValue with _$AttributeValue {
   const AttributeValue._();
 
-  const factory AttributeValue({
-    required int id,
-    required String value,
-  }) = _AttributeValue;
+  const factory AttributeValue({required int id, required String value}) =
+      _AttributeValue;
 
   factory AttributeValue.fromJson(Map<String, dynamic> json) => AttributeValue(
-        id: json['id'] as int? ?? 0,
-        value: json['value'] as String? ?? '',
-      );
+    id: json['id'] as int? ?? 0,
+    value: json['value'] as String? ?? '',
+  );
 
   Map<String, dynamic> toJson() => {'id': id, 'value': value};
 }
@@ -42,10 +40,10 @@ abstract class AttributeResponse with _$AttributeResponse {
       );
 
   Map<String, dynamic> toJson() => {
-        'success': success,
-        'message': message,
-        'data': data.toJson(),
-      };
+    'success': success,
+    'message': message,
+    'data': data.toJson(),
+  };
 }
 
 @Freezed(toJson: false, fromJson: false)
@@ -63,11 +61,13 @@ abstract class AttributeResponseData with _$AttributeResponseData {
 
   factory AttributeResponseData.fromJson(Map<String, dynamic> json) =>
       AttributeResponseData(
-        attributes: (json['attributes'] as List<dynamic>?)
+        attributes:
+            (json['attributes'] as List<dynamic>?)
                 ?.map((e) => AttributeData.fromJson(e as Map<String, dynamic>))
                 .toList() ??
             [],
-        brands: (json['brands'] as List<dynamic>?)
+        brands:
+            (json['brands'] as List<dynamic>?)
                 ?.map((e) => Brand.fromJson(e as Map<String, dynamic>))
                 .toList() ??
             [],
@@ -76,11 +76,11 @@ abstract class AttributeResponseData with _$AttributeResponseData {
       );
 
   Map<String, dynamic> toJson() => {
-        'attributes': attributes.map((e) => e.toJson()).toList(),
-        'brands': brands.map((e) => e.toJson()).toList(),
-        'min_price': minPrice,
-        'max_price': maxPrice,
-      };
+    'attributes': attributes.map((e) => e.toJson()).toList(),
+    'brands': brands.map((e) => e.toJson()).toList(),
+    'min_price': minPrice,
+    'max_price': maxPrice,
+  };
 }
 
 @Freezed(toJson: false, fromJson: false)
@@ -93,15 +93,16 @@ abstract class AttributeData with _$AttributeData {
   }) = _AttributeData;
 
   factory AttributeData.fromJson(Map<String, dynamic> json) => AttributeData(
-        key: json['key'] as String? ?? '',
-        values: (json['values'] as List<dynamic>?)
-                ?.map((e) => AttributeValue.fromJson(e as Map<String, dynamic>))
-                .toList() ??
-            [],
-      );
+    key: json['key'] as String? ?? '',
+    values:
+        (json['values'] as List<dynamic>?)
+            ?.map((e) => AttributeValue.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+  );
 
   Map<String, dynamic> toJson() => {
-        'key': key,
-        'values': values.map((e) => e.toJson()).toList(),
-      };
+    'key': key,
+    'values': values.map((e) => e.toJson()).toList(),
+  };
 }

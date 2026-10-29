@@ -116,8 +116,8 @@ class _AppEmptyStateState extends State<AppEmptyState>
                         Transform.scale(
                           scale: _pulseScaleAnimation.value * 1.25,
                           child: Container(
-                            width: 100.w,
-                            height: 100.w,
+                            width: 100,
+                            height: 100,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: primaryColor.withValues(alpha: 0.06),
@@ -128,8 +128,8 @@ class _AppEmptyStateState extends State<AppEmptyState>
                         Transform.scale(
                           scale: _pulseScaleAnimation.value * 1.1,
                           child: Container(
-                            width: 82.w,
-                            height: 82.w,
+                            width: 82,
+                            height: 82,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: primaryColor.withValues(alpha: 0.12),
@@ -138,8 +138,8 @@ class _AppEmptyStateState extends State<AppEmptyState>
                         ),
                         // Center badge
                         Container(
-                          width: 68.w,
-                          height: 68.w,
+                          width: 68,
+                          height: 68,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: widget.badgeColor ?? context.colors.surface,
@@ -157,7 +157,7 @@ class _AppEmptyStateState extends State<AppEmptyState>
                                 widget.iconWidget ??
                                 Icon(
                                   widget.icon ?? Icons.inbox_outlined,
-                                  size: 34.w,
+                                  size: 34,
                                   color: primaryColor,
                                 ),
                           ),
@@ -166,7 +166,7 @@ class _AppEmptyStateState extends State<AppEmptyState>
                     ),
                   ),
                 ),
-                SizedBox(height: 24.h),
+                const SizedBox(height: 24),
                 Text(
                   widget.title.toUpperCase(),
                   textAlign: TextAlign.center,
@@ -177,7 +177,7 @@ class _AppEmptyStateState extends State<AppEmptyState>
                 ),
                 if (widget.description != null &&
                     widget.description!.isNotEmpty) ...[
-                  SizedBox(height: 8.h),
+                  const SizedBox(height: 8),
                   Text(
                     widget.description!,
                     textAlign: TextAlign.center,
@@ -188,7 +188,7 @@ class _AppEmptyStateState extends State<AppEmptyState>
                 ],
                 if (widget.actionLabel != null &&
                     widget.onActionTap != null) ...[
-                  SizedBox(height: 24.h),
+                  const SizedBox(height: 24),
                   AppButton(
                     text: widget.actionLabel!,
                     onPressed: widget.onActionTap,
@@ -197,7 +197,7 @@ class _AppEmptyStateState extends State<AppEmptyState>
                 ],
                 if (widget.secondaryActionLabel != null &&
                     widget.onSecondaryActionTap != null) ...[
-                  SizedBox(height: 12.h),
+                  const SizedBox(height: 12),
                   AppButton(
                     text: widget.secondaryActionLabel!,
                     onPressed: widget.onSecondaryActionTap,

@@ -68,9 +68,7 @@ void main() {
             sort: any(named: 'sort'),
           ),
         ).thenAnswer((_) async => sampleResponse);
-        when(
-          () => mockGetGlobalAttributesUseCase(),
-        ).thenAnswer(
+        when(() => mockGetGlobalAttributesUseCase()).thenAnswer(
           (_) async => AttributeResponse(
             success: true,
             message: 'success',

@@ -13,7 +13,7 @@ class SearchAndFilters extends StatelessWidget {
     children: [
       // Search Field
       Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(16.w, 12.h, 16.w, 0),
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
         child: Material(
           elevation: 3,
           borderRadius: context.radius.mdBorder,
@@ -26,18 +26,18 @@ class SearchAndFilters extends StatelessWidget {
 
       // Filters & Sort Row
       Padding(
-        padding: EdgeInsetsDirectional.symmetric(
-          horizontal: 16.w,
-          vertical: 10.h,
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 16,
+          vertical: 10,
         ),
         child: Row(
           children: [
             const FilterWidget(),
             Container(
               width: 1,
-              height: 28.h,
+              height: 28,
               color: context.colors.border,
-              margin: EdgeInsetsDirectional.symmetric(horizontal: 8.w),
+              margin: const EdgeInsetsDirectional.symmetric(horizontal: 8),
             ),
             const SortWidget(),
           ],

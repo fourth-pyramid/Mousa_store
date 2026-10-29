@@ -33,7 +33,7 @@ class QuantitySelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             context.l10n.quantity_text,
             style: context.typography.titleMedium.copyWith(
@@ -41,13 +41,13 @@ class QuantitySelector extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
         SizedBox(
-          height: 44.h,
+          height: 44,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: quantities.length,
-            separatorBuilder: (context, index) => SizedBox(width: 10.w),
+            separatorBuilder: (context, index) => const SizedBox(width: 10),
             itemBuilder: (context, index) {
               final quantity = quantities[index];
               final isSelected = quantity == selectedQuantity;
@@ -55,7 +55,7 @@ class QuantitySelector extends StatelessWidget {
               return GestureDetector(
                 onTap: () => onQuantityChanged(quantity),
                 child: Container(
-                  width: 44.w,
+                  width: 44,
                   decoration: BoxDecoration(
                     color: isSelected
                         ? context.colors.primary
@@ -65,7 +65,7 @@ class QuantitySelector extends StatelessWidget {
                       color: isSelected
                           ? context.colors.primary
                           : context.colors.border,
-                      width: 0.5.w,
+                      width: 0.5,
                     ),
                   ),
                   child: Center(

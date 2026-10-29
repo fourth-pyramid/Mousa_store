@@ -48,23 +48,24 @@ abstract class Cart with _$Cart {
   }) = _Cart;
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
-        id: json['id'] as int? ?? 0,
-        userId: json['user_id'] as int? ?? 0,
-        status: json['status'] as String?,
-        total: (json['total'] as num?)?.toDouble() ?? 0.0,
-        type: json['type'] as String?,
-        createdAt: json['created_at'] != null
-            ? DateTime.tryParse(json['created_at'] as String)
-            : null,
-        updatedAt: json['updated_at'] != null
-            ? DateTime.tryParse(json['updated_at'] as String)
-            : null,
-        items: (json['items'] as List<dynamic>?)
-                ?.whereType<Map<String, dynamic>>()
-                .map(CartItem.fromJson)
-                .toList() ??
-            const [],
-      );
+    id: json['id'] as int? ?? 0,
+    userId: json['user_id'] as int? ?? 0,
+    status: json['status'] as String?,
+    total: (json['total'] as num?)?.toDouble() ?? 0.0,
+    type: json['type'] as String?,
+    createdAt: json['created_at'] != null
+        ? DateTime.tryParse(json['created_at'] as String)
+        : null,
+    updatedAt: json['updated_at'] != null
+        ? DateTime.tryParse(json['updated_at'] as String)
+        : null,
+    items:
+        (json['items'] as List<dynamic>?)
+            ?.whereType<Map<String, dynamic>>()
+            .map(CartItem.fromJson)
+            .toList() ??
+        const [],
+  );
 }
 
 @Freezed(toJson: false, fromJson: false)
@@ -125,24 +126,24 @@ abstract class CartItem with _$CartItem {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'product_id': productId,
-        'name': name,
-        'desc': desc,
-        'price': price,
-        'image_path': imagePath,
-        'images_path': imagesPath,
-        'quantity': quantity,
-        'line_total': lineTotal,
-        'min_quantity': minQuantity,
-        'stock': stock,
-        'created_at': createdAt?.toIso8601String(),
-        'updated_at': updatedAt?.toIso8601String(),
-        'brand_id': brandId,
-        'brand': brand?.toJson(),
-        'categories': categories?.map((e) => e.toJson()).toList(),
-        'offers': offers?.map((e) => e.toJson()).toList(),
-        'properties': properties?.toJson(),
-        'attributes': itemAttributes,
-      };
+    'id': id,
+    'product_id': productId,
+    'name': name,
+    'desc': desc,
+    'price': price,
+    'image_path': imagePath,
+    'images_path': imagesPath,
+    'quantity': quantity,
+    'line_total': lineTotal,
+    'min_quantity': minQuantity,
+    'stock': stock,
+    'created_at': createdAt?.toIso8601String(),
+    'updated_at': updatedAt?.toIso8601String(),
+    'brand_id': brandId,
+    'brand': brand?.toJson(),
+    'categories': categories?.map((e) => e.toJson()).toList(),
+    'offers': offers?.map((e) => e.toJson()).toList(),
+    'properties': properties?.toJson(),
+    'attributes': itemAttributes,
+  };
 }

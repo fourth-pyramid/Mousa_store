@@ -18,9 +18,9 @@ class PriceModeBloc extends Bloc<PriceModeEvent, PriceModeState> {
   PriceModeBloc({
     required GetPriceModeUseCase getPriceModeUseCase,
     required SetPriceModeUseCase setPriceModeUseCase,
-  })  : _getPriceModeUseCase = getPriceModeUseCase,
-        _setPriceModeUseCase = setPriceModeUseCase,
-        super(PriceModeState(mode: getPriceModeUseCase())) {
+  }) : _getPriceModeUseCase = getPriceModeUseCase,
+       _setPriceModeUseCase = setPriceModeUseCase,
+       super(PriceModeState(mode: getPriceModeUseCase())) {
     on<PriceModeStarted>(_onStarted);
     on<PriceModeChanged>(_onModeChanged);
   }
@@ -28,10 +28,7 @@ class PriceModeBloc extends Bloc<PriceModeEvent, PriceModeState> {
   final GetPriceModeUseCase _getPriceModeUseCase;
   final SetPriceModeUseCase _setPriceModeUseCase;
 
-  void _onStarted(
-    PriceModeStarted event,
-    Emitter<PriceModeState> emit,
-  ) {
+  void _onStarted(PriceModeStarted event, Emitter<PriceModeState> emit) {
     final currentMode = _getPriceModeUseCase();
     emit(state.copyWith(mode: currentMode));
   }

@@ -63,9 +63,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             child: Column(
               children: [
                 SingleChildScrollView(
-                  padding: EdgeInsetsDirectional.symmetric(
-                    horizontal: 16.w,
-                    vertical: 16.h,
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
                   ),
                   child: Form(
                     key: _formKey,
@@ -100,7 +100,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                             },
                           ),
                         ),
-                        SizedBox(height: 16.h),
+                        const SizedBox(height: 16),
                         ValueListenableBuilder<bool>(
                           valueListenable: _obscureConfirmNotifier,
                           builder: (context, obscureConfirm, _) =>
@@ -137,10 +137,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 const Spacer(),
                 SafeArea(
                   child: Padding(
-                    padding: EdgeInsetsDirectional.only(
-                      start: 16.w,
-                      end: 16.w,
-                      bottom: 16.h,
+                    padding: const EdgeInsetsDirectional.only(
+                      start: 16,
+                      end: 16,
+                      bottom: 16,
                     ),
                     child: CustomButton(
                       isLoading: isLoading,

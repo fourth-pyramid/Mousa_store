@@ -14,10 +14,8 @@ class AddToCartUseCase {
 
   final CartRepository _repository;
 
-  Future<CartResponse> call({
-    required int propertyId,
-    required int quantity,
-  }) => _repository.addToCart(propertyId: propertyId, quantity: quantity);
+  Future<CartResponse> call({required int propertyId, required int quantity}) =>
+      _repository.addToCart(propertyId: propertyId, quantity: quantity);
 }
 
 class UpdateCartItemUseCase {
@@ -25,10 +23,8 @@ class UpdateCartItemUseCase {
 
   final CartRepository _repository;
 
-  Future<CartResponse> call({
-    required int cartItemId,
-    required int quantity,
-  }) => _repository.updateCartItem(cartItemId: cartItemId, quantity: quantity);
+  Future<CartResponse> call({required int cartItemId, required int quantity}) =>
+      _repository.updateCartItem(cartItemId: cartItemId, quantity: quantity);
 }
 
 class RemoveFromCartUseCase {

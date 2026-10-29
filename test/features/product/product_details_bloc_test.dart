@@ -59,22 +59,28 @@ void main() {
   );
 
   group('ProductDetailsBloc Tests', () {
-    test('initial state with variants selects first in-stock variant', () async {
-      final bloc = ProductDetailsBloc(product: productWithVariants);
-      expect(bloc.state.selectedVariant?.id, equals(1));
-      expect(bloc.state.selectedAttributes['color'], equals('Red'));
-      expect(bloc.state.selectedAttributes['size'], equals('M'));
-      expect(bloc.state.selectedQuantity, equals(1));
-      await bloc.close();
-    });
+    test(
+      'initial state with variants selects first in-stock variant',
+      () async {
+        final bloc = ProductDetailsBloc(product: productWithVariants);
+        expect(bloc.state.selectedVariant?.id, equals(1));
+        expect(bloc.state.selectedAttributes['color'], equals('Red'));
+        expect(bloc.state.selectedAttributes['size'], equals('M'));
+        expect(bloc.state.selectedQuantity, equals(1));
+        await bloc.close();
+      },
+    );
 
-    test('initial state without variants selects first property value', () async {
-      final bloc = ProductDetailsBloc(product: productWithoutVariants);
-      expect(bloc.state.selectedVariant, isNull);
-      expect(bloc.state.selectedAttributes['color'], equals('Black'));
-      expect(bloc.state.selectedQuantity, equals(1));
-      await bloc.close();
-    });
+    test(
+      'initial state without variants selects first property value',
+      () async {
+        final bloc = ProductDetailsBloc(product: productWithoutVariants);
+        expect(bloc.state.selectedVariant, isNull);
+        expect(bloc.state.selectedAttributes['color'], equals('Black'));
+        expect(bloc.state.selectedQuantity, equals(1));
+        await bloc.close();
+      },
+    );
 
     blocTest<ProductDetailsBloc, ProductDetailsState>(
       'attributeChanged updates variant and selected attributes',
@@ -107,11 +113,14 @@ void main() {
       ],
     );
 
-    test('getAvailableValues filters attributes correctly by in-stock variant', () async {
-      final bloc = ProductDetailsBloc(product: productWithVariants);
-      final colors = bloc.state.getAvailableValues('color');
-      expect(colors, containsAll(['Red', 'Blue']));
-      await bloc.close();
-    });
+    test(
+      'getAvailableValues filters attributes correctly by in-stock variant',
+      () async {
+        final bloc = ProductDetailsBloc(product: productWithVariants);
+        final colors = bloc.state.getAvailableValues('color');
+        expect(colors, containsAll(['Red', 'Blue']));
+        await bloc.close();
+      },
+    );
   });
 }

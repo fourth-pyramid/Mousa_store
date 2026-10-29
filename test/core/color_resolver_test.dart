@@ -54,15 +54,18 @@ void main() {
       expect(hex8.first, equals(const Color(0x8000FF00)));
     });
 
-    test('falls back gracefully to defaultColor for unknown strings or empty', () {
-      final empty = ColorResolver.resolveColors('');
-      expect(empty.first, equals(ColorResolver.defaultColor));
+    test(
+      'falls back gracefully to defaultColor for unknown strings or empty',
+      () {
+        final empty = ColorResolver.resolveColors('');
+        expect(empty.first, equals(ColorResolver.defaultColor));
 
-      final nullCol = ColorResolver.resolveColors(null);
-      expect(nullCol.first, equals(ColorResolver.defaultColor));
+        final nullCol = ColorResolver.resolveColors(null);
+        expect(nullCol.first, equals(ColorResolver.defaultColor));
 
-      final unknown = ColorResolver.resolveColors('unknown_color_xyz');
-      expect(unknown.first, equals(ColorResolver.defaultColor));
-    });
+        final unknown = ColorResolver.resolveColors('unknown_color_xyz');
+        expect(unknown.first, equals(ColorResolver.defaultColor));
+      },
+    );
   });
 }

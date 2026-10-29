@@ -5,7 +5,5 @@ part 'price_mode_state.freezed.dart';
 
 @freezed
 sealed class PriceModeState with _$PriceModeState {
-  const factory PriceModeState({
-    required PriceMode mode,
-  }) = _PriceModeState;
+  const factory PriceModeState({required PriceMode mode}) = _PriceModeState;
 }

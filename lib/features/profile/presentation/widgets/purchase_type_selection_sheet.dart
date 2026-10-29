@@ -61,9 +61,9 @@ class _PurchaseTypeOptionTile extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                context
-                    .read<PriceModeBloc>()
-                    .add(PriceModeEvent.modeChanged(newMode));
+                context.read<PriceModeBloc>().add(
+                  PriceModeEvent.modeChanged(newMode),
+                );
                 Navigator.pop(dialogContext); // Close dialog
                 Navigator.pop(context); // Close bottom sheet
               },
@@ -82,7 +82,7 @@ class _PurchaseTypeOptionTile extends StatelessWidget {
     final inactiveColor = context.colors.textSecondary;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Material(
         color: isSelected
             ? context.colors.surfaceStrong

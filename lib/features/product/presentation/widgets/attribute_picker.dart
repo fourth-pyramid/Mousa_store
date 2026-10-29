@@ -17,11 +17,11 @@ class AttributePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    height: 50.h,
+    height: 50,
     child: ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: values.length,
-      separatorBuilder: (context, index) => SizedBox(width: 12.w),
+      separatorBuilder: (context, index) => const SizedBox(width: 12),
       itemBuilder: (context, index) {
         final value = values[index];
         final isSelected = selectedValue == value;
@@ -31,7 +31,7 @@ class AttributePicker extends StatelessWidget {
         return GestureDetector(
           onTap: isAvailable ? () => onValueSelected(value) : null,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
             decoration: BoxDecoration(
               color: isSelected
                   ? context.colors.primary
@@ -43,7 +43,7 @@ class AttributePicker extends StatelessWidget {
                     : (isAvailable
                           ? context.colors.border
                           : context.colors.surface),
-                width: 0.5.w,
+                width: 0.5,
               ),
             ),
             child: Center(
@@ -67,8 +67,8 @@ class AttributePicker extends StatelessWidget {
                     Transform.rotate(
                       angle: -0.5,
                       child: Container(
-                        width: 30.w,
-                        height: 1.5.h,
+                        width: 30,
+                        height: 1.5,
                         color: context.colors.border,
                       ),
                     ),

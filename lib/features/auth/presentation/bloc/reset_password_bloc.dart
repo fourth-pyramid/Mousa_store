@@ -6,11 +6,10 @@ import 'package:mousa_store/features/auth/presentation/bloc/reset_password_state
 export 'package:mousa_store/features/auth/presentation/bloc/reset_password_event.dart';
 export 'package:mousa_store/features/auth/presentation/bloc/reset_password_state.dart';
 
-class ResetPasswordBloc
-    extends Bloc<ResetPasswordEvent, ResetPasswordState> {
+class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
   ResetPasswordBloc({required ResetPasswordUseCase resetPasswordUseCase})
-      : _resetPasswordUseCase = resetPasswordUseCase,
-        super(const ResetPasswordInitial()) {
+    : _resetPasswordUseCase = resetPasswordUseCase,
+      super(const ResetPasswordInitial()) {
     on<ResetPasswordSubmitted>(_onSubmitted);
   }
 

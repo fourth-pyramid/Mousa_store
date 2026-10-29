@@ -42,9 +42,9 @@ class FilterAttributeSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 16.w,
-            vertical: 8.h,
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 16,
+            vertical: 8,
           ),
           child: Row(
             children: [
@@ -55,16 +55,16 @@ class FilterAttributeSection extends StatelessWidget {
                 ),
               ),
               if (selectedIds.isNotEmpty) ...[
-                SizedBox(width: 8.w),
+                const SizedBox(width: 8),
                 DecoratedBox(
                   decoration: BoxDecoration(
                     color: context.colors.primary,
                     borderRadius: context.radius.pillBorder,
                   ),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.symmetric(
-                      horizontal: 8.w,
-                      vertical: 2.h,
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
                     ),
                     child: Text(
                       '${selectedIds.length}',
@@ -79,16 +79,16 @@ class FilterAttributeSection extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 6.h),
+        const SizedBox(height: 6),
         if (_isColor)
           SizedBox(
-            height: 52.h,
+            height: 52,
             child: ListView.separated(
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemCount: values.length,
-              separatorBuilder: (_, _) => SizedBox(width: 8.w),
+              separatorBuilder: (_, _) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
                 final attrValue = values[index];
                 final isSelected = selectedIds.contains(attrValue.id);
@@ -102,10 +102,10 @@ class FilterAttributeSection extends StatelessWidget {
           )
         else
           Padding(
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
             child: Wrap(
-              spacing: 8.w,
-              runSpacing: 8.h,
+              spacing: 8,
+              runSpacing: 8,
               children: values.map((attrValue) {
                 final isSelected = selectedIds.contains(attrValue.id);
                 return _StandardFilterChip(
@@ -168,9 +168,7 @@ class _ColorSwatchChip extends StatelessWidget {
           colors: gradientColors,
           stops: stops,
         ),
-        border: Border.all(
-          color: context.colors.border,
-        ),
+        border: Border.all(color: context.colors.border),
       );
     }
 
@@ -178,20 +176,22 @@ class _ColorSwatchChip extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
         child: AnimatedContainer(
           duration: context.durations.fast,
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 10.w,
-            vertical: 6.h,
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 10,
+            vertical: 6,
           ),
           decoration: BoxDecoration(
             color: isSelected
                 ? context.colors.primary.withValues(alpha: 0.08)
                 : context.colors.surfaceStrong.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: isSelected ? context.colors.primary : context.colors.border,
+              color: isSelected
+                  ? context.colors.primary
+                  : context.colors.border,
               width: isSelected ? 1.5 : 1,
             ),
           ),
@@ -199,14 +199,14 @@ class _ColorSwatchChip extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 20.r,
-                height: 20.r,
+                width: 20,
+                height: 20,
                 decoration: swatchDecoration,
                 child: isSelected
                     ? Center(
                         child: Icon(
                           Icons.check_rounded,
-                          size: 12.r,
+                          size: 12,
                           color: isLightColor
                               ? const Color(0xFF111111)
                               : Colors.white,
@@ -214,7 +214,7 @@ class _ColorSwatchChip extends StatelessWidget {
                       )
                     : null,
               ),
-              SizedBox(width: 8.w),
+              const SizedBox(width: 8),
               Text(
                 attrValue.value,
                 style: context.typography.bodySmall.copyWith(
@@ -248,18 +248,18 @@ class _StandardFilterChip extends StatelessWidget {
     color: Colors.transparent,
     child: InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
+      borderRadius: BorderRadius.circular(12),
       child: AnimatedContainer(
         duration: context.durations.fast,
-        padding: EdgeInsetsDirectional.symmetric(
-          horizontal: 14.w,
-          vertical: 10.h,
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 14,
+          vertical: 10,
         ),
         decoration: BoxDecoration(
           color: isSelected
               ? context.colors.primary
               : context.colors.surfaceStrong.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? context.colors.primary : context.colors.border,
             width: isSelected ? 1.5 : 1,
@@ -271,10 +271,10 @@ class _StandardFilterChip extends StatelessWidget {
             if (isSelected) ...[
               Icon(
                 Icons.check_rounded,
-                size: 16.r,
+                size: 16,
                 color: context.colors.onPrimary,
               ),
-              SizedBox(width: 6.w),
+              const SizedBox(width: 6),
             ],
             Text(
               attrValue.value,

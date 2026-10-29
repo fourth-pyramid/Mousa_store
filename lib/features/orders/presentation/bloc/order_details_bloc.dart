@@ -5,8 +5,8 @@ import 'package:mousa_store/features/orders/presentation/bloc/order_details_stat
 
 class OrderDetailsBloc extends Bloc<OrderDetailsEvent, OrderDetailsState> {
   OrderDetailsBloc({required GetOrderDetailsUseCase getOrderDetailsUseCase})
-      : _getOrderDetailsUseCase = getOrderDetailsUseCase,
-        super(const OrderDetailsState()) {
+    : _getOrderDetailsUseCase = getOrderDetailsUseCase,
+      super(const OrderDetailsState()) {
     on<OrderDetailsFetchRequested>(_onOrderDetailsFetchRequested);
   }
 

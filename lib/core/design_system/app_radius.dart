@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:mousa_store/core/utils/screen_utils.dart';
 
-/// SPORTCORE Controlled Radius System — premium upgrade
+/// SPORTCORE Controlled Radius System — native logical pixels
 abstract class AppRadius {
-  static double get xs => 8.r;
-  static double get sm => 12.r;
-  static double get md => 16.r;
-  static double get lg => 24.r;
-  static double get xl => 32.r;
-  static double get pill => 999.r;
+  static const double xs = 8;
+  static const double sm = 12;
+  static const double md = 16;
+  static const double lg = 24;
+  static const double xl = 32;
+  static const double pill = 999;
 
   // Pre-built BorderRadius helpers
-  static BorderRadius get xsBorder => BorderRadius.circular(xs);
-  static BorderRadius get smBorder => BorderRadius.circular(sm);
-  static BorderRadius get mdBorder => BorderRadius.circular(md);
-  static BorderRadius get lgBorder => BorderRadius.circular(lg);
-  static BorderRadius get xlBorder => BorderRadius.circular(xl);
-  static BorderRadius get pillBorder => BorderRadius.circular(pill);
-  static BorderRadius get bottomSheet =>
-      BorderRadius.vertical(top: Radius.circular(xl));
+  static final BorderRadius xsBorder = BorderRadius.circular(xs);
+  static final BorderRadius smBorder = BorderRadius.circular(sm);
+  static final BorderRadius mdBorder = BorderRadius.circular(md);
+  static final BorderRadius lgBorder = BorderRadius.circular(lg);
+  static final BorderRadius xlBorder = BorderRadius.circular(xl);
+  static final BorderRadius pillBorder = BorderRadius.circular(pill);
+  static const BorderRadius bottomSheet = BorderRadius.vertical(
+    top: Radius.circular(xl),
+  );
 
   // Semantic aliases for intent-revealing usage
   static BorderRadius get cardBorder => mdBorder;

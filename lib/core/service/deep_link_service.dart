@@ -60,7 +60,9 @@ class DeepLinkService {
 
     // Ensure price mode is set to retail if not already set to prevent errors
     if (CacheHelper.getPriceMode() == null) {
-      getIt<PriceModeBloc>().add(const PriceModeEvent.modeChanged(PriceMode.retail));
+      getIt<PriceModeBloc>().add(
+        const PriceModeEvent.modeChanged(PriceMode.retail),
+      );
     }
 
     // Handle product deep links

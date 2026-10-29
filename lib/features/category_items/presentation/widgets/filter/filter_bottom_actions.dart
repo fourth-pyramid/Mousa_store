@@ -27,7 +27,7 @@ class FilterBottomActions extends StatelessWidget {
         ),
       ],
     ),
-    padding: EdgeInsetsDirectional.fromSTEB(16.w, 12.h, 16.w, 12.h),
+    padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
     child: SafeArea(
       top: false,
       child: Row(
@@ -36,8 +36,8 @@ class FilterBottomActions extends StatelessWidget {
           OutlinedButton(
             onPressed: activeFilterCount > 0 ? onReset : null,
             style: OutlinedButton.styleFrom(
-              minimumSize: Size(100.w, 48.h),
-              padding: EdgeInsetsDirectional.symmetric(horizontal: 14.w),
+              minimumSize: const Size(100, 48),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 14),
               side: BorderSide(
                 color: activeFilterCount > 0
                     ? context.colors.border
@@ -45,7 +45,7 @@ class FilterBottomActions extends StatelessWidget {
                 width: 1.2,
               ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
             child: Row(
@@ -53,12 +53,12 @@ class FilterBottomActions extends StatelessWidget {
               children: [
                 Icon(
                   Icons.refresh_rounded,
-                  size: 18.r,
+                  size: 18,
                   color: activeFilterCount > 0
                       ? context.colors.textPrimary
                       : context.colors.textMuted,
                 ),
-                SizedBox(width: 6.w),
+                const SizedBox(width: 6),
                 Text(
                   context.l10n.clear_all_text,
                   style: context.typography.bodySmall.copyWith(
@@ -71,13 +71,12 @@ class FilterBottomActions extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: 12.w),
+          const SizedBox(width: 12),
 
           // Apply button
           Expanded(
             child: CustomButton(
-              height: 48.h,
-              borderRadius: 12.r,
+              height: 48,
               text: Text(
                 activeFilterCount > 0
                     ? '${context.l10n.apply_text} ($activeFilterCount)'

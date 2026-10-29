@@ -1,42 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:mousa_store/core/design_system/design_system.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:mousa_store/core/widgets/app_shimmer.dart';
 
 class AppSkeletonCard extends StatelessWidget {
   const AppSkeletonCard({super.key});
 
   @override
-  Widget build(BuildContext context) => Skeletonizer(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: context.colors.surface,
-              borderRadius: context.radius.mdBorder,
+  Widget build(BuildContext context) => AppShimmer(
+    child: Container(
+      decoration: BoxDecoration(
+        color: context.colors.surface,
+        borderRadius: context.radius.mdBorder,
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: context.colors.surfaceStrong,
+                borderRadius: context.radius.smBorder,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 8.h),
-        SizedBox(
-          height: 12.h,
-          width: 60.w,
-          child: ColoredBox(color: context.colors.surfaceStrong),
-        ),
-        SizedBox(height: 4.h),
-        SizedBox(
-          height: 16.h,
-          width: 120.w,
-          child: ColoredBox(color: context.colors.surfaceStrong),
-        ),
-        SizedBox(height: 4.h),
-        SizedBox(
-          height: 16.h,
-          width: 80.w,
-          child: ColoredBox(color: context.colors.surfaceStrong),
-        ),
-      ],
+          const SizedBox(height: 8),
+          Container(
+            height: 12,
+            width: 60,
+            decoration: BoxDecoration(
+              color: context.colors.surfaceStrong,
+              borderRadius: context.radius.xsBorder,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            height: 16,
+            width: 120,
+            decoration: BoxDecoration(
+              color: context.colors.surfaceStrong,
+              borderRadius: context.radius.xsBorder,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            height: 16,
+            width: 80,
+            decoration: BoxDecoration(
+              color: context.colors.surfaceStrong,
+              borderRadius: context.radius.xsBorder,
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -49,7 +65,7 @@ class AppSkeletonGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      final crossAxisCount = (constraints.maxWidth / 160.w).floor().clamp(2, 4);
+      final crossAxisCount = (constraints.maxWidth / 160).floor().clamp(2, 4);
 
       return GridView.builder(
         padding: EdgeInsets.all(context.spacing.screenPadding),
@@ -59,8 +75,7 @@ class AppSkeletonGrid extends StatelessWidget {
           crossAxisCount: crossAxisCount,
           mainAxisSpacing: context.spacing.cardGap,
           crossAxisSpacing: context.spacing.cardGap,
-          childAspectRatio:
-              0.74, // ponytail: ratio 0.74 matches product grid layout
+          childAspectRatio: 0.74,
         ),
         itemCount: itemCount,
         itemBuilder: (context, index) => const AppSkeletonCard(),

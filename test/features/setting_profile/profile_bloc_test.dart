@@ -48,9 +48,7 @@ void main() {
     blocTest<ProfileBloc, ProfileState>(
       'emits [ProfileLoading, ProfileLoaded] when fetchRequested succeeds',
       build: () {
-        when(
-          () => mockGetProfileUseCase(),
-        ).thenAnswer((_) async => sampleUser);
+        when(() => mockGetProfileUseCase()).thenAnswer((_) async => sampleUser);
         return ProfileBloc(
           getProfileUseCase: mockGetProfileUseCase,
           updateProfileUseCase: mockUpdateProfileUseCase,

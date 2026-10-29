@@ -29,7 +29,9 @@ class ProductInfoSection extends StatelessWidget {
       discountedPrice = price - (price * activeOffer.disscountPrice / 100);
     }
 
-    final savedAmount = (discountedPrice != null) ? (price - discountedPrice) : 0.0;
+    final savedAmount = (discountedPrice != null)
+        ? (price - discountedPrice)
+        : 0.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +43,7 @@ class ProductInfoSection extends StatelessWidget {
         ),
 
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,7 +61,7 @@ class ProductInfoSection extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: 12.h),
+              const SizedBox(height: 12),
 
               // ── Product Title ──────────────────────────────────────
               Text(
@@ -71,7 +73,7 @@ class ProductInfoSection extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
 
               // ── Premium Price Card ─────────────────────────────────
               _PriceCard(
@@ -103,38 +105,32 @@ class _BrandBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              context.colors.accent.withValues(alpha: 0.12),
-              context.colors.accent.withValues(alpha: 0.06),
-            ],
-          ),
-          borderRadius: context.radius.pillBorder,
-          border: Border.all(
-            color: context.colors.accent.withValues(alpha: 0.3),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          context.colors.accent.withValues(alpha: 0.12),
+          context.colors.accent.withValues(alpha: 0.06),
+        ],
+      ),
+      borderRadius: context.radius.pillBorder,
+      border: Border.all(color: context.colors.accent.withValues(alpha: 0.3)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.verified_rounded, size: 13, color: context.colors.accent),
+        const SizedBox(width: 4),
+        Text(
+          name,
+          style: context.typography.label.copyWith(
+            fontWeight: FontWeight.bold,
+            color: context.colors.accent,
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.verified_rounded,
-              size: 13.r,
-              color: context.colors.accent,
-            ),
-            SizedBox(width: 4.w),
-            Text(
-              name,
-              style: context.typography.label.copyWith(
-                fontWeight: FontWeight.bold,
-                color: context.colors.accent,
-              ),
-            ),
-          ],
-        ),
-      );
+      ],
+    ),
+  );
 }
 
 // ── Rating Chip ──────────────────────────────────────────────────────────────
@@ -147,40 +143,36 @@ class _RatingChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
-        decoration: BoxDecoration(
-          color: const Color(0xFFFFF8E7),
-          borderRadius: context.radius.pillBorder,
-          border: Border.all(color: const Color(0xFFFFCC02).withValues(alpha: 0.5)),
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+    decoration: BoxDecoration(
+      color: const Color(0xFFFFF8E7),
+      borderRadius: context.radius.pillBorder,
+      border: Border.all(color: const Color(0xFFFFCC02).withValues(alpha: 0.5)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(Icons.star_rounded, size: 14, color: Color(0xFFFFCC02)),
+        const SizedBox(width: 3),
+        Text(
+          rating.toStringAsFixed(1),
+          style: context.typography.label.copyWith(
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF7A5A00),
+          ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.star_rounded,
-              size: 14.r,
-              color: const Color(0xFFFFCC02),
+        if (reviewsCount > 0) ...[
+          const SizedBox(width: 3),
+          Text(
+            '($reviewsCount)',
+            style: context.typography.caption.copyWith(
+              color: const Color(0xFF9E7B00),
             ),
-            SizedBox(width: 3.w),
-            Text(
-              rating.toStringAsFixed(1),
-              style: context.typography.label.copyWith(
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF7A5A00),
-              ),
-            ),
-            if (reviewsCount > 0) ...[
-              SizedBox(width: 3.w),
-              Text(
-                '($reviewsCount)',
-                style: context.typography.caption.copyWith(
-                  color: const Color(0xFF9E7B00),
-                ),
-              ),
-            ],
-          ],
-        ),
-      );
+          ),
+        ],
+      ],
+    ),
+  );
 }
 
 // ── Price Card ───────────────────────────────────────────────────────────────
@@ -198,106 +190,103 @@ class _PriceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.colors.surface,
-          borderRadius: context.radius.mdBorder,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+    decoration: BoxDecoration(
+      color: context.colors.surface,
+      borderRadius: context.radius.mdBorder,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.05),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: context.radius.mdBorder,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Left accent bar
+            Container(
+              width: 4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    context.colors.accent,
+                    context.colors.accent.withValues(alpha: 0.6),
+                  ],
+                ),
+              ),
+            ),
+
+            // Price content
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Main price row
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            children: [
+                              Text(
+                                (discountedPrice ?? price).toStringAsFixed(0),
+                                style: context.typography.display.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  color: context.colors.accent,
+                                  fontSize: 26,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                context.l10n.egp_text,
+                                style: context.typography.titleMedium.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: context.colors.accent,
+                                ),
+                              ),
+                              if (discountedPrice != null) ...[
+                                const SizedBox(width: 10),
+                                Text(
+                                  '${price.toStringAsFixed(0)} ${context.l10n.egp_text}',
+                                  style: context.typography.body.copyWith(
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationColor: context.colors.textMuted,
+                                    color: context.colors.textMuted,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Savings pill (right side)
+                    if (savedAmount > 0) ...[
+                      const SizedBox(width: 10),
+                      _SavingsPill(amount: savedAmount),
+                    ],
+                  ],
+                ),
+              ),
             ),
           ],
         ),
-        child: ClipRRect(
-          borderRadius: context.radius.mdBorder,
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Left accent bar
-                Container(
-                  width: 4.w,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        context.colors.accent,
-                        context.colors.accent.withValues(alpha: 0.6),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Price content
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 14.w,
-                      vertical: 12.h,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Main price row
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  Text(
-                                    (discountedPrice ?? price)
-                                        .toStringAsFixed(0),
-                                    style: context.typography.display.copyWith(
-                                      fontWeight: FontWeight.w900,
-                                      color: context.colors.accent,
-                                      fontSize: 26.sp,
-                                    ),
-                                  ),
-                                  SizedBox(width: 4.w),
-                                  Text(
-                                    context.l10n.egp_text,
-                                    style:
-                                        context.typography.titleMedium.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: context.colors.accent,
-                                    ),
-                                  ),
-                                  if (discountedPrice != null) ...[
-                                    SizedBox(width: 10.w),
-                                    Text(
-                                      '${price.toStringAsFixed(0)} ${context.l10n.egp_text}',
-                                      style: context.typography.body.copyWith(
-                                        decoration: TextDecoration.lineThrough,
-                                        decorationColor:
-                                            context.colors.textMuted,
-                                        color: context.colors.textMuted,
-                                      ),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Savings pill (right side)
-                        if (savedAmount > 0) ...[
-                          SizedBox(width: 10.w),
-                          _SavingsPill(amount: savedAmount),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
+      ),
+    ),
+  );
 }
 
 // ── Savings Pill ─────────────────────────────────────────────────────────────
@@ -309,38 +298,36 @@ class _SavingsPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-        decoration: BoxDecoration(
-          color: context.colors.success.withValues(alpha: 0.1),
-          borderRadius: context.radius.smBorder,
-          border: Border.all(
-            color: context.colors.success.withValues(alpha: 0.3),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+    decoration: BoxDecoration(
+      color: context.colors.success.withValues(alpha: 0.1),
+      borderRadius: context.radius.smBorder,
+      border: Border.all(color: context.colors.success.withValues(alpha: 0.3)),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.trending_down_rounded,
+          size: 14,
+          color: context.colors.success,
+        ),
+        const SizedBox(height: 2),
+        Text(
+          'وفرت',
+          style: context.typography.caption.copyWith(
+            color: context.colors.success,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.trending_down_rounded,
-              size: 14.r,
-              color: context.colors.success,
-            ),
-            SizedBox(height: 2.h),
-            Text(
-              'وفرت',
-              style: context.typography.caption.copyWith(
-                color: context.colors.success,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            Text(
-              '${amount.toStringAsFixed(0)} ${context.l10n.egp_text}',
-              style: context.typography.caption.copyWith(
-                color: context.colors.success,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ],
+        Text(
+          '${amount.toStringAsFixed(0)} ${context.l10n.egp_text}',
+          style: context.typography.caption.copyWith(
+            color: context.colors.success,
+            fontWeight: FontWeight.w800,
+          ),
         ),
-      );
+      ],
+    ),
+  );
 }

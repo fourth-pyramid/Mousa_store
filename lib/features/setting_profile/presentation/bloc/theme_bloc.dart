@@ -8,8 +8,7 @@ export 'package:mousa_store/features/setting_profile/presentation/bloc/theme_eve
 export 'package:mousa_store/features/setting_profile/presentation/bloc/theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  ThemeBloc(ThemeMode initialMode)
-      : super(ThemeState(themeMode: initialMode)) {
+  ThemeBloc(ThemeMode initialMode) : super(ThemeState(themeMode: initialMode)) {
     on<ThemeModeChanged>(_onThemeModeChanged);
     on<ThemeToggled>(_onThemeToggled);
   }

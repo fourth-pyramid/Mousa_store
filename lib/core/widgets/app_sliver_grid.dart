@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:mousa_store/core/widgets/app_skeleton.dart';
 
 class AppSliverGrid<T> extends StatelessWidget {
   const AppSliverGrid({
@@ -34,29 +34,33 @@ class AppSliverGrid<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.textScalerOf(context).scale(1.0);
+    final effectiveAspectRatio = childAspectRatio / textScale.clamp(1.0, 1.45);
+
     if (isLoading) {
-      return Skeletonizer.sliver(
-        child: SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            mainAxisSpacing: mainAxisSpacing.h,
-            crossAxisSpacing: crossAxisSpacing.w,
-            childAspectRatio: childAspectRatio,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => loadingBuilder != null
-                ? loadingBuilder!(context, index)
-                : Card(
-                    child: ListTile(
-                      title: Text(
-                        context.l10n.loading_text,
-                        style: context.typography.body,
-                      ),
-                    ),
-                  ),
-            childCount: loadingItemCount,
-          ),
-        ),
+      return SliverLayoutBuilder(
+        builder: (context, constraints) {
+          final columns = AppScreenUtils.adaptiveGridColumns(
+            constraints.crossAxisExtent,
+            phoneColumns: crossAxisCount,
+            tabletColumns: crossAxisCount + 1,
+            expandedColumns: crossAxisCount + 2,
+          );
+          return SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: columns,
+              mainAxisSpacing: mainAxisSpacing,
+              crossAxisSpacing: crossAxisSpacing,
+              childAspectRatio: effectiveAspectRatio,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => loadingBuilder != null
+                  ? loadingBuilder!(context, index)
+                  : const AppSkeletonCard(),
+              childCount: loadingItemCount,
+            ),
+          );
+        },
       );
     }
 
@@ -86,17 +90,27 @@ class AppSliverGrid<T> extends StatelessWidget {
       );
     }
 
-    return SliverGrid(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        mainAxisSpacing: mainAxisSpacing.h,
-        crossAxisSpacing: crossAxisSpacing.w,
-        childAspectRatio: childAspectRatio,
-      ),
-      delegate: SliverChildBuilderDelegate(
-        (context, index) => itemBuilder(context, items[index], index),
-        childCount: items.length,
-      ),
+    return SliverLayoutBuilder(
+      builder: (context, constraints) {
+        final columns = AppScreenUtils.adaptiveGridColumns(
+          constraints.crossAxisExtent,
+          phoneColumns: crossAxisCount,
+          tabletColumns: crossAxisCount + 1,
+          expandedColumns: crossAxisCount + 2,
+        );
+        return SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            mainAxisSpacing: mainAxisSpacing,
+            crossAxisSpacing: crossAxisSpacing,
+            childAspectRatio: effectiveAspectRatio,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => itemBuilder(context, items[index], index),
+            childCount: items.length,
+          ),
+        );
+      },
     );
   }
 }

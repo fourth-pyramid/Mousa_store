@@ -9,6 +9,7 @@ sealed class ProfileState with _$ProfileState {
   const factory ProfileState.loading() = ProfileLoading;
   const factory ProfileState.loaded(User user) = ProfileLoaded;
   const factory ProfileState.updating() = ProfileUpdating;
-  const factory ProfileState.updated(User user, String message) = ProfileUpdated;
+  const factory ProfileState.updated(User user, String message) =
+      ProfileUpdated;
   const factory ProfileState.error(String message) = ProfileError;
 }

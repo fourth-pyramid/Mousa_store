@@ -19,7 +19,7 @@ class AuthHeader extends StatelessWidget {
         end: Alignment.bottomCenter,
         colors: context.colors.headerGradient,
       ),
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(28.r)),
+      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
       boxShadow: context.shadows.card,
     ),
     child: SizedBox(
@@ -27,24 +27,24 @@ class AuthHeader extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: EdgeInsetsDirectional.only(
-            top: 14.h,
-            bottom: 14.h,
-            start: 20.w,
-            end: 20.w,
+          padding: const EdgeInsetsDirectional.only(
+            top: 14,
+            bottom: 14,
+            start: 20,
+            end: 20,
           ),
           child: Column(
             children: [
-              Center(
+              const Center(
                 child: AppImage.asset(
                   'assets/images/mousa_store.png',
-                  height: 80.h,
-                  width: 80.w,
+                  height: 80,
+                  width: 80,
                   color: Colors.white,
                   fit: BoxFit.contain,
                 ),
               ),
-              SizedBox(height: 12.h),
+              const SizedBox(height: 12),
               AnimatedSwitcher(
                 duration: context.durations.fast,
                 child: Text(
@@ -58,9 +58,9 @@ class AuthHeader extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 12.h),
+              const SizedBox(height: 12),
               SizedBox(
-                height: 44.h,
+                height: 44,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: const Color(0xFF222226),
@@ -70,7 +70,7 @@ class AuthHeader extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(4.r),
+                    padding: const EdgeInsets.all(4),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         final tabWidth = constraints.maxWidth / 2;
@@ -104,8 +104,8 @@ class AuthHeader extends StatelessWidget {
                                       color: context.colors.error.withValues(
                                         alpha: 0.35,
                                       ),
-                                      blurRadius: 10.r,
-                                      offset: Offset(0, 3.h),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
@@ -128,7 +128,7 @@ class AuthHeader extends StatelessWidget {
                                               fontWeight: isLogin
                                                   ? FontWeight.bold
                                                   : FontWeight.w500,
-                                              fontSize: 13.sp,
+                                              fontSize: 13,
                                             ),
                                         child: Text(context.l10n.auth_login),
                                       ),
@@ -150,7 +150,7 @@ class AuthHeader extends StatelessWidget {
                                               fontWeight: !isLogin
                                                   ? FontWeight.bold
                                                   : FontWeight.w500,
-                                              fontSize: 13.sp,
+                                              fontSize: 13,
                                             ),
                                         child: Text(context.l10n.auth_register),
                                       ),

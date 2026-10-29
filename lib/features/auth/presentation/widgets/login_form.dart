@@ -46,9 +46,9 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) => Form(
     key: _formKey,
     child: SingleChildScrollView(
-      padding: EdgeInsetsDirectional.symmetric(
-        horizontal: 24.w,
-        vertical: 16.h,
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: 24,
+        vertical: 16,
       ),
       child: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
@@ -92,20 +92,20 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 4.h),
+              const SizedBox(height: 4),
               Text(
                 'سجل الدخول للمتابعة إلى موسى ستور',
                 style: context.typography.caption.copyWith(
                   color: context.colors.textSecondary,
                 ),
               ),
-              SizedBox(height: 24.h),
+              const SizedBox(height: 24),
               CustomFormField(
                 controller: _emailController,
                 hint: context.l10n.email_text,
                 prefixIcon: Icon(
                   Icons.email_outlined,
-                  size: 20.r,
+                  size: 20,
                   color: context.colors.textSecondary,
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -116,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
 
               ValueListenableBuilder<bool>(
                 valueListenable: _obscurePasswordNotifier,
@@ -125,7 +125,7 @@ class _LoginFormState extends State<LoginForm> {
                   hint: context.l10n.password_text,
                   prefixIcon: Icon(
                     Icons.lock_outline,
-                    size: 20.r,
+                    size: 20,
                     color: context.colors.textSecondary,
                   ),
                   obscureText: obscurePassword,
@@ -134,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
                       obscurePassword
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
-                      size: 20.r,
+                      size: 20,
                       color: context.colors.textSecondary,
                     ),
                     onPressed: () {
@@ -153,7 +153,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
 
-              SizedBox(height: 6.h),
+              const SizedBox(height: 6),
 
               Align(
                 alignment: AlignmentDirectional.centerEnd,
@@ -177,7 +177,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
 
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
 
               CustomButton(
                 isLoading: isLoading,
@@ -196,7 +196,7 @@ class _LoginFormState extends State<LoginForm> {
                 },
               ),
 
-              SizedBox(height: 12.h),
+              const SizedBox(height: 12),
 
               Center(
                 child: TextButton.icon(
@@ -211,7 +211,7 @@ class _LoginFormState extends State<LoginForm> {
                   },
                   icon: Icon(
                     Icons.arrow_back_rounded,
-                    size: 16.r,
+                    size: 16,
                     color: context.colors.textSecondary,
                   ),
                   label: Text(
@@ -224,7 +224,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
 
-              SizedBox(height: 20.h),
+              const SizedBox(height: 20),
               const SignWithGoogle(),
             ],
           );

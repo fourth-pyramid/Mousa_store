@@ -7,17 +7,11 @@ import 'package:mousa_store/features/auth/data/models/user.dart';
 import 'package:mousa_store/features/notification/data/datasources/push_notification_service.dart';
 
 abstract class AuthLocalDataSource {
-  Future<void> saveTokens({
-    required String accessToken,
-    String? refreshToken,
-  });
+  Future<void> saveTokens({required String accessToken, String? refreshToken});
 
   Future<void> saveUser(User user);
 
-  Future<void> onUserLoggedIn({
-    required String token,
-    required User user,
-  });
+  Future<void> onUserLoggedIn({required String token, required User user});
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {

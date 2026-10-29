@@ -17,8 +17,8 @@ class AppErrorState extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.error_outline, size: 48.w, color: context.colors.error),
-          SizedBox(height: 16.h),
+          Icon(Icons.error_outline, size: 48, color: context.colors.error),
+          const SizedBox(height: 16),
           Text(
             title ?? context.l10n.something_went_wrong_text,
             textAlign: TextAlign.center,
@@ -27,7 +27,7 @@ class AppErrorState extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8.h),
+          const SizedBox(height: 8),
           Text(
             message ?? context.l10n.could_not_load_content_text,
             textAlign: TextAlign.center,
@@ -36,7 +36,7 @@ class AppErrorState extends StatelessWidget {
             ),
           ),
           if (onRetry != null) ...[
-            SizedBox(height: 24.h),
+            const SizedBox(height: 24),
             AppButton(
               text: context.l10n.try_again_text,
               onPressed: onRetry,

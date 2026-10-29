@@ -4,8 +4,9 @@ import 'package:mousa_store/features/setting_profile/data/models/profile_update_
 import 'package:mousa_store/features/setting_profile/domain/repositories/setting_profile_repository.dart';
 
 class SettingProfileRepositoryImpl implements SettingProfileRepository {
-  const SettingProfileRepositoryImpl({required ProfileRemoteDataSource remoteDataSource})
-      : _remoteDataSource = remoteDataSource;
+  const SettingProfileRepositoryImpl({
+    required ProfileRemoteDataSource remoteDataSource,
+  }) : _remoteDataSource = remoteDataSource;
 
   final ProfileRemoteDataSource _remoteDataSource;
 
@@ -21,14 +22,13 @@ class SettingProfileRepositoryImpl implements SettingProfileRepository {
     String? oldPassword,
     String? password,
     String? confirmPassword,
-  }) =>
-      _remoteDataSource.updateProfile(
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone,
-        oldPassword: oldPassword,
-        password: password,
-        confirmPassword: confirmPassword,
-      );
+  }) => _remoteDataSource.updateProfile(
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    phone: phone,
+    oldPassword: oldPassword,
+    password: password,
+    confirmPassword: confirmPassword,
+  );
 }

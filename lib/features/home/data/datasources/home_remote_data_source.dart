@@ -42,9 +42,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<Map<String, dynamic>> getRecentlyItems({int page = 1}) async {
-    final response = await DioHelper.getData(
-      url: 'latset-product?page=$page',
-    );
+    final response = await DioHelper.getData(url: 'latset-product?page=$page');
     return response.data as Map<String, dynamic>;
   }
 }

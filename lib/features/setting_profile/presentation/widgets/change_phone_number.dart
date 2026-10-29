@@ -4,9 +4,9 @@ import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
+import 'package:mousa_store/core/widgets/app_phone_field.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 import 'package:mousa_store/features/setting_profile/presentation/bloc/profile_bloc.dart';
-import 'package:phone_text_field/phone_text_field.dart';
 
 class ChangePhoneNumber extends StatelessWidget {
   const ChangePhoneNumber({super.key});
@@ -43,89 +43,86 @@ class _ChangePhoneNumberBodyState extends State<_ChangePhoneNumberBody> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (context, state) {
-          if (state is ProfileUpdated) {
-            CustomSnackBar.show(
-              context,
-              context.l10n.phone_number_changed_success_text,
-            );
-            Navigator.pop(context);
-          } else if (state is ProfileError) {
-            CustomSnackBar.show(context, state.message);
-          }
-        },
-        builder: (context, state) {
-          final isLoading = state is ProfileUpdating;
-          return Scaffold(
-            appBar: AppBar(title: Text(context.l10n.edit_phone_text)),
-            body: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(16.r),
-                child: Column(
+  Widget build(BuildContext context) => BlocConsumer<ProfileBloc, ProfileState>(
+    listener: (context, state) {
+      if (state is ProfileUpdated) {
+        CustomSnackBar.show(
+          context,
+          context.l10n.phone_number_changed_success_text,
+        );
+        Navigator.pop(context);
+      } else if (state is ProfileError) {
+        CustomSnackBar.show(context, state.message);
+      }
+    },
+    builder: (context, state) {
+      final isLoading = state is ProfileUpdating;
+      return Scaffold(
+        appBar: AppBar(title: Text(context.l10n.edit_phone_text)),
+        body: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        PhoneTextField(
-                          invalidNumberMessage:
-                              context.l10n.phone_number_validation_error,
-                          dialogTitle: '',
-                          initialCountryCode: 'EG',
-                          searchTextStyle: context.typography.titleMedium,
-                          decoration: InputDecoration(
-                            labelText: context.l10n.phone_number_text,
-                            labelStyle: context.typography.titleMedium,
-                          ),
-                          searchFieldInputDecoration: InputDecoration(
-                            hintText: context.l10n.search_country_text,
-                            suffixIcon: const Icon(Icons.search),
-                          ),
-                          onChanged: (phoneNumber) {
-                            _phoneNumberNotifier.value =
-                                phoneNumber.completeNumber;
-                          },
-                        ),
-                      ],
+                    AppPhoneField(
+                      invalidNumberMessage:
+                          context.l10n.phone_number_validation_error,
+                      dialogTitle: '',
+                      searchTextStyle: context.typography.titleMedium,
+                      decoration: InputDecoration(
+                        labelText: context.l10n.phone_number_text,
+                        labelStyle: context.typography.titleMedium,
+                      ),
+                      searchFieldInputDecoration: InputDecoration(
+                        hintText: context.l10n.search_country_text,
+                        suffixIcon: const Icon(Icons.search),
+                      ),
+                      onChanged: (phoneNumber) {
+                        _phoneNumberNotifier.value = phoneNumber.completeNumber;
+                      },
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
-            bottomNavigationBar: SafeArea(
-              child: Padding(
-                padding: EdgeInsetsDirectional.only(
-                  start: 16.w,
-                  end: 16.w,
-                  bottom: 8.h,
-                ),
-                child: CustomButton(
-                  isLoading: isLoading,
-                  text: Text(context.l10n.save_text),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final currentUser = CacheHelper.getUser();
+          ),
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: 16,
+              end: 16,
+              bottom: 8,
+            ),
+            child: CustomButton(
+              isLoading: isLoading,
+              text: Text(context.l10n.save_text),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  final currentUser = CacheHelper.getUser();
 
-                      if (currentUser != null) {
-                        context.read<ProfileBloc>().add(
-                          ProfileEvent.phoneUpdated(
-                            phone: _phoneNumberNotifier.value,
-                          ),
-                        );
-                      } else {
-                        CustomSnackBar.show(
-                          context,
-                          context.l10n.error_occurred_text,
-                        );
-                      }
-                    }
-                  },
-                ),
-              ),
+                  if (currentUser != null) {
+                    context.read<ProfileBloc>().add(
+                      ProfileEvent.phoneUpdated(
+                        phone: _phoneNumberNotifier.value,
+                      ),
+                    );
+                  } else {
+                    CustomSnackBar.show(
+                      context,
+                      context.l10n.error_occurred_text,
+                    );
+                  }
+                }
+              },
             ),
-          );
-        },
+          ),
+        ),
       );
+    },
+  );
 }

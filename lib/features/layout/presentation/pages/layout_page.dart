@@ -135,7 +135,7 @@ class _LayoutPageState extends State<LayoutPage> {
               boxShadow: AppShadows.float,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
               child: Text(
                 message,
                 style: context.typography.body.copyWith(
@@ -163,6 +163,24 @@ class _LayoutPageState extends State<LayoutPage> {
     _screens.fillRange(0, _screens.length, null);
     _rebuildNotifier.value++;
   }
+
+  Widget _buildScreensStack(LayoutTab currentTab) => Stack(
+    children: LayoutTab.values.map((tab) {
+      final isCurrent = currentTab == tab;
+      final index = tab.index;
+      if (!isCurrent && _screens[index] == null) {
+        return const SizedBox.shrink();
+      }
+
+      return Offstage(
+        offstage: !isCurrent,
+        child: TickerMode(
+          enabled: isCurrent,
+          child: KeyedSubtree(key: ValueKey(tab), child: _getScreen(tab)),
+        ),
+      );
+    }).toList(),
+  );
 
   @override
   Widget build(BuildContext context) => MultiBlocListener(
@@ -204,36 +222,77 @@ class _LayoutPageState extends State<LayoutPage> {
             unawaited(SystemNavigator.pop());
           },
           child: Scaffold(
-            body: Stack(
-              children: [
-                ...LayoutTab.values.map((tab) {
-                  final isCurrent = currentTab == tab;
-                  final index = tab.index;
-                  if (!isCurrent && _screens[index] == null) {
-                    return const SizedBox.shrink();
-                  }
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                final useRail =
+                    constraints.maxWidth >= AppBreakpoints.phoneMaxWidth;
+                if (useRail) {
+                  final extendedRail =
+                      constraints.maxWidth >= AppBreakpoints.tabletMaxWidth;
+                  return Row(
+                    children: [
+                      SafeArea(
+                        child: NavigationRail(
+                          extended: extendedRail,
+                          backgroundColor: context.colors.surface,
+                          selectedIndex: currentTab.index,
+                          onDestinationSelected: (index) {
+                            _currentTabNotifier.value = LayoutTab.fromIndex(
+                              index,
+                            );
+                          },
+                          selectedIconTheme: IconThemeData(
+                            color: context.colors.accent,
+                          ),
+                          unselectedIconTheme: IconThemeData(
+                            color: context.colors.textMuted,
+                          ),
+                          selectedLabelTextStyle: context.typography.caption
+                              .copyWith(
+                                color: context.colors.accent,
+                                fontWeight: FontWeight.w700,
+                              ),
+                          unselectedLabelTextStyle: context.typography.caption
+                              .copyWith(color: context.colors.textMuted),
+                          labelType: extendedRail
+                              ? NavigationRailLabelType.none
+                              : NavigationRailLabelType.all,
+                          destinations: LayoutTab.values
+                              .map(
+                                (tab) => NavigationRailDestination(
+                                  icon: Icon(tab.icon),
+                                  selectedIcon: Icon(tab.activeIcon),
+                                  label: Text(tab.label(context)),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                      VerticalDivider(
+                        width: 1,
+                        thickness: 1,
+                        color: context.colors.border,
+                      ),
+                      Expanded(child: _buildScreensStack(currentTab)),
+                    ],
+                  );
+                }
 
-                  return Offstage(
-                    offstage: !isCurrent,
-                    child: TickerMode(
-                      enabled: isCurrent,
-                      child: KeyedSubtree(
-                        key: ValueKey(tab),
-                        child: _getScreen(tab),
+                return Stack(
+                  children: [
+                    _buildScreensStack(currentTab),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: _FloatingBottomNav(
+                        currentTab: currentTab,
+                        onTabSelected: (tab) => _currentTabNotifier.value = tab,
                       ),
                     ),
-                  );
-                }),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: _FloatingBottomNav(
-                    currentTab: currentTab,
-                    onTabSelected: (tab) => _currentTabNotifier.value = tab,
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
           ),
         ),
@@ -259,31 +318,40 @@ class _FloatingBottomNav extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 10.h),
-        child: Container(
-          height: context.sizes.navBarHeight,
-          decoration: BoxDecoration(
-            color: isDark ? context.colors.surface : context.colors.background,
-            borderRadius: BorderRadius.circular(32.r),
-            boxShadow: AppShadows.nav,
-            border: Border.all(
-              color: context.colors.border.withValues(alpha: 0.5),
-              width: 0.8,
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: context.sizes.navBarHeight,
+              maxWidth: AppBreakpoints.maxSheetWidth,
             ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: LayoutTab.values
-                  .map(
-                    (tab) => _NavItem(
-                      tab: tab,
-                      isSelected: currentTab == tab,
-                      onTap: () => onTabSelected(tab),
-                    ),
-                  )
-                  .toList(),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: isDark
+                    ? context.colors.surface
+                    : context.colors.background,
+                borderRadius: BorderRadius.circular(32),
+                boxShadow: AppShadows.nav,
+                border: Border.all(
+                  color: context.colors.border.withValues(alpha: 0.5),
+                  width: 0.8,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: LayoutTab.values
+                      .map(
+                        (tab) => _NavItem(
+                          tab: tab,
+                          isSelected: currentTab == tab,
+                          onTap: () => onTabSelected(tab),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
             ),
           ),
         ),
@@ -365,24 +433,28 @@ class _SimpleNavItem extends StatelessWidget {
           size: context.sizes.navIconSize,
         ),
       ),
-      SizedBox(height: 3.h),
+      const SizedBox(height: 3),
       AnimatedDefaultTextStyle(
         duration: context.durations.fast,
         style: context.typography.caption.copyWith(
           color: isSelected ? activeColor : inactiveColor,
           fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
-          fontSize: 10.sp,
+          fontSize: 10,
         ),
-        child: Text(tab.label(context)),
+        child: Text(
+          tab.label(context),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
-      SizedBox(height: 3.h),
+      const SizedBox(height: 3),
       AnimatedContainer(
         duration: context.durations.fast,
-        width: isSelected ? 18.w : 0,
-        height: 2.5.h,
+        width: isSelected ? 18 : 0,
+        height: 2.5,
         decoration: BoxDecoration(
           color: activeColor,
-          borderRadius: BorderRadius.circular(2.r),
+          borderRadius: BorderRadius.circular(2),
         ),
       ),
     ],
@@ -430,16 +502,16 @@ class _CartNavItem extends StatelessWidget {
               ),
               if (count > 0)
                 Positioned(
-                  top: -4.h,
-                  right: -8.w,
+                  top: -4,
+                  right: -8,
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 4.w,
-                      vertical: 1.h,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 1,
                     ),
-                    constraints: BoxConstraints(
-                      minWidth: 16.r,
-                      minHeight: 16.r,
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
                     ),
                     decoration: BoxDecoration(
                       color: context.colors.accent,
@@ -451,9 +523,9 @@ class _CartNavItem extends StatelessWidget {
                     ),
                     child: Text(
                       count > 99 ? '99+' : count.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 8.sp,
+                        fontSize: 8,
                         fontWeight: FontWeight.w800,
                         height: 1.0,
                       ),
@@ -463,24 +535,28 @@ class _CartNavItem extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: 3.h),
+          const SizedBox(height: 3),
           AnimatedDefaultTextStyle(
             duration: context.durations.fast,
             style: context.typography.caption.copyWith(
               color: isSelected ? activeColor : inactiveColor,
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
-              fontSize: 10.sp,
+              fontSize: 10,
             ),
-            child: Text(tab.label(context)),
+            child: Text(
+              tab.label(context),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          SizedBox(height: 3.h),
+          const SizedBox(height: 3),
           AnimatedContainer(
             duration: context.durations.fast,
-            width: isSelected ? 18.w : 0,
-            height: 2.5.h,
+            width: isSelected ? 18 : 0,
+            height: 2.5,
             decoration: BoxDecoration(
               color: activeColor,
-              borderRadius: BorderRadius.circular(2.r),
+              borderRadius: BorderRadius.circular(2),
             ),
           ),
         ],

@@ -18,7 +18,9 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     DioHelper.init();
     const localDataSource = PriceModeLocalDataSourceImpl();
-    const repository = PriceModeRepositoryImpl(localDataSource: localDataSource);
+    const repository = PriceModeRepositoryImpl(
+      localDataSource: localDataSource,
+    );
     getPriceModeUseCase = const GetPriceModeUseCase(repository);
     setPriceModeUseCase = const SetPriceModeUseCase(repository);
   });
@@ -39,10 +41,9 @@ void main() {
         getPriceModeUseCase: getPriceModeUseCase,
         setPriceModeUseCase: setPriceModeUseCase,
       ),
-      act: (bloc) => bloc.add(const PriceModeEvent.modeChanged(PriceMode.retail)),
-      expect: () => [
-        const PriceModeState(mode: PriceMode.retail),
-      ],
+      act: (bloc) =>
+          bloc.add(const PriceModeEvent.modeChanged(PriceMode.retail)),
+      expect: () => [const PriceModeState(mode: PriceMode.retail)],
     );
 
     blocTest<PriceModeBloc, PriceModeState>(
@@ -52,9 +53,7 @@ void main() {
         setPriceModeUseCase: setPriceModeUseCase,
       ),
       act: (bloc) => bloc.add(const PriceModeEvent.started()),
-      expect: () => [
-        const PriceModeState(mode: PriceMode.wholesale),
-      ],
+      expect: () => [const PriceModeState(mode: PriceMode.wholesale)],
     );
   });
 }

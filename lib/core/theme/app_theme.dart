@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mousa_store/core/design_system/design_system.dart';
 
 /// SPORTCORE Theme configurations — premium upgrade
@@ -9,12 +8,14 @@ class AppThemeFactory {
   ThemeData get darkTheme => _buildDarkTheme();
 
   ThemeData _buildLightTheme() {
-    final baseTheme = ThemeData(brightness: Brightness.light);
+    final baseTheme = ThemeData(
+      brightness: Brightness.light,
+      fontFamily: AppTypography.fontFamily,
+    );
     return baseTheme.copyWith(
       primaryColor: AppColorTokens.primary,
       scaffoldBackgroundColor: AppColorTokens.background,
-      textTheme: GoogleFonts.cairoTextTheme(baseTheme.textTheme),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         toolbarHeight: 56,
         surfaceTintColor: Colors.transparent,
         backgroundColor: AppColorTokens.background,
@@ -23,18 +24,16 @@ class AppThemeFactory {
         scrolledUnderElevation: 0,
         centerTitle: true,
         shadowColor: Colors.black12,
-        systemOverlayStyle: const SystemUiOverlayStyle(
+        systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light,
           systemNavigationBarColor: Colors.transparent,
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
-        iconTheme: const IconThemeData(
-          color: AppColorTokens.textPrimary,
-          size: 22,
-        ),
-        titleTextStyle: GoogleFonts.cairo(
+        iconTheme: IconThemeData(color: AppColorTokens.textPrimary, size: 22),
+        titleTextStyle: TextStyle(
+          fontFamily: AppTypography.fontFamily,
           color: AppColorTokens.textPrimary,
           fontSize: 16,
           fontWeight: FontWeight.w700,
@@ -74,9 +73,7 @@ class AppThemeFactory {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
-          borderSide: const BorderSide(
-            color: AppColorTokens.surfaceStrong,
-          ),
+          borderSide: const BorderSide(color: AppColorTokens.surfaceStrong),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
@@ -91,18 +88,16 @@ class AppThemeFactory {
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
-          borderSide: const BorderSide(
-            color: AppColorTokens.error,
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: AppColorTokens.error, width: 1.5),
         ),
-        hintStyle: GoogleFonts.cairo(
+        hintStyle: const TextStyle(
+          fontFamily: AppTypography.fontFamily,
           color: AppColorTokens.textMuted,
           fontSize: 13,
         ),
       ),
 
-      bottomSheetTheme: BottomSheetThemeData(
+      bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: AppColorTokens.background,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.bottomSheet),
@@ -144,7 +139,8 @@ class AppThemeFactory {
         backgroundColor: AppColorTokens.surface,
         selectedColor: AppColorTokens.primary,
         disabledColor: AppColorTokens.surfaceStrong,
-        labelStyle: GoogleFonts.cairo(
+        labelStyle: const TextStyle(
+          fontFamily: AppTypography.fontFamily,
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: AppColorTokens.textPrimary,
@@ -168,12 +164,14 @@ class AppThemeFactory {
   }
 
   ThemeData _buildDarkTheme() {
-    final baseTheme = ThemeData(brightness: Brightness.dark);
+    final baseTheme = ThemeData(
+      brightness: Brightness.dark,
+      fontFamily: AppTypography.fontFamily,
+    );
     return baseTheme.copyWith(
       primaryColor: AppColorTokens.darkTextPrimary,
       scaffoldBackgroundColor: AppColorTokens.darkBackground,
-      textTheme: GoogleFonts.cairoTextTheme(baseTheme.textTheme),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         toolbarHeight: 56,
         surfaceTintColor: Colors.transparent,
         backgroundColor: AppColorTokens.darkBackground,
@@ -181,18 +179,19 @@ class AppThemeFactory {
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        systemOverlayStyle: const SystemUiOverlayStyle(
+        systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.dark,
           systemNavigationBarColor: Colors.transparent,
           systemNavigationBarIconBrightness: Brightness.light,
         ),
-        iconTheme: const IconThemeData(
+        iconTheme: IconThemeData(
           color: AppColorTokens.darkTextPrimary,
           size: 22,
         ),
-        titleTextStyle: GoogleFonts.cairo(
+        titleTextStyle: TextStyle(
+          fontFamily: AppTypography.fontFamily,
           color: AppColorTokens.darkTextPrimary,
           fontSize: 16,
           fontWeight: FontWeight.w700,
@@ -232,9 +231,7 @@ class AppThemeFactory {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
-          borderSide: const BorderSide(
-            color: AppColorTokens.darkSurfaceStrong,
-          ),
+          borderSide: const BorderSide(color: AppColorTokens.darkSurfaceStrong),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
@@ -249,18 +246,16 @@ class AppThemeFactory {
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: AppRadius.smBorder,
-          borderSide: const BorderSide(
-            color: AppColorTokens.error,
-            width: 1.5,
-          ),
+          borderSide: const BorderSide(color: AppColorTokens.error, width: 1.5),
         ),
-        hintStyle: GoogleFonts.cairo(
+        hintStyle: const TextStyle(
+          fontFamily: AppTypography.fontFamily,
           color: AppColorTokens.darkTextMuted,
           fontSize: 13,
         ),
       ),
 
-      bottomSheetTheme: BottomSheetThemeData(
+      bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: AppColorTokens.darkSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.bottomSheet),
@@ -304,7 +299,8 @@ class AppThemeFactory {
       chipTheme: ChipThemeData(
         backgroundColor: AppColorTokens.darkSurface,
         selectedColor: AppColorTokens.darkTextPrimary,
-        labelStyle: GoogleFonts.cairo(
+        labelStyle: const TextStyle(
+          fontFamily: AppTypography.fontFamily,
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: AppColorTokens.darkTextPrimary,

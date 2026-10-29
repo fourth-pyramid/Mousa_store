@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
+import 'package:mousa_store/core/di/service_locator.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_event.dart';
@@ -25,6 +26,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   late final ScrollController _scrollController;
   bool _showBackToTopButton = false;
+  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
@@ -36,10 +38,18 @@ class _HomeViewState extends State<HomeView> {
         _initData();
       }
     });
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted) {
+            _initData();
+          }
+        });
   }
 
   @override
   void dispose() {
+    unawaited(_networkRestoreSubscription?.cancel());
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
@@ -80,38 +90,35 @@ class _HomeViewState extends State<HomeView> {
       elevation: 0,
     ),
     body: SafeArea(
-      child: InternetStateManager(
-        onRestoreInternetConnection: _initData,
-        child: RefreshIndicator(
-          color: context.colors.primary,
-          onRefresh: () async =>
-              context.read<HomeBloc>().add(const HomeAllDataRequested()),
-          child: CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              const SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HomeBannerSliderSection(),
-                    HomeBrandsSection(),
-                    HomeOffersSection(),
-                    HomeCategoriesSection(),
-                    HomeRecentlyAddedSection(),
-                    HomeServicesBannerSection(),
-                  ],
-                ),
+      child: RefreshIndicator(
+        color: context.colors.primary,
+        onRefresh: () async =>
+            context.read<HomeBloc>().add(const HomeAllDataRequested()),
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: const [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HomeBannerSliderSection(),
+                  HomeBrandsSection(),
+                  HomeOffersSection(),
+                  HomeCategoriesSection(),
+                  HomeRecentlyAddedSection(),
+                  HomeServicesBannerSection(),
+                ],
               ),
-              const HomeAllProductsSection(),
-              SliverToBoxAdapter(child: SizedBox(height: 100.h)),
-            ],
-          ),
+            ),
+            HomeAllProductsSection(),
+            SliverToBoxAdapter(child: SizedBox(height: 100)),
+          ],
         ),
       ),
     ),
     floatingActionButton: _showBackToTopButton
         ? Padding(
-            padding: EdgeInsets.only(bottom: 75.h),
+            padding: const EdgeInsets.only(bottom: 75),
             child: FloatingActionButton(
               mini: true,
               onPressed: () {

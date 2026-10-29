@@ -38,9 +38,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       appBar: AppBar(title: Text(context.l10n.reset_password_text)),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 25.w,
-            vertical: 20.h,
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 25,
+            vertical: 20,
           ),
           child: BlocConsumer<ForgotPasswordBloc, ForgotPasswordState>(
             listener: (context, state) {

@@ -65,9 +65,9 @@ void main() {
     blocTest<CartBloc, CartState>(
       'emits [loading, success] when getCart succeeds with cart data',
       build: () {
-        when(
-          () => mockGetCartUseCase(),
-        ).thenAnswer((_) async => const CartResponse(success: true, cart: sampleCart));
+        when(() => mockGetCartUseCase()).thenAnswer(
+          (_) async => const CartResponse(success: true, cart: sampleCart),
+        );
         return createBloc();
       },
       act: (bloc) => bloc.add(const CartFetchRequested()),
@@ -80,9 +80,7 @@ void main() {
     blocTest<CartBloc, CartState>(
       'emits [loading, failure] when getCart throws an exception',
       build: () {
-        when(
-          () => mockGetCartUseCase(),
-        ).thenThrow(Exception('Network error'));
+        when(() => mockGetCartUseCase()).thenThrow(Exception('Network error'));
         return createBloc();
       },
       act: (bloc) => bloc.add(const CartFetchRequested()),

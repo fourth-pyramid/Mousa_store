@@ -56,7 +56,7 @@ class _ChangeNameState extends State<ChangeName> {
         return Scaffold(
           appBar: AppBar(title: Text(context.l10n.change_name_text)),
           body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: Form(
               key: _formKey,
               child: Column(
@@ -74,7 +74,7 @@ class _ChangeNameState extends State<ChangeName> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 16.h),
+                  const SizedBox(height: 16),
                   CustomFormField(
                     controller: _lastNameController,
                     hint: context.l10n.last_name_text,
@@ -87,7 +87,7 @@ class _ChangeNameState extends State<ChangeName> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 32.h),
+                  const SizedBox(height: 32),
                   CustomButton(
                     text: Text(context.l10n.save_text),
                     isLoading: isLoading,
@@ -96,14 +96,12 @@ class _ChangeNameState extends State<ChangeName> {
                         final newFirstName = _firstNameController.text.trim();
                         final newLastName = _lastNameController.text.trim();
 
-                        final firstNameToSend =
-                            newFirstName != widget.firstName
-                                ? newFirstName
-                                : null;
-                        final lastNameToSend =
-                            newLastName != widget.lastName
-                                ? newLastName
-                                : null;
+                        final firstNameToSend = newFirstName != widget.firstName
+                            ? newFirstName
+                            : null;
+                        final lastNameToSend = newLastName != widget.lastName
+                            ? newLastName
+                            : null;
 
                         if (firstNameToSend == null && lastNameToSend == null) {
                           CustomSnackBar.show(
@@ -114,11 +112,11 @@ class _ChangeNameState extends State<ChangeName> {
                         }
 
                         context.read<ProfileBloc>().add(
-                              ProfileEvent.nameUpdated(
-                                firstName: firstNameToSend,
-                                lastName: lastNameToSend,
-                              ),
-                            );
+                          ProfileEvent.nameUpdated(
+                            firstName: firstNameToSend,
+                            lastName: lastNameToSend,
+                          ),
+                        );
                       }
                     },
                   ),

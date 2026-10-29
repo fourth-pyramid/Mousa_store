@@ -9,8 +9,8 @@ export 'package:mousa_store/features/auth/presentation/bloc/forgot_password_stat
 class ForgotPasswordBloc
     extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   ForgotPasswordBloc({required ForgotPasswordUseCase forgotPasswordUseCase})
-      : _forgotPasswordUseCase = forgotPasswordUseCase,
-        super(const ForgotPasswordInitial()) {
+    : _forgotPasswordUseCase = forgotPasswordUseCase,
+      super(const ForgotPasswordInitial()) {
     on<ForgotPasswordSubmitted>(_onSubmitted);
   }
 

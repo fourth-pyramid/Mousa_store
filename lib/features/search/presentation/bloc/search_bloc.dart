@@ -12,7 +12,7 @@ export 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc({required this.searchProductsUseCase})
-      : super(const SearchState()) {
+    : super(const SearchState()) {
     on<SearchQueryChanged>(_onSearchQueryChanged);
     on<SearchMoreRequested>(_onSearchMoreRequested);
     on<SearchCleared>(_onSearchCleared);

@@ -20,9 +20,9 @@ class FilterHeader extends StatelessWidget {
       // Drag Handle
       Center(
         child: Container(
-          width: 44.w,
-          height: 4.h,
-          margin: EdgeInsets.only(top: 10.h, bottom: 12.h),
+          width: 44,
+          height: 4,
+          margin: const EdgeInsets.only(top: 10, bottom: 12),
           decoration: BoxDecoration(
             color: context.colors.surfaceStrong,
             borderRadius: context.radius.pillBorder,
@@ -32,7 +32,7 @@ class FilterHeader extends StatelessWidget {
 
       // Title & Actions Bar
       Padding(
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 16.w),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
         child: Row(
           children: [
             Text(
@@ -42,16 +42,16 @@ class FilterHeader extends StatelessWidget {
               ),
             ),
             if (activeFilterCount > 0) ...[
-              SizedBox(width: 8.w),
+              const SizedBox(width: 8),
               DecoratedBox(
                 decoration: BoxDecoration(
                   color: context.colors.primary,
                   borderRadius: context.radius.pillBorder,
                 ),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.symmetric(
-                    horizontal: 8.w,
-                    vertical: 2.h,
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
                   ),
                   child: Text(
                     '$activeFilterCount',
@@ -68,11 +68,11 @@ class FilterHeader extends StatelessWidget {
             TextButton(
               onPressed: activeFilterCount > 0 ? onClearAll : null,
               style: TextButton.styleFrom(
-                padding: EdgeInsetsDirectional.symmetric(
-                  horizontal: 10.w,
-                  vertical: 6.h,
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
                 ),
-                minimumSize: Size(44.w, 44.h),
+                minimumSize: const Size(44, 44),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(
@@ -87,19 +87,19 @@ class FilterHeader extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 4.w),
+            const SizedBox(width: 4),
             // Close button
             Material(
               color: context.colors.surfaceStrong.withValues(alpha: 0.6),
-              borderRadius: BorderRadius.circular(20.r),
+              borderRadius: BorderRadius.circular(20),
               child: InkWell(
-                borderRadius: BorderRadius.circular(20.r),
+                borderRadius: BorderRadius.circular(20),
                 onTap: onClose,
                 child: Padding(
-                  padding: EdgeInsets.all(8.r),
+                  padding: const EdgeInsets.all(8),
                   child: Icon(
                     Icons.close_rounded,
-                    size: 20.r,
+                    size: 20,
                     color: context.colors.textPrimary,
                   ),
                 ),
@@ -108,8 +108,8 @@ class FilterHeader extends StatelessWidget {
           ],
         ),
       ),
-      SizedBox(height: 12.h),
-      Divider(height: 1.h, color: context.colors.divider),
+      const SizedBox(height: 12),
+      Divider(height: 1, color: context.colors.divider),
     ],
   );
 }

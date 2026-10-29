@@ -15,20 +15,20 @@ abstract class Brand with _$Brand {
   }) = _Brand;
 
   factory Brand.fromJson(Map<String, dynamic> json) => Brand(
-        id: json['id'] is int
-            ? json['id'] as int
-            : (int.tryParse('${json['id']}') ?? 0),
-        createdAt: json['created_at'] as String?,
-        updatedAt: json['updated_at'] as String?,
-        name: json['name'] as String? ?? '',
-        imagePath: json['image_path'] as String? ?? '',
-      );
+    id: json['id'] is int
+        ? json['id'] as int
+        : (int.tryParse('${json['id']}') ?? 0),
+    createdAt: json['created_at'] as String?,
+    updatedAt: json['updated_at'] as String?,
+    name: json['name'] as String? ?? '',
+    imagePath: json['image_path'] as String? ?? '',
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
-        'name': name,
-        'image_path': imagePath,
-      };
+    'id': id,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+    'name': name,
+    'image_path': imagePath,
+  };
 }

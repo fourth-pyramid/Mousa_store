@@ -80,9 +80,9 @@ class _CartItemWidgetState extends State<CartItemWidget> {
     }
 
     return Padding(
-      padding: EdgeInsetsDirectional.symmetric(
-        horizontal: 6.0.w,
-        vertical: 10.h,
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: 6.0,
+        vertical: 10,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,17 +91,17 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             children: [
               AppImage(
                 image: widget.image,
-                height: 95.h,
-                width: 90.w,
-                borderRadius: BorderRadius.circular(12.r),
+                height: 95,
+                width: 90,
+                borderRadius: BorderRadius.circular(12),
                 errorWidget: (context, url, error) => SizedBox(
-                  height: 95.h,
-                  width: 90.w,
+                  height: 95,
+                  width: 90,
                   child: ColoredBox(
                     color: context.colors.surface,
                     child: Icon(
                       Icons.sports_soccer,
-                      size: 24.w,
+                      size: 24,
                       color: context.colors.textSecondary,
                     ),
                   ),
@@ -114,22 +114,22 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: context.colors.primary,
-                      borderRadius: BorderRadiusDirectional.only(
-                        topEnd: Radius.circular(12.r),
-                        bottomStart: Radius.circular(8.r),
+                      borderRadius: const BorderRadiusDirectional.only(
+                        topEnd: Radius.circular(12),
+                        bottomStart: Radius.circular(8),
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 6.w,
-                        vertical: 2.h,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
                       ),
                       child: Text(
                         '${widget.offers!.first.discountPrice.toInt()}%-',
                         style: context.typography.caption.copyWith(
                           color: context.colors.onPrimary,
                           fontWeight: FontWeight.bold,
-                          fontSize: 9.sp,
+                          fontSize: 9,
                         ),
                       ),
                     ),
@@ -137,7 +137,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 ),
             ],
           ),
-          SizedBox(width: 12.w),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +152,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
                 if (formattedAttributes != null)
                   Padding(
-                    padding: EdgeInsetsDirectional.only(top: 2.0.h),
+                    padding: const EdgeInsetsDirectional.only(top: 2.0),
                     child: Text(
                       formattedAttributes,
                       style: context.typography.bodySmall.copyWith(
@@ -163,7 +163,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   ),
 
                 Padding(
-                  padding: EdgeInsetsDirectional.symmetric(vertical: 4.0.h),
+                  padding: const EdgeInsetsDirectional.symmetric(vertical: 4.0),
                   child: Text(
                     widget.specs,
                     maxLines: 1,
@@ -181,7 +181,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                         border: Border.all(color: context.colors.border),
                       ),
                       child: SizedBox(
-                        height: 34.h,
+                        height: 34,
                         child: ValueListenableBuilder<int>(
                           valueListenable: _quantityNotifier,
                           builder: (context, q, _) => Row(
@@ -189,16 +189,16 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.add),
-                                iconSize: 16.r,
+                                iconSize: 16,
                                 padding: EdgeInsets.zero,
-                                constraints: BoxConstraints(
-                                  minWidth: 32.w,
-                                  minHeight: 34.h,
+                                constraints: const BoxConstraints(
+                                  minWidth: 32,
+                                  minHeight: 34,
                                 ),
                                 style: IconButton.styleFrom(
                                   tapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
-                                  minimumSize: Size(32.w, 34.h),
+                                  minimumSize: const Size(32, 34),
                                   padding: EdgeInsets.zero,
                                 ),
                                 onPressed: q >= widget.stock
@@ -217,9 +217,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                                       },
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                ),
                                 child: ConstrainedBox(
-                                  constraints: BoxConstraints(minWidth: 24.w),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 24,
+                                  ),
                                   child: Center(
                                     child: Text(
                                       q.toString(),
@@ -233,16 +237,16 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                               ),
                               IconButton(
                                 icon: const Icon(Icons.remove),
-                                iconSize: 16.r,
+                                iconSize: 16,
                                 padding: EdgeInsets.zero,
-                                constraints: BoxConstraints(
-                                  minWidth: 32.w,
-                                  minHeight: 34.h,
+                                constraints: const BoxConstraints(
+                                  minWidth: 32,
+                                  minHeight: 34,
                                 ),
                                 style: IconButton.styleFrom(
                                   tapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
-                                  minimumSize: Size(32.w, 34.h),
+                                  minimumSize: const Size(32, 34),
                                   padding: EdgeInsets.zero,
                                 ),
                                 onPressed: q <= widget.minQuantity
@@ -269,12 +273,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 ),
 
                 Padding(
-                  padding: EdgeInsetsDirectional.only(top: 8.0.h),
+                  padding: const EdgeInsetsDirectional.only(top: 8.0),
                   child: Wrap(
                     // ponytail: use Wrap to prevent price text overflow
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 8.w,
-                    runSpacing: 2.h,
+                    spacing: 8,
+                    runSpacing: 2,
                     children: [
                       Text(
                         '${context.l10n.piece_price_text}: ${_unitPrice.toStringAsFixed(2)} ${context.l10n.egp_text}',

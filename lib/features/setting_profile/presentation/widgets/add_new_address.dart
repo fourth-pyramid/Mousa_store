@@ -133,7 +133,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
       ),
     ),
     body: SingleChildScrollView(
-      padding: EdgeInsets.all(16.w),
+      padding: const EdgeInsets.all(16),
       child: Form(
         key: _formKey,
         child: Column(
@@ -150,7 +150,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                         : null,
                   ),
                 ),
-                SizedBox(width: 8.w),
+                const SizedBox(width: 8),
                 Expanded(
                   child: ValueListenableBuilder<String?>(
                     valueListenable: _selectedGovernorateNotifier,
@@ -159,9 +159,9 @@ class _AddNewAddressState extends State<AddNewAddress> {
                           initialValue: selectedGovernorate,
                           decoration: InputDecoration(
                             labelText: context.l10n.governorate_text,
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12.w,
-                              vertical: 14.h,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 14,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: context.radius.smBorder,
@@ -187,7 +187,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
               ],
             ),
 
-            SizedBox(height: 12.h),
+            const SizedBox(height: 12),
             CustomFormField(
               controller: _cityController,
               focusNode: _cityFocus,
@@ -196,7 +196,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                   ? context.l10n.required_text
                   : null,
             ),
-            SizedBox(height: 12.h),
+            const SizedBox(height: 12),
             CustomFormField(
               controller: _streetController,
               focusNode: _streetFocus,
@@ -205,17 +205,17 @@ class _AddNewAddressState extends State<AddNewAddress> {
                   ? context.l10n.required_text
                   : null,
             ),
-            SizedBox(height: 24.h),
+            const SizedBox(height: 24),
           ],
         ),
       ),
     ),
     bottomNavigationBar: SafeArea(
       child: Padding(
-        padding: EdgeInsetsDirectional.only(
-          start: 16.w,
-          end: 16.w,
-          bottom: 16.h,
+        padding: const EdgeInsetsDirectional.only(
+          start: 16,
+          end: 16,
+          bottom: 16,
         ),
         child: ValueListenableBuilder<bool>(
           valueListenable: _isLoadingNotifier,

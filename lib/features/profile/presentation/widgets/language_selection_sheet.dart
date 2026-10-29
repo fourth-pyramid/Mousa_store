@@ -52,7 +52,7 @@ class _LanguageOptionTile extends StatelessWidget {
     final inactiveColor = context.colors.textSecondary;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Material(
         color: isSelected
             ? context.colors.surfaceStrong
@@ -69,7 +69,7 @@ class _LanguageOptionTile extends StatelessWidget {
             context.read<LanguageBloc>().add(LanguageEvent.changed(value));
             Navigator.pop(context);
           },
-          leading: Text(flagText, style: TextStyle(fontSize: 24.sp)),
+          leading: Text(flagText, style: const TextStyle(fontSize: 24)),
           title: Text(
             title,
             style: context.typography.bodyLarge.copyWith(

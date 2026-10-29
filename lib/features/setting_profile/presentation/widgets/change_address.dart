@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
+import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/governorates_data.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
@@ -24,6 +25,7 @@ class ChangeAddress extends StatefulWidget {
 
 class _ChangeAddressState extends State<ChangeAddress> {
   late final ValueNotifier<Future<List<Address>>> _addressesNotifier;
+  StreamSubscription<void>? _networkRestoreSubscription;
 
   List<String> governorates = egyptGovernorates;
   bool isGovernoratesLoading = false;
@@ -32,10 +34,18 @@ class _ChangeAddressState extends State<ChangeAddress> {
   void initState() {
     super.initState();
     _addressesNotifier = ValueNotifier(fetchAddresses());
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted) {
+            _refreshAddresses();
+          }
+        });
   }
 
   @override
   void dispose() {
+    unawaited(_networkRestoreSubscription?.cancel());
     _addressesNotifier.dispose();
     super.dispose();
   }
@@ -153,97 +163,94 @@ class _ChangeAddressState extends State<ChangeAddress> {
       child: const Icon(Icons.add),
     ),
     appBar: AppBar(title: Text(context.l10n.your_addresses_text)),
-    body: InternetStateManager(
-      onRestoreInternetConnection: _refreshAddresses,
-      child: ValueListenableBuilder<Future<List<Address>>>(
-        valueListenable: _addressesNotifier,
-        builder: (context, future, _) => FutureBuilder<List<Address>>(
-          future: future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CustomLoadingIndicator());
-            }
+    body: ValueListenableBuilder<Future<List<Address>>>(
+      valueListenable: _addressesNotifier,
+      builder: (context, future, _) => FutureBuilder<List<Address>>(
+        future: future,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CustomLoadingIndicator());
+          }
 
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return AppEmptyState(
-                title: context.l10n.no_addresses_yet_text,
-                icon: Icons.location_off_outlined,
-              );
-            }
-
-            final addresses = snapshot.data!;
-            return ListView.builder(
-              itemCount: addresses.length,
-              itemBuilder: (context, index) {
-                final address = addresses[index];
-                return Dismissible(
-                  key: Key(address.id.toString()),
-                  direction: DismissDirection.endToStart,
-                  background: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 6.h,
-                    ),
-                    child: ColoredBox(
-                      color: context.colors.error,
-                      child: Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.symmetric(
-                            horizontal: 20.w,
-                          ),
-                          child: Icon(
-                            Icons.delete,
-                            color: context.colors.onError,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  confirmDismiss: (_) async {
-                    _confirmDeleteAddress(address);
-                    return false;
-                  },
-                  child: Card(
-                    color: context.colors.surface,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 6.h,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.0.h),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.location_on,
-                          size: 30.w,
-                          color: context.colors.primary,
-                        ),
-                        title: Text(
-                          address.nameAddress,
-                          style: context.typography.titleMedium,
-                        ),
-                        subtitle: Text(
-                          address.address,
-                          style: context.typography.body,
-                        ),
-                        onTap: () async {
-                          final result = await navigateWithTransition<bool>(
-                            context,
-                            AddNewAddress(address: address),
-                            type: TransitionType.fade,
-                          );
-                          if (result ?? false) {
-                            _refreshAddresses();
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              },
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return AppEmptyState(
+              title: context.l10n.no_addresses_yet_text,
+              icon: Icons.location_off_outlined,
             );
-          },
-        ),
+          }
+
+          final addresses = snapshot.data!;
+          return ListView.builder(
+            itemCount: addresses.length,
+            itemBuilder: (context, index) {
+              final address = addresses[index];
+              return Dismissible(
+                key: Key(address.id.toString()),
+                direction: DismissDirection.endToStart,
+                background: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
+                  child: ColoredBox(
+                    color: context.colors.error,
+                    child: Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Icon(
+                          Icons.delete,
+                          color: context.colors.onError,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                confirmDismiss: (_) async {
+                  _confirmDeleteAddress(address);
+                  return false;
+                },
+                child: Card(
+                  color: context.colors.surface,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.location_on,
+                        size: 30,
+                        color: context.colors.primary,
+                      ),
+                      title: Text(
+                        address.nameAddress,
+                        style: context.typography.titleMedium,
+                      ),
+                      subtitle: Text(
+                        address.address,
+                        style: context.typography.body,
+                      ),
+                      onTap: () async {
+                        final result = await navigateWithTransition<bool>(
+                          context,
+                          AddNewAddress(address: address),
+                          type: TransitionType.fade,
+                        );
+                        if (result ?? false) {
+                          _refreshAddresses();
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     ),
   );

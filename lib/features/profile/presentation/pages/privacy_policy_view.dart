@@ -9,7 +9,7 @@ class PrivacyPolicyView extends StatelessWidget {
     appBar: AppBar(title: Text(context.l10n.privacy_policy_text.toUpperCase())),
     body: SafeArea(
       child: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -25,7 +25,7 @@ class PrivacyPolicyView extends StatelessWidget {
             _SectionContent(content: context.l10n.privacy_policy_sec4_desc),
             _SectionTitle(title: context.l10n.privacy_policy_sec5_title),
             _SectionContent(content: context.l10n.privacy_policy_sec5_desc),
-            SizedBox(height: 32.h),
+            const SizedBox(height: 32),
             Center(
               child: Text(
                 context.l10n.privacy_policy_copyright,
@@ -34,7 +34,7 @@ class PrivacyPolicyView extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16.h),
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -49,7 +49,7 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(top: 20.h, bottom: 8.h),
+    padding: const EdgeInsets.only(top: 20, bottom: 8),
     child: Text(
       title.toUpperCase(),
       style: context.typography.titleMedium.copyWith(

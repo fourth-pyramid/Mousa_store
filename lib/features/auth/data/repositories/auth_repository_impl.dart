@@ -62,20 +62,16 @@ class AuthRepositoryImpl implements AuthRepository {
   );
 
   @override
-  Future<OtpResponse> verifyOtp({
-    required String email,
-    required String otp,
-  }) => _remoteDataSource.verifyOtp(email: email, otp: otp);
+  Future<OtpResponse> verifyOtp({required String email, required String otp}) =>
+      _remoteDataSource.verifyOtp(email: email, otp: otp);
 
   @override
-  Future<OtpResponse> resendOtp({
-    required String email,
-  }) => _remoteDataSource.resendOtp(email: email);
+  Future<OtpResponse> resendOtp({required String email}) =>
+      _remoteDataSource.resendOtp(email: email);
 
   @override
-  Future<OtpResponse> sendEmailForForgotPassword({
-    required String email,
-  }) => _remoteDataSource.sendEmailForForgotPassword(email: email);
+  Future<OtpResponse> sendEmailForForgotPassword({required String email}) =>
+      _remoteDataSource.sendEmailForForgotPassword(email: email);
 
   @override
   Future<OtpResponse> verifyForgotPasswordOtp({
@@ -84,9 +80,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }) => _remoteDataSource.verifyForgotPasswordOtp(email: email, otp: otp);
 
   @override
-  Future<OtpResponse> resendForgotPasswordOtp({
-    required String email,
-  }) => _remoteDataSource.resendForgotPasswordOtp(email: email);
+  Future<OtpResponse> resendForgotPasswordOtp({required String email}) =>
+      _remoteDataSource.resendForgotPasswordOtp(email: email);
 
   @override
   Future<OtpResponse> resetPassword({

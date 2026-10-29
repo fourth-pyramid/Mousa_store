@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:mousa_store/core/di/locator.dart';
+import 'package:mousa_store/core/utils/screen_utils.dart';
 import 'package:mousa_store/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:mousa_store/features/auth/presentation/bloc/signup_bloc.dart';
 import 'package:mousa_store/features/auth/presentation/widgets/auth_header.dart';
@@ -48,29 +48,29 @@ class _AuthPageState extends State<AuthPage> {
       statusBarBrightness: Brightness.dark,
     ),
     child: Scaffold(
-      body: InternetStateManager(
-        onRestoreInternetConnection: () {},
-        child: ValueListenableBuilder<bool>(
-          valueListenable: _isLoginNotifier,
-          builder: (context, isLogin, _) => Column(
-            children: [
-              AuthHeader(
-                isLogin: isLogin,
-                onTabChanged: ({required isLogin}) {
-                  _isLoginNotifier.value = isLogin;
-                },
-              ),
-              MultiBlocProvider(
-                providers: [
-                  BlocProvider(create: (context) => getIt<LoginBloc>()),
-                  BlocProvider(create: (context) => getIt<SignupBloc>()),
-                ],
-                child: Expanded(
+      body: ValueListenableBuilder<bool>(
+        valueListenable: _isLoginNotifier,
+        builder: (context, isLogin, _) => Column(
+          children: [
+            AuthHeader(
+              isLogin: isLogin,
+              onTabChanged: ({required isLogin}) {
+                _isLoginNotifier.value = isLogin;
+              },
+            ),
+            MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => getIt<LoginBloc>()),
+                BlocProvider(create: (context) => getIt<SignupBloc>()),
+              ],
+              child: Expanded(
+                child: ResponsiveConstrainedBox(
+                  maxWidth: AppBreakpoints.maxFormWidth,
                   child: isLogin ? const LoginForm() : const SignupForm(),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     ),

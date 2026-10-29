@@ -28,13 +28,13 @@ class ProfileAppbar extends StatelessWidget {
           children: [
             AppImage.asset(
               'assets/images/mousa_store.png',
-              height: 60.h,
+              height: 60,
               color: context.colors.textPrimary == Colors.white
                   ? Colors.white
                   : null,
               fit: BoxFit.contain,
             ),
-            SizedBox(width: 8.w),
+            const SizedBox(width: 8),
             if (isLoggedIn)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

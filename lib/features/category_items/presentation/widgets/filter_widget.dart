@@ -33,30 +33,30 @@ class FilterWidget extends StatelessWidget {
                   color: hasFilter
                       ? context.colors.primary.withValues(alpha: 0.08)
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(12),
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(12),
                     onTap: () {
                       final bloc = context.read<CategoryItemsBloc>();
                       unawaited(FilterBottomSheet.show(context, bloc));
                     },
                     child: Padding(
-                      padding: EdgeInsetsDirectional.symmetric(
-                        vertical: 10.h,
-                        horizontal: 8.w,
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        vertical: 10,
+                        horizontal: 8,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           AppImage.asset(
                             'assets/icons/filter.png',
-                            width: 20.w,
-                            height: 20.h,
+                            width: 20,
+                            height: 20,
                             color: hasFilter
                                 ? context.colors.primary
                                 : context.colors.textPrimary,
                           ),
-                          SizedBox(width: 6.w),
+                          const SizedBox(width: 6),
                           Text(
                             context.l10n.filter_text,
                             style: context.typography.titleMedium.copyWith(
@@ -69,23 +69,23 @@ class FilterWidget extends StatelessWidget {
                             ),
                           ),
                           if (hasFilter && activeCount > 0) ...[
-                            SizedBox(width: 6.w),
+                            const SizedBox(width: 6),
                             DecoratedBox(
                               decoration: BoxDecoration(
                                 color: context.colors.primary,
                                 borderRadius: context.radius.pillBorder,
                               ),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.symmetric(
-                                  horizontal: 6.w,
-                                  vertical: 2.h,
+                                padding: const EdgeInsetsDirectional.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
                                 ),
                                 child: Text(
                                   '$activeCount',
                                   style: context.typography.caption.copyWith(
                                     color: context.colors.onPrimary,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 10.sp,
+                                    fontSize: 10,
                                   ),
                                 ),
                               ),
@@ -98,7 +98,7 @@ class FilterWidget extends StatelessWidget {
                 ),
                 if (hasFilter)
                   PositionedDirectional(
-                    top: -4.h,
+                    top: -4,
                     end: 0,
                     child: IconButton(
                       onPressed: () =>
@@ -106,7 +106,7 @@ class FilterWidget extends StatelessWidget {
                       icon: Icon(
                         Icons.close,
                         color: context.colors.error,
-                        size: 18.r,
+                        size: 18,
                       ),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),

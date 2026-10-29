@@ -22,18 +22,14 @@ void main() {
       'emits updated ThemeMode when ThemeEvent.modeChanged is added',
       build: () => ThemeBloc(ThemeMode.light),
       act: (bloc) => bloc.add(const ThemeEvent.modeChanged(ThemeMode.dark)),
-      expect: () => [
-        const ThemeState(themeMode: ThemeMode.dark),
-      ],
+      expect: () => [const ThemeState(themeMode: ThemeMode.dark)],
     );
 
     blocTest<ThemeBloc, ThemeState>(
       'toggles theme when ThemeEvent.toggled is added',
       build: () => ThemeBloc(ThemeMode.light),
       act: (bloc) => bloc.add(const ThemeEvent.toggled()),
-      expect: () => [
-        const ThemeState(themeMode: ThemeMode.dark),
-      ],
+      expect: () => [const ThemeState(themeMode: ThemeMode.dark)],
     );
   });
 }

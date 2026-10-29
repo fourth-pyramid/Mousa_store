@@ -12,7 +12,7 @@ class SignWithGoogle extends StatelessWidget {
         children: [
           Expanded(child: Divider(color: context.colors.border)),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               context.l10n.or_sign_in_with_text,
               style: context.typography.caption.copyWith(
@@ -23,10 +23,10 @@ class SignWithGoogle extends StatelessWidget {
           Expanded(child: Divider(color: context.colors.border)),
         ],
       ),
-      SizedBox(height: 16.h),
+      const SizedBox(height: 16),
       SizedBox(
         width: double.infinity,
-        height: 52.h,
+        height: 52,
         child: OutlinedButton.icon(
           onPressed: () {},
           style: OutlinedButton.styleFrom(
@@ -38,10 +38,10 @@ class SignWithGoogle extends StatelessWidget {
             ),
             elevation: 0,
           ),
-          icon: AppImage.asset(
+          icon: const AppImage.asset(
             'assets/images/google_button.png',
-            height: 22.h,
-            width: 22.w,
+            height: 22,
+            width: 22,
           ),
           label: Text(
             'Google',

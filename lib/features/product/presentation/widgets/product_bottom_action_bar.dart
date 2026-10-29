@@ -34,9 +34,7 @@ class ProductBottomActionBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colors.surface,
         border: Border(
-          top: BorderSide(
-            color: context.colors.border.withValues(alpha: 0.6),
-          ),
+          top: BorderSide(color: context.colors.border.withValues(alpha: 0.6)),
         ),
         boxShadow: [
           BoxShadow(
@@ -47,7 +45,7 @@ class ProductBottomActionBar extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: SafeArea(
           top: false,
           child: Row(
@@ -60,7 +58,7 @@ class ProductBottomActionBar extends StatelessWidget {
                 onChanged: onQuantityChanged,
               ),
 
-              SizedBox(width: 12.w),
+              const SizedBox(width: 12),
 
               // ── Add To Cart Action Button ──────────────────────────
               Expanded(
@@ -99,13 +97,11 @@ class _PillQuantityStepper extends StatelessWidget {
     final canIncrement = quantity < maxQty;
 
     return Container(
-      height: 52.h,
+      height: 52,
       decoration: BoxDecoration(
         color: context.colors.background,
-        borderRadius: BorderRadius.circular(26.r),
-        border: Border.all(
-          color: context.colors.border.withValues(alpha: 0.8),
-        ),
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: context.colors.border.withValues(alpha: 0.8)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -126,13 +122,11 @@ class _PillQuantityStepper extends StatelessWidget {
 
           // Count
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: AnimatedSwitcher(
               duration: context.durations.fast,
-              transitionBuilder: (child, animation) => ScaleTransition(
-                scale: animation,
-                child: child,
-              ),
+              transitionBuilder: (child, animation) =>
+                  ScaleTransition(scale: animation, child: child),
               child: Text(
                 '$quantity',
                 key: ValueKey(quantity),
@@ -172,31 +166,31 @@ class _StepperButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: context.durations.fast,
-          width: 40.w,
-          height: 40.h,
-          margin: EdgeInsets.all(6.r),
-          decoration: BoxDecoration(
-            color: enabled && isHighlighted
-                ? context.colors.accent
-                : enabled
-                    ? context.colors.surfaceStrong
-                    : context.colors.surfaceStrong.withValues(alpha: 0.5),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            size: 18.r,
-            color: enabled && isHighlighted
-                ? Colors.white
-                : enabled
-                    ? context.colors.textPrimary
-                    : context.colors.textMuted,
-          ),
-        ),
-      );
+    onTap: onTap,
+    child: AnimatedContainer(
+      duration: context.durations.fast,
+      width: 40,
+      height: 40,
+      margin: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: enabled && isHighlighted
+            ? context.colors.accent
+            : enabled
+            ? context.colors.surfaceStrong
+            : context.colors.surfaceStrong.withValues(alpha: 0.5),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        icon,
+        size: 18,
+        color: enabled && isHighlighted
+            ? Colors.white
+            : enabled
+            ? context.colors.textPrimary
+            : context.colors.textMuted,
+      ),
+    ),
+  );
 }
 
 // ── Add To Cart Button ────────────────────────────────────────────────────────
@@ -214,45 +208,45 @@ class _AddToCartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<CartBloc, CartState>(
-        bloc: getIt<CartBloc>(),
-        builder: (context, cartState) {
-          final isLoading = cartState.actionStatus == RequestStatus.loading;
-          final cart = cartState.cart;
-          final targetPropertyId = selectedVariant?.id ?? product.id;
-          final isInCart =
-              cart?.items.any((item) => item.id == targetPropertyId) ?? false;
+    bloc: getIt<CartBloc>(),
+    builder: (context, cartState) {
+      final isLoading = cartState.actionStatus == RequestStatus.loading;
+      final cart = cartState.cart;
+      final targetPropertyId = selectedVariant?.id ?? product.id;
+      final isInCart =
+          cart?.items.any((item) => item.id == targetPropertyId) ?? false;
 
-          return AppButton(
-            isLoading: isLoading,
-            height: 52.h,
-            icon: Icon(
-              isInCart
-                  ? Icons.check_circle_outline_rounded
-                  : Icons.shopping_bag_outlined,
-              color:
-                  isInCart ? context.colors.accent : context.colors.onPrimary,
-              size: 20.r,
-            ),
-            text: isInCart
-                ? context.l10n.product_added_text
-                : context.l10n.add_to_cart_text,
-            variant:
-                isInCart ? AppButtonVariant.secondary : AppButtonVariant.primary,
-            onPressed: isInCart
-                ? null
-                : () {
-                    if (getIt<AuthService>().isLoggedIn) {
-                      unawaited(
-                        getIt<CartBloc>().addToCart(
-                          propertyId: selectedVariant?.id ?? product.id,
-                          quantity: effectiveQuantity,
-                        ),
-                      );
-                    } else {
-                      showLoginDialog(context);
-                    }
-                  },
-          );
-        },
+      return AppButton(
+        isLoading: isLoading,
+        height: 52,
+        icon: Icon(
+          isInCart
+              ? Icons.check_circle_outline_rounded
+              : Icons.shopping_bag_outlined,
+          color: isInCart ? context.colors.accent : context.colors.onPrimary,
+          size: 20,
+        ),
+        text: isInCart
+            ? context.l10n.product_added_text
+            : context.l10n.add_to_cart_text,
+        variant: isInCart
+            ? AppButtonVariant.secondary
+            : AppButtonVariant.primary,
+        onPressed: isInCart
+            ? null
+            : () {
+                if (getIt<AuthService>().isLoggedIn) {
+                  unawaited(
+                    getIt<CartBloc>().addToCart(
+                      propertyId: selectedVariant?.id ?? product.id,
+                      quantity: effectiveQuantity,
+                    ),
+                  );
+                } else {
+                  showLoginDialog(context);
+                }
+              },
       );
+    },
+  );
 }

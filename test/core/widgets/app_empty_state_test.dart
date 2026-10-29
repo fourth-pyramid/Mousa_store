@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mousa_store/core/utils/screen_utils.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
 
-Widget _buildTestWidget(Widget child) => ScreenUtilInit(
-  designSize: const Size(375, 812),
-  builder: (_, _) => MaterialApp(home: Scaffold(body: child)),
-);
+Widget _buildTestWidget(Widget child) =>
+    MaterialApp(home: Scaffold(body: child));
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

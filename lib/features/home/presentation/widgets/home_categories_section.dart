@@ -6,12 +6,12 @@ import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
 import 'package:mousa_store/core/widgets/app_section_header.dart';
+import 'package:mousa_store/core/widgets/app_shimmer.dart';
 import 'package:mousa_store/features/categories/domain/entities/category.dart';
 import 'package:mousa_store/features/category_items/domain/entities/item_fetch_type.dart';
 import 'package:mousa_store/features/category_items/presentation/pages/category_items_view.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_state.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeCategoriesSection extends StatelessWidget {
   const HomeCategoriesSection({super.key});
@@ -30,16 +30,16 @@ class HomeCategoriesSection extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
+          const SizedBox(height: 20),
           AppSectionHeader(title: context.l10n.shop_by_category_text),
-          SizedBox(height: 12.h),
+          const SizedBox(height: 12),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6.w),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: state.categoriesStatus == RequestStatus.loading
                 ? const _CategoriesLoadingSkeleton()
                 : LayoutBuilder(
                     builder: (context, constraints) {
-                      final crossAxisCount = (constraints.maxWidth / 160.w)
+                      final crossAxisCount = (constraints.maxWidth / 160)
                           .floor()
                           .clamp(2, 4);
 
@@ -49,8 +49,8 @@ class HomeCategoriesSection extends StatelessWidget {
                         itemCount: state.categories.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
-                          crossAxisSpacing: 6.w,
-                          mainAxisSpacing: 6.h,
+                          crossAxisSpacing: 6,
+                          mainAxisSpacing: 6,
                           childAspectRatio: 1.15,
                         ),
                         itemBuilder: (context, index) {
@@ -71,13 +71,10 @@ class _CategoriesLoadingSkeleton extends StatelessWidget {
   const _CategoriesLoadingSkeleton();
 
   @override
-  Widget build(BuildContext context) => Skeletonizer(
+  Widget build(BuildContext context) => AppShimmer(
     child: LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = (constraints.maxWidth / 160.w).floor().clamp(
-          2,
-          4,
-        );
+        final crossAxisCount = (constraints.maxWidth / 160).floor().clamp(2, 4);
 
         return GridView.builder(
           shrinkWrap: true,
@@ -85,14 +82,14 @@ class _CategoriesLoadingSkeleton extends StatelessWidget {
           itemCount: 4,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 10.w,
-            mainAxisSpacing: 10.h,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
             childAspectRatio: 1.15,
           ),
           itemBuilder: (context, index) => DecoratedBox(
             decoration: BoxDecoration(
               color: context.colors.surface,
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(16),
             ),
           ),
         );
@@ -140,7 +137,7 @@ class _HomeCategoryCard extends StatelessWidget {
                 color: context.colors.surfaceStrong,
                 child: Icon(
                   Icons.category_rounded,
-                  size: 40.w,
+                  size: 40,
                   color: context.colors.textSecondary,
                 ),
               ),
@@ -164,14 +161,14 @@ class _HomeCategoryCard extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                height: 3.h,
+                height: 3,
                 color: AppColorTokens.accent.withValues(alpha: 0.85),
               ),
             ),
             PositionedDirectional(
-              bottom: 10.h,
-              start: 10.w,
-              end: 10.w,
+              bottom: 10,
+              start: 10,
+              end: 10,
               child: Text(
                 category.name,
                 style: context.typography.h3.copyWith(

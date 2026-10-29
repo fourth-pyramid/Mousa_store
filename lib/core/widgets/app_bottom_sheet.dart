@@ -21,53 +21,64 @@ class AppBottomSheet extends StatelessWidget {
   }) => showModalBottomSheet<T>(
     context: context,
     isScrollControlled: isScrollControlled,
+    constraints: const BoxConstraints(maxWidth: AppBreakpoints.maxSheetWidth),
     backgroundColor: context.colors.transparent,
     builder: (ctx) => AppBottomSheet(title: title, child: child),
   );
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: context.colors.surface,
-    borderRadius: context.radius.bottomSheet,
-    clipBehavior: Clip.antiAlias,
-    child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-      child: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (showDragHandle)
-              Center(
-                child: Container(
-                  width: 40.w,
-                  height: 4.h,
-                  margin: EdgeInsets.only(bottom: 16.h),
-                  decoration: BoxDecoration(
-                    color: context.colors.surfaceStrong,
-                    borderRadius: context.radius.pillBorder,
+  Widget build(BuildContext context) => ConstrainedBox(
+    constraints: const BoxConstraints(maxWidth: AppBreakpoints.maxSheetWidth),
+    child: Material(
+      color: context.colors.surface,
+      borderRadius: context.radius.bottomSheet,
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (showDragHandle)
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: context.colors.surfaceStrong,
+                      borderRadius: context.radius.pillBorder,
+                    ),
                   ),
                 ),
-              ),
-            if (title != null) ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(title!.toUpperCase(), style: context.typography.h3),
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      color: context.colors.textSecondary,
+              if (title != null) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title!.toUpperCase(),
+                        style: context.typography.h3,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const Divider(),
-              SizedBox(height: 12.h),
+                    IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: context.colors.textSecondary,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                const SizedBox(height: 12),
+              ],
+              Flexible(child: child),
             ],
-            Flexible(child: child),
-          ],
+          ),
         ),
       ),
     ),

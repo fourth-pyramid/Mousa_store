@@ -44,12 +44,11 @@ ProductListResponse _makeResponse({
   required List<Product> products,
   int currentPage = 1,
   int lastPage = 1,
-}) =>
-    ProductListResponse(
-      success: true,
-      message: 'Success',
-      data: Data(data: products, currentPage: currentPage, lastPage: lastPage),
-    );
+}) => ProductListResponse(
+  success: true,
+  message: 'Success',
+  data: Data(data: products, currentPage: currentPage, lastPage: lastPage),
+);
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -102,9 +101,9 @@ void main() {
     blocTest<HomeBloc, HomeState>(
       'HomeBannersRequested emits failure on error',
       build: () {
-        when(() => mockUseCase.getBanners()).thenThrow(
-          Exception('Failed to load banners'),
-        );
+        when(
+          () => mockUseCase.getBanners(),
+        ).thenThrow(Exception('Failed to load banners'));
         return HomeBloc(useCase: mockUseCase);
       },
       act: (bloc) => bloc.add(const HomeBannersRequested()),
@@ -160,7 +159,9 @@ void main() {
       },
       act: (bloc) => bloc.add(const HomeCategoriesRequested()),
       expect: () => [
-        predicate<HomeState>((s) => s.categoriesStatus == RequestStatus.loading),
+        predicate<HomeState>(
+          (s) => s.categoriesStatus == RequestStatus.loading,
+        ),
         predicate<HomeState>(
           (s) =>
               s.categoriesStatus == RequestStatus.success &&
@@ -213,9 +214,7 @@ void main() {
     blocTest<HomeBloc, HomeState>(
       'HomeProductsRequested page=1 emits loading then success',
       build: () {
-        when(
-          () => mockUseCase.getProducts(),
-        ).thenAnswer(
+        when(() => mockUseCase.getProducts()).thenAnswer(
           (_) async => _makeResponse(products: [_product3], lastPage: 2),
         );
         return HomeBloc(useCase: mockUseCase);

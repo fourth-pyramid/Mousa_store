@@ -32,11 +32,11 @@ sealed class Failure with _$Failure {
   ]) = UnknownFailure;
 
   String get errorMessage => when(
-        server: (message, _) => message,
-        network: (message) => message,
-        cache: (message) => message,
-        auth: (message) => message,
-        validation: (message) => message,
-        unknown: (message) => message,
-      );
+    server: (message, _) => message,
+    network: (message) => message,
+    cache: (message) => message,
+    auth: (message) => message,
+    validation: (message) => message,
+    unknown: (message) => message,
+  );
 }

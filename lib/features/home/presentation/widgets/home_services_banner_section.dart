@@ -13,7 +13,7 @@ class HomeServicesBannerSection extends StatelessWidget {
         : context.l10n.services_banner_image_light;
 
     return Padding(
-      padding: EdgeInsets.only(top: 20.h),
+      padding: const EdgeInsets.only(top: 20),
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border.all(

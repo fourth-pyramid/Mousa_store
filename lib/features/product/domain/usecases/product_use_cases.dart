@@ -19,9 +19,6 @@ class AddReviewUseCase {
     required int productId,
     required double rate,
     required String comment,
-  }) => _repository.addReview(
-    productId: productId,
-    rate: rate,
-    comment: comment,
-  );
+  }) =>
+      _repository.addReview(productId: productId, rate: rate, comment: comment);
 }

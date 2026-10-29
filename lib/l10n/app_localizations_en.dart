@@ -974,4 +974,3 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get filters_applied_text => 'applied';
 }
-

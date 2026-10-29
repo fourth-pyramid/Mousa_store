@@ -19,27 +19,18 @@ abstract class AuthRemoteDataSource {
     required String passwordConfirmation,
   });
 
-  Future<OtpResponse> verifyOtp({
-    required String email,
-    required String otp,
-  });
+  Future<OtpResponse> verifyOtp({required String email, required String otp});
 
-  Future<OtpResponse> resendOtp({
-    required String email,
-  });
+  Future<OtpResponse> resendOtp({required String email});
 
-  Future<OtpResponse> sendEmailForForgotPassword({
-    required String email,
-  });
+  Future<OtpResponse> sendEmailForForgotPassword({required String email});
 
   Future<OtpResponse> verifyForgotPasswordOtp({
     required String email,
     required String otp,
   });
 
-  Future<OtpResponse> resendForgotPasswordOtp({
-    required String email,
-  });
+  Future<OtpResponse> resendForgotPasswordOtp({required String email});
 
   Future<OtpResponse> resetPassword({
     required String email,
@@ -127,9 +118,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<OtpResponse> resendOtp({
-    required String email,
-  }) async {
+  Future<OtpResponse> resendOtp({required String email}) async {
     final response = await DioHelper.postData(
       url: 'resend-verify-email',
       data: {'email': email},
@@ -164,9 +153,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<OtpResponse> resendForgotPasswordOtp({
-    required String email,
-  }) async {
+  Future<OtpResponse> resendForgotPasswordOtp({required String email}) async {
     final response = await DioHelper.postData(
       url: 'resend-code-forget-password',
       data: {'email': email},

@@ -32,7 +32,7 @@ class _AddReviewSectionState extends State<AddReviewSection> {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.all(16.w),
+    padding: const EdgeInsets.all(16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,7 +42,7 @@ class _AddReviewSectionState extends State<AddReviewSection> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
 
         ValueListenableBuilder<double>(
           valueListenable: _rateNotifier,
@@ -53,7 +53,7 @@ class _AddReviewSectionState extends State<AddReviewSection> {
             },
           ),
         ),
-        SizedBox(height: 8.h),
+        const SizedBox(height: 8),
 
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -67,7 +67,7 @@ class _AddReviewSectionState extends State<AddReviewSection> {
                 maxLines: 4,
               ),
             ),
-            SizedBox(width: 8.w),
+            const SizedBox(width: 8),
 
             ListenableBuilder(
               listenable: Listenable.merge([_rateNotifier, _commentController]),
@@ -80,8 +80,8 @@ class _AddReviewSectionState extends State<AddReviewSection> {
                   builder: (context, state) {
                     final isLoading = state.status == ReviewStatus.loading;
                     return AppButton(
-                      width: 52.w,
-                      height: 52.h,
+                      width: 52,
+                      height: 52,
                       isFullWidth: false,
                       variant: AppButtonVariant.accent,
                       onPressed: (isLoading || !canSubmit)

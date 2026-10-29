@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_state_manager/internet_state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:mousa_store/core/di/service_locator.dart';
+import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
@@ -16,104 +16,122 @@ import 'package:mousa_store/features/orders/presentation/pages/order_details_vie
 import 'package:mousa_store/features/orders/presentation/widgets/order_card.dart';
 import 'package:mousa_store/l10n/app_localizations.dart';
 
-class OrderView extends StatelessWidget {
+class OrderView extends StatefulWidget {
   const OrderView({super.key});
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (context) {
-      final bloc = getIt<OrdersBloc>();
-      unawaited(bloc.getOrders());
-      return bloc;
-    },
-    child: Builder(
-      builder: (context) => Scaffold(
-        appBar: AppBar(title: Text(context.l10n.orders_text.toUpperCase())),
-        body: InternetStateManager(
-          onRestoreInternetConnection: () =>
-              context.read<OrdersBloc>().getOrders(),
-          child: RefreshIndicator(
-            color: context.colors.primary,
-            onRefresh: () => context.read<OrdersBloc>().getOrders(),
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.r),
-                    child: AppSearchField(
-                      onChanged: (value) {
-                        context.read<OrdersBloc>().updateSearchQuery(value);
-                      },
-                      hint: context.l10n.search_text('Orders'),
-                    ),
-                  ),
+  State<OrderView> createState() => _OrderViewState();
+}
+
+class _OrderViewState extends State<OrderView> {
+  late final OrdersBloc _bloc;
+  StreamSubscription<void>? _networkRestoreSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = getIt<OrdersBloc>();
+    unawaited(_bloc.getOrders());
+    _networkRestoreSubscription = getIt<InternetConnectionService>()
+        .connectivityRestoredStream
+        .listen((_) {
+          if (mounted) {
+            unawaited(_bloc.getOrders());
+          }
+        });
+  }
+
+  @override
+  void dispose() {
+    unawaited(_networkRestoreSubscription?.cancel());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => BlocProvider.value(
+    value: _bloc,
+    child: Scaffold(
+      appBar: AppBar(title: Text(context.l10n.orders_text.toUpperCase())),
+      body: RefreshIndicator(
+        color: context.colors.primary,
+        onRefresh: () => context.read<OrdersBloc>().getOrders(),
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: AppSearchField(
+                  onChanged: (value) {
+                    context.read<OrdersBloc>().updateSearchQuery(value);
+                  },
+                  hint: context.l10n.search_text('Orders'),
                 ),
-                SliverToBoxAdapter(
-                  child: BlocBuilder<OrdersBloc, OrdersState>(
-                    builder: (context, state) {
-                      if (state.status == OrdersStatus.loading) {
-                        return const Center(child: CustomLoadingIndicator());
-                      } else if (state.status == OrdersStatus.success) {
-                        if (state.orders.isEmpty) {
-                          return AppEmptyState(
-                            title: context.l10n.no_orders_found_text,
-                            description: 'You have no placed orders yet.',
-                            icon: Icons.receipt_long_outlined,
-                          );
-                        }
-                        return ListView.builder(
-                          reverse: true,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.orders.length,
-                          itemBuilder: (context, index) {
-                            final order = state.orders[index];
-                            return OrderCard(
-                              orderNumber:
-                                  '${context.l10n.order_number_text} : ${order.orderNumber}',
-                              orderDate:
-                                  '${context.l10n.order_date_text} : ${DateFormat('yyyy-MM-dd HH:mm').format(order.createdAt)}',
-                              deliveredText: _getStatusText(
-                                order.status,
-                                context.l10n,
-                              ),
-                              deliveredColor: _getStatusColor(
-                                order.status,
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: BlocBuilder<OrdersBloc, OrdersState>(
+                builder: (context, state) {
+                  if (state.status == OrdersStatus.loading) {
+                    return const Center(child: CustomLoadingIndicator());
+                  } else if (state.status == OrdersStatus.success) {
+                    if (state.orders.isEmpty) {
+                      return AppEmptyState(
+                        title: context.l10n.no_orders_found_text,
+                        description: 'You have no placed orders yet.',
+                        icon: Icons.receipt_long_outlined,
+                      );
+                    }
+                    return ListView.builder(
+                      reverse: true,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.orders.length,
+                      itemBuilder: (context, index) {
+                        final order = state.orders[index];
+                        return OrderCard(
+                          orderNumber:
+                              '${context.l10n.order_number_text} : ${order.orderNumber}',
+                          orderDate:
+                              '${context.l10n.order_date_text} : ${DateFormat('yyyy-MM-dd HH:mm').format(order.createdAt)}',
+                          deliveredText: _getStatusText(
+                            order.status,
+                            context.l10n,
+                          ),
+                          deliveredColor: _getStatusColor(
+                            order.status,
+                            context,
+                          ),
+                          onTap: () {
+                            unawaited(
+                              navigateWithTransition<void>(
+                                type: TransitionType.fade,
                                 context,
+                                OrderDetailsView(orderId: order.id),
                               ),
-                              onTap: () {
-                                unawaited(
-                                  navigateWithTransition<void>(
-                                    type: TransitionType.fade,
-                                    context,
-                                    OrderDetailsView(orderId: order.id),
-                                  ),
-                                );
-                              },
-                              type:
-                                  '${context.l10n.order_type_label_text} : ${_getOrderTypeText(order.type, context.l10n)}',
                             );
                           },
+                          type:
+                              '${context.l10n.order_type_label_text} : ${_getOrderTypeText(order.type, context.l10n)}',
                         );
-                      } else if (state.status == OrdersStatus.failure) {
-                        return Center(
-                          child: Text(
-                            state.errorMessage ?? '',
-                            style: context.typography.bodySmall.copyWith(
-                              color: context.colors.error,
-                            ),
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                ),
-                SliverPadding(padding: EdgeInsets.only(bottom: 24.h)),
-              ],
+                      },
+                    );
+                  } else if (state.status == OrdersStatus.failure) {
+                    return Center(
+                      child: Text(
+                        state.errorMessage ?? '',
+                        style: context.typography.bodySmall.copyWith(
+                          color: context.colors.error,
+                        ),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
-          ),
+            const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
+          ],
         ),
       ),
     ),

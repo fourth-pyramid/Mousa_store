@@ -22,7 +22,7 @@ class SettingItem extends StatelessWidget {
     borderRadius: context.radius.smBorder,
     child: ListTile(
       shape: RoundedRectangleBorder(borderRadius: context.radius.smBorder),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       leading: icon != null
           ? Icon(icon, color: context.colors.textPrimary)
           : image,

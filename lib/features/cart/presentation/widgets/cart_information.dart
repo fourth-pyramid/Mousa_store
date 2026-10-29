@@ -24,12 +24,7 @@ class CartInformation extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(
-          16.w,
-          8.h,
-          16.w,
-          84.h,
-        ),
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 84),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +41,7 @@ class CartInformation extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SizedBox(width: 6.w),
+                      const SizedBox(width: 6),
                       Text(
                         '${totalPrice.toStringAsFixed(2)}${context.l10n.currency_text} ',
                         style: context.typography.titleMedium,
@@ -54,7 +49,7 @@ class CartInformation extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 8.w),
+                const SizedBox(width: 8),
                 Text(
                   '($itemCount ${context.l10n.products_plural_text})',
                   style: context.typography.titleMedium,
@@ -62,7 +57,7 @@ class CartInformation extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsetsDirectional.symmetric(vertical: 6.h),
+              padding: const EdgeInsetsDirectional.symmetric(vertical: 6),
               child: Text(
                 context.l10n.delivery_charges_notice_text,
                 style: context.typography.body,
@@ -70,7 +65,7 @@ class CartInformation extends StatelessWidget {
             ),
 
             Padding(
-              padding: EdgeInsetsDirectional.only(top: 8.h),
+              padding: const EdgeInsetsDirectional.only(top: 8),
               child: Row(
                 children: [
                   Flexible(
@@ -80,7 +75,7 @@ class CartInformation extends StatelessWidget {
                       onPressed: gnToHome ?? () {},
                     ),
                   ),
-                  SizedBox(width: 6.w),
+                  const SizedBox(width: 6),
                   Flexible(
                     flex: 2,
                     child: CustomButton(
