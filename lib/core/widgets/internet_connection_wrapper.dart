@@ -79,35 +79,44 @@ class _InternetConnectionWrapperState extends State<InternetConnectionWrapper> {
   }
 
   @override
-  Widget build(BuildContext context) => Directionality(
-    textDirection: Directionality.of(context),
-    child: Column(
+  Widget build(BuildContext context) {
+    final showBanner = _shouldShowBanner;
+    return Column(
       children: [
         AnimatedSize(
           duration: context.durations.normal,
           curve: Curves.easeInOut,
-          child: _shouldShowBanner
+          child: showBanner
               ? _NetworkBanner(
                   state: _state,
+                  issue: _service.lastIssue,
                   isRestored: _showRestored,
                   onTap: () => unawaited(_service.checkNow()),
                 )
               : const SizedBox.shrink(),
         ),
-        Expanded(child: widget.child),
+        Expanded(
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: showBanner,
+            child: widget.child,
+          ),
+        ),
       ],
-    ),
-  );
+    );
+  }
 }
 
 class _NetworkBanner extends StatelessWidget {
   const _NetworkBanner({
     required this.state,
+    required this.issue,
     required this.isRestored,
     required this.onTap,
   });
 
   final NetworkState state;
+  final NetworkIssue issue;
   final bool isRestored;
   final VoidCallback onTap;
 
@@ -116,26 +125,28 @@ class _NetworkBanner extends StatelessWidget {
     final Color backgroundColor;
     final IconData icon;
     final String message;
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     if (isRestored) {
       backgroundColor = context.colors.success;
       icon = Icons.check_circle_outline_rounded;
-      message = isArabic
-          ? 'تمت استعادة الاتصال بالإنترنت'
-          : 'Internet connection restored';
+      message = context.l10n.internet_restored_banner;
     } else if (state == NetworkState.unstable) {
       backgroundColor = context.colors.warning;
       icon = Icons.wifi_protected_setup_rounded;
-      message = isArabic
-          ? 'الاتصال بالإنترنت غير مستقر - اضغط للفحص'
-          : 'Internet connection unstable — Tap to check';
+      message = context.l10n.internet_unstable_banner;
     } else {
       backgroundColor = context.colors.error;
       icon = Icons.wifi_off_rounded;
-      message =
-          '${context.l10n.no_internet_title} — ${context.l10n.try_again_text}';
+      message = switch (issue) {
+        NetworkIssue.captivePortal =>
+          context.l10n.internet_captive_portal_banner,
+        NetworkIssue.noInternet => context.l10n.internet_no_access_banner,
+        NetworkIssue.noInterface || NetworkIssue.none =>
+          '${context.l10n.no_internet_title} — ${context.l10n.try_again_text}',
+      };
     }
+
+    final contentColor = context.colors.onError;
 
     return Material(
       color: backgroundColor,
@@ -148,7 +159,7 @@ class _NetworkBanner extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, color: Colors.white, size: 18),
+                Icon(icon, color: contentColor, size: 18),
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
@@ -157,7 +168,7 @@ class _NetworkBanner extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: context.typography.labelLarge.copyWith(
-                      color: Colors.white,
+                      color: contentColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

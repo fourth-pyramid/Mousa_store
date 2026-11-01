@@ -927,6 +927,22 @@
   "@no_internet_description": {
     "description": "Description for no internet screen"
   },
+  "internet_restored_banner": "تمت استعادة الاتصال بالإنترنت",
+  "@internet_restored_banner": {
+    "description": "Banner message shown when internet connection is restored"
+  },
+  "internet_unstable_banner": "الاتصال بالإنترنت غير مستقر - اضغط للفحص",
+  "@internet_unstable_banner": {
+    "description": "Banner message shown when internet connection is unstable"
+  },
+  "internet_captive_portal_banner": "الشبكة محتاجة تسجيل دخول أو الباقة منتهية — اضغط للفحص",
+  "@internet_captive_portal_banner": {
+    "description": "Banner message shown when a captive portal or exhausted data balance intercepts traffic"
+  },
+  "internet_no_access_banner": "متصل بالشبكة لكن بدون إنترنت — تأكد من رصيد الباقة",
+  "@internet_no_access_banner": {
+    "description": "Banner message shown when network interface is up but real internet is unreachable"
+  },
   "try_again_text": "إعادة المحاولة",
   "@try_again_text": {
     "description": "Text for try again button"

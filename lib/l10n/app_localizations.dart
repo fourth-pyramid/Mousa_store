@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
-    Locale('en'),
+    Locale('en')
   ];
 
   /// Title for the first onboarding screen
@@ -1484,6 +1481,30 @@ abstract class AppLocalizations {
   /// **'Please check your internet connection and try again.'**
   String get no_internet_description;
 
+  /// Banner message shown when internet connection is restored
+  ///
+  /// In en, this message translates to:
+  /// **'Internet connection restored'**
+  String get internet_restored_banner;
+
+  /// Banner message shown when internet connection is unstable
+  ///
+  /// In en, this message translates to:
+  /// **'Internet connection unstable — Tap to check'**
+  String get internet_unstable_banner;
+
+  /// Banner message shown when a captive portal or exhausted data balance intercepts traffic
+  ///
+  /// In en, this message translates to:
+  /// **'Network needs sign-in or has no data balance — tap to check'**
+  String get internet_captive_portal_banner;
+
+  /// Banner message shown when network interface is up but real internet is unreachable
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to the network but no internet — check your data balance'**
+  String get internet_no_access_banner;
+
   /// Text for try again button
   ///
   /// In en, this message translates to:
@@ -1911,20 +1932,31 @@ abstract class AppLocalizations {
   String get cart_login_prompt_text;
 
   /// Clear all button text in filter bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
   String get clear_all_text;
 
   /// Min price label
+  ///
+  /// In en, this message translates to:
+  /// **'Min'**
   String get min_price_text;
 
   /// Max price label
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
   String get max_price_text;
 
   /// Label indicating number of filters applied
+  ///
+  /// In en, this message translates to:
+  /// **'applied'**
   String get filters_applied_text;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -1933,26 +1965,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar':
-      return AppLocalizationsAr();
-    case 'en':
-      return AppLocalizationsEn();
+    case 'ar': return AppLocalizationsAr();
+    case 'en': return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

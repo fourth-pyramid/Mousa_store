@@ -12,23 +12,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboarding_title_1 => 'Everything about your phone in one place';
 
   @override
-  String get onboarding_desc_1 =>
-      'From phones to accessories, all the products you need are available easily and with the best quality.';
+  String get onboarding_desc_1 => 'From phones to accessories, all the products you need are available easily and with the best quality.';
 
   @override
-  String get onboarding_title_2 =>
-      'Lots of choices from all your favorite brands';
+  String get onboarding_title_2 => 'Lots of choices from all your favorite brands';
 
   @override
-  String get onboarding_desc_2 =>
-      'Discover the latest models and offers from the most famous global and local brands.';
+  String get onboarding_desc_2 => 'Discover the latest models and offers from the most famous global and local brands.';
 
   @override
   String get onboarding_title_3 => 'Welcome';
 
   @override
-  String get onboarding_desc_3 =>
-      'Log in or create a new account to start shopping easily.';
+  String get onboarding_desc_3 => 'Log in or create a new account to start shopping easily.';
 
   @override
   String get next_button => 'Next';
@@ -91,8 +87,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get email_validation_error => 'Please enter a valid email.';
 
   @override
-  String get password_validation_error =>
-      'Password must be at least 8 characters.';
+  String get password_validation_error => 'Password must be at least 8 characters.';
 
   @override
   String get confirm_password_validation_error => 'Passwords do not match.';
@@ -104,8 +99,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get last_name_validation_error => 'Please enter your last name.';
 
   @override
-  String get phone_number_validation_error =>
-      'Please enter a valid phone number.';
+  String get phone_number_validation_error => 'Please enter a valid phone number.';
 
   @override
   String get select_country_text => 'Select Country';
@@ -249,15 +243,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get choose_your_type_of_shopping => 'Choose your type of shopping';
 
   @override
-  String get do_you_want_to_buy_wholesale_or_retail =>
-      'Do you want to buy wholesale or retail?';
+  String get do_you_want_to_buy_wholesale_or_retail => 'Do you want to buy wholesale or retail?';
 
   @override
   String get change_purchase_type_confirmation_title => 'Change Purchase Type';
 
   @override
-  String get change_purchase_type_confirmation_message =>
-      'Are you sure you want to change the shopping type? This will refresh all data.';
+  String get change_purchase_type_confirmation_message => 'Are you sure you want to change the shopping type? This will refresh all data.';
 
   @override
   String get wholesale_text => 'Wholesale';
@@ -346,8 +338,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get currency_text => 'EGP';
 
   @override
-  String get delivery_charges_notice_text =>
-      'Delivery charges will be calculated at checkout';
+  String get delivery_charges_notice_text => 'Delivery charges will be calculated at checkout';
 
   @override
   String get continue_shopping_text => 'Continue Shopping';
@@ -365,8 +356,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pay_text => 'Pay';
 
   @override
-  String get choose_payment_method_first_text =>
-      'Choose a payment method first';
+  String get choose_payment_method_first_text => 'Choose a payment method first';
 
   @override
   String get delivery_information_text => 'Delivery information';
@@ -405,8 +395,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm_order_title_text => 'Confirm order';
 
   @override
-  String get confirm_order_message_text =>
-      'Are you sure you want to confirm the order?';
+  String get confirm_order_message_text => 'Are you sure you want to confirm the order?';
 
   @override
   String get cancel_text => 'Cancel';
@@ -433,8 +422,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logout_confirmation_text => 'Logout confirmation';
 
   @override
-  String get logout_confirmation_message_shure_text =>
-      'Are you sure you want to logout?';
+  String get logout_confirmation_message_shure_text => 'Are you sure you want to logout?';
 
   @override
   String get offers_discount_text => 'Discounts & Offers';
@@ -461,12 +449,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get required_field_text => 'This field is required';
 
   @override
-  String get no_products_in_section_text =>
-      'There are no products in this section at the moment';
+  String get no_products_in_section_text => 'There are no products in this section at the moment';
 
   @override
-  String get browse_other_sections_text =>
-      'Browse other sections to find what you need';
+  String get browse_other_sections_text => 'Browse other sections to find what you need';
 
   @override
   String get empty_cart_text => 'Your shopping cart is empty';
@@ -481,8 +467,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_favorite_products_text => 'No products in favorites';
 
   @override
-  String get products_favorites_empty_text =>
-      'The products you add to your favorites will appear here';
+  String get products_favorites_empty_text => 'The products you add to your favorites will appear here';
 
   @override
   String get error_occurred_text => 'An error occurred';
@@ -524,8 +509,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_alert_message => 'Please log in first to continue';
 
   @override
-  String get product_removed_from_favorites_text =>
-      'Product removed from favorites';
+  String get product_removed_from_favorites_text => 'Product removed from favorites';
 
   @override
   String get product_added_to_favorites_text => 'Product added to favorites';
@@ -546,8 +530,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get from_cart_text => 'from cart';
 
   @override
-  String get delete_confirmation_message_text =>
-      'Are you sure you want to delete?';
+  String get delete_confirmation_message_text => 'Are you sure you want to delete?';
 
   @override
   String get removed_text => 'Removed';
@@ -562,8 +545,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selected_text => 'Selected:';
 
   @override
-  String get phone_number_changed_success_text =>
-      'Phone number changed successfully';
+  String get phone_number_changed_success_text => 'Phone number changed successfully';
 
   @override
   String get password_changed_success_text => 'Password changed successfully';
@@ -572,8 +554,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get current_password_incorrect_text => 'Current password is incorrect';
 
   @override
-  String get password_min_8_chars_text =>
-      'Password must be at least 8 characters';
+  String get password_min_8_chars_text => 'Password must be at least 8 characters';
 
   @override
   String get passwords_do_not_match_text => 'Passwords do not match';
@@ -720,8 +701,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_internet_title => 'No Internet Connection';
 
   @override
-  String get no_internet_description =>
-      'Please check your internet connection and try again.';
+  String get no_internet_description => 'Please check your internet connection and try again.';
+
+  @override
+  String get internet_restored_banner => 'Internet connection restored';
+
+  @override
+  String get internet_unstable_banner => 'Internet connection unstable — Tap to check';
+
+  @override
+  String get internet_captive_portal_banner => 'Network needs sign-in or has no data balance — tap to check';
+
+  @override
+  String get internet_no_access_banner => 'Connected to the network but no internet — check your data balance';
 
   @override
   String get try_again_text => 'Try Again';
@@ -730,8 +722,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language_restart_title => 'Restart Required';
 
   @override
-  String get language_restart_message =>
-      'The app will restart to apply the language change.';
+  String get language_restart_message => 'The app will restart to apply the language change.';
 
   @override
   String get add_new_address_text => 'Add New Address';
@@ -778,8 +769,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_or_enter_address_text => 'Please select or enter address';
 
   @override
-  String get order_confirmed_successfully_text =>
-      'Order confirmed successfully';
+  String get order_confirmed_successfully_text => 'Order confirmed successfully';
 
   @override
   String get piece_price_text => 'Piece Price';
@@ -788,15 +778,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_orders_text => 'No orders yet';
 
   @override
-  String get orders_empty_desc_text =>
-      'Your order history will appear here once you make a purchase';
+  String get orders_empty_desc_text => 'Your order history will appear here once you make a purchase';
 
   @override
   String get empty_category_items_title => 'No Items Found';
 
   @override
-  String get empty_category_items_message =>
-      'We couldn\'t find any items in this category.';
+  String get empty_category_items_message => 'We couldn\'t find any items in this category.';
 
   @override
   String get loading_text => 'Loading...';
@@ -823,8 +811,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_results_found_text => 'No results found';
 
   @override
-  String get try_searching_different_keywords_text =>
-      'Try searching with different keywords.';
+  String get try_searching_different_keywords_text => 'Try searching with different keywords.';
 
   @override
   String get search_failed_text => 'Search failed';
@@ -833,31 +820,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_products_title_text => 'Search Products';
 
   @override
-  String get search_products_desc_text =>
-      'Search by product name, category or brand.';
+  String get search_products_desc_text => 'Search by product name, category or brand.';
 
   @override
   String get item_not_in_cart => 'This product is not currently in cart';
 
   @override
-  String get item_not_in_favorites =>
-      'This product is not currently in favorites';
+  String get item_not_in_favorites => 'This product is not currently in favorites';
 
   @override
-  String get item_not_in_cart_or_favorites =>
-      'This product is not currently in cart or favorites';
+  String get item_not_in_cart_or_favorites => 'This product is not currently in cart or favorites';
 
   @override
-  String get offer_no_longer_available =>
-      'Sorry, this offer is no longer available';
+  String get offer_no_longer_available => 'Sorry, this offer is no longer available';
 
   @override
-  String get cannot_display_order_details =>
-      'Sorry, order details cannot be displayed';
+  String get cannot_display_order_details => 'Sorry, order details cannot be displayed';
 
   @override
-  String get content_not_available =>
-      'Sorry, this content is currently unavailable';
+  String get content_not_available => 'Sorry, this content is currently unavailable';
 
   @override
   String get check_it_out_on_mousa_store => '👇 Check it out on Mousa Store:';
@@ -868,43 +849,37 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get privacy_policy_intro =>
-      'Your privacy is paramount to us at Mousa Store. This Privacy Policy outlines the types of personal information we collect and how we use and protect it.';
+  String get privacy_policy_intro => 'Your privacy is paramount to us at Mousa Store. This Privacy Policy outlines the types of personal information we collect and how we use and protect it.';
 
   @override
   String get privacy_policy_sec1_title => '1. Information We Collect';
 
   @override
-  String get privacy_policy_sec1_desc =>
-      'When using our app, we may collect the following information:\n• Personal info: Name, email address, phone number, and shipping address.\n• Order info: Details of products purchased and transaction history.\n• Device info: Device type, OS, and unique device identifiers.';
+  String get privacy_policy_sec1_desc => 'When using our app, we may collect the following information:\n• Personal info: Name, email address, phone number, and shipping address.\n• Order info: Details of products purchased and transaction history.\n• Device info: Device type, OS, and unique device identifiers.';
 
   @override
   String get privacy_policy_sec2_title => '2. How We Use Your Information';
 
   @override
-  String get privacy_policy_sec2_desc =>
-      'We use collected information for the following purposes:\n• Processing and delivering your orders.\n• Improving our services and user experience.\n• Communicating regarding orders, offers, and updates.\n• Security and fraud prevention.';
+  String get privacy_policy_sec2_desc => 'We use collected information for the following purposes:\n• Processing and delivering your orders.\n• Improving our services and user experience.\n• Communicating regarding orders, offers, and updates.\n• Security and fraud prevention.';
 
   @override
   String get privacy_policy_sec3_title => '3. Sharing Information';
 
   @override
-  String get privacy_policy_sec3_desc =>
-      'We do not sell your personal information to third parties. We only share it with delivery services to fulfill orders, payment providers, or when required by law.';
+  String get privacy_policy_sec3_desc => 'We do not sell your personal information to third parties. We only share it with delivery services to fulfill orders, payment providers, or when required by law.';
 
   @override
   String get privacy_policy_sec4_title => '4. Data Protection';
 
   @override
-  String get privacy_policy_sec4_desc =>
-      'We take appropriate technical and administrative security measures to protect your information from unauthorized access, alteration, disclosure, or destruction.';
+  String get privacy_policy_sec4_desc => 'We take appropriate technical and administrative security measures to protect your information from unauthorized access, alteration, disclosure, or destruction.';
 
   @override
   String get privacy_policy_sec5_title => '5. Your Rights';
 
   @override
-  String get privacy_policy_sec5_desc =>
-      'You have the right to access, update, or request deletion of your personal data through account settings or by contacting us.';
+  String get privacy_policy_sec5_desc => 'You have the right to access, update, or request deletion of your personal data through account settings or by contacting us.';
 
   @override
   String get privacy_policy_copyright => '© 2026 Mousa Store';
@@ -937,8 +912,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get something_went_wrong_text => 'Something went wrong';
 
   @override
-  String get could_not_load_content_text =>
-      'We couldn\'t load this content. Please try again.';
+  String get could_not_load_content_text => 'We couldn\'t load this content. Please try again.';
 
   @override
   String get shop_by_category_text => 'Shop By Category';
@@ -947,20 +921,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get services_banner_image => 'assets/images/services_banner_en.jpg';
 
   @override
-  String get services_banner_image_dark =>
-      'assets/images/services_banner_en.jpg';
+  String get services_banner_image_dark => 'assets/images/services_banner_en.jpg';
 
   @override
-  String get services_banner_image_light =>
-      'assets/images/services_banner_light_en.jpg';
+  String get services_banner_image_light => 'assets/images/services_banner_light_en.jpg';
 
   @override
-  String get favorites_login_prompt_text =>
-      'Favorites list is only available after log in. Please log in to save and access your favorite products.';
+  String get favorites_login_prompt_text => 'Favorites list is only available after log in. Please log in to save and access your favorite products.';
 
   @override
-  String get cart_login_prompt_text =>
-      'Shopping cart is only available after log in. Please log in to add products and complete your purchase.';
+  String get cart_login_prompt_text => 'Shopping cart is only available after log in. Please log in to add products and complete your purchase.';
 
   @override
   String get clear_all_text => 'Clear all';

@@ -927,6 +927,22 @@
   "@no_internet_description": {
     "description": "Description for no internet screen"
   },
+  "internet_restored_banner": "Internet connection restored",
+  "@internet_restored_banner": {
+    "description": "Banner message shown when internet connection is restored"
+  },
+  "internet_unstable_banner": "Internet connection unstable — Tap to check",
+  "@internet_unstable_banner": {
+    "description": "Banner message shown when internet connection is unstable"
+  },
+  "internet_captive_portal_banner": "Network needs sign-in or has no data balance — tap to check",
+  "@internet_captive_portal_banner": {
+    "description": "Banner message shown when a captive portal or exhausted data balance intercepts traffic"
+  },
+  "internet_no_access_banner": "Connected to the network but no internet — check your data balance",
+  "@internet_no_access_banner": {
+    "description": "Banner message shown when network interface is up but real internet is unreachable"
+  },
   "try_again_text": "Try Again",
   "@try_again_text": {
     "description": "Text for try again button"
