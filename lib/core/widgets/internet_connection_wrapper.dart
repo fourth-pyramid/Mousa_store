@@ -135,15 +135,22 @@ class _NetworkBanner extends StatelessWidget {
       icon = Icons.wifi_protected_setup_rounded;
       message = context.l10n.internet_unstable_banner;
     } else {
-      backgroundColor = context.colors.error;
-      icon = Icons.wifi_off_rounded;
-      message = switch (issue) {
-        NetworkIssue.captivePortal =>
-          context.l10n.internet_captive_portal_banner,
-        NetworkIssue.noInternet => context.l10n.internet_no_access_banner,
-        NetworkIssue.noInterface || NetworkIssue.none =>
-          '${context.l10n.no_internet_title} — ${context.l10n.try_again_text}',
-      };
+      switch (issue) {
+        case NetworkIssue.captivePortal:
+          backgroundColor = context.colors.warning;
+          icon = Icons.wifi_lock_rounded;
+          message = context.l10n.internet_captive_portal_banner;
+        case NetworkIssue.noInternet:
+          backgroundColor = context.colors.warning;
+          icon = Icons.wifi_find_rounded;
+          message = context.l10n.internet_no_access_banner;
+        case NetworkIssue.noInterface:
+        case NetworkIssue.none:
+          backgroundColor = context.colors.error;
+          icon = Icons.wifi_off_rounded;
+          message =
+              '${context.l10n.no_internet_title} — ${context.l10n.try_again_text}';
+      }
     }
 
     final contentColor = context.colors.onError;

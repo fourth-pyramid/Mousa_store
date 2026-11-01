@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:mousa_store/core/design_system/app_colors.dart';
 import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/widgets/internet_connection_wrapper.dart';
 import 'package:mousa_store/l10n/app_localizations.dart';
@@ -83,6 +84,12 @@ void main() {
           find.text('No Internet Connection — Try Again'),
           findsOneWidget,
         );
+        expect(
+          find.byWidgetPredicate(
+            (w) => w is Material && w.color == AppColorTokens.error,
+          ),
+          findsOneWidget,
+        );
 
         // Issue changes while already disconnected -> noInternet
         when(() => mockService.lastIssue).thenReturn(NetworkIssue.noInternet);
@@ -92,6 +99,12 @@ void main() {
         expect(
           find.text(
             'Connected to the network but no internet — check your data balance',
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.byWidgetPredicate(
+            (w) => w is Material && w.color == AppColorTokens.warning,
           ),
           findsOneWidget,
         );
@@ -106,6 +119,12 @@ void main() {
         expect(
           find.text(
             'Network needs sign-in or has no data balance — tap to check',
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.byWidgetPredicate(
+            (w) => w is Material && w.color == AppColorTokens.warning,
           ),
           findsOneWidget,
         );

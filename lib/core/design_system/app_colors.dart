@@ -17,7 +17,7 @@ abstract class AppColorTokens {
   static const Color accent = Color(0xFFE10600);
   static const Color success = Color(0xFF16803C);
   static const Color error = Color(0xFFD92D20);
-  static const Color warning = Color(0xFFB54708);
+  static const Color warning = Color(0xFFE07A2E);
 
   // Dark Mode Tokens
   static const Color darkBackground = Color(0xFF0B0B0B);
