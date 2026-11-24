@@ -21,6 +21,12 @@ class FetchHomeDataUseCase {
   final CategoryRepository _categoryRepo;
   final BrandRepository _brandRepo;
 
+  void invalidateCache() {
+    _homeRepository.invalidateCache();
+    _brandRepo.invalidateCache();
+    _categoryRepo.invalidateCache();
+  }
+
   Future<List<BannerModel>> getBanners() => _homeRepository.getBanners();
 
   Future<List<Brand>> getBrands() => _brandRepo.getBrands();
