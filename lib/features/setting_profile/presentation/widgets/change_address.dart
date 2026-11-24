@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/governorates_data.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/features/setting_profile/data/models/address_model.dart';
 import 'package:mousa_store/features/setting_profile/presentation/widgets/add_new_address.dart';
@@ -23,9 +22,16 @@ class ChangeAddress extends StatefulWidget {
   State<ChangeAddress> createState() => _ChangeAddressState();
 }
 
-class _ChangeAddressState extends State<ChangeAddress> {
+class _ChangeAddressState extends State<ChangeAddress>
+    with AutoRefreshOnReconnect<ChangeAddress> {
+  @override
+  void onReconnect() {
+    if (mounted) {
+      _refreshAddresses();
+    }
+  }
+
   late final ValueNotifier<Future<List<Address>>> _addressesNotifier;
-  StreamSubscription<void>? _networkRestoreSubscription;
 
   List<String> governorates = egyptGovernorates;
   bool isGovernoratesLoading = false;
@@ -34,18 +40,10 @@ class _ChangeAddressState extends State<ChangeAddress> {
   void initState() {
     super.initState();
     _addressesNotifier = ValueNotifier(fetchAddresses());
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            _refreshAddresses();
-          }
-        });
   }
 
   @override
   void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
     _addressesNotifier.dispose();
     super.dispose();
   }
