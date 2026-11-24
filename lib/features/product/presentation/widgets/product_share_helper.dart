@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mousa_store/core/service/deep_link_service.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/features/product/data/models/product_details_response.dart';
 import 'package:path_provider/path_provider.dart';
@@ -62,7 +63,7 @@ class ProductShareHelper {
       try {
         imageFile = await _downloadImage(imagePath);
       } on Object catch (e) {
-        debugPrint('Error downloading image for share: $e');
+        AppLogger.debug('Error downloading image for share: $e');
         // Fallback to text only if image fails
       }
     }
@@ -94,7 +95,7 @@ class ProductShareHelper {
       }
       return null;
     } on Object catch (e) {
-      debugPrint('Failed to download image: $e');
+      AppLogger.debug('Failed to download image: $e');
       rethrow;
     }
   }
