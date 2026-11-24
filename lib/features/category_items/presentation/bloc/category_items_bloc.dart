@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/features/category_items/data/models/category_items_response/category_product.dart';
 import 'package:mousa_store/features/category_items/domain/entities/item_fetch_type.dart';
 import 'package:mousa_store/features/category_items/domain/entities/product_filter.dart';
@@ -110,7 +110,7 @@ class CategoryItemsBloc extends Bloc<CategoryItemsEvent, CategoryItemsState> {
               double.tryParse(attrResponse.data.maxPrice) ??
               extraction.maxPrice;
         } on Object catch (e) {
-          debugPrint('Error fetching global attributes: $e');
+          AppLogger.debug('Error fetching global attributes: $e');
         }
       } else {
         minPrice = state.minPrice != 0 ? state.minPrice : extraction.minPrice;
