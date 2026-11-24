@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
 import 'package:mousa_store/features/auth/data/models/user.dart';
+import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
 import 'package:mousa_store/features/notification/data/datasources/push_notification_service.dart';
 
 class AuthService extends ChangeNotifier {
@@ -61,6 +63,7 @@ class AuthService extends ChangeNotifier {
     _isLoggedIn = false;
 
     await CacheHelper.clearAll();
+    if (getIt.isRegistered<HomeBloc>()) getIt<HomeBloc>().resetCatalog();
     DioHelper.setToken('');
 
     // Best Practice: Update FCM token to use unauthenticated endpoint immediately after logout
