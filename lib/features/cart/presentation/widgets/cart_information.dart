@@ -5,22 +5,21 @@ import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 import 'package:mousa_store/core/widgets/custom_fade_button.dart';
-import 'package:mousa_store/features/cart/data/models/cart_response.dart';
 import 'package:mousa_store/features/cart/presentation/widgets/cash_on_delivery.dart';
 
 class CartInformation extends StatelessWidget {
-  const CartInformation({required this.cart, super.key, this.gnToHome});
+  const CartInformation({
+    required this.totalPrice,
+    required this.itemCount,
+    super.key,
+    this.gnToHome,
+  });
   final VoidCallback? gnToHome;
-  final Cart cart;
+  final double totalPrice;
+  final int itemCount;
 
   @override
   Widget build(BuildContext context) {
-    final itemCount = cart.items.fold<int>(
-      0,
-      (sum, item) => sum + item.quantity,
-    );
-
-    final totalPrice = cart.total;
     return SafeArea(
       top: false,
       child: Padding(
