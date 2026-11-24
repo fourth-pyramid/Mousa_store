@@ -16,7 +16,13 @@ class HomeBannerSliderSection extends StatefulWidget {
 }
 
 class _HomeBannerSliderSectionState extends State<HomeBannerSliderSection> {
-  int _currentIndex = 0;
+  final _currentIndex = ValueNotifier<int>(0);
+
+  @override
+  void dispose() {
+    _currentIndex.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => BlocBuilder<HomeBloc, HomeState>(
@@ -53,7 +59,7 @@ class _HomeBannerSliderSectionState extends State<HomeBannerSliderSection> {
               enlargeCenterPage: true,
               viewportFraction: 0.88,
               onPageChanged: (index) {
-                setState(() => _currentIndex = index);
+                _currentIndex.value = index;
               },
               items: banners
                   .map(
@@ -151,15 +157,18 @@ class _HomeBannerSliderSectionState extends State<HomeBannerSliderSection> {
                   .toList(),
             ),
             const SizedBox(height: 12),
-            AppExpandingDotsIndicator(
-              activeIndex: _currentIndex,
-              count: banners.length,
-              effect: ExpandingDotsConfig(
-                dotHeight: 5,
-                dotWidth: 5,
-                spacing: 4,
-                activeDotColor: AppColorTokens.accent,
-                dotColor: AppColorTokens.accent.withValues(alpha: 0.25),
+            ValueListenableBuilder<int>(
+              valueListenable: _currentIndex,
+              builder: (context, index, child) => AppExpandingDotsIndicator(
+                activeIndex: index.clamp(0, banners.length - 1),
+                count: banners.length,
+                effect: ExpandingDotsConfig(
+                  dotHeight: 5,
+                  dotWidth: 5,
+                  spacing: 4,
+                  activeDotColor: AppColorTokens.accent,
+                  dotColor: AppColorTokens.accent.withValues(alpha: 0.25),
+                ),
               ),
             ),
           ],
