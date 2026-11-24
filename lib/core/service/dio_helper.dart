@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_classes_with_only_static_members, avoid_dynamic_calls // Static Dio client abstraction with dynamic HTTP JSON payload processing
+
 import 'dart:async';
 
 import 'package:dio/dio.dart';
@@ -8,8 +10,6 @@ import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/pretty_dio_logger.dart';
 import 'package:mousa_store/core/service/stability_interceptor.dart';
 import 'package:mousa_store/core/utils/app_logger.dart';
-
-// ignore_for_file: avoid_classes_with_only_static_members, avoid_dynamic_calls // Static Dio client abstraction with dynamic HTTP JSON payload processing
 
 class DioHelper {
   static Dio? _dio;
