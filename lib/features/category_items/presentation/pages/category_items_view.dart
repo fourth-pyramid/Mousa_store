@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/di/locator.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/features/category_items/domain/entities/item_fetch_type.dart';
 import 'package:mousa_store/features/category_items/presentation/bloc/category_items_bloc.dart';
@@ -32,34 +32,33 @@ class CategoryItemsView extends StatefulWidget {
   State<CategoryItemsView> createState() => _CategoryItemsViewState();
 }
 
-class _CategoryItemsViewState extends State<CategoryItemsView> {
+class _CategoryItemsViewState extends State<CategoryItemsView>
+    with AutoRefreshOnReconnect<CategoryItemsView> {
+  @override
+  void onReconnect() {
+    if (mounted) {
+      context.read<CategoryItemsBloc>().add(
+        CategoryItemsFetchRequested(
+          fetchType: widget.fetchType,
+          categoryId: widget.categoryId,
+          brandId: widget.brandId,
+        ),
+      );
+    }
+  }
+
   late final ScrollController _scrollController;
   bool _showBackToTopButton = false;
-  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            context.read<CategoryItemsBloc>().add(
-              CategoryItemsFetchRequested(
-                fetchType: widget.fetchType,
-                categoryId: widget.categoryId,
-                brandId: widget.brandId,
-              ),
-            );
-          }
-        });
   }
 
   @override
   void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
