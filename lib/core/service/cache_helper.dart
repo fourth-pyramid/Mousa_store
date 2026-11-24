@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_classes_with_only_static_members // Static utility helper for global local storage and key-value cache
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -5,8 +7,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/features/auth/data/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// ignore_for_file: avoid_classes_with_only_static_members // Static utility helper for global local storage and key-value cache
 
 class CacheHelper {
   static SharedPreferences? _prefs;
@@ -96,7 +96,7 @@ class CacheHelper {
   // ======== Access Token (Secure Storage) ========
 
   static Future<bool> saveToken(String token) async {
-    _sessionRevision++;
+    if (_cachedAccessToken == null) _sessionRevision++;
     _cachedAccessToken = token;
     try {
       await _secureStorage.write(key: 'access_token', value: token);
