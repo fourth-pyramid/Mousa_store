@@ -11,6 +11,7 @@ import 'package:mousa_store/core/main/app_initializer.dart';
 import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/core/service/deep_link_service.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/features/setting_profile/presentation/bloc/language_bloc.dart';
 import 'package:mousa_store/features/setting_profile/presentation/bloc/theme_bloc.dart';
 import 'package:mousa_store/features/wholesale_or_retail/presentation/bloc/price_mode_bloc.dart';
@@ -28,7 +29,7 @@ Future<void> main() async {
     FlutterError.presentError(details);
   };
   PlatformDispatcher.instance.onError = (error, stack) {
-    debugPrint('🛡️ Global Error Caught: $error');
+    AppLogger.debug('🛡️ Global Error Caught: $error');
     return true;
   };
 
