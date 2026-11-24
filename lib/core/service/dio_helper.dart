@@ -9,6 +9,7 @@ import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/pretty_dio_logger.dart';
 import 'package:mousa_store/core/service/stability_interceptor.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 
 class DioHelper {
   static Dio? _dio;
@@ -43,7 +44,7 @@ class DioHelper {
     if (getIt.isRegistered<StabilityInterceptor>()) {
       client.interceptors.add(getIt<StabilityInterceptor>());
     }
-    client.interceptors.add(PrettyDioLogger());
+    if (!kReleaseMode) client.interceptors.add(PrettyDioLogger());
     client.interceptors.add(DuplicateRequestInterceptor());
     client.interceptors.add(
       InterceptorsWrapper(
@@ -57,14 +58,18 @@ class DioHelper {
         onError: (e, handler) async {
           if (e.response?.statusCode == 401 &&
               !e.requestOptions.path.contains('refresh')) {
-            debugPrint('🔄 401 Unauthorized: Attempting to refresh token...');
+            AppLogger.debug(
+              '🔄 401 Unauthorized: Attempting to refresh token...',
+            );
 
             final isRefreshed = await refreshAccessToken();
 
             if (isRefreshed) {
               final newToken = CacheHelper.getToken();
               if (newToken != null) {
-                debugPrint('✅ Token refreshed successfully. Retrying request');
+                AppLogger.debug(
+                  '✅ Token refreshed successfully. Retrying request',
+                );
 
                 e.requestOptions.headers['Authorization'] = 'Bearer $newToken';
 
@@ -76,7 +81,7 @@ class DioHelper {
                 }
               }
             } else {
-              debugPrint(
+              AppLogger.debug(
                 '❌ Failed to refresh token. Triggering session expiration',
               );
               onSessionExpired?.call();
@@ -105,7 +110,9 @@ class DioHelper {
   static Future<bool> refreshAccessToken() async {
     final refreshToken = CacheHelper.getRefreshToken();
     if (refreshToken == null) {
-      debugPrint('Refresh token expired or missing. User must login again.');
+      AppLogger.debug(
+        'Refresh token expired or missing. User must login again.',
+      );
       return false;
     }
 
@@ -125,15 +132,15 @@ class DioHelper {
           setToken(newAccessToken);
           await CacheHelper.saveToken(newAccessToken);
           await CacheHelper.saveRefreshToken(newRefreshToken);
-          debugPrint('✅ Token refreshed and saved successfully');
+          AppLogger.debug('✅ Token refreshed and saved successfully');
           return true;
         }
       }
 
-      debugPrint('❌ Refresh token response invalid');
+      AppLogger.debug('❌ Refresh token response invalid');
       return false;
     } on Object catch (e) {
-      debugPrint('❌ Error refreshing token: $e');
+      AppLogger.debug('❌ Error refreshing token: $e');
       return false;
     }
   }
@@ -297,7 +304,7 @@ class DioHelper {
       }
     }
 
-    debugPrint('🔴 Dio Error (${e.response?.statusCode}): $errorMessage');
+    AppLogger.debug('🔴 Dio Error (${e.response?.statusCode}): $errorMessage');
 
     return CustomDioError(
       message: errorMessage,
@@ -326,7 +333,9 @@ class DuplicateRequestInterceptor extends Interceptor {
     final existingCompleter = _inFlight[key];
 
     if (existingCompleter != null) {
-      debugPrint('⚡ DEDUP: coalescing duplicate GET request — ${options.path}');
+      AppLogger.debug(
+        '⚡ DEDUP: coalescing duplicate GET request — ${options.path}',
+      );
       unawaited(
         existingCompleter.future
             .then((res) {
