@@ -3,16 +3,18 @@ import 'dart:math';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mousa_store/core/design_system/app_colors.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// ================= BACKGROUND HANDLER =================
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  debugPrint('🔕 Background message: ${message.messageId}');
+  AppLogger.debug('🔕 Background message: ${message.messageId}');
 }
 
 /// ================= SERVICE =================
@@ -26,18 +28,21 @@ class PushNotificationService {
   static Future<void> initialize() async {
     try {
       /// -------- Awesome Notifications --------
-      await AwesomeNotifications()
-          .initialize('resource://drawable/ic_notification', [
-            NotificationChannel(
-              channelKey: 'basic_channel',
-              channelName: 'Basic Notifications',
-              channelDescription: 'Used for basic push notifications',
-              importance: NotificationImportance.High,
-              channelShowBadge: true,
-              defaultColor: AppColorTokens.accent,
-              ledColor: AppColorTokens.accent,
-            ),
-          ], debug: true);
+      await AwesomeNotifications().initialize(
+        'resource://drawable/ic_notification',
+        [
+          NotificationChannel(
+            channelKey: 'basic_channel',
+            channelName: 'Basic Notifications',
+            channelDescription: 'Used for basic push notifications',
+            importance: NotificationImportance.High,
+            channelShowBadge: true,
+            defaultColor: AppColorTokens.accent,
+            ledColor: AppColorTokens.accent,
+          ),
+        ],
+        debug: !kReleaseMode,
+      );
 
       final isAllowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isAllowed) {
@@ -50,12 +55,14 @@ class PushNotificationService {
       /// -------- Request Permission --------
       final settings = await _fcm.requestPermission();
 
-      debugPrint('🔔 Notification permission: ${settings.authorizationStatus}');
+      AppLogger.debug(
+        '🔔 Notification permission: ${settings.authorizationStatus}',
+      );
 
       /// -------- Foreground Messages --------
       FirebaseMessaging.onMessage.listen((message) {
-        debugPrint('🔔 Foreground message received');
-        debugPrint('📦 Data: ${message.data}');
+        AppLogger.debug('🔔 Foreground message received');
+        AppLogger.debug('Notification payload received');
 
         if (message.notification != null) {
           unawaited(
@@ -78,13 +85,13 @@ class PushNotificationService {
 
       /// -------- Open App From Notification --------
       FirebaseMessaging.onMessageOpenedApp.listen((message) {
-        debugPrint('📲 App opened from notification');
+        AppLogger.debug('📲 App opened from notification');
         // handle navigation here
       });
 
       /// -------- Listen for FCM Registration & Token Refresh --------
       _fcm.onRegistered.listen((token) {
-        debugPrint('🔔 FCM Registered Token: $token');
+        AppLogger.debug('FCM token registered');
         _lastToken = token;
         unawaited(sendTokenToBackend(token));
       });
@@ -92,7 +99,7 @@ class PushNotificationService {
       /// -------- Register with FCM --------
       await _fcm.register();
     } on Object catch (e) {
-      debugPrint('❌ Push Notification Init Error: $e');
+      AppLogger.debug('❌ Push Notification Init Error: $e');
     }
   }
 
@@ -103,7 +110,7 @@ class PushNotificationService {
       }
       await _fcm.register();
     } on Object catch (e) {
-      debugPrint('❌ Update Token To Server Error: $e');
+      AppLogger.debug('❌ Update Token To Server Error: $e');
     }
   }
 
@@ -132,8 +139,8 @@ class PushNotificationService {
       final authToken = CacheHelper.getToken();
       final endpoint = authToken != null ? 'fcm-token-user' : 'fcm-token';
 
-      debugPrint(
-        '🚀 Sending token to backend: $token with Device ID: $deviceId to endpoint: $endpoint',
+      AppLogger.debug(
+        'Sending FCM registration to backend',
       );
 
       final response = await DioHelper.postData(
@@ -142,12 +149,12 @@ class PushNotificationService {
       );
 
       if (response.statusCode == 200) {
-        debugPrint('✅ Token sent successfully');
+        AppLogger.debug('✅ Token sent successfully');
       } else {
-        debugPrint('❌ Failed to send token: ${response.statusCode}');
+        AppLogger.debug('❌ Failed to send token: ${response.statusCode}');
       }
     } on Object catch (e) {
-      debugPrint('🔴 Send token error: $e');
+      AppLogger.debug('🔴 Send token error: $e');
     } finally {
       _inFlight.remove(
         token,
