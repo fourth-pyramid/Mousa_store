@@ -33,6 +33,8 @@ class AppContent extends StatefulWidget {
 }
 
 class _AppContentState extends State<AppContent> {
+  static final _lightTheme = AppThemeFactory().lightTheme;
+  static final _darkTheme = AppThemeFactory().darkTheme;
   @override
   void initState() {
     super.initState();
@@ -49,12 +51,10 @@ class _AppContentState extends State<AppContent> {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ThemeBloc, ThemeState>(
+    buildWhen: (previous, current) => previous.themeMode != current.themeMode,
     builder: (context, themeState) {
-      final themeFactory = AppThemeFactory();
-      final lightTheme = themeFactory.lightTheme;
-      final darkTheme = themeFactory.darkTheme;
-
       return BlocBuilder<LanguageBloc, LanguageState>(
+        buildWhen: (previous, current) => previous.locale != current.locale,
         builder: (context, languageState) {
           final isFirst = CacheHelper.isFirstOpen();
 
@@ -98,8 +98,8 @@ class _AppContentState extends State<AppContent> {
             ),
             debugShowCheckedModeBanner: false,
             themeMode: themeState.themeMode,
-            theme: lightTheme,
-            darkTheme: darkTheme,
+            theme: _lightTheme,
+            darkTheme: _darkTheme,
             localizationsDelegates: widget.localizationsDelegates,
             supportedLocales: widget.supportedLocales,
             home: homeScreen,
