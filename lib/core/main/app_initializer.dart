@@ -24,7 +24,7 @@ class AppInitializer {
   final SharedPreferences prefs;
 
   Future<InitializationResult> initialize() async {
-    await CacheHelper.init();
+    await CacheHelper.init(prefs: prefs);
     await CacheHelper.setFirstOpenDone();
     final themeMode = getInitialThemeMode();
     final locale = getInitialLanguage();
