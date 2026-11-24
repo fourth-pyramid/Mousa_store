@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
 import 'package:mousa_store/core/models/offer.dart' as core_offer;
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/core/widgets/favorite_button.dart';
 import 'package:mousa_store/features/cart/presentation/bloc/cart_bloc.dart';
@@ -53,25 +53,13 @@ class _ProductDetailsContent extends StatefulWidget {
   State<_ProductDetailsContent> createState() => _ProductDetailsContentState();
 }
 
-class _ProductDetailsContentState extends State<_ProductDetailsContent> {
-  StreamSubscription<void>? _networkRestoreSubscription;
-
+class _ProductDetailsContentState extends State<_ProductDetailsContent>
+    with AutoRefreshOnReconnect<_ProductDetailsContent> {
   @override
-  void initState() {
-    super.initState();
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            context.read<ProductBloc>().add(const ProductRefreshRequested());
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
-    super.dispose();
+  void onReconnect() {
+    if (mounted) {
+      context.read<ProductBloc>().add(const ProductRefreshRequested());
+    }
   }
 
   @override

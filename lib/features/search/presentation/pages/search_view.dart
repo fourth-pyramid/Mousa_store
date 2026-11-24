@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mousa_store/core/di/service_locator.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
 import 'package:mousa_store/core/widgets/app_search_field.dart';
 import 'package:mousa_store/core/widgets/app_sliver_grid.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/core/widgets/product_grid_card.dart';
 import 'package:mousa_store/features/product/data/models/product.dart';
@@ -20,11 +19,20 @@ class SearchView extends StatefulWidget {
   State<SearchView> createState() => _SearchViewState();
 }
 
-class _SearchViewState extends State<SearchView> {
+class _SearchViewState extends State<SearchView>
+    with AutoRefreshOnReconnect<SearchView> {
+  @override
+  void onReconnect() {
+    if (_searchController.text.isNotEmpty) {
+      context.read<SearchBloc>().add(
+        SearchQueryChanged(_searchController.text),
+      );
+    }
+  }
+
   Timer? _debounceTimer;
   late final TextEditingController _searchController;
   late final ScrollController _scrollController;
-  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
@@ -32,20 +40,10 @@ class _SearchViewState extends State<SearchView> {
     _searchController = TextEditingController();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted && _searchController.text.isNotEmpty) {
-            context.read<SearchBloc>().add(
-              SearchQueryChanged(_searchController.text),
-            );
-          }
-        });
   }
 
   @override
   void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
     _debounceTimer?.cancel();
     _searchController.dispose();
     _scrollController.dispose();

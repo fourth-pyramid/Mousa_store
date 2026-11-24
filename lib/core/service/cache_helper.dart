@@ -3,8 +3,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/features/auth/data/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +38,7 @@ class CacheHelper {
         _cachedUser = User.fromJson(userMap);
       }
     } on Object catch (e) {
-      debugPrint('⚠️ Error reading secure storage: $e');
+      AppLogger.debug('⚠️ Error reading secure storage: $e');
     }
 
     // 2. Migration: if old tokens/user exist in SharedPreferences, migrate to SecureStorage
@@ -68,7 +68,7 @@ class CacheHelper {
           final user = User.fromJson(userMap);
           await saveUser(user);
         } on Object catch (e) {
-          debugPrint('⚠️ Error migrating user data to secure storage: $e');
+          AppLogger.debug('⚠️ Error migrating user data to secure storage: $e');
         }
         await _prefs!.remove('user_data');
       }
@@ -95,7 +95,7 @@ class CacheHelper {
       await _secureStorage.write(key: 'access_token', value: token);
       return true;
     } on Object catch (e) {
-      debugPrint('Error saving token to secure storage: $e');
+      AppLogger.debug('Error saving token to secure storage: $e');
       return false;
     }
   }
@@ -107,7 +107,7 @@ class CacheHelper {
     try {
       await _secureStorage.delete(key: 'access_token');
     } on Object catch (e) {
-      debugPrint('Error deleting token from secure storage: $e');
+      AppLogger.debug('Error deleting token from secure storage: $e');
     }
   }
 
@@ -136,7 +136,7 @@ class CacheHelper {
       );
       return true;
     } on Object catch (e) {
-      debugPrint('Error saving refresh token: $e');
+      AppLogger.debug('Error saving refresh token: $e');
       return false;
     }
   }
@@ -162,7 +162,7 @@ class CacheHelper {
       await _secureStorage.delete(key: 'refresh_token');
       await _secureStorage.delete(key: 'refresh_token_expiry');
     } on Object catch (e) {
-      debugPrint('Error clearing refresh token: $e');
+      AppLogger.debug('Error clearing refresh token: $e');
     }
   }
 
@@ -193,7 +193,7 @@ class CacheHelper {
       await _secureStorage.write(key: 'user_data', value: userJson);
       return true;
     } on Object catch (e) {
-      debugPrint('Error saving user to secure storage: $e');
+      AppLogger.debug('Error saving user to secure storage: $e');
       return false;
     }
   }
@@ -205,7 +205,7 @@ class CacheHelper {
     try {
       await _secureStorage.delete(key: 'user_data');
     } on Object catch (e) {
-      debugPrint('Error deleting user from secure storage: $e');
+      AppLogger.debug('Error deleting user from secure storage: $e');
     }
   }
 

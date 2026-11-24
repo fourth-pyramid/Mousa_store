@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 
 class PrettyDioLogger extends Interceptor {
   // ponytail: simple int counter avoids any external dependency
@@ -26,11 +26,7 @@ class PrettyDioLogger extends Interceptor {
     _startTimes[_requestKey(options)] = DateTime.now();
 
     _print('┌── ☁️  REQUEST #$id [${_timestamp()}]');
-    _print('│ ${options.method} ${options.uri}');
-    if (options.data != null) {
-      _print('│ Body:');
-      _printJson(options.data, prefix: '│   ');
-    }
+    _print('│ ${options.method} ${options.uri.path}');
     _print('└────────────────────────────────────────');
     super.onRequest(options, handler);
   }
@@ -46,7 +42,7 @@ class PrettyDioLogger extends Interceptor {
     final icon = code < 300 ? '✅' : (code < 500 ? '⚠️' : '🔴');
 
     _print('┌── $icon RESPONSE #$id [$code] +${elapsed}ms [${_timestamp()}]');
-    _print('│ ${response.requestOptions.uri}');
+    _print('│ ${response.requestOptions.uri.path}');
     _print('│ Size: ${_bodySize(response.data)}');
     _print('└────────────────────────────────────────');
     super.onResponse(response, handler);
@@ -60,17 +56,14 @@ class PrettyDioLogger extends Interceptor {
 
     // Don't log cancelled requests as errors — they're intentional
     if (err.type == DioExceptionType.cancel) {
-      _print('🚫 CANCELLED #$id +${elapsed}ms — ${err.requestOptions.uri}');
+      _print('🚫 CANCELLED #$id +${elapsed}ms — ${err.requestOptions.uri.path}');
       super.onError(err, handler);
       return;
     }
 
     _print('┌── 🔴 ERROR #$id [$code] +${elapsed}ms [${_timestamp()}]');
-    _print('│ ${err.requestOptions.uri}');
-    _print('│ ${err.message}');
-    if (err.response?.data != null) {
-      _printJson(err.response?.data, prefix: '│   ');
-    }
+    _print('│ ${err.requestOptions.uri.path}');
+    _print('│ ${err.type.name}');
     _print('└────────────────────────────────────────');
     super.onError(err, handler);
   }
@@ -94,18 +87,5 @@ class PrettyDioLogger extends Interceptor {
     }
   }
 
-  void _print(String text) => debugPrint(text);
-
-  void _printJson(Object? json, {String prefix = ''}) {
-    if (json is Map || json is List) {
-      try {
-        const encoder = JsonEncoder.withIndent('  ');
-        encoder.convert(json).split('\n').forEach((l) => _print('$prefix$l'));
-      } on Object catch (_) {
-        _print('$prefix$json');
-      }
-    } else {
-      _print('$prefix$json');
-    }
-  }
+  void _print(String text) => AppLogger.debug(text);
 }

@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mousa_store/core/di/service_locator.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_error_state.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/features/categories/presentation/bloc/category_bloc.dart';
 import 'package:mousa_store/features/categories/presentation/widgets/category_list_item.dart';
@@ -20,26 +19,19 @@ class CategoriesView extends StatefulWidget {
   State<CategoriesView> createState() => _CategoriesViewState();
 }
 
-class _CategoriesViewState extends State<CategoriesView> {
-  StreamSubscription<void>? _networkRestoreSubscription;
+class _CategoriesViewState extends State<CategoriesView>
+    with AutoRefreshOnReconnect<CategoriesView> {
+  @override
+  void onReconnect() {
+    if (mounted) {
+      context.read<CategoryBloc>().add(const CategoryRefreshRequested());
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     context.read<CategoryBloc>().add(const CategoryFetchStarted());
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            context.read<CategoryBloc>().add(const CategoryRefreshRequested());
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
-    super.dispose();
   }
 
   @override

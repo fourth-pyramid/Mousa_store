@@ -28,6 +28,8 @@ class AppSemanticColors {
   final Color warning;
   final Color error;
   final Color onError;
+  final Color onSuccess;
+  final Color onWarning;
   final Color info;
   final Color pending;
   final Color disabled;
@@ -57,6 +59,8 @@ class AppSemanticColors {
     required this.warning,
     required this.error,
     required this.onError,
+    this.onSuccess = Colors.white,
+    this.onWarning = Colors.black,
     required this.info,
     required this.pending,
     required this.disabled,
@@ -87,6 +91,8 @@ class AppSemanticColors {
     warning: AppColorTokens.warning,
     error: AppColorTokens.error,
     onError: Colors.white,
+    onSuccess: Colors.white,
+    onWarning: Colors.black,
     info: Colors.blue,
     pending: Colors.orange,
     disabled: AppColorTokens.lightInactiveTrack,
@@ -117,6 +123,8 @@ class AppSemanticColors {
     warning: AppColorTokens.warning,
     error: AppColorTokens.error,
     onError: Colors.white,
+    onSuccess: Colors.white,
+    onWarning: Colors.black,
     info: Colors.blue,
     pending: Colors.orange,
     disabled: AppColorTokens.darkInactiveTrack,

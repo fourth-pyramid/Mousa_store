@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mousa_store/core/di/service_locator.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_error_state.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/features/brands/presentation/bloc/brand_bloc.dart';
 import 'package:mousa_store/features/brands/presentation/widgets/brand_card.dart';
@@ -17,26 +14,19 @@ class BrandsView extends StatefulWidget {
   State<BrandsView> createState() => _BrandsViewState();
 }
 
-class _BrandsViewState extends State<BrandsView> {
-  StreamSubscription<void>? _networkRestoreSubscription;
+class _BrandsViewState extends State<BrandsView>
+    with AutoRefreshOnReconnect<BrandsView> {
+  @override
+  void onReconnect() {
+    if (mounted) {
+      context.read<BrandBloc>().add(const BrandRefreshRequested());
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     context.read<BrandBloc>().add(const BrandFetchStarted());
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            context.read<BrandBloc>().add(const BrandRefreshRequested());
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
-    super.dispose();
   }
 
   @override

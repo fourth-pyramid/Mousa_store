@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/features/brands/data/models/brand_model.dart';
 
 abstract class BrandRemoteDataSource {
@@ -30,7 +30,7 @@ class BrandRemoteDataSourceImpl implements BrandRemoteDataSource {
 
       return [];
     } catch (e) {
-      debugPrint('BrandRemoteDataSource Error: $e');
+      AppLogger.debug('BrandRemoteDataSource Error: $e');
       rethrow;
     }
   }

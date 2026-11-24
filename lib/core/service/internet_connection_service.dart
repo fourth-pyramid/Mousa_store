@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 
 /// Represents the network availability and quality state.
 enum NetworkState { checking, connected, unstable, disconnected }
@@ -63,7 +64,12 @@ abstract interface class IInternetConnectionService {
 
 /// Configuration thresholds for latency, backoff, and reachability probes.
 class NetworkConfig {
+  /// Healthy checks settle from 15 s to 30 s to 60 s.
+  /// Suspect/unstable connections are checked every 5 s.
   static const int pingIntervalSeconds = 5;
+  static const int healthyIntervalSeconds = 15;
+  static const int settlingIntervalSeconds = 30;
+  static const int stableIntervalSeconds = 60;
   static const List<int> recoveryBackoffSeconds = [2, 4, 6, 10, 15];
   static const int slowPingThresholdMs = 700;
   static const int slowDioThresholdMs = 2800;
@@ -88,13 +94,10 @@ enum ProbeOutcome { ok, portal, failed }
 
 /// Result of probing a single [ProbeTarget].
 class ProbeResult {
-  const ProbeResult._({
-    required this.outcome,
-    this.latencyMs,
-  });
+  const ProbeResult._({required this.outcome, this.latencyMs});
 
   const ProbeResult.ok(int latencyMs)
-      : this._(outcome: ProbeOutcome.ok, latencyMs: latencyMs);
+    : this._(outcome: ProbeOutcome.ok, latencyMs: latencyMs);
 
   const ProbeResult.portal() : this._(outcome: ProbeOutcome.portal);
 
@@ -347,6 +350,7 @@ class InternetConnectionService
   DateTime? _lastSlowHttpAt;
   Timer? _slowHttpDecayTimer;
 
+  int _healthyProbeCount = 0;
   int _consecutiveFailures = 0;
   int _recoveryAttempt = 0;
   bool _forceConsensus = true;
@@ -393,6 +397,7 @@ class InternetConnectionService
     ) {
       if (_isDisposed) return;
       _epoch++;
+      _healthyProbeCount = 0;
       _forceConsensus = true;
 
       if (results.isEmpty || results.contains(ConnectivityResult.none)) {
@@ -427,14 +432,15 @@ class InternetConnectionService
     }
   }
 
-  Future<({bool ok, int? latencyMs, NetworkIssue issue})> _evaluateReachability({
+  Future<({bool ok, int? latencyMs, NetworkIssue issue})>
+  _evaluateReachability({
     required bool useFullCheck,
     required int startEpoch,
   }) async {
     if (_pingChecker != null) {
       try {
         final ms = await _pingChecker();
-        debugPrint(
+        AppLogger.debug(
           '📶 [Network Ping] Ping checker result: ${ms != null ? '${ms}ms' : 'FAILED'}',
         );
         if (ms != null) {
@@ -442,7 +448,7 @@ class InternetConnectionService
         }
         return (ok: false, latencyMs: null, issue: NetworkIssue.noInternet);
       } on Object catch (e) {
-        debugPrint('❌ [Network Ping] Ping checker exception: $e');
+        AppLogger.debug('❌ [Network Ping] Ping checker exception: $e');
         return (ok: false, latencyMs: null, issue: NetworkIssue.noInternet);
       }
     }
@@ -453,7 +459,7 @@ class InternetConnectionService
         return (ok: false, latencyMs: null, issue: NetworkIssue.noInternet);
       }
       if (primary.isOk && primary.latencyMs != null) {
-        debugPrint(
+        AppLogger.debug(
           '📶 [Network Probe] Primary probe SUCCESS: ${primary.latencyMs}ms',
         );
         return (
@@ -462,24 +468,20 @@ class InternetConnectionService
           issue: NetworkIssue.none,
         );
       }
-      debugPrint(
+      AppLogger.debug(
         '⚠️ [Network Probe] Primary probe failed (${primary.outcome.name}); falling back to consensus check',
       );
     }
 
     final summary = await _probe.runAll();
     if (summary.isSuccess && summary.latencyMs != null) {
-      debugPrint(
+      AppLogger.debug(
         '📶 [Network Probe] Consensus SUCCESS (median ${summary.latencyMs}ms)',
       );
-      return (
-        ok: true,
-        latencyMs: summary.latencyMs,
-        issue: NetworkIssue.none,
-      );
+      return (ok: true, latencyMs: summary.latencyMs, issue: NetworkIssue.none);
     }
 
-    debugPrint(
+    AppLogger.debug(
       '❌ [Network Probe] Consensus FAILED (issue: ${summary.issue.name})',
     );
     return (ok: false, latencyMs: null, issue: summary.issue);
@@ -493,7 +495,7 @@ class InternetConnectionService
     try {
       connectivityResults = await _connectivity.checkConnectivity();
     } on Object catch (e) {
-      debugPrint('❌ [Network Hardware] Connectivity check error: $e');
+      AppLogger.debug('❌ [Network Hardware] Connectivity check error: $e');
       connectivityResults = const [ConnectivityResult.none];
     }
 
@@ -501,7 +503,7 @@ class InternetConnectionService
 
     if (connectivityResults.isEmpty ||
         connectivityResults.contains(ConnectivityResult.none)) {
-      debugPrint(
+      AppLogger.debug(
         '🔌 [Network Hardware] No active interface (WiFi/Mobile disconnected)',
       );
       _lastIssue = NetworkIssue.noInterface;
@@ -524,6 +526,7 @@ class InternetConnectionService
     if (_isDisposed || _epoch != startEpoch) return false;
 
     if (!outcome.ok) {
+      _healthyProbeCount = 0;
       _lastIssue = outcome.issue;
       _slowPingHits = 0;
       _consecutiveFailures++;
@@ -546,12 +549,14 @@ class InternetConnectionService
 
     final latency = outcome.latencyMs!;
     if (latency >= NetworkConfig.slowPingThresholdMs) {
+      _healthyProbeCount = 0;
       _slowPingHits++;
-      debugPrint(
+      AppLogger.debug(
         '⚠️ [Network Ping] High ping: ${latency}ms (Threshold: ${NetworkConfig.slowPingThresholdMs}ms, Hits: $_slowPingHits/${NetworkConfig.maxSlowHits})',
       );
     } else {
       _slowPingHits = 0;
+      _healthyProbeCount = math.min(_healthyProbeCount + 1, 5);
     }
 
     _applyStability();
@@ -584,16 +589,18 @@ class InternetConnectionService
       return;
     }
 
-    debugPrint('🌐 [Dio HTTP Latency] Request completed in ${ms}ms');
+    AppLogger.debug('🌐 [Dio HTTP Latency] Request completed in ${ms}ms');
 
+    final wasSettled = _healthyProbeCount > 2;
     if (ms >= NetworkConfig.slowDioThresholdMs) {
+      _healthyProbeCount = 0;
       _slowHttpHits++;
       _lastSlowHttpAt = DateTime.now();
       _slowHttpDecayTimer?.cancel();
       _slowHttpDecayTimer = Timer(NetworkConfig.slowHttpDecay, () {
         _lastSlowHttpAt = DateTime.fromMillisecondsSinceEpoch(0);
       });
-      debugPrint(
+      AppLogger.debug(
         '⚠️ [Dio HTTP Latency] Slow response: ${ms}ms (Threshold: ${NetworkConfig.slowDioThresholdMs}ms, Hits: $_slowHttpHits/${NetworkConfig.maxSlowHits})',
       );
     } else {
@@ -603,7 +610,12 @@ class InternetConnectionService
       _slowHttpDecayTimer = null;
     }
 
+    final previousState = _currentState;
     _applyStability();
+    if (previousState != _currentState ||
+        (wasSettled && ms >= NetworkConfig.slowDioThresholdMs)) {
+      _scheduleNext();
+    }
   }
 
   @override
@@ -627,6 +639,7 @@ class InternetConnectionService
       _lastFailureCheckAt = null;
     });
 
+    _healthyProbeCount = 0;
     _forceConsensus = true;
     unawaited(checkNow());
   }
@@ -643,8 +656,15 @@ class InternetConnectionService
       delay = Duration(seconds: backoff[index]);
     } else if (_consecutiveFailures > 0) {
       delay = const Duration(seconds: 1);
-    } else {
+    } else if (_currentState != NetworkState.connected ||
+        _slowPingHits > 0 || _slowHttpHits > 0) {
       delay = const Duration(seconds: NetworkConfig.pingIntervalSeconds);
+    } else if (_healthyProbeCount <= 2) {
+      delay = const Duration(seconds: NetworkConfig.healthyIntervalSeconds);
+    } else if (_healthyProbeCount <= 4) {
+      delay = const Duration(seconds: NetworkConfig.settlingIntervalSeconds);
+    } else {
+      delay = const Duration(seconds: NetworkConfig.stableIntervalSeconds);
     }
 
     _timer = Timer(delay, () {
@@ -672,9 +692,11 @@ class InternetConnectionService
 
     final previousState = _currentState;
     _currentState = nextState;
+    _healthyProbeCount = 0;
     _lastEmittedIssue = _lastIssue;
 
     if (nextState == NetworkState.disconnected) {
+      _healthyProbeCount = 0;
       _slowPingHits = 0;
       _slowHttpHits = 0;
       _lastSlowHttpAt = null;
@@ -685,7 +707,7 @@ class InternetConnectionService
       _forceConsensus = true;
     }
 
-    debugPrint(
+    AppLogger.debug(
       '🔄 [Network State Changed] ${previousState.name} ➔ ${nextState.name} (issue: ${_lastIssue.name})',
     );
     if (!_stateController.isClosed) {
@@ -709,6 +731,7 @@ class InternetConnectionService
         _cancelTimer();
       case AppLifecycleState.resumed:
         _isBackground = false;
+        _healthyProbeCount = 0;
         _forceConsensus = true;
         _recheck = true;
         unawaited(checkNow());

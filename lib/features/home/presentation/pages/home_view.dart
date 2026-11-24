@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mousa_store/core/di/service_locator.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_event.dart';
 import 'package:mousa_store/features/home/presentation/widgets/home_all_products_section.dart';
@@ -23,10 +22,17 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView>
+    with AutoRefreshOnReconnect<HomeView> {
+  @override
+  void onReconnect() {
+    if (mounted) {
+      _initData();
+    }
+  }
+
   late final ScrollController _scrollController;
   bool _showBackToTopButton = false;
-  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
@@ -38,18 +44,10 @@ class _HomeViewState extends State<HomeView> {
         _initData();
       }
     });
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            _initData();
-          }
-        });
   }
 
   @override
   void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();

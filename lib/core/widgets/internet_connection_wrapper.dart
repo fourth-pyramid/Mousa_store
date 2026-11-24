@@ -29,6 +29,7 @@ class _InternetConnectionWrapperState extends State<InternetConnectionWrapper> {
 
   late NetworkState _state;
   bool _showRestored = false;
+  Widget? _lastVisibleBanner;
 
   @override
   void initState() {
@@ -81,28 +82,52 @@ class _InternetConnectionWrapperState extends State<InternetConnectionWrapper> {
   @override
   Widget build(BuildContext context) {
     final showBanner = _shouldShowBanner;
-    return Column(
-      children: [
-        AnimatedSize(
-          duration: context.durations.normal,
-          curve: Curves.easeInOut,
-          child: showBanner
-              ? _NetworkBanner(
-                  state: _state,
-                  issue: _service.lastIssue,
-                  isRestored: _showRestored,
-                  onTap: () => unawaited(_service.checkNow()),
-                )
-              : const SizedBox.shrink(),
-        ),
-        Expanded(
-          child: MediaQuery.removePadding(
-            context: context,
-            removeTop: showBanner,
-            child: widget.child,
+    final mediaQuery = MediaQuery.of(context);
+    final withoutTop = mediaQuery.removePadding(removeTop: true);
+    // Retain the outgoing banner during collapse, rather than painting an error
+    // banner for the now-connected state on its last animation frames.
+    if (showBanner) {
+      _lastVisibleBanner = _NetworkBanner(
+        state: _state,
+        issue: _service.lastIssue,
+        isRestored: _showRestored,
+        onTap: () => unawaited(_service.checkNow()),
+      );
+    }
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0, end: showBanner ? 1 : 0),
+      duration: context.durations.normal,
+      curve: Curves.easeInOut,
+      builder: (context, progress, child) => Column(
+        children: [
+          ClipRect(
+            child: Align(
+              heightFactor: progress,
+              child: progress == 0 && !showBanner
+                  ? const SizedBox.shrink()
+                  : _lastVisibleBanner ?? const SizedBox.shrink(),
+            ),
           ),
-        ),
-      ],
+          Expanded(
+            child: MediaQuery(
+              data: mediaQuery.copyWith(
+                padding: EdgeInsets.lerp(
+                  mediaQuery.padding,
+                  withoutTop.padding,
+                  progress,
+                ),
+                viewPadding: EdgeInsets.lerp(
+                  mediaQuery.viewPadding,
+                  withoutTop.viewPadding,
+                  progress,
+                ),
+              ),
+              child: child!,
+            ),
+          ),
+        ],
+      ),
+      child: widget.child,
     );
   }
 }
@@ -123,37 +148,41 @@ class _NetworkBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color backgroundColor;
+    final Color contentColor;
     final IconData icon;
     final String message;
 
     if (isRestored) {
       backgroundColor = context.colors.success;
+      contentColor = context.colors.onSuccess;
       icon = Icons.check_circle_outline_rounded;
       message = context.l10n.internet_restored_banner;
     } else if (state == NetworkState.unstable) {
       backgroundColor = context.colors.warning;
+      contentColor = context.colors.onWarning;
       icon = Icons.wifi_protected_setup_rounded;
       message = context.l10n.internet_unstable_banner;
     } else {
       switch (issue) {
         case NetworkIssue.captivePortal:
           backgroundColor = context.colors.warning;
+          contentColor = context.colors.onWarning;
           icon = Icons.wifi_lock_rounded;
           message = context.l10n.internet_captive_portal_banner;
         case NetworkIssue.noInternet:
           backgroundColor = context.colors.warning;
+          contentColor = context.colors.onWarning;
           icon = Icons.wifi_find_rounded;
           message = context.l10n.internet_no_access_banner;
         case NetworkIssue.noInterface:
         case NetworkIssue.none:
           backgroundColor = context.colors.error;
+          contentColor = context.colors.onError;
           icon = Icons.wifi_off_rounded;
           message =
               '${context.l10n.no_internet_title} — ${context.l10n.try_again_text}';
       }
     }
-
-    final contentColor = context.colors.onError;
 
     return Material(
       color: backgroundColor,

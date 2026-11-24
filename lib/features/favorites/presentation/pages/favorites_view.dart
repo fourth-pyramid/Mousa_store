@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/design_system/design_system.dart';
 import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
 import 'package:mousa_store/core/widgets/app_sliver_grid.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/product_grid_card.dart';
 import 'package:mousa_store/features/auth/presentation/pages/auth_page.dart';
 import 'package:mousa_store/features/favorites/presentation/bloc/favorite_bloc.dart';
@@ -22,25 +22,13 @@ class FavoritesView extends StatefulWidget {
   State<FavoritesView> createState() => _FavoritesViewState();
 }
 
-class _FavoritesViewState extends State<FavoritesView> {
-  StreamSubscription<void>? _networkRestoreSubscription;
-
+class _FavoritesViewState extends State<FavoritesView>
+    with AutoRefreshOnReconnect<FavoritesView> {
   @override
-  void initState() {
-    super.initState();
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted && CacheHelper.getToken() != null) {
-            getIt<FavoriteBloc>().add(const FavoritesFetchRequested());
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
-    super.dispose();
+  void onReconnect() {
+    if (CacheHelper.getToken() != null) {
+      getIt<FavoriteBloc>().add(const FavoritesFetchRequested());
+    }
   }
 
   @override

@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mousa_store/core/di/service_locator.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/navigation_helper.dart';
 import 'package:mousa_store/core/widgets/app_empty_state.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/features/auth/presentation/pages/auth_page.dart';
 import 'package:mousa_store/features/cart/presentation/bloc/cart_bloc.dart';
@@ -25,8 +24,14 @@ class CartPage extends StatefulWidget {
   State<CartPage> createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
-  StreamSubscription<void>? _networkRestoreSubscription;
+class _CartPageState extends State<CartPage>
+    with AutoRefreshOnReconnect<CartPage> {
+  @override
+  void onReconnect() {
+    if (CacheHelper.getToken() != null) {
+      context.read<CartBloc>().add(const CartFetchRequested());
+    }
+  }
 
   @override
   void initState() {
@@ -34,19 +39,6 @@ class _CartPageState extends State<CartPage> {
     if (CacheHelper.getToken() != null) {
       context.read<CartBloc>().add(const CartFetchRequested());
     }
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted && CacheHelper.getToken() != null) {
-            context.read<CartBloc>().add(const CartFetchRequested());
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
-    super.dispose();
   }
 
   @override
