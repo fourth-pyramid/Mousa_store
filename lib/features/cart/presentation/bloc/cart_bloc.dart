@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
+import 'package:mousa_store/core/utils/keyed_debouncer.dart';
+import 'package:mousa_store/features/cart/data/models/cart_response.dart';
 import 'package:mousa_store/features/cart/domain/usecases/cart_use_cases.dart';
 import 'package:mousa_store/features/cart/presentation/bloc/cart_event.dart';
 import 'package:mousa_store/features/cart/presentation/bloc/cart_state.dart';
@@ -28,9 +30,37 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final UpdateCartItemUseCase updateCartItemUseCase;
   final RemoveFromCartUseCase removeFromCartUseCase;
 
-  // Debouncing for quantity updates
-  final Map<int, Timer> _debounceTimers = {};
+  final _debouncer = KeyedDebouncer<int>();
   final Map<int, int> _pendingQuantities = {};
+  final Map<int, int> _quantityVersions = {};
+  Future<void> _quantityWrites = Future.value();
+  int _generation = 0;
+
+  Cart _withPending(Cart cart) {
+    if (_pendingQuantities.isEmpty) return cart;
+    final items = cart.items.map((item) {
+      final quantity = _pendingQuantities[item.id];
+      if (quantity == null) return item;
+      final basePrice = double.tryParse(item.price) ?? 0.0;
+      final discount = item.offers?.isNotEmpty == true
+          ? item.offers!.first.discountPrice
+          : 0.0;
+      return item.copyWith(
+        quantity: quantity,
+        lineTotal: basePrice * (1 - discount / 100) * quantity,
+      );
+    }).toList();
+    return cart.copyWith(
+      items: items,
+      total: items.fold<double>(
+        0,
+        (sum, item) =>
+            sum +
+            (item.lineTotal ??
+                (double.tryParse(item.price) ?? 0) * item.quantity),
+      ),
+    );
+  }
 
   Future<void> getCart({bool silent = false}) async {
     add(CartFetchRequested(silent: silent));
@@ -62,34 +92,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     CartFetchRequested event,
     Emitter<CartState> emit,
   ) async {
+    final generation = _generation;
     if (!event.silent) {
       emit(state.copyWith(status: RequestStatus.loading));
     }
     try {
       final response = await getCartUseCase();
-      var newCart = response.cart;
-
-      if (newCart != null && _pendingQuantities.isNotEmpty) {
-        var newTotal = 0.0;
-        final updatedItems = newCart.items.map((item) {
-          if (_pendingQuantities.containsKey(item.id)) {
-            final pendingQ = _pendingQuantities[item.id]!;
-            final basePrice = double.tryParse(item.price) ?? 0.0;
-            var unitPrice = basePrice;
-            if (item.offers != null && item.offers!.isNotEmpty) {
-              final discountPercentage = item.offers!.first.discountPrice;
-              unitPrice = basePrice * (1 - (discountPercentage / 100));
-            }
-            final newLineTotal = unitPrice * pendingQ;
-            newTotal += newLineTotal;
-            return item.copyWith(quantity: pendingQ, lineTotal: newLineTotal);
-          }
-          newTotal += item.lineTotal ?? 0.0;
-          return item;
-        }).toList();
-
-        newCart = newCart.copyWith(items: updatedItems, total: newTotal);
-      }
+      if (emit.isDone || generation != _generation) return;
+      final newCart = response.cart == null
+          ? null
+          : _withPending(response.cart!);
 
       if (newCart == null) {
         emit(
@@ -145,76 +157,80 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     CartQuantityUpdated event,
     Emitter<CartState> emit,
   ) async {
-    _pendingQuantities[event.cartItemId] = event.quantity;
+    final id = event.cartItemId;
+    final generation = _generation;
+    final version = (_quantityVersions[id] ?? 0) + 1;
+    _quantityVersions[id] = version;
+    _pendingQuantities[id] = event.quantity;
+    if (state.cart != null)
+      emit(state.copyWith(cart: _withPending(state.cart!)));
 
-    if (state.cart != null) {
-      var newTotal = 0.0;
-      final updatedItems = state.cart!.items.map((item) {
-        if (item.id == event.cartItemId) {
-          final basePrice = double.tryParse(item.price) ?? 0.0;
-          var unitPrice = basePrice;
-          if (item.offers != null && item.offers!.isNotEmpty) {
-            final discountPercentage = item.offers!.first.discountPrice;
-            unitPrice = basePrice * (1 - (discountPercentage / 100));
-          }
-          final newLineTotal = unitPrice * event.quantity;
-          newTotal += newLineTotal;
-          return item.copyWith(
-            quantity: event.quantity,
-            lineTotal: newLineTotal,
-          );
-        }
-
-        newTotal += item.lineTotal ?? 0.0;
-        return item;
-      }).toList();
-
-      emit(
-        state.copyWith(
-          cart: state.cart!.copyWith(items: updatedItems, total: newTotal),
-        ),
+    if (!await _debouncer.wait(id, const Duration(milliseconds: 500))) return;
+    if (emit.isDone || generation != _generation) return;
+    // Serialize requests, not debounce windows. This preserves independent
+    // item edits and prevents older whole-cart responses overwriting newer ones.
+    final previousWrite = _quantityWrites;
+    final completed = Completer<void>();
+    _quantityWrites = completed.future;
+    try {
+      await previousWrite;
+      if (emit.isDone ||
+          generation != _generation ||
+          _quantityVersions[id] != version)
+        return;
+      final response = await updateCartItemUseCase(
+        cartItemId: id,
+        quantity: event.quantity,
       );
+      if (emit.isDone || generation != _generation) return;
+      if (!response.success)
+        throw StateError(response.message ?? 'Cart update failed');
+      final cart = response.cart ?? (await getCartUseCase()).cart;
+      if (emit.isDone || generation != _generation) return;
+      if (_quantityVersions[id] == version) _pendingQuantities.remove(id);
+      if (cart != null) {
+        emit(
+          state.copyWith(
+            cart: _withPending(cart),
+            actionStatus: RequestStatus.success,
+            successType: CartSuccessType.updated,
+          ),
+        );
+      }
+    } on Object catch (e) {
+      if (emit.isDone || generation != _generation) return;
+      if (_quantityVersions[id] == version) _pendingQuantities.remove(id);
+      // Recover server prices after failure, keeping other pending edits visible.
+      try {
+        final cart = (await getCartUseCase()).cart;
+        if (emit.isDone || generation != _generation) return;
+        if (cart != null) emit(state.copyWith(cart: _withPending(cart)));
+      } on Object catch (_) {
+        /* Preserve the last visible cart if offline. */
+      }
+      if (!emit.isDone && generation == _generation) {
+        emit(
+          state.copyWith(
+            actionStatus: RequestStatus.failure,
+            errorMessage: e.toString(),
+          ),
+        );
+      }
+    } finally {
+      completed.complete();
     }
-
-    _debounceTimers[event.cartItemId]?.cancel();
-    final completer = Completer<void>();
-    _debounceTimers[event.cartItemId] = Timer(
-      const Duration(milliseconds: 500),
-      () async {
-        try {
-          await updateCartItemUseCase(
-            cartItemId: event.cartItemId,
-            quantity: _pendingQuantities[event.cartItemId] ?? event.quantity,
-          );
-          _pendingQuantities.remove(event.cartItemId);
-          _debounceTimers.remove(event.cartItemId);
-          add(const CartFetchRequested(silent: true));
-          emit(
-            state.copyWith(
-              actionStatus: RequestStatus.success,
-              successType: CartSuccessType.updated,
-            ),
-          );
-        } on Object catch (e) {
-          _pendingQuantities.remove(event.cartItemId);
-          _debounceTimers.remove(event.cartItemId);
-          add(const CartFetchRequested(silent: true));
-          emit(
-            state.copyWith(
-              actionStatus: RequestStatus.failure,
-              errorMessage: e.toString(),
-            ),
-          );
-        }
-        completer.complete();
-      },
-    );
   }
 
   Future<void> _onItemRemoved(
     CartItemRemoved event,
     Emitter<CartState> emit,
   ) async {
+    _debouncer.cancel(event.cartItemId);
+    _pendingQuantities.remove(event.cartItemId);
+    _quantityVersions[event.cartItemId] =
+        (_quantityVersions[event.cartItemId] ?? 0) + 1;
+    await _quantityWrites;
+    if (emit.isDone) return;
     final previousCart = state.cart;
     emit(state.copyWith(actionStatus: RequestStatus.loading));
 
@@ -266,20 +282,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   void _onResetRequested(CartResetRequested event, Emitter<CartState> emit) {
+    _generation++;
     _pendingQuantities.clear();
-    for (final timer in _debounceTimers.values) {
-      timer.cancel();
-    }
-    _debounceTimers.clear();
+    _quantityVersions.clear();
+    _debouncer.cancelAll();
     emit(const CartState());
   }
 
   @override
   Future<void> close() {
-    for (final timer in _debounceTimers.values) {
-      timer.cancel();
-    }
-    _debounceTimers.clear();
+    _generation++;
+    _debouncer.cancelAll();
     return super.close();
   }
 }
