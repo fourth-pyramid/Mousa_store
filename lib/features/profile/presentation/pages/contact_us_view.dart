@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/di/service_locator.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_shimmer.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/features/profile/presentation/bloc/contact_bloc.dart';
 import 'package:mousa_store/features/profile/presentation/bloc/contact_state.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,25 +32,13 @@ class _ContactUsContent extends StatefulWidget {
   State<_ContactUsContent> createState() => _ContactUsContentState();
 }
 
-class _ContactUsContentState extends State<_ContactUsContent> {
-  StreamSubscription<void>? _networkRestoreSubscription;
-
+class _ContactUsContentState extends State<_ContactUsContent>
+    with AutoRefreshOnReconnect<_ContactUsContent> {
   @override
-  void initState() {
-    super.initState();
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            unawaited(context.read<ContactBloc>().getContactInfo());
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
-    super.dispose();
+  void onReconnect() {
+    if (mounted) {
+      unawaited(context.read<ContactBloc>().getContactInfo());
+    }
   }
 
   Future<void> _launchUrl(String? urlString, {String scheme = ''}) async {
@@ -59,7 +48,7 @@ class _ContactUsContentState extends State<_ContactUsContent> {
         : Uri.parse(urlString);
 
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      debugPrint('Could not launch $uri');
+      AppLogger.debug('Could not launch $uri');
     }
   }
 
