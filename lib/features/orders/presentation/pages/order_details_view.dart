@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mousa_store/core/di/service_locator.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/app_image.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/features/orders/presentation/bloc/order_details_bloc.dart';
 import 'package:mousa_store/features/orders/presentation/bloc/order_details_state.dart';
 import 'package:mousa_store/l10n/app_localizations.dart';
@@ -20,28 +20,22 @@ class OrderDetailsView extends StatefulWidget {
   State<OrderDetailsView> createState() => _OrderDetailsViewState();
 }
 
-class _OrderDetailsViewState extends State<OrderDetailsView> {
+class _OrderDetailsViewState extends State<OrderDetailsView>
+    with AutoRefreshOnReconnect<OrderDetailsView> {
+  @override
+  void onReconnect() {
+    if (mounted) {
+      unawaited(_bloc.getOrderDetails(widget.orderId));
+    }
+  }
+
   late final OrderDetailsBloc _bloc;
-  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
     super.initState();
     _bloc = getIt<OrderDetailsBloc>();
     unawaited(_bloc.getOrderDetails(widget.orderId));
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            unawaited(_bloc.getOrderDetails(widget.orderId));
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
-    super.dispose();
   }
 
   @override
