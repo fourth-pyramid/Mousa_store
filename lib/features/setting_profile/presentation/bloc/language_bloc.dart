@@ -7,6 +7,8 @@ import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
 import 'package:mousa_store/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:mousa_store/features/favorites/presentation/bloc/favorite_bloc.dart';
+import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
+import 'package:mousa_store/features/home/presentation/bloc/home_event.dart';
 import 'package:mousa_store/features/setting_profile/presentation/bloc/language_event.dart';
 import 'package:mousa_store/features/setting_profile/presentation/bloc/language_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,6 +59,7 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
       getIt<CartBloc>().add(const CartFetchRequested());
     }
 
+    getIt<HomeBloc>().add(const HomeAllDataRequested());
     emit(state.copyWith(locale: event.locale));
   }
 }
