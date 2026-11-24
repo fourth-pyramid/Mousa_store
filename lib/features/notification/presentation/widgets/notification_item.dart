@@ -16,12 +16,19 @@ import 'package:mousa_store/features/product/data/models/product.dart';
 import 'package:mousa_store/features/product/presentation/pages/product_details_page.dart';
 
 class NotificationItem extends StatelessWidget {
+  static final _dateFormats = <String, DateFormat>{};
+  static DateFormat _dateFormat(String locale) => _dateFormats.putIfAbsent(
+    locale,
+    () => DateFormat('dd/MM/yyyy hh:mm a', locale),
+  );
+
   const NotificationItem({required this.notification, super.key});
 
   final NotificationModel notification;
 
   String _formatDateTime(BuildContext context) =>
-      DateFormat('dd/MM/yyyy hh:mm a').format(notification.time);
+      _dateFormat(Localizations.localeOf(context).toString())
+          .format(notification.time);
 
   Future<void> _handleNotificationTap(BuildContext context) async {
     final bloc = context.read<NotificationBloc>();
