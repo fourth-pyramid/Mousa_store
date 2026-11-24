@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mousa_store/core/utils/event_transformers.dart';
 import 'package:mousa_store/features/notification/data/models/notification_model.dart';
 import 'package:mousa_store/features/notification/domain/usecases/get_notifications_use_case.dart';
 import 'package:mousa_store/features/notification/presentation/bloc/notification_event.dart';
@@ -12,7 +13,10 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     : _getNotificationsUseCase = getNotificationsUseCase,
       super(const NotificationState()) {
     on<NotificationFetchRequested>(_onNotificationFetchRequested);
-    on<NotificationLoadMoreRequested>(_onNotificationLoadMoreRequested);
+    on<NotificationLoadMoreRequested>(
+      _onNotificationLoadMoreRequested,
+      transformer: droppable(),
+    );
     on<NotificationFilterChanged>(_onNotificationFilterChanged);
     on<NotificationMarkReadRequested>(_onNotificationMarkReadRequested);
 
