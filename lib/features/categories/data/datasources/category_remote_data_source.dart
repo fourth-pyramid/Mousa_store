@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/features/categories/data/models/category_model.dart';
 
 abstract class CategoryRemoteDataSource {
@@ -30,7 +30,7 @@ class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSource {
 
       return [];
     } catch (e) {
-      debugPrint('CategoryRemoteDataSource Error: $e');
+      AppLogger.debug('CategoryRemoteDataSource Error: $e');
       rethrow;
     }
   }

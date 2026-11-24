@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mousa_store/core/utils/app_logger.dart';
 import 'package:mousa_store/features/setting_profile/presentation/bloc/theme_event.dart';
 import 'package:mousa_store/features/setting_profile/presentation/bloc/theme_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +28,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_themeKey, event.mode.toString());
     } on Object catch (e) {
-      debugPrint('Error saving theme: $e');
+      AppLogger.debug('Error saving theme: $e');
     }
   }
 

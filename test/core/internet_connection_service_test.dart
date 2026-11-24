@@ -189,9 +189,9 @@ void main() {
           async.flushMicrotasks();
           expect(service.currentState, NetworkState.connected);
 
-          // Now fail probes; first check failure at 5s keeps state connected
+          // First healthy-cadence check failure at 15s keeps state connected
           shouldSucceed = false;
-          async.elapse(const Duration(seconds: 5));
+          async.elapse(const Duration(seconds: 15));
           expect(service.currentState, NetworkState.connected);
           expect(service.lastIssue, NetworkIssue.noInternet);
 
@@ -260,6 +260,35 @@ void main() {
         });
       },
     );
+
+    test('Healthy probing settles from 15 s to 30 s to 60 s', () {
+      fakeAsync((async) {
+        var calls = 0;
+        final service = InternetConnectionService(
+          connectivity: fakeConnectivity,
+          pingChecker: () async {
+            calls++;
+            return 40;
+          },
+          registerObserver: false,
+        );
+        async.flushMicrotasks();
+        expect(calls, 1);
+        for (final seconds in [15, 15, 15, 30, 30, 60]) {
+          final before = calls;
+          async.elapse(Duration(seconds: seconds - 1));
+          expect(calls, before);
+          async.elapse(const Duration(seconds: 1));
+          expect(calls, before + 1);
+        }
+        // Real Dio failures still trigger an immediate check at stable cadence.
+        final before = calls;
+        service.reportRequestFailure();
+        async.flushMicrotasks();
+        expect(calls, before + 1);
+        service.dispose();
+      });
+    });
 
     test('Backoff schedule while disconnected: ticks at 2, 4, 6, 10, 15, 15 s', () {
       fakeAsync((async) {
@@ -526,7 +555,7 @@ void main() {
 
           // inactive does NOT stop the periodic timer
           service.didChangeAppLifecycleState(AppLifecycleState.inactive);
-          async.elapse(const Duration(seconds: 5));
+          async.elapse(const Duration(seconds: 15));
           expect(fakeProbe.runPrimaryCalls, 1);
 
           // paused stops the timer

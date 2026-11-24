@@ -188,6 +188,51 @@ void main() {
       },
     );
 
+    testWidgets('Top padding changes gradually with banner visibility', (
+      tester,
+    ) async {
+      when(() => mockService.currentState).thenReturn(NetworkState.connected);
+      double top = 0;
+      await tester.pumpWidget(
+        buildTestWidget(
+          child: Builder(
+            builder: (context) {
+              top = MediaQuery.paddingOf(context).top;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(top, 44);
+      stateController.add(NetworkState.disconnected);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1));
+      expect(top, greaterThan(0));
+      expect(top, lessThan(44));
+      await tester.pumpAndSettle();
+      expect(top, 0);
+      stateController.add(NetworkState.connected);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1800));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1));
+      expect(top, greaterThan(0));
+      expect(top, lessThan(44));
+      await tester.pumpAndSettle();
+      expect(top, 44);
+    });
+
+    testWidgets('Warning text uses a contrasting warning foreground', (
+      tester,
+    ) async {
+      when(() => mockService.currentState).thenReturn(NetworkState.unstable);
+      await tester.pumpWidget(buildTestWidget(child: const SizedBox()));
+      await tester.pumpAndSettle();
+      final text = tester.widget<Text>(find.textContaining('unstable'));
+      expect(text.style?.color, Colors.black);
+    });
+
     testWidgets(
       'Avoids double top padding when banner is visible and preserves child state',
       (tester) async {
