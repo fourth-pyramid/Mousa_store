@@ -8,10 +8,10 @@ import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/enums/request_status.dart';
 import 'package:mousa_store/core/service/auth_service.dart';
 import 'package:mousa_store/core/service/dio_helper.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/utils/custom_snack_bar.dart';
 import 'package:mousa_store/core/utils/governorates_data.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_button.dart';
 import 'package:mousa_store/core/widgets/custom_form_field.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
@@ -38,7 +38,20 @@ class _CashOnDeliveryContent extends StatefulWidget {
   State<_CashOnDeliveryContent> createState() => _CashOnDeliveryContentState();
 }
 
-class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
+class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent>
+    with AutoRefreshOnReconnect<_CashOnDeliveryContent> {
+  @override
+  void onReconnect() {
+    if (mounted) {
+      setState(() {
+        _addressesFuture = _fetchAddresses();
+      });
+      _formStateNotifier.value = _formStateNotifier.value.copyWith(
+        isLoadingShipping: true,
+      );
+    }
+  }
+
   final ValueNotifier<_CheckoutFormState> _formStateNotifier = ValueNotifier(
     const _CheckoutFormState(),
   );
@@ -53,25 +66,12 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
   bool _isDisposed = false;
 
   late Future<List<Address>> _addressesFuture;
-  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
     super.initState();
     _initializeUserData();
     _addressesFuture = _fetchAddresses();
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            setState(() {
-              _addressesFuture = _fetchAddresses();
-            });
-            _formStateNotifier.value = _formStateNotifier.value.copyWith(
-              isLoadingShipping: true,
-            );
-          }
-        });
   }
 
   void _initializeUserData() {
@@ -260,7 +260,6 @@ class _CashOnDeliveryContentState extends State<_CashOnDeliveryContent> {
   @override
   void dispose() {
     _isDisposed = true;
-    unawaited(_networkRestoreSubscription?.cancel());
     _tempCityController.dispose();
     _tempStreetController.dispose();
     _fullNameController.dispose();
