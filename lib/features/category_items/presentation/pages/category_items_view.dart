@@ -48,7 +48,7 @@ class _CategoryItemsViewState extends State<CategoryItemsView>
   }
 
   late final ScrollController _scrollController;
-  bool _showBackToTopButton = false;
+  final _showBackToTopButton = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -62,19 +62,12 @@ class _CategoryItemsViewState extends State<CategoryItemsView>
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
+    _showBackToTopButton.dispose();
     super.dispose();
   }
 
   void _onScroll() {
-    if (_scrollController.offset > 500 && !_showBackToTopButton) {
-      setState(() {
-        _showBackToTopButton = true;
-      });
-    } else if (_scrollController.offset <= 500 && _showBackToTopButton) {
-      setState(() {
-        _showBackToTopButton = false;
-      });
-    }
+    _showBackToTopButton.value = _scrollController.offset > 500;
   }
 
   @override
@@ -115,6 +108,11 @@ class _CategoryItemsViewState extends State<CategoryItemsView>
           backgroundColor: context.colors.background,
         ),
         body: BlocBuilder<CategoryItemsBloc, CategoryItemsState>(
+          buildWhen: (previous, current) =>
+              previous.status != current.status ||
+              previous.products != current.products ||
+              previous.errorMessage != current.errorMessage ||
+              previous.hasReachedMax != current.hasReachedMax,
           builder: (context, state) => RefreshIndicator(
             color: context.colors.primary,
             onRefresh: () async {
@@ -150,21 +148,24 @@ class _CategoryItemsViewState extends State<CategoryItemsView>
             ),
           ),
         ),
-        floatingActionButton: _showBackToTopButton
-            ? FloatingActionButton(
-                mini: true,
-                onPressed: () {
-                  unawaited(
-                    _scrollController.animateTo(
-                      0,
-                      duration: context.durations.pageTransition,
-                      curve: Curves.easeInOut,
-                    ),
-                  );
-                },
-                child: const Icon(Icons.arrow_upward, size: 18),
-              )
-            : null,
+        floatingActionButton: ValueListenableBuilder<bool>(
+          valueListenable: _showBackToTopButton,
+          builder: (context, visible, child) => visible
+              ? FloatingActionButton(
+                  mini: true,
+                  onPressed: () {
+                    unawaited(
+                      _scrollController.animateTo(
+                        0,
+                        duration: context.durations.pageTransition,
+                        curve: Curves.easeInOut,
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.arrow_upward, size: 18),
+                )
+              : const SizedBox.shrink(),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       ),
     );
