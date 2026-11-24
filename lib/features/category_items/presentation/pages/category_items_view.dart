@@ -37,7 +37,7 @@ class _CategoryItemsViewState extends State<CategoryItemsView>
   @override
   void onReconnect() {
     if (mounted) {
-      context.read<CategoryItemsBloc>().add(
+      _bloc.add(
         CategoryItemsFetchRequested(
           fetchType: widget.fetchType,
           categoryId: widget.categoryId,
@@ -48,11 +48,25 @@ class _CategoryItemsViewState extends State<CategoryItemsView>
   }
 
   late final ScrollController _scrollController;
+  late final CategoryItemsBloc _bloc;
   final _showBackToTopButton = ValueNotifier<bool>(false);
 
   @override
   void initState() {
     super.initState();
+    _bloc =
+        getIt<CategoryItemsBloc>(
+          param1: widget.fetchType,
+          param2: widget.fetchType == ItemFetchType.brand
+              ? widget.brandId
+              : widget.categoryId,
+        )..add(
+          CategoryItemsFetchRequested(
+            fetchType: widget.fetchType,
+            categoryId: widget.categoryId,
+            brandId: widget.brandId,
+          ),
+        );
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
   }
@@ -63,6 +77,7 @@ class _CategoryItemsViewState extends State<CategoryItemsView>
       ..removeListener(_onScroll)
       ..dispose();
     _showBackToTopButton.dispose();
+    unawaited(_bloc.close());
     super.dispose();
   }
 
@@ -88,20 +103,8 @@ class _CategoryItemsViewState extends State<CategoryItemsView>
         break;
     }
 
-    return BlocProvider(
-      create: (context) =>
-          getIt<CategoryItemsBloc>(
-            param1: widget.fetchType,
-            param2: widget.fetchType == ItemFetchType.brand
-                ? widget.brandId
-                : widget.categoryId,
-          )..add(
-            CategoryItemsFetchRequested(
-              fetchType: widget.fetchType,
-              categoryId: widget.categoryId,
-              brandId: widget.brandId,
-            ),
-          ),
+    return BlocProvider.value(
+      value: _bloc,
       child: Scaffold(
         appBar: AppBar(
           title: Text(title.toUpperCase()),
