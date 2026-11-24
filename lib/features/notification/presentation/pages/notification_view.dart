@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/di/service_locator.dart';
-import 'package:mousa_store/core/service/internet_connection_service.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
+import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/core/widgets/custom_loading_indicator.dart';
 import 'package:mousa_store/features/notification/presentation/bloc/notification_bloc.dart';
 import 'package:mousa_store/features/notification/presentation/bloc/notification_state.dart';
@@ -18,28 +18,22 @@ class NotificationView extends StatefulWidget {
   State<NotificationView> createState() => _NotificationViewState();
 }
 
-class _NotificationViewState extends State<NotificationView> {
+class _NotificationViewState extends State<NotificationView>
+    with AutoRefreshOnReconnect<NotificationView> {
+  @override
+  void onReconnect() {
+    if (mounted) {
+      unawaited(_bloc.getNotifications());
+    }
+  }
+
   late final NotificationBloc _bloc;
-  StreamSubscription<void>? _networkRestoreSubscription;
 
   @override
   void initState() {
     super.initState();
     _bloc = getIt<NotificationBloc>();
     unawaited(_bloc.getNotifications());
-    _networkRestoreSubscription = getIt<InternetConnectionService>()
-        .connectivityRestoredStream
-        .listen((_) {
-          if (mounted) {
-            unawaited(_bloc.getNotifications());
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    unawaited(_networkRestoreSubscription?.cancel());
-    super.dispose();
   }
 
   @override
