@@ -15,24 +15,30 @@ class CacheHelper {
   );
 
   // In-memory cache for ultra-fast synchronous access
+  static int _sessionRevision = 0;
   static String? _cachedAccessToken;
   static String? _cachedRefreshToken;
   static int? _cachedRefreshTokenExpiry;
   static User? _cachedUser;
 
-  static Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
+  /// Cache namespaces must change when locale, price mode or session changes.
+  static String get catalogCacheKey =>
+      '${_prefs?.getString('appLanguage') ?? 'ar'}|${getPriceMode()}|$_sessionRevision';
+
+  static Future<void> init({SharedPreferences? prefs}) async {
+    _prefs = prefs ?? await SharedPreferences.getInstance();
 
     // 1. Load tokens and user from secure storage
     try {
-      _cachedAccessToken = await _secureStorage.read(key: 'access_token');
-      _cachedRefreshToken = await _secureStorage.read(key: 'refresh_token');
-      final expiryStr = await _secureStorage.read(key: 'refresh_token_expiry');
+      final stored = await _secureStorage.readAll();
+      _cachedAccessToken = stored['access_token'];
+      _cachedRefreshToken = stored['refresh_token'];
+      final expiryStr = stored['refresh_token_expiry'];
       if (expiryStr != null) {
         _cachedRefreshTokenExpiry = int.tryParse(expiryStr);
       }
 
-      final userJsonStr = await _secureStorage.read(key: 'user_data');
+      final userJsonStr = stored['user_data'];
       if (userJsonStr != null) {
         final userMap = jsonDecode(userJsonStr) as Map<String, dynamic>;
         _cachedUser = User.fromJson(userMap);
@@ -90,6 +96,7 @@ class CacheHelper {
   // ======== Access Token (Secure Storage) ========
 
   static Future<bool> saveToken(String token) async {
+    if (_cachedAccessToken == null) _sessionRevision++;
     _cachedAccessToken = token;
     try {
       await _secureStorage.write(key: 'access_token', value: token);
@@ -103,6 +110,7 @@ class CacheHelper {
   static String? getToken() => _cachedAccessToken;
 
   static Future<void> clearToken() async {
+    _sessionRevision++;
     _cachedAccessToken = null;
     try {
       await _secureStorage.delete(key: 'access_token');

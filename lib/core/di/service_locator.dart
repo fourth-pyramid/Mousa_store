@@ -350,7 +350,7 @@ Future<void> setupServiceLocator({
     ..registerFactory<NotificationBloc>(
       () => NotificationBloc(getNotificationsUseCase: getIt()),
     )
-    ..registerFactory<HomeBloc>(() => HomeBloc(useCase: getIt()))
+    ..registerLazySingleton<HomeBloc>(() => HomeBloc(useCase: getIt()))
     ..registerFactory<ContactBloc>(
       () => ContactBloc(getContactInfoUseCase: getIt()),
     )

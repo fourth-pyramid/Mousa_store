@@ -12,6 +12,10 @@ import 'package:mousa_store/features/orders/presentation/bloc/order_details_stat
 import 'package:mousa_store/l10n/app_localizations.dart';
 
 class OrderDetailsView extends StatefulWidget {
+  static final _dateFormats = <String, DateFormat>{};
+  static DateFormat _dateFormat(String locale) =>
+      _dateFormats.putIfAbsent(locale, () => DateFormat('yyyy-MM-dd', locale));
+
   const OrderDetailsView({required this.orderId, super.key});
 
   final int orderId;
@@ -60,186 +64,198 @@ class _OrderDetailsViewState extends State<OrderDetailsView>
             );
 
             return SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  right: 8,
-                  top: 10,
-                  bottom: 25,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ListView.builder(
-                      itemCount: products.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final product = products[index];
-                        return Card(
-                          color: context.colors.surface,
+              child: CustomScrollView(
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                      right: 8,
+                      top: 10,
+                      bottom: 25,
+                    ),
+                    sliver: SliverMainAxisGroup(
+                      slivers: [
+                        SliverList.builder(
+                          itemCount: products.length,
+                          itemBuilder: (context, index) {
+                            final product = products[index];
+                            return Card(
+                              color: context.colors.surface,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 12,
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AppImage(
+                                      image: product.image,
+                                      width: 80,
+                                      height: 100,
+                                      borderRadius: context.radius.smBorder,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            product.productName,
+                                            style: context
+                                                .typography
+                                                .titleMedium
+                                                .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '${context.l10n.order_number_text}: ${order.orderNumber}',
+                                            style: context.typography.bodySmall
+                                                .copyWith(
+                                                  color: context
+                                                      .colors
+                                                      .textSecondary,
+                                                ),
+                                          ),
+                                          Text(
+                                            '${context.l10n.order_date_text}: ${OrderDetailsView._dateFormat(Localizations.localeOf(context).toString()).format(order.createdAt)}',
+                                            style: context.typography.bodySmall
+                                                .copyWith(
+                                                  color: context
+                                                      .colors
+                                                      .textSecondary,
+                                                ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          if (product.attributes != null &&
+                                              product.attributes!.isNotEmpty)
+                                            Wrap(
+                                              spacing: 8,
+                                              runSpacing: 4,
+                                              children: product
+                                                  .attributes!
+                                                  .entries
+                                                  .map(
+                                                    (entry) => Container(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            horizontal: 6,
+                                                            vertical: 2,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: context
+                                                            .colors
+                                                            .primary
+                                                            .withAlpha(
+                                                              (0.1 * 255)
+                                                                  .toInt(),
+                                                            ),
+                                                        borderRadius: context
+                                                            .radius
+                                                            .xsBorder,
+                                                      ),
+                                                      child: Text(
+                                                        '${entry.key}: ${entry.value ?? ""}',
+                                                        style: context
+                                                            .typography
+                                                            .bodySmall
+                                                            .copyWith(
+                                                              color: context
+                                                                  .colors
+                                                                  .primary,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                          if (product.attributes != null &&
+                                              product.attributes!.isNotEmpty)
+                                            const SizedBox(height: 8),
+                                          Text(
+                                            '${context.l10n.quantity_text}: ${product.quantity}',
+                                            style: context.typography.bodySmall,
+                                          ),
+                                          Text(
+                                            '${context.l10n.unit_price_text}: ${product.price} ${context.l10n.currency_text}',
+                                            style: context.typography.bodySmall,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        SliverToBoxAdapter(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 10,
-                              vertical: 12,
+                              vertical: 8.0,
                             ),
-                            child: Row(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                AppImage(
-                                  image: product.image,
-                                  width: 80,
-                                  height: 100,
-                                  borderRadius: context.radius.smBorder,
+                                Text(
+                                  context.l10n.shipping_address_text,
+                                  style: context.typography.titleMedium
+                                      .copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        product.productName,
-                                        style: context.typography.titleMedium
-                                            .copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        '${context.l10n.order_number_text}: ${order.orderNumber}',
-                                        style: context.typography.bodySmall
-                                            .copyWith(
-                                              color:
-                                                  context.colors.textSecondary,
-                                            ),
-                                      ),
-                                      Text(
-                                        '${context.l10n.order_date_text}: ${DateFormat('yyyy-MM-dd').format(order.createdAt)}',
-                                        style: context.typography.bodySmall
-                                            .copyWith(
-                                              color:
-                                                  context.colors.textSecondary,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      if (product.attributes != null &&
-                                          product.attributes!.isNotEmpty)
-                                        Wrap(
-                                          spacing: 8,
-                                          runSpacing: 4,
-                                          children: product.attributes!.entries
-                                              .map(
-                                                (entry) => Container(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 6,
-                                                        vertical: 2,
-                                                      ),
-                                                  decoration: BoxDecoration(
-                                                    color: context
-                                                        .colors
-                                                        .primary
-                                                        .withAlpha(
-                                                          (0.1 * 255).toInt(),
-                                                        ),
-                                                    borderRadius:
-                                                        context.radius.xsBorder,
-                                                  ),
-                                                  child: Text(
-                                                    '${entry.key}: ${entry.value ?? ""}',
-                                                    style: context
-                                                        .typography
-                                                        .bodySmall
-                                                        .copyWith(
-                                                          color: context
-                                                              .colors
-                                                              .primary,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                  ),
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      if (product.attributes != null &&
-                                          product.attributes!.isNotEmpty)
-                                        const SizedBox(height: 8),
-                                      Text(
-                                        '${context.l10n.quantity_text}: ${product.quantity}',
-                                        style: context.typography.bodySmall,
-                                      ),
-                                      Text(
-                                        '${context.l10n.unit_price_text}: ${product.price} ${context.l10n.currency_text}',
-                                        style: context.typography.bodySmall,
-                                      ),
-                                    ],
-                                  ),
+                                const SizedBox(height: 8),
+                                _OrderInfoRow(
+                                  label: context.l10n.recipient_name_text,
+                                  value: order.userName,
+                                ),
+                                _OrderInfoRow(
+                                  label: context.l10n.address_text,
+                                  value: order.userAddress,
+                                ),
+                                _OrderInfoRow(
+                                  label: context.l10n.phone_text,
+                                  value: order.userPhone.startsWith('+20')
+                                      ? order.userPhone.replaceFirst('+2', '')
+                                      : order.userPhone,
+                                ),
+                                const Divider(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  context.l10n.price_summary_text,
+                                  style: context.typography.titleMedium
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 12),
+                                _OrderPriceSection(
+                                  subtotal: computedSubtotal,
+                                  shipping: double.parse(order.shipping),
+                                  localizations: context.l10n,
                                 ),
                               ],
                             ),
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 8.0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            context.l10n.shipping_address_text,
-                            style: context.typography.titleMedium.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          _OrderInfoRow(
-                            label: context.l10n.recipient_name_text,
-                            value: order.userName,
-                          ),
-                          _OrderInfoRow(
-                            label: context.l10n.address_text,
-                            value: order.userAddress,
-                          ),
-                          _OrderInfoRow(
-                            label: context.l10n.phone_text,
-                            value: order.userPhone.startsWith('+20')
-                                ? order.userPhone.replaceFirst('+2', '')
-                                : order.userPhone,
-                          ),
-                          const Divider(),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            context.l10n.price_summary_text,
-                            style: context.typography.titleMedium.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          _OrderPriceSection(
-                            subtotal: computedSubtotal,
-                            shipping: double.parse(order.shipping),
-                            localizations: context.l10n,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           } else if (state.status == OrderDetailsStatus.failure) {

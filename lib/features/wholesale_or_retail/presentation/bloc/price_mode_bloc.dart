@@ -5,6 +5,8 @@ import 'package:mousa_store/core/di/locator.dart';
 import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:mousa_store/features/favorites/presentation/bloc/favorite_bloc.dart';
+import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
+import 'package:mousa_store/features/home/presentation/bloc/home_event.dart';
 import 'package:mousa_store/features/wholesale_or_retail/domain/usecases/get_price_mode_use_case.dart';
 import 'package:mousa_store/features/wholesale_or_retail/domain/usecases/set_price_mode_use_case.dart';
 import 'package:mousa_store/features/wholesale_or_retail/presentation/bloc/price_mode_event.dart';
@@ -37,7 +39,7 @@ class PriceModeBloc extends Bloc<PriceModeEvent, PriceModeState> {
     PriceModeChanged event,
     Emitter<PriceModeState> emit,
   ) async {
-    unawaited(_setPriceModeUseCase(event.mode));
+    await _setPriceModeUseCase(event.mode);
 
     // skip auth-required endpoints when user is not logged in
     if (CacheHelper.getToken() != null) {
@@ -45,6 +47,7 @@ class PriceModeBloc extends Bloc<PriceModeEvent, PriceModeState> {
       getIt<CartBloc>().add(const CartFetchRequested());
     }
 
+    getIt<HomeBloc>().add(const HomeAllDataRequested());
     emit(state.copyWith(mode: event.mode));
   }
 }

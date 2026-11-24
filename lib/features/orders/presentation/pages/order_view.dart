@@ -17,6 +17,12 @@ import 'package:mousa_store/features/orders/presentation/widgets/order_card.dart
 import 'package:mousa_store/l10n/app_localizations.dart';
 
 class OrderView extends StatefulWidget {
+  static final _dateFormats = <String, DateFormat>{};
+  static DateFormat _dateFormat(String locale) => _dateFormats.putIfAbsent(
+    locale,
+    () => DateFormat('yyyy-MM-dd HH:mm', locale),
+  );
+
   const OrderView({super.key});
 
   @override
@@ -63,66 +69,65 @@ class _OrderViewState extends State<OrderView>
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: BlocBuilder<OrdersBloc, OrdersState>(
-                builder: (context, state) {
-                  if (state.status == OrdersStatus.loading) {
-                    return const Center(child: CustomLoadingIndicator());
-                  } else if (state.status == OrdersStatus.success) {
-                    if (state.orders.isEmpty) {
-                      return AppEmptyState(
+            BlocBuilder<OrdersBloc, OrdersState>(
+              builder: (context, state) {
+                if (state.status == OrdersStatus.loading) {
+                  return const SliverToBoxAdapter(
+                    child: Center(child: CustomLoadingIndicator()),
+                  );
+                } else if (state.status == OrdersStatus.success) {
+                  if (state.orders.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: AppEmptyState(
                         title: context.l10n.no_orders_found_text,
                         description: 'You have no placed orders yet.',
                         icon: Icons.receipt_long_outlined,
-                      );
-                    }
-                    return ListView.builder(
-                      reverse: true,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.orders.length,
-                      itemBuilder: (context, index) {
-                        final order = state.orders[index];
-                        return OrderCard(
-                          orderNumber:
-                              '${context.l10n.order_number_text} : ${order.orderNumber}',
-                          orderDate:
-                              '${context.l10n.order_date_text} : ${DateFormat('yyyy-MM-dd HH:mm').format(order.createdAt)}',
-                          deliveredText: _getStatusText(
-                            order.status,
-                            context.l10n,
-                          ),
-                          deliveredColor: _getStatusColor(
-                            order.status,
-                            context,
-                          ),
-                          onTap: () {
-                            unawaited(
-                              navigateWithTransition<void>(
-                                type: TransitionType.fade,
-                                context,
-                                OrderDetailsView(orderId: order.id),
-                              ),
-                            );
-                          },
-                          type:
-                              '${context.l10n.order_type_label_text} : ${_getOrderTypeText(order.type, context.l10n)}',
-                        );
-                      },
+                      ),
                     );
-                  } else if (state.status == OrdersStatus.failure) {
-                    return Center(
+                  }
+                  return SliverList.builder(
+                    itemCount: state.orders.length,
+                    itemBuilder: (context, index) {
+                      final order =
+                          state.orders[state.orders.length - 1 - index];
+                      return OrderCard(
+                        orderNumber:
+                            '${context.l10n.order_number_text} : ${order.orderNumber}',
+                        orderDate:
+                            '${context.l10n.order_date_text} : ${OrderView._dateFormat(Localizations.localeOf(context).toString()).format(order.createdAt)}',
+                        deliveredText: _getStatusText(
+                          order.status,
+                          context.l10n,
+                        ),
+                        deliveredColor: _getStatusColor(order.status, context),
+                        onTap: () {
+                          unawaited(
+                            navigateWithTransition<void>(
+                              type: TransitionType.fade,
+                              context,
+                              OrderDetailsView(orderId: order.id),
+                            ),
+                          );
+                        },
+                        type:
+                            '${context.l10n.order_type_label_text} : ${_getOrderTypeText(order.type, context.l10n)}',
+                      );
+                    },
+                  );
+                } else if (state.status == OrdersStatus.failure) {
+                  return SliverToBoxAdapter(
+                    child: Center(
                       child: Text(
                         state.errorMessage ?? '',
                         style: context.typography.bodySmall.copyWith(
                           color: context.colors.error,
                         ),
                       ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
+                    ),
+                  );
+                }
+                return const SliverToBoxAdapter(child: SizedBox.shrink());
+              },
             ),
             const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
           ],

@@ -34,16 +34,12 @@ class FavoriteButton extends StatefulWidget {
 
 class _FavoriteButtonState extends State<FavoriteButton>
     with SingleTickerProviderStateMixin {
-  late final ValueNotifier<bool> _isFavoriteNotifier;
   late final AnimationController _animController;
   late final Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
-    _isFavoriteNotifier = ValueNotifier<bool>(
-      getIt<FavoriteBloc>().isFavorite(widget.productId),
-    );
     _animController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -69,91 +65,81 @@ class _FavoriteButtonState extends State<FavoriteButton>
   @override
   void dispose() {
     _animController.dispose();
-    _isFavoriteNotifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) =>
-      BlocListener<FavoriteBloc, FavoriteState>(
+      BlocSelector<FavoriteBloc, FavoriteState, bool>(
         bloc: getIt<FavoriteBloc>(),
-        listener: (context, state) {
-          final isFav = state.isFavorite(widget.productId);
-          if (_isFavoriteNotifier.value != isFav) {
-            _isFavoriteNotifier.value = isFav;
-          }
-        },
-        child: ValueListenableBuilder<bool>(
-          valueListenable: _isFavoriteNotifier,
-          builder: (context, isFavorite, child) {
-            final heartColor = isFavorite
-                ? (widget.activeColor ?? AppColorTokens.accent)
-                : (widget.inactiveColor ?? const Color(0xFF374151));
+        selector: (state) => state.isFavorite(widget.productId),
+        builder: (context, isFavorite) {
+          final heartColor = isFavorite
+              ? (widget.activeColor ?? AppColorTokens.accent)
+              : (widget.inactiveColor ?? const Color(0xFF374151));
 
-            final buttonSize = widget.size ?? 32;
-            final iconSize = (buttonSize * 0.54).clamp(14.0, 22.0);
+          final buttonSize = widget.size ?? 32;
+          final iconSize = (buttonSize * 0.54).clamp(14.0, 22.0);
 
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                if (getIt<AuthService>().isLoggedIn) {
-                  _isFavoriteNotifier.value = !isFavorite;
-                  unawaited(_animController.forward(from: 0.0));
-                  getIt<FavoriteBloc>().add(
-                    FavoriteToggled(
-                      productId: widget.productId,
-                      product: widget.product,
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              if (getIt<AuthService>().isLoggedIn) {
+                unawaited(_animController.forward(from: 0.0));
+                getIt<FavoriteBloc>().add(
+                  FavoriteToggled(
+                    productId: widget.productId,
+                    product: widget.product,
+                  ),
+                );
+
+                CustomSnackBar.show(
+                  context,
+                  !isFavorite
+                      ? context.l10n.product_added_to_favorites_text
+                      : context.l10n.product_removed_from_favorites_text,
+                );
+              } else {
+                showLoginDialog(context);
+              }
+            },
+            child: AnimatedBuilder(
+              animation: _scaleAnimation,
+              builder: (context, animChild) => Transform.scale(
+                scale: _scaleAnimation.value,
+                child: animChild,
+              ),
+              child: Container(
+                width: buttonSize,
+                height: buttonSize,
+                decoration: BoxDecoration(
+                  color:
+                      widget.backgroundColor ??
+                      Colors.white.withValues(alpha: 0.94),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.12),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
-                  );
-
-                  CustomSnackBar.show(
-                    context,
-                    _isFavoriteNotifier.value
-                        ? context.l10n.product_added_to_favorites_text
-                        : context.l10n.product_removed_from_favorites_text,
-                  );
-                } else {
-                  showLoginDialog(context);
-                }
-              },
-              child: AnimatedBuilder(
-                animation: _scaleAnimation,
-                builder: (context, animChild) => Transform.scale(
-                  scale: _scaleAnimation.value,
-                  child: animChild,
+                  ],
+                  border: Border.all(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    width: 0.8,
+                  ),
                 ),
-                child: Container(
-                  width: buttonSize,
-                  height: buttonSize,
-                  decoration: BoxDecoration(
-                    color:
-                        widget.backgroundColor ??
-                        Colors.white.withValues(alpha: 0.94),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.12),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                    border: Border.all(
-                      color: Colors.black.withValues(alpha: 0.06),
-                      width: 0.8,
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Icon(
-                    isFavorite
-                        ? Icons.favorite_rounded
-                        : Icons.favorite_border_rounded,
-                    size: iconSize,
-                    color: heartColor,
-                  ),
+                alignment: Alignment.center,
+                child: Icon(
+                  isFavorite
+                      ? Icons.favorite_rounded
+                      : Icons.favorite_border_rounded,
+                  size: iconSize,
+                  color: heartColor,
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       );
 }

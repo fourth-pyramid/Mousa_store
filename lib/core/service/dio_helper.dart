@@ -44,7 +44,7 @@ class DioHelper {
     if (getIt.isRegistered<StabilityInterceptor>()) {
       client.interceptors.add(getIt<StabilityInterceptor>());
     }
-    if (!kReleaseMode) client.interceptors.add(PrettyDioLogger());
+    if (kDebugMode) client.interceptors.add(PrettyDioLogger());
     client.interceptors.add(DuplicateRequestInterceptor());
     client.interceptors.add(
       InterceptorsWrapper(

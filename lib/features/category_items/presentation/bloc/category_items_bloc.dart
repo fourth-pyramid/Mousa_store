@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/utils/app_logger.dart';
+import 'package:mousa_store/core/utils/event_transformers.dart';
 import 'package:mousa_store/features/category_items/data/models/category_items_response/category_product.dart';
 import 'package:mousa_store/features/category_items/domain/entities/item_fetch_type.dart';
 import 'package:mousa_store/features/category_items/domain/entities/product_filter.dart';
@@ -21,7 +22,10 @@ class CategoryItemsBloc extends Bloc<CategoryItemsEvent, CategoryItemsState> {
     this.brandId,
   }) : super(const CategoryItemsState()) {
     on<CategoryItemsFetchRequested>(_onFetchRequested);
-    on<CategoryItemsLoadMoreRequested>(_onLoadMoreRequested);
+    on<CategoryItemsLoadMoreRequested>(
+      _onLoadMoreRequested,
+      transformer: droppable(),
+    );
     on<CategoryItemsFilterApplied>(_onFilterApplied);
     on<CategoryItemsSortApplied>(_onSortApplied);
     on<CategoryItemsFilterReset>(_onFilterReset);
@@ -148,7 +152,10 @@ class CategoryItemsBloc extends Bloc<CategoryItemsEvent, CategoryItemsState> {
     CategoryItemsLoadMoreRequested event,
     Emitter<CategoryItemsState> emit,
   ) async {
-    if (state.hasReachedMax || state.isLoadingMore) return;
+    if (state.status != CategoryItemsStatus.success ||
+        state.hasReachedMax ||
+        state.isLoadingMore)
+      return;
 
     emit(state.copyWith(isLoadingMore: true));
 

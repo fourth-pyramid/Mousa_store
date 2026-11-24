@@ -33,9 +33,15 @@ Future<void> main() async {
     return true;
   };
 
-  await dotenv.load();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final prefs = await SharedPreferences.getInstance();
+  late SharedPreferences prefs;
+  await Future.wait<void>([
+    dotenv.load(),
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+        .then((_) {}),
+    SharedPreferences.getInstance().then((value) {
+      prefs = value;
+    }),
+  ]);
   final initializer = AppInitializer(prefs);
   final result = await initializer.initialize();
 

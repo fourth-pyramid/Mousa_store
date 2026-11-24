@@ -40,7 +40,7 @@ class PushNotificationService {
             ledColor: AppColorTokens.accent,
           ),
         ],
-        debug: !kReleaseMode,
+        debug: kDebugMode,
       );
 
       final isAllowed = await AwesomeNotifications().isNotificationAllowed();
@@ -138,9 +138,7 @@ class PushNotificationService {
       final authToken = CacheHelper.getToken();
       final endpoint = authToken != null ? 'fcm-token-user' : 'fcm-token';
 
-      AppLogger.debug(
-        'Sending FCM registration to backend',
-      );
+      AppLogger.debug('Sending FCM registration to backend');
 
       final response = await DioHelper.postData(
         url: '$endpoint?fcm_token=$token&device_id=$deviceId',

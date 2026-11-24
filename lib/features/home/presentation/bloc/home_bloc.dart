@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mousa_store/core/service/cache_helper.dart';
+import 'package:mousa_store/core/utils/event_transformers.dart';
 import 'package:mousa_store/features/home/domain/usecases/fetch_home_data_use_case.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_event.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_state.dart';
@@ -14,15 +16,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeOfferItemsRequested>(_onHomeOfferItemsRequested);
     on<HomeRecentlyItemsRequested>(_onHomeRecentlyItemsRequested);
     on<HomeProductsRequested>(_onHomeProductsRequested);
-    on<HomeLoadMoreProductsRequested>(_onHomeLoadMoreProductsRequested);
+    on<HomeLoadMoreProductsRequested>(
+      _onHomeLoadMoreProductsRequested,
+      transformer: droppable(),
+    );
   }
 
   final FetchHomeDataUseCase _useCase;
+  int _generation = 0;
+  bool _resetRequested = false;
+  String? _contentKey;
+  String? get contentKey => _contentKey;
 
   Future<void> _onHomeAllDataRequested(
     HomeAllDataRequested event,
     Emitter<HomeState> emit,
   ) async {
+    if (_resetRequested) {
+      _resetRequested = false;
+      emit(const HomeState());
+      return;
+    }
+    _generation++;
+    final key = CacheHelper.catalogCacheKey;
+    if (_contentKey != key) emit(const HomeState());
+    _contentKey = key;
+    _useCase.invalidateCache();
     add(const HomeBannersRequested());
     add(const HomeBrandsRequested());
     add(const HomeCategoriesRequested());
@@ -35,14 +54,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeBrandsRequested event,
     Emitter<HomeState> emit,
   ) async {
-    emit(state.copyWith(brandsStatus: RequestStatus.loading));
+    final generation = _generation;
+    final key = CacheHelper.catalogCacheKey;
+    if (state.brands.isEmpty)
+      emit(state.copyWith(brandsStatus: RequestStatus.loading));
     try {
       final brands = await _useCase.getBrands();
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(state.copyWith(brandsStatus: RequestStatus.success, brands: brands));
     } on Object catch (e) {
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
-          brandsStatus: RequestStatus.failure,
+          brandsStatus: state.brands.isEmpty
+              ? RequestStatus.failure
+              : RequestStatus.success,
           errorMessage: e.toString(),
         ),
       );
@@ -53,16 +85,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeBannersRequested event,
     Emitter<HomeState> emit,
   ) async {
-    emit(state.copyWith(bannerStatus: RequestStatus.loading));
+    final generation = _generation;
+    final key = CacheHelper.catalogCacheKey;
+    if (state.banners.isEmpty)
+      emit(state.copyWith(bannerStatus: RequestStatus.loading));
     try {
       final banners = await _useCase.getBanners();
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(bannerStatus: RequestStatus.success, banners: banners),
       );
     } on Object catch (e) {
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
-          bannerStatus: RequestStatus.failure,
+          bannerStatus: state.banners.isEmpty
+              ? RequestStatus.failure
+              : RequestStatus.success,
           errorMessage: e.toString(),
         ),
       );
@@ -73,9 +118,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeCategoriesRequested event,
     Emitter<HomeState> emit,
   ) async {
-    emit(state.copyWith(categoriesStatus: RequestStatus.loading));
+    final generation = _generation;
+    final key = CacheHelper.catalogCacheKey;
+    if (state.categories.isEmpty)
+      emit(state.copyWith(categoriesStatus: RequestStatus.loading));
     try {
       final categories = await _useCase.getCategories();
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
           categoriesStatus: RequestStatus.success,
@@ -83,9 +135,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } on Object catch (e) {
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
-          categoriesStatus: RequestStatus.failure,
+          categoriesStatus: state.categories.isEmpty
+              ? RequestStatus.failure
+              : RequestStatus.success,
           errorMessage: e.toString(),
         ),
       );
@@ -96,9 +154,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeOfferItemsRequested event,
     Emitter<HomeState> emit,
   ) async {
+    final generation = _generation;
+    final key = CacheHelper.catalogCacheKey;
     emit(state.copyWith(offersStatus: RequestStatus.loading));
     try {
       final response = await _useCase.getOfferItems();
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
           offersStatus: RequestStatus.success,
@@ -106,6 +170,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } on Object catch (e) {
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
           offersStatus: RequestStatus.failure,
@@ -119,9 +187,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeRecentlyItemsRequested event,
     Emitter<HomeState> emit,
   ) async {
+    final generation = _generation;
+    final key = CacheHelper.catalogCacheKey;
     emit(state.copyWith(recentlyStatus: RequestStatus.loading));
     try {
       final response = await _useCase.getRecentlyItems();
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
           recentlyStatus: RequestStatus.success,
@@ -129,6 +203,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } on Object catch (e) {
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
           recentlyStatus: RequestStatus.failure,
@@ -142,6 +220,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeProductsRequested event,
     Emitter<HomeState> emit,
   ) async {
+    final generation = _generation;
+    final key = CacheHelper.catalogCacheKey;
     if (event.page == 1) {
       emit(state.copyWith(allProductsStatus: RequestStatus.loading));
     } else {
@@ -150,6 +230,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     try {
       final response = await _useCase.getProducts(page: event.page);
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       final newProducts = response.data?.data ?? [];
       final currentPage = response.data?.currentPage ?? 1;
       final lastPage = response.data?.lastPage ?? 1;
@@ -169,6 +253,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } on Object catch (e) {
+      if (emit.isDone ||
+          generation != _generation ||
+          key != CacheHelper.catalogCacheKey)
+        return;
       emit(
         state.copyWith(
           allProductsStatus: RequestStatus.failure,
@@ -188,7 +276,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         state.allProductsPaginationStatus == RequestStatus.loading) {
       return;
     }
-    add(HomeProductsRequested(page: state.currentPage + 1));
+    await _onHomeProductsRequested(
+      HomeProductsRequested(page: state.currentPage + 1),
+      emit,
+    );
+  }
+
+  void resetCatalog() {
+    _generation++;
+    _contentKey = null;
+    _useCase.invalidateCache();
+    _resetRequested = true;
+    add(const HomeAllDataRequested());
   }
 
   // Compatibility helpers

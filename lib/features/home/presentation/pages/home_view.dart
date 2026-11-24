@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mousa_store/core/service/cache_helper.dart';
 import 'package:mousa_store/core/utils/context_extensions.dart';
 import 'package:mousa_store/core/widgets/auto_refresh_on_reconnect.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_event.dart';
+import 'package:mousa_store/features/home/presentation/bloc/home_state.dart';
 import 'package:mousa_store/features/home/presentation/widgets/home_all_products_section.dart';
 import 'package:mousa_store/features/home/presentation/widgets/home_banner_slider_section.dart';
 import 'package:mousa_store/features/home/presentation/widgets/home_brands_section.dart';
@@ -32,7 +34,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   late final ScrollController _scrollController;
-  bool _showBackToTopButton = false;
+  final _showBackToTopButton = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -40,8 +42,17 @@ class _HomeViewState extends State<HomeView>
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
+      if (mounted &&
+          (context.read<HomeBloc>().state.allProductsStatus ==
+                  RequestStatus.initial ||
+              context.read<HomeBloc>().contentKey !=
+                  CacheHelper.catalogCacheKey)) {
         _initData();
+      } else if (mounted) {
+        final bloc = context.read<HomeBloc>();
+        bloc.add(const HomeBannersRequested());
+        bloc.add(const HomeBrandsRequested());
+        bloc.add(const HomeCategoriesRequested());
       }
     });
   }
@@ -50,6 +61,7 @@ class _HomeViewState extends State<HomeView>
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _showBackToTopButton.dispose();
     super.dispose();
   }
 
@@ -58,15 +70,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   void _onScroll() {
-    if (_scrollController.offset > 500 && !_showBackToTopButton) {
-      setState(() {
-        _showBackToTopButton = true;
-      });
-    } else if (_scrollController.offset <= 500 && _showBackToTopButton) {
-      setState(() {
-        _showBackToTopButton = false;
-      });
-    }
+    _showBackToTopButton.value = _scrollController.offset > 500;
     if (_isBottom) {
       context.read<HomeBloc>().add(const HomeLoadMoreProductsRequested());
     }
@@ -74,9 +78,7 @@ class _HomeViewState extends State<HomeView>
 
   bool get _isBottom {
     if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
+    return _scrollController.position.extentAfter <= 400;
   }
 
   @override
@@ -114,24 +116,27 @@ class _HomeViewState extends State<HomeView>
         ),
       ),
     ),
-    floatingActionButton: _showBackToTopButton
-        ? Padding(
-            padding: const EdgeInsets.only(bottom: 75),
-            child: FloatingActionButton(
-              mini: true,
-              onPressed: () {
-                unawaited(
-                  _scrollController.animateTo(
-                    0,
-                    duration: context.durations.pageTransition,
-                    curve: Curves.easeInOut,
-                  ),
-                );
-              },
-              child: const Icon(Icons.arrow_upward, size: 18),
-            ),
-          )
-        : null,
+    floatingActionButton: ValueListenableBuilder<bool>(
+      valueListenable: _showBackToTopButton,
+      builder: (context, visible, child) => visible
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 75),
+              child: FloatingActionButton(
+                mini: true,
+                onPressed: () {
+                  unawaited(
+                    _scrollController.animateTo(
+                      0,
+                      duration: context.durations.pageTransition,
+                      curve: Curves.easeInOut,
+                    ),
+                  );
+                },
+                child: const Icon(Icons.arrow_upward, size: 18),
+              ),
+            )
+          : const SizedBox.shrink(),
+    ),
     floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
   );
 }
