@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mousa_store/core/utils/event_transformers.dart';
 import 'package:mousa_store/features/product/data/models/product.dart';
 import 'package:mousa_store/features/search/domain/usecases/search_products_use_case.dart';
 import 'package:mousa_store/features/search/presentation/bloc/search_event.dart';
@@ -14,7 +15,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc({required this.searchProductsUseCase})
     : super(const SearchState()) {
     on<SearchQueryChanged>(_onSearchQueryChanged);
-    on<SearchMoreRequested>(_onSearchMoreRequested);
+    on<SearchMoreRequested>(_onSearchMoreRequested, transformer: droppable());
     on<SearchCleared>(_onSearchCleared);
   }
 
@@ -87,7 +88,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchMoreRequested event,
     Emitter<SearchState> emit,
   ) async {
-    if (state.hasReachedMax || state.isLoadingMore || lastQuery.isEmpty) return;
+    if (state.status != SearchStatus.success ||
+        state.hasReachedMax ||
+        state.isLoadingMore ||
+        lastQuery.isEmpty)
+      return;
 
     emit(state.copyWith(isLoadingMore: true));
 
