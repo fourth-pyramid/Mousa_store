@@ -99,8 +99,8 @@ class _LayoutPageState extends State<LayoutPage> {
 
     switch (tab) {
       case LayoutTab.home:
-        _screens[index] = BlocProvider(
-          create: (context) => getIt<HomeBloc>(),
+        _screens[index] = BlocProvider.value(
+          value: getIt<HomeBloc>(),
           child: const HomeView(key: PageStorageKey('home')),
         );
       case LayoutTab.cart:
