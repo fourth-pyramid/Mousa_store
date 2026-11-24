@@ -73,6 +73,13 @@ class _CartPageState extends State<CartPage>
         backgroundColor: context.colors.background,
       ),
       body: BlocBuilder<CartBloc, CartState>(
+        buildWhen: (previous, current) =>
+            (previous.status == RequestStatus.loading &&
+                    previous.cart == null) !=
+                (current.status == RequestStatus.loading &&
+                    current.cart == null) ||
+            (previous.cart?.items.isEmpty ?? true) !=
+                (current.cart?.items.isEmpty ?? true),
         builder: (context, state) {
           if (state.status == RequestStatus.loading && state.cart == null) {
             return const Center(child: CustomLoadingIndicator());
@@ -94,27 +101,25 @@ class _CartPageState extends State<CartPage>
             children: [
               Expanded(
                 child: BlocBuilder<CartBloc, CartState>(
-                  buildWhen: (previous, current) {
-                    final prevCart = previous.cart;
-                    final currCart = current.cart;
-                    if (prevCart == null || currCart == null) return true;
-                    if (prevCart.items.length != currCart.items.length) {
-                      return true;
-                    }
-                    for (var i = 0; i < prevCart.items.length; i++) {
-                      if (prevCart.items[i].id != currCart.items[i].id) {
-                        return true;
-                      }
-                    }
-                    return false;
-                  },
+                  buildWhen: (previous, current) =>
+                      previous.cart?.items != current.cart?.items,
                   builder: (context, state) =>
-                      CartItemsList(items: state.cart!.items),
+                      CartItemsList(items: state.cart?.items ?? const []),
                 ),
               ),
-              BlocBuilder<CartBloc, CartState>(
-                builder: (context, state) => CartInformation(
-                  cart: state.cart!,
+              BlocSelector<CartBloc, CartState, ({double total, int count})>(
+                selector: (state) => (
+                  total: state.cart?.total ?? 0,
+                  count:
+                      state.cart?.items.fold<int>(
+                        0,
+                        (sum, item) => sum + item.quantity,
+                      ) ??
+                      0,
+                ),
+                builder: (context, totals) => CartInformation(
+                  totalPrice: totals.total,
+                  itemCount: totals.count,
                   gnToHome: widget.gnToHome,
                 ),
               ),
