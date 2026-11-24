@@ -1,3 +1,5 @@
+import 'package:mousa_store/core/utils/json_parsers.dart';
+
 class Offer {
   Offer({
     this.id,
@@ -12,10 +14,10 @@ class Offer {
   });
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-    id: json['id'] as int?,
+    id: JsonParsers.toIntOrNull(json['id']),
     start: json['start'] as String?,
     end: json['end'] as String?,
-    productId: json['product_id'] as int?,
+    productId: JsonParsers.toIntOrNull(json['product_id']),
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
@@ -24,7 +26,7 @@ class Offer {
         : DateTime.parse(json['updated_at'] as String),
     title: json['title'] as String?,
     desc: json['desc'] as String?,
-    disscountPrice: json['disscount_price'] as int?,
+    disscountPrice: JsonParsers.toIntOrNull(json['disscount_price']),
   );
   int? id;
   String? start;

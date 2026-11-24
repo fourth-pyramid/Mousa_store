@@ -42,7 +42,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       final quantity = _pendingQuantities[item.id];
       if (quantity == null) return item;
       final basePrice = double.tryParse(item.price) ?? 0.0;
-      final discount = item.offers?.isNotEmpty == true
+      final discount = item.offers?.isNotEmpty ?? false
           ? item.offers!.first.discountPrice
           : 0.0;
       return item.copyWith(
@@ -162,8 +162,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     final version = (_quantityVersions[id] ?? 0) + 1;
     _quantityVersions[id] = version;
     _pendingQuantities[id] = event.quantity;
-    if (state.cart != null)
+    if (state.cart != null) {
       emit(state.copyWith(cart: _withPending(state.cart!)));
+    }
 
     if (!await _debouncer.wait(id, const Duration(milliseconds: 500))) return;
     if (emit.isDone || generation != _generation) return;
@@ -176,15 +177,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       await previousWrite;
       if (emit.isDone ||
           generation != _generation ||
-          _quantityVersions[id] != version)
+          _quantityVersions[id] != version) {
         return;
+      }
       final response = await updateCartItemUseCase(
         cartItemId: id,
         quantity: event.quantity,
       );
       if (emit.isDone || generation != _generation) return;
-      if (!response.success)
+      if (!response.success) {
         throw StateError(response.message ?? 'Cart update failed');
+      }
       final cart = response.cart ?? (await getCartUseCase()).cart;
       if (emit.isDone || generation != _generation) return;
       if (_quantityVersions[id] == version) _pendingQuantities.remove(id);

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mousa_store/core/models/offer.dart';
+import 'package:mousa_store/core/utils/json_parsers.dart';
 import 'package:mousa_store/features/brands/data/models/brand_model.dart';
 import 'package:mousa_store/features/brands/domain/entities/brand.dart';
 import 'package:mousa_store/features/categories/data/models/category_model.dart';
@@ -31,18 +32,16 @@ abstract class Product with _$Product {
   }) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    id: json['id'] is int
-        ? json['id'] as int
-        : int.tryParse(json['id']?.toString() ?? '0') ?? 0,
-    minQuantity: json['min_quantity'] as int?,
-    stock: json['stock'] as int?,
+    id: JsonParsers.toInt(json['id']),
+    minQuantity: JsonParsers.toIntOrNull(json['min_quantity']),
+    stock: JsonParsers.toIntOrNull(json['stock']),
     createdAt: json['created_at'] == null
         ? null
         : DateTime.tryParse(json['created_at'] as String),
     updatedAt: json['updated_at'] == null
         ? null
         : DateTime.tryParse(json['updated_at'] as String),
-    brandId: json['brand_id'] as int?,
+    brandId: JsonParsers.toIntOrNull(json['brand_id']),
     name: json['name'] as String? ?? json['title'] as String? ?? '',
     desc: (json['description'] as String?) ?? (json['desc'] as String?) ?? '',
     price: json['price']?.toString() ?? '0',
@@ -114,9 +113,9 @@ abstract class Variant with _$Variant {
   }) = _Variant;
 
   factory Variant.fromJson(Map<String, dynamic> json) => Variant(
-    id: json['id'] is int ? json['id'] as int : 0,
+    id: JsonParsers.toInt(json['id']),
     price: json['price']?.toString() ?? '0',
-    stock: json['stock'] is int ? json['stock'] as int : 0,
+    stock: JsonParsers.toInt(json['stock']),
     imagePath: json['image_path'] as String? ?? '',
     imagesPath:
         (json['images_path'] as List<dynamic>?)

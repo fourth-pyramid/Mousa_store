@@ -1,3 +1,4 @@
+import 'package:mousa_store/core/utils/json_parsers.dart';
 import 'package:mousa_store/features/notification/data/datasources/notification_remote_data_source.dart';
 import 'package:mousa_store/features/notification/data/models/notification_model.dart';
 import 'package:mousa_store/features/notification/domain/repositories/notification_repository.dart';
@@ -34,9 +35,9 @@ class NotificationRepositoryImpl implements NotificationRepository {
       total = rawData.length;
     } else if (rawData is Map<String, dynamic>) {
       data = (rawData['data'] as List<dynamic>?) ?? [];
-      currentPage = (rawData['current_page'] as num?)?.toInt() ?? page;
-      lastPage = (rawData['last_page'] as num?)?.toInt() ?? 1;
-      total = (rawData['total'] as num?)?.toInt() ?? data.length;
+      currentPage = JsonParsers.toInt(rawData['current_page'], fallback: page);
+      lastPage = JsonParsers.toInt(rawData['last_page'], fallback: 1);
+      total = JsonParsers.toInt(rawData['total'], fallback: data.length);
     } else {
       data = [];
       currentPage = page;

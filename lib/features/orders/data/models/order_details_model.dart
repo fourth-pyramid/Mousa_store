@@ -1,3 +1,5 @@
+import 'package:mousa_store/core/utils/json_parsers.dart';
+
 class OrderDetailsResponse {
   OrderDetailsResponse({required this.success, required this.data});
 
@@ -86,9 +88,9 @@ class OrderProduct {
 
     return OrderProduct(
       productName: json['product_name']?.toString() ?? '',
-      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
+      quantity: JsonParsers.toInt(json['quantity']),
       price: json['price']?.toString() ?? '',
-      total: (json['total'] as num?)?.toDouble() ?? 0.0,
+      total: JsonParsers.toDouble(json['total']),
       image: json['image']?.toString() ?? '',
       attributes: attributes,
     );

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mousa_store/core/models/offer.dart';
+import 'package:mousa_store/core/utils/json_parsers.dart';
 import 'package:mousa_store/features/brands/domain/entities/brand.dart';
 import 'package:mousa_store/features/categories/domain/entities/category.dart';
 import 'package:mousa_store/features/product/data/models/product.dart';
@@ -48,10 +49,10 @@ abstract class Cart with _$Cart {
   }) = _Cart;
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
-    id: json['id'] as int? ?? 0,
-    userId: json['user_id'] as int? ?? 0,
+    id: JsonParsers.toInt(json['id']),
+    userId: JsonParsers.toInt(json['user_id']),
     status: json['status'] as String?,
-    total: (json['total'] as num?)?.toDouble() ?? 0.0,
+    total: JsonParsers.toDouble(json['total']),
     type: json['type'] as String?,
     createdAt: json['created_at'] != null
         ? DateTime.tryParse(json['created_at'] as String)
@@ -98,14 +99,14 @@ abstract class CartItem with _$CartItem {
     final product = Product.fromJson(json);
     return CartItem(
       id: product.id,
-      productId: json['product_id'] as int?,
+      productId: JsonParsers.toIntOrNull(json['product_id']),
       name: product.name,
       desc: product.desc,
       price: product.price,
       imagePath: product.imagePath,
       imagesPath: product.imagesPath,
-      quantity: json['quantity'] as int? ?? 1,
-      lineTotal: (json['line_total'] as num?)?.toDouble(),
+      quantity: JsonParsers.toInt(json['quantity'], fallback: 1),
+      lineTotal: JsonParsers.toDoubleOrNull(json['line_total']),
       minQuantity: product.minQuantity,
       stock: product.stock,
       createdAt: product.createdAt,

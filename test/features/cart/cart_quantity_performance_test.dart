@@ -50,8 +50,8 @@ void main() {
       addToCartUseCase: _Add(),
       updateCartItemUseCase: update,
       removeFromCartUseCase: _Remove(),
-    );
-    bloc.add(const CartFetchRequested());
+    )
+    ..add(const CartFetchRequested());
     await bloc.stream.firstWhere((s) => s.status == RequestStatus.success);
     clearInteractions(get);
   });
@@ -69,8 +69,8 @@ void main() {
       when(() => update(cartItemId: 1, quantity: 3)).thenAnswer(
         (_) async => CartResponse(success: true, cart: authoritative),
       );
-      bloc.add(const CartQuantityUpdated(cartItemId: 1, quantity: 2));
-      bloc.add(const CartQuantityUpdated(cartItemId: 1, quantity: 3));
+      bloc..add(const CartQuantityUpdated(cartItemId: 1, quantity: 2))
+      ..add(const CartQuantityUpdated(cartItemId: 1, quantity: 3));
       await bloc.stream
           .firstWhere((s) => s.actionStatus == RequestStatus.success)
           .timeout(const Duration(seconds: 3));
@@ -98,8 +98,8 @@ void main() {
         ),
       );
     });
-    bloc.add(const CartQuantityUpdated(cartItemId: 1, quantity: 2));
-    bloc.add(const CartQuantityUpdated(cartItemId: 2, quantity: 3));
+    bloc..add(const CartQuantityUpdated(cartItemId: 1, quantity: 2))
+    ..add(const CartQuantityUpdated(cartItemId: 2, quantity: 3));
     await Future<void>.delayed(const Duration(milliseconds: 600));
     expect(secondStarted.isCompleted, isFalse);
     first.complete(

@@ -52,8 +52,7 @@ class _AppContentState extends State<AppContent> {
   @override
   Widget build(BuildContext context) => BlocBuilder<ThemeBloc, ThemeState>(
     buildWhen: (previous, current) => previous.themeMode != current.themeMode,
-    builder: (context, themeState) {
-      return BlocBuilder<LanguageBloc, LanguageState>(
+    builder: (context, themeState) => BlocBuilder<LanguageBloc, LanguageState>(
         buildWhen: (previous, current) => previous.locale != current.locale,
         builder: (context, languageState) {
           final isFirst = CacheHelper.isFirstOpen();
@@ -106,8 +105,7 @@ class _AppContentState extends State<AppContent> {
             onGenerateRoute: _onGenerateRoute,
           );
         },
-      );
-    },
+      ),
   );
 
   Route<dynamic>? _onGenerateRoute(RouteSettings settings) {

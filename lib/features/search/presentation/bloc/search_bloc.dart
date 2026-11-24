@@ -91,8 +91,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (state.status != SearchStatus.success ||
         state.hasReachedMax ||
         state.isLoadingMore ||
-        lastQuery.isEmpty)
+        lastQuery.isEmpty) {
       return;
+    }
 
     emit(state.copyWith(isLoadingMore: true));
 

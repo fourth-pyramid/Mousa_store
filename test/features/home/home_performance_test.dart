@@ -7,8 +7,8 @@ import 'package:mousa_store/features/home/domain/usecases/fetch_home_data_use_ca
 import 'package:mousa_store/features/home/presentation/bloc/home_bloc.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_event.dart';
 import 'package:mousa_store/features/home/presentation/bloc/home_state.dart';
-import 'package:mousa_store/features/product/data/models/product_list_response.dart';
 import 'package:mousa_store/features/product/data/models/product.dart';
+import 'package:mousa_store/features/product/data/models/product_list_response.dart';
 
 class _UseCase extends Mock implements FetchHomeDataUseCase {}
 
@@ -56,7 +56,7 @@ void main() {
     await subscription.cancel();
   });
   test('load-more awaits the actual request and drops overlap', () async {
-    when(() => useCase.getProducts(page: 1)).thenAnswer(
+    when(() => useCase.getProducts()).thenAnswer(
       (_) async => ProductListResponse(
         success: true,
         data: Data(data: [product], currentPage: 1, lastPage: 3),
@@ -68,8 +68,8 @@ void main() {
     );
     final pending = Completer<ProductListResponse>();
     when(() => useCase.getProducts(page: 2)).thenAnswer((_) => pending.future);
-    bloc.add(const HomeLoadMoreProductsRequested());
-    bloc.add(const HomeLoadMoreProductsRequested());
+    bloc..add(const HomeLoadMoreProductsRequested())
+    ..add(const HomeLoadMoreProductsRequested());
     await Future<void>.delayed(Duration.zero);
     verify(() => useCase.getProducts(page: 2)).called(1);
     pending.complete(

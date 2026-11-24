@@ -56,20 +56,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final generation = _generation;
     final key = CacheHelper.catalogCacheKey;
-    if (state.brands.isEmpty)
+    if (state.brands.isEmpty) {
       emit(state.copyWith(brandsStatus: RequestStatus.loading));
+    }
     try {
       final brands = await _useCase.getBrands();
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(state.copyWith(brandsStatus: RequestStatus.success, brands: brands));
     } on Object catch (e) {
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           brandsStatus: state.brands.isEmpty
@@ -87,22 +90,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final generation = _generation;
     final key = CacheHelper.catalogCacheKey;
-    if (state.banners.isEmpty)
+    if (state.banners.isEmpty) {
       emit(state.copyWith(bannerStatus: RequestStatus.loading));
+    }
     try {
       final banners = await _useCase.getBanners();
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(bannerStatus: RequestStatus.success, banners: banners),
       );
     } on Object catch (e) {
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           bannerStatus: state.banners.isEmpty
@@ -120,14 +126,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final generation = _generation;
     final key = CacheHelper.catalogCacheKey;
-    if (state.categories.isEmpty)
+    if (state.categories.isEmpty) {
       emit(state.copyWith(categoriesStatus: RequestStatus.loading));
+    }
     try {
       final categories = await _useCase.getCategories();
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           categoriesStatus: RequestStatus.success,
@@ -137,8 +145,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } on Object catch (e) {
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           categoriesStatus: state.categories.isEmpty
@@ -161,8 +170,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final response = await _useCase.getOfferItems();
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           offersStatus: RequestStatus.success,
@@ -172,8 +182,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } on Object catch (e) {
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           offersStatus: RequestStatus.failure,
@@ -194,8 +205,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final response = await _useCase.getRecentlyItems();
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           recentlyStatus: RequestStatus.success,
@@ -205,8 +217,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } on Object catch (e) {
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           recentlyStatus: RequestStatus.failure,
@@ -232,8 +245,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final response = await _useCase.getProducts(page: event.page);
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       final newProducts = response.data?.data ?? [];
       final currentPage = response.data?.currentPage ?? 1;
       final lastPage = response.data?.lastPage ?? 1;
@@ -255,8 +269,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } on Object catch (e) {
       if (emit.isDone ||
           generation != _generation ||
-          key != CacheHelper.catalogCacheKey)
+          key != CacheHelper.catalogCacheKey) {
         return;
+      }
       emit(
         state.copyWith(
           allProductsStatus: RequestStatus.failure,

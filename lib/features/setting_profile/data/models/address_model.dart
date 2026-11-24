@@ -1,3 +1,5 @@
+import 'package:mousa_store/core/utils/json_parsers.dart';
+
 class Address {
   Address({
     required this.id,
@@ -7,7 +9,7 @@ class Address {
   });
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
-    id: (json['id'] as num?)?.toInt() ?? 0,
+    id: JsonParsers.toInt(json['id']),
     nameAddress: json['name_address']?.toString() ?? '',
     address: json['address']?.toString() ?? '',
     governorate: json['governorate']?.toString(),

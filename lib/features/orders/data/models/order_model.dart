@@ -1,3 +1,5 @@
+import 'package:mousa_store/core/utils/json_parsers.dart';
+
 class OrdersResponse {
   OrdersResponse({required this.success, required this.data});
 
@@ -24,7 +26,7 @@ class OrderModel {
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
-    id: (json['id'] as num?)?.toInt() ?? 0,
+    id: JsonParsers.toInt(json['id']),
     orderNumber:
         (json['orderNumber'] ?? json['order_number'])?.toString() ?? '',
     createdAt: DateTime.parse(

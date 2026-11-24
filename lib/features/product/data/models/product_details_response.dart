@@ -1,3 +1,5 @@
+import 'package:mousa_store/core/utils/json_parsers.dart';
+
 class ProductDetailsResponse {
   ProductDetailsResponse({
     required this.success,
@@ -72,11 +74,9 @@ class ProductDetail {
         .toList();
 
     return ProductDetail(
-      id: json['id'] is int
-          ? json['id'] as int
-          : int.tryParse(json['id']?.toString() ?? '0') ?? 0,
-      minQuantity: json['min_quantity'] as int? ?? 1,
-      stock: json['stock'] as int? ?? 0,
+      id: JsonParsers.toInt(json['id']),
+      minQuantity: JsonParsers.toInt(json['min_quantity'], fallback: 1),
+      stock: JsonParsers.toInt(json['stock']),
       name: json['name'] as String? ?? json['title'] as String? ?? '',
       desc: (json['description'] as String?) ?? (json['desc'] as String?) ?? '',
       properties: properties,
@@ -205,12 +205,12 @@ class ProductCategory {
 
   factory ProductCategory.fromJson(Map<String, dynamic> json) =>
       ProductCategory(
-        id: json['id'] as int,
-        createdAt: json['created_at'] as String,
-        updatedAt: json['updated_at'] as String,
-        sortOrder: json['sort_order'] as int,
-        name: json['name'] as String,
-        imagePath: json['image_path'] as String,
+        id: JsonParsers.toInt(json['id']),
+        createdAt: json['created_at'] as String? ?? '',
+        updatedAt: json['updated_at'] as String? ?? '',
+        sortOrder: JsonParsers.toInt(json['sort_order']),
+        name: json['name'] as String? ?? '',
+        imagePath: json['image_path'] as String? ?? '',
       );
 
   final int id;
@@ -242,11 +242,11 @@ class ProductOffer {
   });
 
   factory ProductOffer.fromJson(Map<String, dynamic> json) => ProductOffer(
-    id: json['id'] as int,
-    disscountPrice: (json['disscount_price'] as num?)?.toDouble() ?? 0.0,
+    id: JsonParsers.toInt(json['id']),
+    disscountPrice: JsonParsers.toDouble(json['disscount_price']),
     start: json['start'] as String?,
     end: json['end'] as String?,
-    productId: json['product_id'] as int?,
+    productId: JsonParsers.toIntOrNull(json['product_id']),
     createdAt: json['created_at'] as String?,
     updatedAt: json['updated_at'] as String?,
   );
@@ -292,9 +292,9 @@ class ProductReview {
         : null;
 
     return ProductReview(
-      id: json['id'] as int,
+      id: JsonParsers.toInt(json['id']),
       comment: json['comment'] as String? ?? '',
-      rate: double.tryParse(json['rate']?.toString() ?? '0') ?? 0.0,
+      rate: JsonParsers.toDouble(json['rate']),
       user: user,
       createdAt: json['created_at'] as String?,
     );
@@ -324,7 +324,7 @@ class ReviewAuthor {
   });
 
   factory ReviewAuthor.fromJson(Map<String, dynamic> json) => ReviewAuthor(
-    id: json['id'] as int,
+    id: JsonParsers.toInt(json['id']),
     firstName: json['first_name'] as String? ?? '',
     lastName: json['last_name'] as String? ?? '',
     email: json['email'] as String? ?? '',
@@ -356,10 +356,10 @@ class ProductVariant {
   });
 
   factory ProductVariant.fromJson(Map<String, dynamic> json) => ProductVariant(
-    id: json['id'] is int ? json['id'] as int : 0,
+    id: JsonParsers.toInt(json['id']),
     price: json['price']?.toString() ?? '0',
-    minQuantity: json['min_quantity'] is int ? json['min_quantity'] as int : 1,
-    stock: json['stock'] is int ? json['stock'] as int : 0,
+    minQuantity: JsonParsers.toInt(json['min_quantity'], fallback: 1),
+    stock: JsonParsers.toInt(json['stock']),
     imagePath: json['image_path'] as String? ?? '',
     imagesPath: List<String>.from(
       (json['images_path'] ?? const <dynamic>[]) as List<dynamic>,

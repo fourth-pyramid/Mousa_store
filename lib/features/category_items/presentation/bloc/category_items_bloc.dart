@@ -154,8 +154,9 @@ class CategoryItemsBloc extends Bloc<CategoryItemsEvent, CategoryItemsState> {
   ) async {
     if (state.status != CategoryItemsStatus.success ||
         state.hasReachedMax ||
-        state.isLoadingMore)
+        state.isLoadingMore) {
       return;
+    }
 
     emit(state.copyWith(isLoadingMore: true));
 

@@ -19,8 +19,7 @@ class CartInformation extends StatelessWidget {
   final int itemCount;
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
+  Widget build(BuildContext context) => SafeArea(
       top: false,
       child: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 84),
@@ -99,5 +98,4 @@ class CartInformation extends StatelessWidget {
         ),
       ),
     );
-  }
 }

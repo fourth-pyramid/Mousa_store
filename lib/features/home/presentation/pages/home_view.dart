@@ -49,10 +49,10 @@ class _HomeViewState extends State<HomeView>
                   CacheHelper.catalogCacheKey)) {
         _initData();
       } else if (mounted) {
-        final bloc = context.read<HomeBloc>();
-        bloc.add(const HomeBannersRequested());
-        bloc.add(const HomeBrandsRequested());
-        bloc.add(const HomeCategoriesRequested());
+        final _ = context.read<HomeBloc>()
+        ..add(const HomeBannersRequested())
+        ..add(const HomeBrandsRequested())
+        ..add(const HomeCategoriesRequested());
       }
     });
   }

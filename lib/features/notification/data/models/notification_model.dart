@@ -1,3 +1,5 @@
+import 'package:mousa_store/core/utils/json_parsers.dart';
+
 enum NotificationType {
   orderConfirmed,
   specialOffer,
@@ -57,7 +59,9 @@ class NotificationModel {
     }
 
     return NotificationModel(
-      id: (json['id'] as num?)?.toInt() ?? 0,
+      id:
+          JsonParsers.toIntOrNull(json['id']) ??
+          (json['id']?.toString().hashCode ?? 0),
       title: json['title'] as String? ?? '',
       subtitle: json['body'] as String? ?? '',
       time: json['created_at'] != null

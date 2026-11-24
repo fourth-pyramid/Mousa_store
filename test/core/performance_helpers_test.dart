@@ -46,25 +46,25 @@ void main() {
     );
     expect(await cache.get('a', () async => 7), 7);
   });
-  test('debounce restarts only the same item and cancels cleanly', () {
-    fakeAsync((async) {
+  test('debounce restarts only the same item and cancels cleanly', () async {
+    await fakeAsync((async) async {
       final debounce = KeyedDebouncer<int>();
       final results = <String>[];
-      debounce
+      await debounce
           .wait(1, const Duration(milliseconds: 500))
           .then((v) => results.add('old:$v'));
       async.elapse(const Duration(milliseconds: 250));
-      debounce
+      await debounce
           .wait(1, const Duration(milliseconds: 500))
           .then((v) => results.add('new:$v'));
-      debounce
+      await debounce
           .wait(2, const Duration(milliseconds: 500))
           .then((v) => results.add('other:$v'));
       async.flushMicrotasks();
       expect(results, ['old:false']);
       async.elapse(const Duration(milliseconds: 500));
       expect(results, ['old:false', 'new:true', 'other:true']);
-      debounce
+      await debounce
           .wait(3, const Duration(seconds: 1))
           .then((v) => results.add('closed:$v'));
       debounce.cancelAll();
@@ -86,8 +86,8 @@ void main() {
       }
 
       final output = droppable<int>()(events.stream, mapper).toList();
-      events.add(1);
-      events.add(2);
+      events..add(1)
+      ..add(2);
       await Future<void>.delayed(Duration.zero);
       expect(seen, [1]);
       done.complete();

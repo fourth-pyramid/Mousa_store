@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mousa_store/core/utils/json_parsers.dart';
 
 part 'offer.freezed.dart';
 
@@ -17,13 +18,13 @@ abstract class Offer with _$Offer {
   }) = _Offer;
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-    id: json['id'] is int ? json['id'] as int : 0,
-    productId: json['product_id'] is int ? json['product_id'] as int : 0,
+    id: JsonParsers.toInt(json['id']),
+    productId: JsonParsers.toInt(json['product_id']),
     start: json['start'] as String?,
     end: json['end'] as String?,
     createdAt: json['created_at'] as String?,
     updatedAt: json['updated_at'] as String?,
-    discountPrice: (json['disscount_price'] as num?)?.toDouble() ?? 0.0,
+    discountPrice: JsonParsers.toDouble(json['disscount_price']),
   );
 
   Map<String, dynamic> toJson() => {

@@ -33,8 +33,9 @@ class _CategoryItemsGridState extends State<CategoryItemsGrid> {
   @override
   void initState() {
     super.initState();
-    if (widget.scrollController == null)
+    if (widget.scrollController == null) {
       _internalScrollController = ScrollController();
+    }
     _scrollController.addListener(_onScroll);
   }
 
@@ -45,8 +46,9 @@ class _CategoryItemsGridState extends State<CategoryItemsGrid> {
     (oldWidget.scrollController ?? _internalScrollController)?.removeListener(
       _onScroll,
     );
-    if (widget.scrollController == null)
+    if (widget.scrollController == null) {
       _internalScrollController ??= ScrollController();
+    }
     _scrollController.addListener(_onScroll);
   }
 
