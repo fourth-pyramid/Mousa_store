@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mousa_store/core/widgets/app_skeleton.dart';
 import 'package:mousa_store/core/widgets/app_sliver_grid.dart';
 import 'package:mousa_store/core/widgets/product_grid_card.dart';
-import 'package:mousa_store/features/brands/domain/entities/brand.dart'
-    as core_brand;
 import 'package:mousa_store/features/category_items/data/models/category_items_response/category_product.dart';
+import 'package:mousa_store/features/category_items/data/models/category_items_response/category_product_mapper.dart';
 import 'package:mousa_store/features/category_items/presentation/bloc/category_items_bloc.dart';
-import 'package:mousa_store/features/product/data/models/product.dart';
 
 class CategoryItemsGrid extends StatefulWidget {
   const CategoryItemsGrid({
@@ -35,6 +33,20 @@ class _CategoryItemsGridState extends State<CategoryItemsGrid> {
   @override
   void initState() {
     super.initState();
+    if (widget.scrollController == null)
+      _internalScrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void didUpdateWidget(covariant CategoryItemsGrid oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.scrollController == widget.scrollController) return;
+    (oldWidget.scrollController ?? _internalScrollController)?.removeListener(
+      _onScroll,
+    );
+    if (widget.scrollController == null)
+      _internalScrollController ??= ScrollController();
     _scrollController.addListener(_onScroll);
   }
 
@@ -55,9 +67,7 @@ class _CategoryItemsGridState extends State<CategoryItemsGrid> {
 
   bool get _isBottom {
     if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
+    return _scrollController.position.extentAfter <= 400;
   }
 
   @override
@@ -69,25 +79,8 @@ class _CategoryItemsGridState extends State<CategoryItemsGrid> {
       isError: widget.state.status == CategoryItemsStatus.failure,
       errorMessage: widget.state.errorMessage,
       emptyWidget: widget.emptyWidget,
-      itemBuilder: (context, product, index) => ProductGridCard(
-        product: Product(
-          id: product.id ?? 0,
-          name: product.name ?? '',
-          desc: product.desc ?? '',
-          price: product.price ?? '0',
-          imagePath: product.imagePath ?? '',
-          imagesPath: product.imagesPath ?? [],
-          brand: product.brand != null
-              ? core_brand.Brand(
-                  id: product.brand!.id ?? 0,
-                  name: product.brand!.name ?? '',
-                  imagePath: product.brand!.imagePath ?? '',
-                )
-              : null,
-          offers: product.offers,
-          variants: product.variants,
-        ),
-      ),
+      itemBuilder: (context, product, index) =>
+          ProductGridCard(product: product.toProduct()),
       loadingBuilder: (context, index) => const AppSkeletonCard(),
     ),
   );
